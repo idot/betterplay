@@ -13,7 +13,18 @@ object JodaHelper { //TODO: check timezone, might have to use calendar
 import JodaHelper._
 
 //embedaable
-case class Result(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean)
+case class Result(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
+     def display = if(isSet) goalsTeam1+":"+goalsTeam2 else "-:-"
+     def winner(): Int = {
+         if(goalsTeam1 > goalsTeam2){
+           1
+         }else if(goalsTeam1 < goalsTeam2){
+           2
+         }else{
+           0
+         }
+     } 
+}
 
 
 case class Country(id: Option[Long] = None, name: String, flag: Array[Byte])
@@ -138,61 +149,8 @@ class Games(tag: Tag) extends Table[Game](tag, "games"){
 
 class Betx {
 		       
-//	
-//	
-//     def checkExact = {
-//    	  validBet && 
-//          goalsTeam1.get == game.result.goalsTeam1 && 
-//          goalsTeam2.get == game.result.goalsTeam2
-//     }
-//     
-//     def checkTendencyEquals = {
-//    	  validBet && 
-//    	  goalsTeam1.get == goalsTeam2.get &&
-//    	  game.result.goalsTeam1 == game.result.goalsTeam2
-//     }
-//     
-//     def checkTendencyTeam1Wins = {
-//    	  validBet &&
-//    	  goalsTeam1.get > goalsTeam2.get &&
-//    	  game.result.goalsTeam1 > game.result.goalsTeam2
-//     }
-//     
-//     def checkTendencyTeam2Wins = {
-//    	  validBet &&
-//    	  goalsTeam1.get < goalsTeam2.get &&
-//    	  game.result.goalsTeam1 < game.result.goalsTeam2
-//     }
-//     
-//     
-//     /**
-//     * calculates the points and sets them
-//     * 
-//     * @return
-//     */
-//    def calculatePoints(): Option[Int] = {
-//    	if(!game.result.setted){
-//    		return None
-//    	}
-//    	val calc =  if(validBet){
-//    		 if(checkExact){
-//    			 game.level.pointsExact
-//    		 }
-//    		 else if(checkTendencyEquals || checkTendencyTeam1Wins || checkTendencyTeam2Wins ){ 
-//    			 game.level.pointsTendency
-//    		 }
-//    		 else{
-//    			 0
-//    		 }
-//    	  }
-//    	  else{
-//    	 	  0
-//    	}
-//    	Some(calc)
-//     }     
-//     
-//     def validBet = goalsTeam1.isDefined && goalsTeam2.isDefined
-//     
+
+
 //     def betDisplay = goalsTeam1+":"+goalsTeam2
 //     
 //     def pointsDisplay = if(calculated) points.toString else "NA"
@@ -207,14 +165,7 @@ class Betx {
 //     
 //     override def toString: String = id + "\t" + user.userName + "\t" + game.nr + "\t" + goalsTeam1 + ":" + goalsTeam2
 //	
-//     def betDisplayPretty = pretty(goalsTeam1)+":"+pretty(goalsTeam2)
-////TODO     
-////     @PrePersist
-////     @PreUpdate
-////     def preventUpdate(bet: Bet)
-////     
-//    	 
-//      def pretty(b: Option[Int]) = b.map(_.toString).getOrElse("-")	 
+
     	 
 }
 

@@ -24,8 +24,8 @@ class DBSpec extends Specification {
       DB.withSession { implicit s: Session => 
         bets.ddl.create
         val testbets = Seq(
-               Bet(None, 0, Result(0,0,false)),
-               Bet(None, 1, Result(1,2,true))
+               Bet(None, 0, Result(0,0,false), 1),
+               Bet(None, 1, Result(1,2,true), 1)
             ) 
         bets.insertAll(testbets: _*)
         bets.list must equalTo(testbets)

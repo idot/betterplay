@@ -12,7 +12,8 @@ libraryDependencies ++= Seq(
   ws,
   "com.typesafe.play" %% "play-slick" % "0.6.0.1",
   "joda-time" % "joda-time" % "2.3",
-  "org.joda" % "joda-convert" % "1.6"
+  "org.joda" % "joda-convert" % "1.6",
+  "org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
 )
 
 
