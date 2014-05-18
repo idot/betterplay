@@ -147,27 +147,7 @@ class Games(tag: Tag) extends Table[Game](tag, "games"){
    
 }
 
-class Betx {
-		       
 
-
-//     def betDisplay = goalsTeam1+":"+goalsTeam2
-//     
-//     def pointsDisplay = if(calculated) points.toString else "NA"
-//     
-//     def canChange(ouser :Option[User]): Boolean = {
-//    	 if(game.closed) return false
-//    	 ouser match {
-//    		 case Some(user) => user == this.user && user.canBet
-//    		 case None => false
-//    	 }
-//     }
-//     
-//     override def toString: String = id + "\t" + user.userName + "\t" + game.nr + "\t" + goalsTeam1 + ":" + goalsTeam2
-//	
-
-    	 
-}
 
 
 
