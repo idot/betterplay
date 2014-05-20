@@ -5,5 +5,28 @@
 # Home page
 GET     /                           controllers.Application.index
 
+GET      /api/gamesteams             controllers.Teams.all()
+#GET     /api/teams                  controllers.Teams.all()
+#GET     /api/team/:name             controllers.Teams.get(name: String)
+#POST    /api/team/:name             controllers.Teams.update(name: String)
+
+#GET     /api/levels                  controllers.Levels.all()
+#GET     /api/level/:nr               controllers.Levels.get(nr: Long)   #gets level by nr not id!
+#POST    /api/level/:nr               controllers.Levels.post(nr: Long)  #creates new level by nr not id!
+
+#GET     /api/games                  controllers.Games.all()
+#GET     /api/game/:id               controllers.Games.get(id: Long)   #gets game with all bets
+#POST    /api/game/:id               controllers.Games.post(id: Long)  #creates/updates game with all bets; creates bets if not there
+
+#GET     /api/users                  controllers.Users.all()           
+#GET     /api/user/:name             controllers.Users.get(name: String)  #fetches user + all of his bets 
+#POST    /api/user/:name             controllers.Users.update(name: String) #creates/updates user but not his bets; creates bets on first registration
+
+#GET     /api/bet/:id                controllers.Bets.get(id: Long) #not necessary in application for testing     
+#POST    /api/bet/:id                controllers.Bets.update(id: Long) #
+
+
+
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

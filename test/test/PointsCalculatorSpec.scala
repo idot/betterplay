@@ -50,7 +50,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     "A pointsCalculator returns true for win1 if the game was won by 1" ! win2 ^
     end
     
-    val gl = GameLevel("test", 3, 2, 1)
+    val gl = GameLevel(None, "test", 3, 2, 1)
     
     def tendencyTie = {
         Prop.forAll(RG.genTieResult(true), RG.genTieResult(true)){ (bet: Result, game: Result) =>

@@ -52,4 +52,9 @@ object PointsCalculator {
     	Some(points)
      }     
   
+     
+     def caclculateSpecialBets(){
+       
+     }
+     
 }
