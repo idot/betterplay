@@ -53,8 +53,30 @@ object PointsCalculator {
      }     
   
      
-     def caclculateSpecialBets(){
-       
+     /**
+      * compare special bet 
+      * TODO: points for special bets hardcoded
+      * b is the bet
+      * r is the result
+      * 
+      */
+     def calculateSpecialBets(b: SpecialBet, r: SpecialBet): Int = {
+         val mvp = compare(b.mvp, r.mvp, 3)
+         val top = compare(b.topScorer, r.topScorer, 3)
+         val win = compare(b.winningTeam, r.winningTeam, 3)
+         val semis = compareSemi(b.semiIds, r.semiIds, 2)
+         Seq(mvp,top,win,semis).sum         
+     }
+     
+     def compareSemi(bet: Set[Long], result: Set[Long], points: Int): Int = {
+           (bet & result).size * points
+     }
+     
+     def compare(bet: Option[Long], result: Option[Long], points: Int): Int = {
+          (bet, result) match {
+               case (Some(b), Some(r)) if b == r => points      
+               case _ => 0
+          }
      }
      
 }

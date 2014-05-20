@@ -80,17 +80,17 @@ object BetterTables {
     def userId = column[Long]("user_id")
     def isSet = column[Boolean]("isset")
     
-//    def topScorer = foreignKey("SP_TOP_FK", topScorerId, players)(_.id) 
-//    def mvp = foreignKey("SP_MVP_FK", topScorerId, players)(_.id) 
-//    
-//    def winningTeam = foreignKey("SP_WINNING_FK", topScorerId, teams)(_.id) 
-//
-//    def semiFinal1 = foreignKey("SP_SEMI1_FK", semi1, teams)(_.id) 
-//    def semiFinal2 = foreignKey("SP_SEMI2_FK", semi2, teams)(_.id) 
-//    def semiFinal3 = foreignKey("SP_SEMI3_FK", semi3, teams)(_.id) 
-//    def semiFinal4 = foreignKey("SP_SEMI4_FK", semi4, teams)(_.id) 
-//    
-//    def user = foreignKey("SP_USER_FK", userId, users)(_.id)
+    def topScorer = foreignKey("SP_TOP_FK", topScorerId, players)(_.id) 
+    def mvp = foreignKey("SP_MVP_FK", topScorerId, players)(_.id) 
+    
+    def winningTeam = foreignKey("SP_WINNING_FK", topScorerId, teams)(_.id) 
+
+    def semiFinal1 = foreignKey("SP_SEMI1_FK", semi1, teams)(_.id) 
+    def semiFinal2 = foreignKey("SP_SEMI2_FK", semi2, teams)(_.id) 
+    def semiFinal3 = foreignKey("SP_SEMI3_FK", semi3, teams)(_.id) 
+    def semiFinal4 = foreignKey("SP_SEMI4_FK", semi4, teams)(_.id) 
+    
+    def user = foreignKey("SP_USER_FK", userId, users)(_.id)
     
     def * = (id.?, topScorerId, mvpId, winningteamId, semi1, semi2, semi3, semi4, isSet, userId) <> (SpecialBet.tupled, SpecialBet.unapply)
 
@@ -109,9 +109,9 @@ object BetterTables {
     def points = column[Int]("points", O.NotNull)
     def iconurl = column[Option[String]]("iconurl", O.NotNull)
     def registerby = column[Long]("registerby", O.NotNull)
-
+    def pointsSpecial = column[Int]("pointsspecial", O.NotNull)
         
-    def * = (id.?, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, iconurl, registerby) <> (User.tupled, User.unapply)
+    def * = (id.?, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, pointsSpecial, iconurl, registerby) <> (User.tupled, User.unapply)
 
   }
 

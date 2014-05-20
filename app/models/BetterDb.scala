@@ -118,14 +118,24 @@ object BetterDb {
      
    }
    
+   def updateSpecialBet(specialBet: SpecialBet, user: User)(implicit s: Session){
+      //check if start of games
+     //check if specialBet from user
+      //set hadInstructions in user
+      
+     
+   }
+   
    /**
     * 
     * from ui with correct foreign keys set by ui
     * 
     */
    def updateGame(game: Game)(implicit s: Session){
-             
-     
+       //check for settable points?-
+      //get game from db 
+     //if result != result => recalculateAllpoints
+       
    }
    
    /**
@@ -208,8 +218,19 @@ object BetterDb {
     **/
    def calculatePoints(specialBetResult: Option[SpecialBet])(implicit s: Session): Boolean = {
       s.withTransaction {
-        val gamesLevelBets = for{
-           ((g,l),b) <- games.join(levels).on(_.levelId === _.id).join(bets).on(_._1.id === _.gameId) if b.isSet
+        updateBetsWithPoints()
+        updateUsersPoints(specialBetResult)
+        true
+      }
+   }
+   
+   /***
+    * updates all bets which have a valid result with points depending on game results and level
+    * 
+    */
+   def updateBetsWithPoints()(implicit s: Session){
+       val gamesLevelBets = for{
+           ((g,l),b) <- games.join(levels).on(_.levelId === _.id).join(bets).on(_._1.id === _.gameId) if g.isSet && b.isSet
         } yield {
            (g,l,b)
         }
@@ -220,22 +241,40 @@ object BetterDb {
               bets.filter(_.id === b.id).update(betWithPoints)
             }
         }
+   }
+   
+   /***
+    * updates the tally of the bet points in the user 
+    * 
+    */
+   def updateUsersPoints(specialBetResult: Option[SpecialBet])(implicit s: Session){
         users.list.foreach{ user =>
             val points = for{
               b <- bets if(b.userId === user.id)
             } yield {
               b.points
             }
-            val p = points.list.sum  
-            val userWithPoints = user.copy(points=p)
+            val p = points.list.sum 
+            val specialPoints = calculateSpecialPointsForUser(user, specialBetResult).getOrElse(0)
+            val userWithPoints = user.copy(points=p, pointsSpecialBet=specialPoints)      
             users.update(userWithPoints)
         }
-        true
-      }
    }
    
-
-
+   
+   
+   /**
+    * calculates but does not set special points for user
+    * 
+    */
+   def calculateSpecialPointsForUser(user: User, specialBetResult: Option[SpecialBet])(implicit s: Session): Option[Int] = {
+       specialBetResult.map{ spr =>
+            specialbets.filter(_.userId === user.id).firstOption.map{ spb =>
+                PointsCalculator.calculateSpecialBets(spb, spr)               
+            }.getOrElse(0)
+       }
+   }
+   
    
 }
 
