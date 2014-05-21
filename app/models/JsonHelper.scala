@@ -75,7 +75,7 @@ object JsonHelper {
    implicit val betFormat = Json.format[Bet]
    implicit val specialBetFormat = Json.format[SpecialBet]
    implicit val teamFormat = Json.format[Team]
-   
+   implicit val gameWithTeams = Json.format[GameWithTeams] 
   
 }
 

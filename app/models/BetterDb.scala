@@ -7,18 +7,38 @@ import play.api.db.DB
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
 import scalaz.syntax.apply._ //|@|
 
+/**
+ * message types for games
+ */
+sealed trait GameUpdate
+case object SetResult extends GameUpdate
+case object ChangeDetails extends GameUpdate
+case object NewGame extends GameUpdate
+
+
 object BetterDb {
    import BetterTables._
   
    def allTeams()(implicit s: Session): Seq[Team] = {
        teams.list
    }
-  
+   
+   def allPlayersWithTeam()(implicit s: Session): Seq[(Player,Team)] = {
+       val pt = for{
+         (p,t) <- players.innerJoin(teams).on(_.teamId === _.id)
+       } yield (p,t)
+       pt.list
+   }
+     
    def joinGamesTeamsLevels() = {
        games.innerJoin(teams).on(_.team1Id === _.id).innerJoin(teams).on(_._1.team2Id === _.id).innerJoin(levels).on(_._1._1.levelId === _.id) 
    }
    
-   def gamesWithTeams()(implicit s: Session): Seq[GameWithTeams] = {
+   def allLevels()(implicit s: Session): Seq[GameLevel] = {
+       levels.list
+   }
+   
+   def allGamesWithTeams()(implicit s: Session): Seq[GameWithTeams] = {
        val gtt = (for{
          (((g, t1), t2),l) <- joinGamesTeamsLevels() 
        } yield {
@@ -55,17 +75,7 @@ object BetterDb {
        teams.filter(_.name === teamName).firstOption.map{ \/-(_) }.getOrElse{ -\/(s"team not found by name: $teamName") }    
    }
    
-   
-   def deleteGame(game: Game)(implicit s: Session): String \/ String = {
-       if(games.filter(_.id === game.id).delete == 1){
-          \/-(s"deleted game $game")  
-       }else{
-         -\/(s"could not delete game $game")
-       }
-   }
-   
-   
-   
+      
    /**
     * This is for text import   game details | team1name | team2name | levelNr (| == tab)
     * 
@@ -89,6 +99,13 @@ object BetterDb {
    }
    
    
+   def userWithSpecialBet(userId: Option[Long])(implicit s: Session):  String \/ (User,SpecialBet) = {
+       val us = for{
+         (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.id === opId(userId)
+       }yield (u,s)
+       us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user for id $userId"))
+   }  
+     
    /**
     * The ids are declared as Option[Long]
     * this creates problems in filter clauses for joins (i.e WHERE)
@@ -140,19 +157,23 @@ object BetterDb {
     * 
     * 
     */
-   def specialBetsClosingTime(closingMinutesToGame: Int)(implicit s: Session): Option[DateTime] = {
+   def startOfGames()(implicit s: Session): Option[DateTime] = {
        games.sortBy(_.start.desc).firstOption.map{ firstGame =>
-          firstGame.start.minus(closingMinutesToGame)
+          firstGame.start
        }
    }
    
+   def closingTimeSpecialBet(closingMinutesToGame: Int)(implicit s: Session): Option[DateTime] = {
+      startOfGames.map{ s => s.minus(closingMinutesToGame) }
+   }
    
-   def betWithGameWithTeams(bet: Bet)(implicit s: Session): String \/ (Bet,GameWithTeams) = {
+
+   def betWithGameWithTeamsAndUser(bet: Bet)(implicit s: Session): String \/ (Bet,GameWithTeams,User) = {
        val bg = for{
-        ((((g,t1),t2),l),b) <- joinGamesTeamsLevels().join(bets).on(_._1._1._1.id === _.gameId) if b.id === opId(bet.id)
-       } yield (g, t1, t2, l, b)
-       bg.firstOption.map{ case(g,t1,t2,l,b) =>
-          \/-(b, GameWithTeams(g,t1,t2,l))  
+        (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id) if b.id === opId(bet.id)
+       } yield (g, t1, t2, l, b, u)
+       bg.firstOption.map{ case(g,t1,t2,l,b,u) =>
+          \/-(b, GameWithTeams(g,t1,t2,l),u)  
        }.getOrElse( -\/(s"could not find bet in database $bet"))
    }
    
@@ -165,8 +186,8 @@ object BetterDb {
     * 
     */
    def updateBetResult(bet: Bet, user: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (GameWithTeams,Bet,Bet) = {
-       betWithGameWithTeams(bet).flatMap{ case(dbBet, game) =>
-             compareBet(dbBet.userId, bet.userId, dbBet.gameId, bet.gameId, game.game.start, currentTime, closingMinutesToGame).fold(
+       betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, game, user) =>
+             compareBet(user.canBet, dbBet.userId, bet.userId, dbBet.gameId, bet.gameId, game.game.start, currentTime, closingMinutesToGame).fold(
                   err => -\/(err.list.mkString("\n")),
                   succ => {
                     val result = bet.result.copy(isSet=true)
@@ -182,31 +203,80 @@ object BetterDb {
        if(original == proposed) Success("valid id") else Failure(s"$idName differ $original $proposed")
    }     
    
+   def canBet(cb: Boolean): Validation[String,String] = {
+       if(cb) Success("can bet") else Failure(s"user has not paid, no dice")     
+   }
    
-   def compareBet(userId: Long, betUserId: Long, gameId: Long, betGameId: Long, gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): ValidationNel[String,String] = {
-       (compareIds(userId, betUserId, "user ids").toValidationNel |@| compareIds(gameId, betGameId, "game ids").toValidationNel |@| isGameOpen(gameTimeStart, currentTime, closingMinutesToGame).toValidationNel){
-         case(u,g,t) => Seq(u,g,t).mkString("\n")
+   def compareBet(cb: Boolean, userId: Long, betUserId: Long, gameId: Long, betGameId: Long, gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): ValidationNel[String,String] = {
+       (compareIds(userId, betUserId, "user ids").toValidationNel |@| 
+           compareIds(gameId, betGameId, "game ids").toValidationNel |@| 
+           isGameOpen(gameTimeStart, currentTime, closingMinutesToGame).toValidationNel |@|
+           canBet(cb).toValidationNel ){
+         case(u,g,t,c) => Seq(u,g,t,c).mkString("\n")
        }
    }
    
-   def updateSpecialBet(specialBet: SpecialBet, user: User)(implicit s: Session){
-      //check if start of games
-     //check if specialBet from user
-      //set hadInstructions in user
-      
-     
+   
+   def checkSpecial(cb: Boolean, userId: Long, betUserId: Long): ValidationNel[String,String] = {
+       (canBet(cb).toValidationNel |@| compareIds(userId, betUserId, "user ids").toValidationNel){
+         case(c,u) => Seq(c,u).mkString("\n")
+       }    
    }
    
    /**
     * 
-    * from ui with correct foreign keys set by ui
+    * checking if start of games, specialbet from user, user can bet
+    * 
     * 
     */
-   def updateGame(game: Game)(implicit s: Session){
-       //check for settable points?-
-      //get game from db 
-     //if result != result => recalculateAllpoints
-       
+   def updateSpecialBet(specialBet: SpecialBet, user: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (SpecialBet,User) = {
+       startOfGames().map{ startTime =>
+          isGameOpen(startTime, currentTime, closingMinutesToGame).fold(
+              err => -\/(err),
+              succ => updateOpenSpecialbet(specialBet, user)      
+          )}.getOrElse(-\/("no games yet"))
+   }
+   
+   
+   def updateOpenSpecialbet(specialBet: SpecialBet, user: User)(implicit s: Session): String \/ (SpecialBet,User) = {
+        s.withTransaction{ 
+                 userWithSpecialBet(user.id).flatMap{ case(udb, spdb) =>
+                         checkSpecial(udb.canBet, opId(udb.id), spdb.userId).fold(
+                             err => -\/(err.list.mkString("\n")),
+                             succ => {
+                                  val nsb = specialBet.copy(isSet=true)
+			                      specialbets.update(nsb)
+			                      val nu = udb.copy(hadInstructions=true)
+		                          \/-((nsb,nu))
+                             }                         
+                         )
+                    }
+        }
+   }
+
+   
+   /**
+    * 
+    * from ui with correct foreign keys set by ui
+    * ui should initiate points calculation
+    * 
+    */
+   def updateGame(game: Game, currentTime: DateTime, gameDuration: Int)(implicit s: Session): String \/ (Game,GameUpdate) = {
+       games.filter(_.id === game.id).firstOption.map{ dbGame =>
+            isGameOpen(game.start, currentTime: DateTime, -gameDuration).fold( //game is open until start + duration => points not settable yet
+                err => {//game closed can set points but not change teams anymore
+                     val result = game.result.copy(isSet=true)
+                     val gameWithResult = dbGame.copy(result=result)
+                     games.update(gameWithResult) 
+                     \/-(gameWithResult, SetResult)
+                },
+                succ => {//game open can not set points but can change teams
+                     val gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id)
+                     games.update(gameWithTeams)
+                     \/-(gameWithTeams, ChangeDetails)
+                }            
+            )
+       }.getOrElse(-\/(s"could not find game in database $game"))
    }
    
    /**
