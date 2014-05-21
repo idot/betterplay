@@ -15,10 +15,10 @@ object Teams extends Controller {
 //        
 //  }
    def t(){
-     import scalaz._
-     import Scalaz._
-     
-     val v = "a".success
+    import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
+    import scalaz.syntax.apply._ //|@|
+     import scalaz.std.AllInstances._
+     val v = Success("a")
      v.toValidationNel
      def x(): String \/ Throwable = {
         -\/("a")
@@ -32,9 +32,10 @@ object Teams extends Controller {
     val res = (d.validation.toValidationNel |@| c.validation.toValidationNel){//{ _ + _ }
         case (v1, v2) => (v1, v2)
      }
-     
+
      res.fold(
-        f => f.toList.mkString("\n"),    
+         
+        f => f.list.mkString("\n"),    
        r => r
      )
      

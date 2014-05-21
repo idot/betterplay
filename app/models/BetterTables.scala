@@ -3,13 +3,27 @@ package models
 import play.api.db.slick.Config.driver.simple._
 import org.joda.time.DateTime
 
+import JodaHelper._
+import org.joda.time.Period
+
 object JodaHelper { //TODO: check timezone, might have to use calendar 
   implicit val dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
     { dt => new java.sql.Timestamp(dt.getMillis) },
     { ts => new org.joda.time.DateTime(ts) })
+    
+ 
+  
+  def compareTimeHuman(firstTime: DateTime, lastTime: DateTime): String = {
+      val period = new Period(firstTime, lastTime)
+      val days = period.getDays()
+      val hours = period.getHours()
+      val minutes = period.getMinutes()
+      val seconds = period.getSeconds()
+      val result = s"$days days, $hours hours, $minutes minutes, $seconds seconds"
+      result  
+  }
+  
 }
-
-import JodaHelper._
 
 object BetterTables {
   val users = TableQuery[Users]

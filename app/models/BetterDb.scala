@@ -4,7 +4,8 @@ import play.api.db.slick.Config.driver.simple._
 import org.joda.time.DateTime
 import play.api.db.DB
 
-import scalaz.{\/,-\/,\/-}
+import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
+import scalaz.syntax.apply._ //|@|
 
 object BetterDb {
    import BetterTables._
@@ -13,9 +14,13 @@ object BetterDb {
        teams.list
    }
   
+   def joinGamesTeamsLevels() = {
+       games.innerJoin(teams).on(_.team1Id === _.id).innerJoin(teams).on(_._1.team2Id === _.id).innerJoin(levels).on(_._1._1.levelId === _.id) 
+   }
+   
    def gamesWithTeams()(implicit s: Session): Seq[GameWithTeams] = {
        val gtt = (for{
-         (((g, t1), t2),l) <- games.innerJoin(teams).on(_.team1Id === _.id).innerJoin(teams).on(_._1.team2Id === _.id).innerJoin(levels).on(_._1._1.levelId === _.id)
+         (((g, t1), t2),l) <- joinGamesTeamsLevels() 
        } yield {
          (g, t1, t2,l)
        })   
@@ -66,14 +71,12 @@ object BetterDb {
     * 
     */
    def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int)(implicit s: Session): String \/ String = {
-         import scalaz._
-         import Scalaz._
 
        val result = ( teamByName(team1Name).validation.toValidationNel |@| teamByName(team2Name).validation.toValidationNel |@| levelByNr(levelNr).validation.toValidationNel ){
            case (team1, team2, level) => (team1.id, team2.id, level.id)
         }
         result.fold(
-            err => -\/(err.toList.mkString("\n")),
+            err => -\/(err.list.mkString("\n")),
             succ => succ match {
               case (Some(t1), Some(t2), Some(l)) => {
                  val gamesWithTeamsAndLevel = game.copy(team1id=t1, team2id=t2, levelId=l, result=Result(0,0,false))
@@ -85,6 +88,16 @@ object BetterDb {
         )   
    }
    
+   
+   /**
+    * The ids are declared as Option[Long]
+    * this creates problems in filter clauses for joins (i.e WHERE)
+    * 
+    */
+   def opId(id: Option[Long]): Long = {
+       id.map(i => i).getOrElse(-1)     
+   }
+   
    /***
     * UI 1
     * 
@@ -92,7 +105,7 @@ object BetterDb {
     */   
    def betsWitUsersForGame(game: Game)(implicit s: Session): Seq[(Bet,User)] = {
        val bu = (for{
-         (b, u) <- bets.innerJoin(users).on(_.userId === _.id) if b.gameId === game.id
+         (b, u) <- bets.innerJoin(users).on(_.userId === _.id) if b.gameId === opId(game.id)
        } yield {
          (b,u)
        }) 
@@ -105,17 +118,75 @@ object BetterDb {
     */
    def gamesWithBetForUser(user: User)(implicit s: Session): Seq[(GameWithTeams,Bet)] = {
        val gtt = (for{
-         ((((g, t1), t2),l),b) <- games.innerJoin(teams).on(_.team1Id === _.id).innerJoin(teams).on(_._1.team2Id === _.id).innerJoin(levels).on(_._1._1.levelId === _.id).innerJoin(bets).on(_._1._1._1.id === _.gameId)
+         ((((g, t1), t2),l),b) <- joinGamesTeamsLevels().innerJoin(bets).on(_._1._1._1.id === _.gameId) if b.userId === opId(user.id)
        } yield {
          (g, t1, t2,l,b)
        })   
        gtt.list.map{ case(g,t1,t2,l,b) => (GameWithTeams(g,t1,t2,l),b) }
    }
    
-   def updateBet(bet: Bet, user: User)(implicit s: Session){
-      //check if game closed
-     //check if bet from user
-     
+   /***
+    * all times are stored in local time
+    * This happens at import where the timezone has to be specified
+    */
+   def isGameOpen(gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): Validation[String,String] = {
+       val gameClosing = gameTimeStart.minus(closingMinutesToGame)  
+       val open = currentTime.isBefore(gameClosing)
+       if(open) Success("valid time") else Failure(s"game closed since ${JodaHelper.compareTimeHuman(gameClosing, currentTime)}")
+   }
+   
+
+   /***
+    * 
+    * 
+    */
+   def specialBetsClosingTime(closingMinutesToGame: Int)(implicit s: Session): Option[DateTime] = {
+       games.sortBy(_.start.desc).firstOption.map{ firstGame =>
+          firstGame.start.minus(closingMinutesToGame)
+       }
+   }
+   
+   
+   def betWithGameWithTeams(bet: Bet)(implicit s: Session): String \/ (Bet,GameWithTeams) = {
+       val bg = for{
+        ((((g,t1),t2),l),b) <- joinGamesTeamsLevels().join(bets).on(_._1._1._1.id === _.gameId) if b.id === opId(bet.id)
+       } yield (g, t1, t2, l, b)
+       bg.firstOption.map{ case(g,t1,t2,l,b) =>
+          \/-(b, GameWithTeams(g,t1,t2,l))  
+       }.getOrElse( -\/(s"could not find bet in database $bet"))
+   }
+   
+   /**
+    * current time should come from date time provider
+    * need DI?
+    * I reload the bet to make sure its not tampered with gameid or userid
+    * 
+    * The successfull return value is for the messageing functionality (log, ticker, facebook etc...)
+    * 
+    */
+   def updateBetResult(bet: Bet, user: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (GameWithTeams,Bet,Bet) = {
+       betWithGameWithTeams(bet).flatMap{ case(dbBet, game) =>
+             compareBet(dbBet.userId, bet.userId, dbBet.gameId, bet.gameId, game.game.start, currentTime, closingMinutesToGame).fold(
+                  err => -\/(err.list.mkString("\n")),
+                  succ => {
+                    val result = bet.result.copy(isSet=true)
+  	                val updatedBet = dbBet.copy(result=result)
+	                bets.update(updatedBet)
+                    \/-(game, dbBet, bet)
+             })
+       }
+   }
+   
+   
+   def compareIds(original: Long, proposed: Long, idName: String): Validation[String,String] = {
+       if(original == proposed) Success("valid id") else Failure(s"$idName differ $original $proposed")
+   }     
+   
+   
+   def compareBet(userId: Long, betUserId: Long, gameId: Long, betGameId: Long, gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): ValidationNel[String,String] = {
+       (compareIds(userId, betUserId, "user ids").toValidationNel |@| compareIds(gameId, betGameId, "game ids").toValidationNel |@| isGameOpen(gameTimeStart, currentTime, closingMinutesToGame).toValidationNel){
+         case(u,g,t) => Seq(u,g,t).mkString("\n")
+       }
    }
    
    def updateSpecialBet(specialBet: SpecialBet, user: User)(implicit s: Session){
@@ -184,7 +255,7 @@ object BetterDb {
     */
    def gamesWithoutBetsForUser(user: User)(implicit s: Session): Seq[Game] = {
        val allGamesWithOptBets = for{
-         (g, b) <- games.leftJoin(bets).on(_.id === _.gameId) if b.userId === user.id
+         (g, b) <- games.leftJoin(bets).on(_.id === _.gameId) if b.userId === opId(user.id)
        } yield {
          (g, b.id?)
        }
@@ -199,7 +270,7 @@ object BetterDb {
    def invalidateBetsForGame(game: Game)(implicit s: Session){
        s.withTransaction{
           val invalidBets = for{
-             b <- bets if b.gameId === game.id
+             b <- bets if b.gameId === opId(game.id)
           } yield b.isSet
           invalidBets.update(false)
        }    
@@ -238,7 +309,7 @@ object BetterDb {
           case (g,l,b) =>
             PointsCalculator.calculatePoints(b, g, l).foreach{ points => 
               val betWithPoints = b.copy(points=points)
-              bets.filter(_.id === b.id).update(betWithPoints)
+              bets.filter(_.id === b.id).update(betWithPoints) //correct long === Option[Long]???
             }
         }
    }
@@ -250,7 +321,7 @@ object BetterDb {
    def updateUsersPoints(specialBetResult: Option[SpecialBet])(implicit s: Session){
         users.list.foreach{ user =>
             val points = for{
-              b <- bets if(b.userId === user.id)
+              b <- bets if(b.userId === user.id)  //correct long === Option[Long]???
             } yield {
               b.points
             }
@@ -269,7 +340,7 @@ object BetterDb {
     */
    def calculateSpecialPointsForUser(user: User, specialBetResult: Option[SpecialBet])(implicit s: Session): Option[Int] = {
        specialBetResult.map{ spr =>
-            specialbets.filter(_.userId === user.id).firstOption.map{ spb =>
+            specialbets.filter(_.userId === user.id).firstOption.map{ spb =>   //correct long === Option[Long]???
                 PointsCalculator.calculateSpecialBets(spb, spr)               
             }.getOrElse(0)
        }
