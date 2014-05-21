@@ -57,7 +57,7 @@ object BetterDb {
            l
        }.getOrElse{
           levels.insert(level)
-          level //would be nice to get the level with the new id
+          level
        }
    }    
    
@@ -82,6 +82,7 @@ object BetterDb {
       
    /**
     * This is for text import   game details | team1name | team2name | levelNr (| == tab)
+    * ids for teams and levels and results are ignored, taken from db and amended in game object
     * 
     */
    def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int)(implicit s: Session): String \/ String = {
@@ -93,9 +94,9 @@ object BetterDb {
             err => -\/(err.list.mkString("\n")),
             succ => succ match {
               case (Some(t1), Some(t2), Some(l)) => {
-                 val gamesWithTeamsAndLevel = game.copy(team1id=t1, team2id=t2, levelId=l, result=Result(0,0,false))
-                 games.update(gamesWithTeamsAndLevel)
-                 \/-(s"updated game $game")
+                 val gamesWithTeamsAndLevel = game.copy(team1id=t1, team2id=t2, levelId=l, result=DomainHelper.resultInit)
+                 games.insert(gamesWithTeamsAndLevel)
+                 \/-(s"inserted game $game")
               }
               case _ => -\/("problem with ids of team1, team2 or level")
             }
@@ -151,7 +152,7 @@ object BetterDb {
     * This happens at import where the timezone has to be specified
     */
    def isGameOpen(gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): Validation[String,String] = {
-       val gameClosing = gameTimeStart.minus(closingMinutesToGame)  
+       val gameClosing = gameTimeStart.minusMinutes(closingMinutesToGame)  
        val open = currentTime.isBefore(gameClosing)
        if(open) Success("valid time") else Failure(s"game closed since ${JodaHelper.compareTimeHuman(gameClosing, currentTime)}")
    }
@@ -168,7 +169,7 @@ object BetterDb {
    }
    
    def closingTimeSpecialBet(closingMinutesToGame: Int)(implicit s: Session): Option[DateTime] = {
-      startOfGames.map{ s => s.minus(closingMinutesToGame) }
+      startOfGames.map{ s => s.minusMinutes(closingMinutesToGame) }
    }
    
 
@@ -287,14 +288,25 @@ object BetterDb {
     * sets up all bets including special bets
     * 
     */
-   def insertUser(user: User)(implicit s: Session){
+   def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long])(implicit s: Session): String \/ User = {
       s.withTransaction{ 
-         val userId = (users returning users.map(_.id)) += user
-            val userWithId = user.copy(id=Some(userId))
-            users.filter(_.id === userId).firstOption.map{ user =>
-              specialbets.insert(SpecialBet(None, None, None, None, None, None, None, None, false, userId ))
-              createBetsForGamesForUser(user)
-         }
+           try{
+              val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser)
+              val userId = (users returning users.map(_.id)) += initUser
+              val userWithId = initUser.copy(id=Some(userId))
+              users.filter(_.id === userId).firstOption.map{ user =>
+                 specialbets.insert(SpecialBet(None, None, None, None, None, None, None, None, false, userId ))
+                 createBetsForGamesForUser(userWithId)
+              }  
+              \/-(userWithId)
+           }catch{
+            case e: Exception => {
+              s.rollback()
+              
+              -\/(e.getMessage)
+              
+            }
+          }
       }       
    }
    

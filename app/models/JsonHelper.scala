@@ -69,7 +69,7 @@ object JsonHelper {
    }
    
    implicit val levelFormat = Json.format[GameLevel]
-   implicit val resultFormat = Json.format[Result]
+   implicit val resultFormat = Json.format[Result] 
    implicit val userFormat = Json.format[User]
    implicit val gameFormat = Json.format[Game]
    implicit val betFormat = Json.format[Bet]

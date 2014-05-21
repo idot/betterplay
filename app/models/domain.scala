@@ -3,6 +3,15 @@ package models
 import org.joda.time.DateTime
 
 
+object DomainHelper {
+  
+  def resultInit(): Result = Result(0,0,false)  
+  def betInit(user: User, game: Game): Bet = Bet(None, 0, resultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
+  def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
+      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, false, true, 0, 0, user.iconurl, registeringUser)
+  }
+}
+
 //embedaable
 case class Result(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
      def display = if(isSet) goalsTeam1+":"+goalsTeam2 else "-:-"
@@ -17,6 +26,7 @@ case class Result(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
      } 
 }
 
+
 //maybe size could be added
 case class DBImage(format: String, image: String) //unsure of base64 string or array[Byte]
 
@@ -28,10 +38,12 @@ case class Bet(id: Option[Long] = None, points: Int, result: Result, gameId: Lon
 //unique: user/bet game/bet one bet for each user per game 
 }
 
+
+
 /***
  * hadinstructions === special bet was set
  */
-case class User(id: Option[Long] = None, firstName: String, lastName: String, email: String, passwordHash: String, isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, points: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Long ){
+case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, email: String, passwordHash: String, isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, points: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long] ){
 //  
 //  	def password_=(in: String) = this.password_hash = encrypt(in)
 //	

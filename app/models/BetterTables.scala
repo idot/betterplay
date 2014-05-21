@@ -112,6 +112,7 @@ object BetterTables {
 
   class Users(tag: Tag) extends Table[User](tag, "users") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    def username = column[String]("username", O.NotNull)
     def firstname = column[String]("firstname", O.NotNull)
     def lastname = column[String]("lastname", O.NotNull)
     def email = column[String]("email", O.NotNull)
@@ -122,10 +123,12 @@ object BetterTables {
     def canBet = column[Boolean]("canbet", O.NotNull)
     def points = column[Int]("points", O.NotNull)
     def iconurl = column[Option[String]]("iconurl", O.NotNull)
-    def registerby = column[Long]("registerby", O.NotNull)
+    def registerby = column[Option[Long]]("registerby", O.NotNull)
     def pointsSpecial = column[Int]("pointsspecial", O.NotNull)
         
-    def * = (id.?, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, pointsSpecial, iconurl, registerby) <> (User.tupled, User.unapply)
+    def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id) 
+    
+    def * = (id.?, username, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, pointsSpecial, iconurl, registerby) <> (User.tupled, User.unapply)
 
   }
 
