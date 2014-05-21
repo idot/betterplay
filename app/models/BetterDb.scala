@@ -38,6 +38,10 @@ object BetterDb {
        levels.list
    }
    
+   def allUsers()(implicit s: Session): Seq[User] = {
+       users.list
+   }
+   
    def allGamesWithTeams()(implicit s: Session): Seq[GameWithTeams] = {
        val gtt = (for{
          (((g, t1), t2),l) <- joinGamesTeamsLevels() 
@@ -61,17 +65,17 @@ object BetterDb {
        levels.filter(_.level === levelNr).firstOption.map{ \/-(_) }.getOrElse{ -\/(s"level not found by nr: $levelNr") }
    }
    
-   def insertOrUpdateTeamByName(team: Team)(implicit s: Session): Boolean = {
-       teamByName(team.name).map{ t =>
+   def insertOrUpdateTeamByName(team: Team)(implicit s: Session): String = {
+       getTeamByName(team.name).map{ t =>
           teams.update(t)
-          false
+          s"team updated: $team"
        }.getOrElse{
          teams.insert(team)
-          true
+          s"team inserted: $team"
        }
    }
    
-   def teamByName(teamName: String)(implicit s: Session): String \/ Team = {
+   def getTeamByName(teamName: String)(implicit s: Session): String \/ Team = {
        teams.filter(_.name === teamName).firstOption.map{ \/-(_) }.getOrElse{ -\/(s"team not found by name: $teamName") }    
    }
    
@@ -82,7 +86,7 @@ object BetterDb {
     */
    def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int)(implicit s: Session): String \/ String = {
 
-       val result = ( teamByName(team1Name).validation.toValidationNel |@| teamByName(team2Name).validation.toValidationNel |@| levelByNr(levelNr).validation.toValidationNel ){
+       val result = ( getTeamByName(team1Name).validation.toValidationNel |@| getTeamByName(team2Name).validation.toValidationNel |@| levelByNr(levelNr).validation.toValidationNel ){
            case (team1, team2, level) => (team1.id, team2.id, level.id)
         }
         result.fold(
