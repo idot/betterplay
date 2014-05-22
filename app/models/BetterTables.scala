@@ -73,8 +73,8 @@ object BetterTables {
     def venue = column[String]("venue", O.NotNull)
     def group = column[String]("group", O.NotNull)
 
-    def team1 = foreignKey("GAME_TEAM1_FK", team1Id, players)(_.id) 
-    def team2 = foreignKey("GAME_TEAM2_FK", team2Id, players)(_.id) 
+    def team1 = foreignKey("GAME_TEAM1_FK", team1Id, teams)(_.id) 
+    def team2 = foreignKey("GAME_TEAM2_FK", team2Id, teams)(_.id) 
     def level = foreignKey("GAME_LEVEL_FK", levelId, levels)(_.id) 
     
     def * = (id.?, result, team1Id, team2Id, levelId, start, venue, group) <> (Game.tupled, Game.unapply)
@@ -122,8 +122,8 @@ object BetterTables {
     def hadInstructions = column[Boolean]("instructions", O.NotNull)
     def canBet = column[Boolean]("canbet", O.NotNull)
     def points = column[Int]("points", O.NotNull)
-    def iconurl = column[Option[String]]("iconurl", O.NotNull)
-    def registerby = column[Option[Long]]("registerby", O.NotNull)
+    def iconurl = column[Option[String]]("iconurl", O.Nullable)
+    def registerby = column[Option[Long]]("registerby", O.Nullable)
     def pointsSpecial = column[Int]("pointsspecial", O.NotNull)
         
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id) 

@@ -96,7 +96,7 @@ object BetterDb {
               case (Some(t1), Some(t2), Some(l)) => {
                  val gamesWithTeamsAndLevel = game.copy(team1id=t1, team2id=t2, levelId=l, result=DomainHelper.resultInit)
                  games.insert(gamesWithTeamsAndLevel)
-                 \/-(s"inserted game $game")
+                 \/-(s"inserted game $gamesWithTeamsAndLevel")
               }
               case _ => -\/("problem with ids of team1, team2 or level")
             }
@@ -340,12 +340,19 @@ object BetterDb {
     * 
     */
    def gamesWithoutBetsForUser(user: User)(implicit s: Session): Seq[Game] = {
-       val allGamesWithOptBets = for{
-         (g, b) <- games.leftJoin(bets).on(_.id === _.gameId) if b.userId === opId(user.id)
-       } yield {
-         (g, b.id?)
-       }
-       allGamesWithOptBets.list.collect{ case(g,None) => g }
+       val allGamesWithBetsForUser = for{
+         (g, b) <- games.join(bets).on(_.id === _.gameId) if b.userId === user.id
+       } yield (g.id)
+       
+       val allGamesWithoutBetsForUser = for{
+         g <- games if g.id notIn allGamesWithBetsForUser         
+       } yield g
+       
+       //does not compile
+        //  val allGamesWithoutBetsForUser = games.filterNot(_.id inSet(allGamesWithBetsForUser) )
+       
+       allGamesWithoutBetsForUser.list
+       
    }
    
    /**
@@ -356,7 +363,7 @@ object BetterDb {
    def invalidateBetsForGame(game: Game)(implicit s: Session){
        s.withTransaction{
           val invalidBets = for{
-             b <- bets if b.gameId === opId(game.id)
+             b <- bets if b.gameId === game.id
           } yield b.isSet
           invalidBets.update(false)
        }    
