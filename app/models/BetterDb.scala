@@ -53,7 +53,7 @@ object BetterDb {
   
    def insertOrUpdateLevelByNr(level: GameLevel)(implicit s: Session): GameLevel = {
        levelByNr(level.level).map{ l =>
-           levels.update(l)
+           levels.filter(_.id === level.id).update(l)
            l
        }.getOrElse{
           levels.insert(level)
@@ -67,7 +67,7 @@ object BetterDb {
    
    def insertOrUpdateTeamByName(team: Team)(implicit s: Session): String = {
        getTeamByName(team.name).map{ t =>
-          teams.update(t)
+          teams.filter(_.id === team.id).update(t)
           s"team updated: $team"
        }.getOrElse{
          teams.insert(team)
@@ -104,9 +104,9 @@ object BetterDb {
    }
    
    
-   def userWithSpecialBet(userId: Option[Long])(implicit s: Session):  String \/ (User,SpecialBet) = {
+   def userWithSpecialBet(userId: Long)(implicit s: Session):  String \/ (User,SpecialBet) = {
        val us = for{
-         (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.id === opId(userId)
+         (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.id === userId
        }yield (u,s)
        us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user for id $userId"))
    }  
@@ -163,7 +163,7 @@ object BetterDb {
     * 
     */
    def startOfGames()(implicit s: Session): Option[DateTime] = {
-       games.sortBy(_.start.desc).firstOption.map{ firstGame =>
+       games.sortBy(_.start.asc).firstOption.map{ firstGame =>
           firstGame.start
        }
    }
@@ -190,15 +190,15 @@ object BetterDb {
     * The successfull return value is for the messageing functionality (log, ticker, facebook etc...)
     * 
     */
-   def updateBetResult(bet: Bet, user: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (GameWithTeams,Bet,Bet) = {
-       betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, game, user) =>
-             compareBet(user.canBet, dbBet.userId, bet.userId, dbBet.gameId, bet.gameId, game.game.start, currentTime, closingMinutesToGame).fold(
+   def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (GameWithTeams,Bet,Bet) = {
+       betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, dbgame, dbuser) =>
+             compareBet(dbuser.canBet, dbuser.id.getOrElse(-1), submittingUser.id.getOrElse(-1), dbBet.gameId, bet.gameId, dbgame.game.start, currentTime, closingMinutesToGame).fold(
                   err => -\/(err.list.mkString("\n")),
                   succ => {
                     val result = bet.result.copy(isSet=true)
   	                val updatedBet = dbBet.copy(result=result)
-	                bets.update(updatedBet)
-                    \/-(game, dbBet, bet)
+	                bets.filter(_.id === updatedBet.id).update(updatedBet)
+                    \/-(dbgame, dbBet, updatedBet)
              })
        }
    }
@@ -243,15 +243,16 @@ object BetterDb {
    }
    
    
-   def updateOpenSpecialbet(specialBet: SpecialBet, user: User)(implicit s: Session): String \/ (SpecialBet,User) = {
+   def updateOpenSpecialbet(specialBet: SpecialBet, submittingUser: User)(implicit s: Session): String \/ (SpecialBet,User) = {
         s.withTransaction{ 
-                 userWithSpecialBet(user.id).flatMap{ case(udb, spdb) =>
-                         checkSpecial(udb.canBet, opId(udb.id), spdb.userId).fold(
+                 userWithSpecialBet(specialBet.userId).flatMap{ case(udb, spdb) =>
+                         checkSpecial(udb.canBet, opId(submittingUser.id), spdb.userId).fold(
                              err => -\/(err.list.mkString("\n")),
                              succ => {
                                   val nsb = specialBet.copy(isSet=true)
-			                      specialbets.update(nsb)
+			                      specialbets.filter(_.id === nsb.id).update(nsb)
 			                      val nu = udb.copy(hadInstructions=true)
+			                      users.filter(_.id === nu.id).update(nu)
 		                          \/-((nsb,nu))
                              }                         
                          )
@@ -259,27 +260,46 @@ object BetterDb {
         }
    }
 
-   
+   /**
+    * this should only be called immediately after game creation if there has been an error!
+    * not good for users to have team changes!
+    * 
+    */
+   def updateGameDetails(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int)(implicit s: Session): String \/ (Game,GameUpdate) = {
+       if(! submittingUser.isAdmin){
+         return -\/("must be admin to change game details")
+       }
+       games.filter(_.id === game.id).firstOption.map{ dbGame =>
+          isGameOpen(game.start, currentTime: DateTime, gameDuration*5).fold( 
+            err => -\/("game will start in 5x90 minutes no more changes!"),
+            succ =>  {//game open can not set points but can change teams and start time
+                     val gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id, start=game.start, venue=game.venue)
+                     games.filter(_.id === gameWithTeams.id).update(gameWithTeams)
+                     \/-(gameWithTeams, ChangeDetails)
+            }         
+          )
+       }.getOrElse(-\/(s"could not find game in database $game"))      
+   }  
+     
    /**
     * 
     * from ui with correct foreign keys set by ui
     * ui should initiate points calculation
     * 
     */
-   def updateGame(game: Game, currentTime: DateTime, gameDuration: Int)(implicit s: Session): String \/ (Game,GameUpdate) = {
+   def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int)(implicit s: Session): String \/ (Game,GameUpdate) = {
+       if(! submittingUser.isAdmin){
+         return -\/("must be admin to change game results")
+       }
        games.filter(_.id === game.id).firstOption.map{ dbGame =>
             isGameOpen(game.start, currentTime: DateTime, -gameDuration).fold( //game is open until start + duration => points not settable yet
                 err => {//game closed can set points but not change teams anymore
-                     val result = game.result.copy(isSet=true)
-                     val gameWithResult = dbGame.copy(result=result)
-                     games.update(gameWithResult) 
-                     \/-(gameWithResult, SetResult)
+	                     val result = game.result.copy(isSet=true)
+	                     val gameWithResult = dbGame.copy(result=result)
+	                     games.filter(_.id === gameWithResult.id).update(gameWithResult) 
+	                     \/-(gameWithResult, SetResult)
                 },
-                succ => {//game open can not set points but can change teams
-                     val gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id)
-                     games.update(gameWithTeams)
-                     \/-(gameWithTeams, ChangeDetails)
-                }            
+                succ => -\/("game is still not finished")            
             )
        }.getOrElse(-\/(s"could not find game in database $game"))
    }
@@ -402,7 +422,7 @@ object BetterDb {
           case (g,l,b) =>
             PointsCalculator.calculatePoints(b, g, l).foreach{ points => 
               val betWithPoints = b.copy(points=points)
-              bets.filter(_.id === b.id).update(betWithPoints) //correct long === Option[Long]???
+              bets.filter(_.id === betWithPoints.id).update(betWithPoints) //correct long === Option[Long]???
             }
         }
    }
@@ -421,7 +441,7 @@ object BetterDb {
             val p = points.list.sum 
             val specialPoints = calculateSpecialPointsForUser(user, specialBetResult).getOrElse(0)
             val userWithPoints = user.copy(points=p, pointsSpecialBet=specialPoints)      
-            users.update(userWithPoints)
+            users.filter(_.id === userWithPoints.id).update(userWithPoints)
         }
    }
    
@@ -439,6 +459,16 @@ object BetterDb {
        }
    }
    
+   def insertPlayer(player: Player, teamName: String, submittingUser: User)(implicit s: Session): String \/ Player = {
+       if(! submittingUser.isAdmin){
+         return -\/("must be admin to insert players")
+       }
+       getTeamByName(teamName).map{ team =>
+           val playerWithTeamId = player.copy(teamId=team.id.get)
+           players.insert(playerWithTeamId)
+           playerWithTeamId
+       }
+   }
    
 }
 

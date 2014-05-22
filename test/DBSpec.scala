@@ -24,7 +24,8 @@ class DBSpec extends Specification with ThrownMessages {
       
        
       val firstStart = new DateTime(2014, 3, 9, 10, 0)//y m d h min
-
+      val changedStart = firstStart.minusMinutes(30)
+      
       import BetterDb._
 
       def insertTeams()(implicit s: Session){
@@ -35,6 +36,12 @@ class DBSpec extends Specification with ThrownMessages {
       def insertLevels()(implicit s: Session){
           ObjectMother.dummyLevels.map{ l => insertOrUpdateLevelByNr(l) }
           BetterTables.levels.list.size === 3
+      }
+      
+      def insertPlayers()(implicit s: Session){
+          val admin = BetterTables.users.list.sortBy(_.id).head
+          ObjectMother.dummyPlayers.map{ p => insertPlayer(p, "t1", admin) }
+          BetterTables.players.list.size === 6
       }
       
       def insertGames()(implicit s: Session){
@@ -74,12 +81,137 @@ class DBSpec extends Specification with ThrownMessages {
       }
       
       
+      def makeBets1()(implicit s: Session){
+         val users = BetterTables.users.list.sortBy(_.id)
+         val gb1 = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
+         gb1.size === 3
+         val b1 = gb1(0)._2.copy(result=Result(1,3,false))
+         updateBetResult(b1, users(0), firstStart, 60).fold(
+            fail => fail === "user ids differ 2 1\ngame closed since 0 days, 0 hours, 50 minutes, 0 seconds",
+            succ => failure("should not be possible because of time and different user")  
+         )
+         updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60).fold(
+            fail => failure("should be possible") ,
+            succ => succ match { case(g,b1,b2) =>
+               b1.result === Result(0,0,false)
+               b2.result === Result(1,3,true)
+            }
+         )
+         val gb2 = gamesWithBetForUser(users(2)).sortBy(_._1.game.id)
+         val b2 = gb2(0)._2.copy(result=Result(3,1,false)) 
+         updateBetResult(b2, users(2), firstStart.minusMinutes(61), 60).fold(
+            fail => failure("should be possible") ,
+            succ => succ match { case(g,b1,b2) =>
+               b1.result === Result(0,0,false)
+               b2.result === Result(3,1,true)
+            }
+         )
+      }
+      
+      def updateGames()(implicit s: Session){
+          val p1 = BetterTables.players.list.head.id
+          val users = BetterTables.users.list.sortBy(_.id)
+          val games = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
+          val gameWt = games(0)._1 
+          val game1 = gameWt.game
+          val t1 = gameWt.team1.id
+          updateGameDetails(game1, users(2), firstStart, 90).fold(
+             err => err === "must be admin to change game details",
+             succ => fail("should have refused")
+          )
+          updateGameDetails(game1, users(0), firstStart, 90).fold(
+             err => err === "game will start in 5x90 minutes no more changes!"  , 
+             succ => fail("should be too late for changes")
+          )
+          
+          updateGameResults(game1, users(2), firstStart, 90).fold(
+             err => err === "must be admin to change game results",
+             succ => fail("should have refused")
+          )
+          updateGameResults(game1, users(0), firstStart, 90).fold(
+             err => err === "game is still not finished"  , 
+             succ => fail("should be too early for changes")
+          )
+          
+          
+          val sp = userWithSpecialBet(users(1).id.get).toOption.get._2
+          val spn = sp.copy(topScorer=p1,mvp=p1,winningTeam=t1, semi1=t1, semi2=t1)
+          
+          users(1).hadInstructions === false
+          updateSpecialBet(spn, users(2), firstStart, 90).fold(
+             err => err === "game closed since 0 days, 1 hours, 0 minutes, 0 seconds",
+             succ => fail("wrong time")
+          )
+          updateSpecialBet(spn, users(2), firstStart.minusMinutes(91), 90).fold(
+             err => err === "user ids differ 3 2",
+             succ => fail("wrong user")
+          ) 
+          updateSpecialBet(spn, users(1), firstStart.minusMinutes(91), 90).fold(
+             err => err ===  fail("should work"),
+             succ => succ match { case (sp,u) =>
+               sp.topScorer === p1
+               sp.mvp === p1
+               sp.winningTeam === t1
+               sp.semi1 === t1
+               sp.semi2 === t1
+               sp.semi3 === None
+               sp.semi4 === None
+               sp.isSet === true
+               userWithSpecialBet(users(1).id.get).toOption.get._1.hadInstructions === true              
+             }            
+          ) 
+          
+          startOfGames().get === firstStart
+          
+          val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=Result(1,3,true),venue="Nowhere",start=changedStart)
+          updateGameDetails(changes, users(0), firstStart.minusMinutes(90*5+1), 90).fold(
+             err => fail("early change possible1 "+err)   ,
+             succ => succ match{ case(g, u) =>
+                u === ChangeDetails
+                g.result === Result(0,0,false)
+                g.team1id === game1.team2id
+                g.team2id === game1.team1id
+                g.start === changedStart
+                g.venue === "Nowhere"
+             }
+          )
+          
+          startOfGames().get === changedStart
+          
+          updateSpecialBet(spn, users(1), changedStart.minusMinutes(90), 90).fold(
+             err => err === "game closed since 0 days, 1 hours, 0 minutes, 0 seconds",
+             succ => fail("wrong time again because of game change ")
+          )
+          
+          
+          updateBetsWithPoints()
+          BetterTables.users.list.map(_.points).sum === 0
+          
+          updateGameResults(game1.copy(), users(1), firstStart.minusMinutes(90*5), 90).fold(
+             err => fail("early change possible2 "+err)   ,
+             succ => succ match{ case(g, u) =>
+                u === ChangeDetails
+                g.result === Result(0,0,false)
+                g.team1id === game1.team2id
+                g.team2id === game1.team1id
+                g.start === changedStart
+                g.venue === "Nowhere"
+             }
+          )
+          
+          
+      }
+      
+      
       DB.withSession { implicit s: Session => 
         BetterTables.createTables()
         insertTeams()
         insertLevels()
         insertGames()
         insertUsers()
+        insertPlayers()
+        makeBets1()
+        updateGames()
       }
     }
     
