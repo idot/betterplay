@@ -163,7 +163,7 @@ object BetterDb {
     * 
     */
    def startOfGames()(implicit s: Session): Option[DateTime] = {
-       games.sortBy(_.start.asc).firstOption.map{ firstGame =>
+        games.sortBy(_.start.asc).firstOption.map{ firstGame =>
           firstGame.start
        }
    }
@@ -270,8 +270,8 @@ object BetterDb {
          return -\/("must be admin to change game details")
        }
        games.filter(_.id === game.id).firstOption.map{ dbGame =>
-          isGameOpen(game.start, currentTime: DateTime, gameDuration*5).fold( 
-            err => -\/("game will start in 5x90 minutes no more changes!"),
+          isGameOpen(dbGame.start, currentTime: DateTime, gameDuration*5).fold( 
+            err => -\/("game will start in 5x90 minutes no more changes! "+err),
             succ =>  {//game open can not set points but can change teams and start time
                      val gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id, start=game.start, venue=game.venue)
                      games.filter(_.id === gameWithTeams.id).update(gameWithTeams)
@@ -292,7 +292,7 @@ object BetterDb {
          return -\/("must be admin to change game results")
        }
        games.filter(_.id === game.id).firstOption.map{ dbGame =>
-            isGameOpen(game.start, currentTime: DateTime, -gameDuration).fold( //game is open until start + duration => points not settable yet
+            isGameOpen(dbGame.start, currentTime: DateTime, -gameDuration).fold( //game is open until start + duration => points not settable yet
                 err => {//game closed can set points but not change teams anymore
 	                     val result = game.result.copy(isSet=true)
 	                     val gameWithResult = dbGame.copy(result=result)

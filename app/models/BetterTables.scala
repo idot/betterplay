@@ -11,7 +11,7 @@ object JodaHelper { //TODO: check timezone, might have to use calendar
     { dt => new java.sql.Timestamp(dt.getMillis) },
     { ts => new org.joda.time.DateTime(ts) })
     
- 
+  implicit object DateTimeOrdering extends Ordering[DateTime] { def compare(o1: DateTime, o2: DateTime) = o1.compareTo(o2)}
   
   def compareTimeHuman(firstTime: DateTime, lastTime: DateTime): String = {
       val period = new Period(firstTime, lastTime)

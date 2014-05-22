@@ -85,25 +85,25 @@ class DBSpec extends Specification with ThrownMessages {
          val users = BetterTables.users.list.sortBy(_.id)
          val gb1 = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
          gb1.size === 3
-         val b1 = gb1(0)._2.copy(result=Result(1,3,false))
+         val b1 = gb1(0)._2.copy(result=Result(1,2,false))
          updateBetResult(b1, users(0), firstStart, 60).fold(
-            fail => fail === "user ids differ 2 1\ngame closed since 0 days, 0 hours, 50 minutes, 0 seconds",
+            fail => fail === "user ids differ 2 1\ngame closed since 0 days, 1 hours, 0 minutes, 0 seconds",
             succ => failure("should not be possible because of time and different user")  
          )
          updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60).fold(
             fail => failure("should be possible") ,
             succ => succ match { case(g,b1,b2) =>
                b1.result === Result(0,0,false)
-               b2.result === Result(1,3,true)
+               b2.result === Result(1,2,true)
             }
          )
          val gb2 = gamesWithBetForUser(users(2)).sortBy(_._1.game.id)
-         val b2 = gb2(0)._2.copy(result=Result(3,1,false)) 
+         val b2 = gb2(0)._2.copy(result=Result(1,3,false)) 
          updateBetResult(b2, users(2), firstStart.minusMinutes(61), 60).fold(
             fail => failure("should be possible") ,
             succ => succ match { case(g,b1,b2) =>
                b1.result === Result(0,0,false)
-               b2.result === Result(3,1,true)
+               b2.result === Result(1,3,true)
             }
          )
       }
@@ -120,7 +120,7 @@ class DBSpec extends Specification with ThrownMessages {
              succ => fail("should have refused")
           )
           updateGameDetails(game1, users(0), firstStart, 90).fold(
-             err => err === "game will start in 5x90 minutes no more changes!"  , 
+             err => err === "game will start in 5x90 minutes no more changes! game closed since 0 days, 7 hours, 30 minutes, 0 seconds"  , 
              succ => fail("should be too late for changes")
           )
           
@@ -139,7 +139,7 @@ class DBSpec extends Specification with ThrownMessages {
           
           users(1).hadInstructions === false
           updateSpecialBet(spn, users(2), firstStart, 90).fold(
-             err => err === "game closed since 0 days, 1 hours, 0 minutes, 0 seconds",
+             err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
              succ => fail("wrong time")
           )
           updateSpecialBet(spn, users(2), firstStart.minusMinutes(91), 90).fold(
@@ -163,9 +163,10 @@ class DBSpec extends Specification with ThrownMessages {
           
           startOfGames().get === firstStart
           
-          val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=Result(1,3,true),venue="Nowhere",start=changedStart)
+          //result changes are ignored
+          val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=Result(2,2,true),venue="Nowhere",start=changedStart)
           updateGameDetails(changes, users(0), firstStart.minusMinutes(90*5+1), 90).fold(
-             err => fail("early change possible1 "+err)   ,
+             err => fail("early change possible1 "+err),
              succ => succ match{ case(g, u) =>
                 u === ChangeDetails
                 g.result === Result(0,0,false)
@@ -179,7 +180,7 @@ class DBSpec extends Specification with ThrownMessages {
           startOfGames().get === changedStart
           
           updateSpecialBet(spn, users(1), changedStart.minusMinutes(90), 90).fold(
-             err => err === "game closed since 0 days, 1 hours, 0 minutes, 0 seconds",
+             err => err === "game closed since 0 days, 0 hours, 0 minutes, 0 seconds",
              succ => fail("wrong time again because of game change ")
           )
           
@@ -187,11 +188,13 @@ class DBSpec extends Specification with ThrownMessages {
           updateBetsWithPoints()
           BetterTables.users.list.map(_.points).sum === 0
           
-          updateGameResults(game1.copy(), users(1), firstStart.minusMinutes(90*5), 90).fold(
-             err => fail("early change possible2 "+err)   ,
+          //only result changes are taken over
+          val gameWithResults = changes.copy(team1id=game1.team1id,team2id=game1.team2id,result=Result(1,3,false),venue="Everywhere",start=firstStart)
+          updateGameResults(gameWithResults, users(0), changedStart.plusMinutes(91), 90).fold(
+             err => fail("setting result possible now "+err),
              succ => succ match{ case(g, u) =>
-                u === ChangeDetails
-                g.result === Result(0,0,false)
+                u === SetResult
+                g.result === Result(1,3,true)
                 g.team1id === game1.team2id
                 g.team2id === game1.team1id
                 g.start === changedStart
@@ -199,9 +202,20 @@ class DBSpec extends Specification with ThrownMessages {
              }
           )
           
-          
+          updateBetsWithPoints()
+          BetterTables.users.list.map(_.points).sum === 5
       }
       
+      
+      def newGames()(implicit s: Session){
+          //create one more game 
+          //make & test for bets
+          //set bets
+          //set specialbet
+         //make tally
+         //check leaderboard
+        
+      }
       
       DB.withSession { implicit s: Session => 
         BetterTables.createTables()
@@ -212,6 +226,7 @@ class DBSpec extends Specification with ThrownMessages {
         insertPlayers()
         makeBets1()
         updateGames()
+        newGames()
       }
     }
     
