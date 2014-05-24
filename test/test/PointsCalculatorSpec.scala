@@ -37,7 +37,9 @@ object RG {
        } yield Result(g1 + 1, g1, setted)
    }
    
-   
+   def genPoints() = {
+      Gen.containerOf[List,Int](Gen.chooseNum(0,20))
+   }
 }
 
 @RunWith(classOf[JUnitRunner])
@@ -48,6 +50,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     "A pointsCalculator returns true for equals if the game is tied" ! tendencyTie ^
     "A pointsCalculator returns true for win1 if the game was won by 1" ! win1 ^
     "A pointsCalculator returns true for win1 if the game was won by 1" ! win2 ^
+    "A pointsCalculater has a method to turn a decreasingly sorted set of points into ranks" ! torank ^
     end
     
     val gl = GameLevel(None, "test", 3, 2, 1)
@@ -136,6 +139,27 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
         }
     }
     
-    
+    /**
+     * I would like to have a property that says only if same value in points it must have same rank,
+     * but don't know how
+     */
+    def torank = {
+      Prop.forAll(RG.genPoints) { points => 
+         def rankDiff(points: Seq[Int]): Seq[Int] = {
+             points.headOption.map{ first =>
+	             points.foldLeft((List.empty[Int], first)) { case((li, prev), current) =>
+	                  (li :+ scala.math.signum(prev - current), current)
+	             }
+             }.map{ _._1 }.getOrElse(Nil)
+         }         
+         val pointsSorted = points.sorted.reverse
+         val ranks = PointsCalculator.pointsToRanks(pointsSorted)
+         Prop.classify(pointsSorted.size == pointsSorted.toSet.size, "untied", "with ties"){
+             (ranks === ranks.sorted ) && //sort order ascending
+             (pointsSorted.toSet.size === ranks.toSet.size)
+         }         
+      }   
+      
+    }
     
 }

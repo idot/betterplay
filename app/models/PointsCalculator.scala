@@ -39,17 +39,13 @@ object PointsCalculator {
      
      /**
       * main method
-      * None if game not set
+      * 0 if game not set
       * 0 for invalid or wrong bet
       * gameLevel points for correct exact or tendency result
       * 
       */
-     def calculatePoints(bet: Bet, game: Game, gameLevel: GameLevel): Option[Int] = {
-    	if(!game.result.isSet){
-    		return None
-    	}
-    	val points = if(bet.result.isSet) pointsForValidGame(bet.result, game.result, gameLevel) else 0
-    	Some(points)
+     def calculatePoints(bet: Bet, game: Game, gameLevel: GameLevel): Int = {
+    	if(bet.result.isSet && game.result.isSet) pointsForValidGame(bet.result, game.result, gameLevel) else 0
      }     
   
      
@@ -78,5 +74,30 @@ object PointsCalculator {
                case _ => 0
           }
      }
+     
+     
+   /**
+   * descending sorted points to ranks respecting ties
+   *
+   *
+   **/
+  def pointsToRanks(sortedPoints: Seq[Int]): Seq[Int] = {
+       if(sortedPoints.length == 0){ 
+         sortedPoints
+       }else{
+         var rank = 0
+         var currentValue = 0
+         for{
+           p <- sortedPoints
+         }yield{
+            if(p == currentValue) rank else {
+              currentValue = p
+              rank += 1
+              rank
+            } 
+         }
+       }
+   }
+     
      
 }

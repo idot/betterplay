@@ -18,19 +18,21 @@ object Teams extends Controller {
   }
    
   def get(name: String) = DBAction { implicit rs =>
-      implicit val session = rs.dbSession
-      BetterDb.getTeamByName(name).fold(e => NotFound(e), s => Ok(Json.toJson(s)) )
+//      implicit val session = rs.dbSession
+//      BetterDb.getTeamByName(name).fold(e => NotFound(e), s => Ok(Json.toJson(s)) )
+      Ok("")
   }
   
   
   def insert(name: String) = DBAction(parse.json) { implicit rs =>
       rs.request.body.validate[Team].map{ team => 
           implicit val session = rs.dbSession
-          val result = BetterDb.insertOrUpdateTeamByName(team)
-          val jr = Json.obj(
-        		 "result" -> result
-          )
-          Ok(jr)
+       //   val result = BetterDb.insertOrUpdateTeamByName(team)
+      //    val jr = Json.obj(
+      //  		 "result" -> result
+      //    )
+       //   Ok(jr)
+          Ok("")
       }.recoverTotal{
           e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
       }

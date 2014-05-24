@@ -10,6 +10,9 @@ object DomainHelper {
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
       User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, false, true, 0, 0, user.iconurl, registeringUser)
   }
+
+ 
+
 }
 
 //embedaable

@@ -28,32 +28,45 @@ class DBSpec extends Specification with ThrownMessages {
       
       import BetterDb._
 
+      def insertAdmin()(implicit s: Session){
+          BetterTables.users.list.size === 0
+          val admin = insertUser(ObjectMother.adminUser, true, true, None).toOption.get
+          BetterTables.users.list.size === 1
+      }
+
+      def getAdmin()(implicit s: Session): User = {
+          BetterTables.users.list.sortBy(_.id).head
+      }
+
       def insertTeams()(implicit s: Session){
-          ObjectMother.dummyTeams.map{t => insertOrUpdateTeamByName(t) }.foreach{ r => r must startWith("team inserted:")}
+          val admin = getAdmin()
+          ObjectMother.dummyTeams.map{t => insertOrUpdateTeamByName(t, admin) }.foreach{ r => r.isRight }
           BetterTables.teams.list.size === 6
       }
       
       def insertLevels()(implicit s: Session){
-          ObjectMother.dummyLevels.map{ l => insertOrUpdateLevelByNr(l) }
+          val admin = getAdmin()
+          ObjectMother.dummyLevels.map{ l => insertOrUpdateLevelByNr(l, admin) }
           BetterTables.levels.list.size === 3
       }
       
       def insertPlayers()(implicit s: Session){
-          val admin = BetterTables.users.list.sortBy(_.id).head
+          val admin = getAdmin() 
           ObjectMother.dummyPlayers.map{ p => insertPlayer(p, "t1", admin) }
           BetterTables.players.list.size === 6
       }
       
       def insertGames()(implicit s: Session){
-          ObjectMother.dummyGames(firstStart).map{ case(g,t1,t2, l) => insertGame(g, t1, t2, l) }.foreach{ r => r.isRight === true }
+          val admin = getAdmin()
+          ObjectMother.dummyGames(firstStart).map{ case(g,t1,t2, l) => insertGame(g, t1, t2, l, admin) }.foreach{ r => r.isRight === true }
           BetterTables.games.list.size === 3
           BetterTables.bets.list.size === 0
       }
       
       def insertUsers()(implicit s: Session){
-          val admin = insertUser(ObjectMother.adminUser, true, true, None).toOption.get 
-          BetterTables.bets.list.size === 3
-          createBetsForGamesForAllUsers()
+          val admin = getAdmin()
+          BetterTables.bets.list.size === 0
+          createBetsForGamesForAllUsers(admin)
           BetterTables.bets.list.size === 3
           BetterTables.specialbets.list.size === 1
           admin.hadInstructions === false
@@ -69,7 +82,7 @@ class DBSpec extends Specification with ThrownMessages {
             )
           }
           BetterTables.bets.list.size === (3 * 4)
-          createBetsForGamesForAllUsers()
+          createBetsForGamesForAllUsers(admin)
           BetterTables.bets.list.size === (3 * 4)
           BetterTables.specialbets.list.size === 4
           val gamesBets = gamesWithBetForUser(dbusers(2))
@@ -109,6 +122,7 @@ class DBSpec extends Specification with ThrownMessages {
       }
       
       def updateGames()(implicit s: Session){
+          val admin = getAdmin()
           val p1 = BetterTables.players.list.head.id
           val users = BetterTables.users.list.sortBy(_.id)
           val games = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
@@ -165,7 +179,7 @@ class DBSpec extends Specification with ThrownMessages {
           
           //result changes are ignored
           val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=Result(2,2,true),venue="Nowhere",start=changedStart)
-          updateGameDetails(changes, users(0), firstStart.minusMinutes(90*5+1), 90).fold(
+          updateGameDetails(changes, admin, firstStart.minusMinutes(90*5+1), 90).fold(
              err => fail("early change possible1 "+err),
              succ => succ match{ case(g, u) =>
                 u === ChangeDetails
@@ -185,12 +199,12 @@ class DBSpec extends Specification with ThrownMessages {
           )
           
           
-          updateBetsWithPoints()
+          calculatePoints(None, admin)
           BetterTables.users.list.map(_.points).sum === 0
           
           //only result changes are taken over
           val gameWithResults = changes.copy(team1id=game1.team1id,team2id=game1.team2id,result=Result(1,3,false),venue="Everywhere",start=firstStart)
-          updateGameResults(gameWithResults, users(0), changedStart.plusMinutes(91), 90).fold(
+          updateGameResults(gameWithResults, admin, changedStart.plusMinutes(91), 90).fold(
              err => fail("setting result possible now "+err),
              succ => succ match{ case(g, u) =>
                 u === SetResult
@@ -202,23 +216,85 @@ class DBSpec extends Specification with ThrownMessages {
              }
           )
           
-          updateBetsWithPoints()
-          BetterTables.users.list.map(_.points).sum === 5
+          calculatePoints(None, admin)
+          BetterTables.users.list.map(_.points).sum === 4
       }
       
-      
+           
+
+ 
       def newGames()(implicit s: Session){
-          //create one more game 
-          //make & test for bets
-          //set bets
-          //set specialbet
-         //make tally
-         //check leaderboard
+          val admin = getAdmin()
+          val finalGameStart = firstStart.plusMinutes(100)
+          val finalGame = Game(None, Result(1,2,true), 10,100, 3333, finalGameStart, "stadium", "groupC")
+          val teams = BetterTables.teams.list.sortBy(_.id)
+          val level = BetterTables.levels.list.sortBy(_.level).reverse.head
+          val gwt = insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin).toOption.get
+          BetterTables.bets.list.size === (3 * 4)           
+          createBetsForGamesForAllUsers(admin)
+          BetterTables.bets.list.size === (4 * 4)
+          val betsForGame = betsWitUsersForGame(gwt.game).sortBy(_._2.id)
+          //user 1 wins the final
+          betsForGame.zipWithIndex.foreach{ case((b,u),i) =>
+              val bWithR = b.copy(result=Result(3,i,false))
+              updateBetResult(bWithR, u, finalGameStart.minusMinutes(100), 60).fold(
+                fail => failure(s"should be able to update bet for final game $b $u $i $fail"),
+                succ => succ match { case(g,b1,b2) =>
+                   b1.result === Result(0,0,false)
+                   b2.result === Result(3,i,true)
+                }
+              )
+          }
+          val gwr = gwt.game.copy(result=Result(3,1,false))  
+          updateGameResults(gwr, admin, finalGameStart.plusMinutes(91), 90).fold(
+             err => fail("setting result possible for final game"+err),
+             succ => succ match{ case(g, u) =>
+                u === SetResult
+                g.result === Result(3,1,true)
+                g.team1id === gwt.team1.id.get
+                g.team2id === gwt.team2.id.get
+                g.start === finalGameStart
+                g.venue === "stadium"
+                g.levelId === gwt.level.id.get
+             }
+          )
+          
+          BetterTables.users.list.map(_.points).sum === 4  
+          calculatePoints(None, admin)
+          val pointsBets =  4 + 12 + 5 + 5  //1xexact + 2x tendency          
+          val pointsSpecial = 8 // mvp , winner, semi, 3,3,2 user1 , 2x t1 for semi because he's dumb. UI should prevent this
+          BetterTables.users.list.map(_.points).sum === pointsBets 
+          val players = BetterTables.players.list.sortBy(_.id)
+
+          val sp = SpecialBet(None, players(0).id, players(3).id, gwt.team1.id, gwt.team1.id, gwt.team2.id, teams(2).id, teams(3).id, true, 0)          
+         
+          calculatePoints(Some(sp), admin)
+          BetterTables.users.list.map(_.points).sum === pointsBets
+          BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial 
+          BetterTables.users.list.map(_.totalPoints).sum === pointsBets + pointsSpecial 
+                 
+          val users = BetterTables.users.list.sortBy(_.id)
+          invalidateGame(gwt.game, users(2)).fold(
+             err => err === "only admin user can invalidate games",
+             succ => failure("should be possible only for admin user to invalidate bets")
+          )
+          
+          invalidateGame(gwt.game, admin).isRight === true
+          calculatePoints(Some(sp), admin)
+          BetterTables.users.list.map(_.points).sum === 4       
+          BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial
+          
+          val usersSpecialBets = usersWithSpecialBetsAndRank()            
+          usersSpecialBets.map(_._2.isSet) === Seq(true,false,false,false)
+          usersSpecialBets.map(_._1.totalPoints) === Seq(9, 3, 0, 0)
+          usersSpecialBets.map(_._4) === Seq(1,2,3,3)
+          usersSpecialBets.map(_._3) === Seq(9, 3, 0, 0)  
         
       }
       
       DB.withSession { implicit s: Session => 
         BetterTables.createTables()
+        insertAdmin()
         insertTeams()
         insertLevels()
         insertGames()

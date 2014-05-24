@@ -41,7 +41,19 @@ object BetterDb {
    def allUsers()(implicit s: Session): Seq[User] = {
        users.list
    }
-   
+
+   def usersWithSpecialBetsAndRank()(implicit s: Session): Seq[(User,SpecialBet,Int,Int)] = {
+       val us = for{
+          (u,s) <- users.innerJoin(specialbets).on(_.id === _.userId) 
+       } yield (u,s)
+       val sorted = us.list.sortBy(_._1.totalPoints).reverse
+       val points = sorted.map(_._1.totalPoints) 
+       val ranks = PointsCalculator.pointsToRanks(points)
+       sorted.zip(ranks).map{ case ((u,s),r) =>
+          (u,s,u.totalPoints,r)
+       }
+   }
+ 
    def allGamesWithTeams()(implicit s: Session): Seq[GameWithTeams] = {
        val gtt = (for{
          (((g, t1), t2),l) <- joinGamesTeamsLevels() 
@@ -51,59 +63,75 @@ object BetterDb {
        gtt.list.map{ case(g,t1,t2,l) => GameWithTeams(g,t1,t2,l) }
    }
   
-   def insertOrUpdateLevelByNr(level: GameLevel)(implicit s: Session): GameLevel = {
-       levelByNr(level.level).map{ l =>
+   def insertOrUpdateLevelByNr(level: GameLevel, submittingUser: User)(implicit s: Session): String \/ GameLevel = {
+       if(!submittingUser.isAdmin){
+          return -\/("only admin user can change levels")
+       }
+       val l = levelByNr(level.level).map{ l =>
            levels.filter(_.id === level.id).update(l)
            l
        }.getOrElse{
-          levels.insert(level)
-          level
+          val levelId = (levels returning levels.map(_.id)) += level
+          level.copy(id=Some(levelId))
        }
+       \/-(l)
    }    
    
    def levelByNr(levelNr: Int)(implicit s: Session): String \/ GameLevel = {
        levels.filter(_.level === levelNr).firstOption.map{ \/-(_) }.getOrElse{ -\/(s"level not found by nr: $levelNr") }
    }
    
-   def insertOrUpdateTeamByName(team: Team)(implicit s: Session): String = {
-       getTeamByName(team.name).map{ t =>
-          teams.filter(_.id === team.id).update(t)
-          s"team updated: $team"
-       }.getOrElse{
-         teams.insert(team)
-          s"team inserted: $team"
+   def insertOrUpdateTeamByName(team: Team, submittingUser: User)(implicit s: Session): String \/ Team = {
+       if(!submittingUser.isAdmin){
+          return -\/("only admin users can change teams")
        }
+       val t = getTeamByName(team.name).map{ t =>
+          teams.filter(_.id === team.id).update(t)
+          t
+       }.getOrElse{
+          val teamId = (teams returning teams.map(_.id)) += team
+          team.copy(id=Some(teamId))
+       }
+       \/-(t)
    }
    
    def getTeamByName(teamName: String)(implicit s: Session): String \/ Team = {
        teams.filter(_.name === teamName).firstOption.map{ \/-(_) }.getOrElse{ -\/(s"team not found by name: $teamName") }    
    }
    
+   def isAdmin(settingUser: User): Validation[String,User] = {
+       if(settingUser.isAdmin) Success(settingUser) else Failure(s"only admin can make these changes")
+   }
       
    /**
     * This is for text import   game details | team1name | team2name | levelNr (| == tab)
     * ids for teams and levels and results are ignored, taken from db and amended in game object
-    * 
+    * todo: add updatingUser
+    *
     */
-   def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int)(implicit s: Session): String \/ String = {
+   def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int, settingUser: User)(implicit s: Session): String \/ GameWithTeams = {
 
-       val result = ( getTeamByName(team1Name).validation.toValidationNel |@| getTeamByName(team2Name).validation.toValidationNel |@| levelByNr(levelNr).validation.toValidationNel ){
-           case (team1, team2, level) => (team1.id, team2.id, level.id)
+       val result = ( getTeamByName(team1Name).validation.toValidationNel |@| getTeamByName(team2Name).validation.toValidationNel |@| 
+                      levelByNr(levelNr).validation.toValidationNel |@|
+                      isAdmin(settingUser).toValidationNel
+             ){
+           case (team1, team2, level, u) => (team1, team2, level, u)
         }
         result.fold(
             err => -\/(err.list.mkString("\n")),
             succ => succ match {
-              case (Some(t1), Some(t2), Some(l)) => {
-                 val gamesWithTeamsAndLevel = game.copy(team1id=t1, team2id=t2, levelId=l, result=DomainHelper.resultInit)
-                 games.insert(gamesWithTeamsAndLevel)
-                 \/-(s"inserted game $gamesWithTeamsAndLevel")
+              case (t1@Team(Some(t1id),_,_), t2@Team(Some(t2id),_,_), l@GameLevel(Some(lid),_,_,_,_), _) => {
+                 val gameWithTeamsAndLevel = game.copy(team1id=t1id, team2id=t2id, levelId=lid, result=DomainHelper.resultInit)
+                 val gameId = (games returning games.map(_.id)) += gameWithTeamsAndLevel
+                 val dbgame = gameWithTeamsAndLevel.copy(id=Some(gameId))
+                 val gwt = GameWithTeams(dbgame, t1, t2, l) 
+                 \/-(gwt)
               }
               case _ => -\/("problem with ids of team1, team2 or level")
             }
         )   
    }
-   
-   
+    
    def userWithSpecialBet(userId: Long)(implicit s: Session):  String \/ (User,SpecialBet) = {
        val us = for{
          (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.id === userId
@@ -330,9 +358,14 @@ object BetterDb {
       }       
    }
    
-   def createBetsForGamesForAllUsers()(implicit s: Session){
-       users.list.foreach{ u =>
-           createBetsForGamesForUser(u)
+   def createBetsForGamesForAllUsers(submittingUser: User)(implicit s: Session): String \/ String = {
+       if(submittingUser.isAdmin){ 
+          users.list.foreach{ u =>
+             createBetsForGamesForUser(u)
+          }
+          \/-("created bets for all users")
+       }else{
+         -\/("only admin users can create bets")
        }
    }
    
@@ -374,19 +407,19 @@ object BetterDb {
        allGamesWithoutBetsForUser.list
        
    }
-   
+
    /**
     * if something was wrong with the game. we set the results for this game to isSet = false
     * This does not delete the set result, but excludes them from accruing points for the user
     * 
     */
-   def invalidateBetsForGame(game: Game)(implicit s: Session){
-       s.withTransaction{
-          val invalidBets = for{
-             b <- bets if b.gameId === game.id
-          } yield b.isSet
-          invalidBets.update(false)
-       }    
+   def invalidateGame(game: Game, submittingUser: User)(implicit s: Session): String \/ String = {
+       if(submittingUser.isAdmin){
+          s.withTransaction{
+             games.filter(_.id === game.id).map(_.isSet).update(false)
+             \/-(s"invalidated $game")
+          }    
+       }else -\/(s"only admin user can invalidate games")
    }
    
    /**
@@ -400,49 +433,56 @@ object BetterDb {
     * has return value for return result and free actor
     * 
     **/
-   def calculatePoints(specialBetResult: Option[SpecialBet])(implicit s: Session): Boolean = {
-      s.withTransaction {
-        updateBetsWithPoints()
-        updateUsersPoints(specialBetResult)
-        true
-      }
+   def calculatePoints(specialBetResult: Option[SpecialBet], submittingUser: User)(implicit s: Session): String \/ Boolean = {
+        if(submittingUser.isAdmin){
+           s.withTransaction {
+              updateBetsWithPoints()
+              updateUsersPoints(specialBetResult)
+              \/-(true)
+           }
+        }else{
+          -\/("only admin can calculate points")
+        }
    }
    
    /***
     * updates all bets which have a valid result with points depending on game results and level
-    * 
+    * also using invalid games (i.e. result not set because after invalidating the game I want to keep the 
+    * bet result still set and valid (just in case somebody messed up). But the points in the bet will be set to 0 if
+    * the game is invalid
+    *
     */
-   def updateBetsWithPoints()(implicit s: Session){
+   def updateBetsWithPoints()(implicit s: Session): Boolean = {
        val gamesLevelBets = for{
-           ((g,l),b) <- games.join(levels).on(_.levelId === _.id).join(bets).on(_._1.id === _.gameId) if g.isSet && b.isSet
+           ((g,l),b) <- games.join(levels).on(_.levelId === _.id).join(bets).on(_._1.id === _.gameId) if b.isSet
         } yield {
            (g,l,b)
         }
-        gamesLevelBets.list.foreach{
-          case (g,l,b) =>
-            PointsCalculator.calculatePoints(b, g, l).foreach{ points => 
+        gamesLevelBets.list.foreach{ case (g,l,b) =>
+              val points = PointsCalculator.calculatePoints(b, g, l) 
               val betWithPoints = b.copy(points=points)
-              bets.filter(_.id === betWithPoints.id).update(betWithPoints) //correct long === Option[Long]???
-            }
+              bets.filter(_.id === betWithPoints.id).update(betWithPoints)
         }
+        true
    }
    
    /***
     * updates the tally of the bet points in the user 
     * 
     */
-   def updateUsersPoints(specialBetResult: Option[SpecialBet])(implicit s: Session){
-        users.list.foreach{ user =>
-            val points = for{
-              b <- bets if(b.userId === user.id)  //correct long === Option[Long]???
-            } yield {
-              b.points
-            }
-            val p = points.list.sum 
-            val specialPoints = calculateSpecialPointsForUser(user, specialBetResult).getOrElse(0)
-            val userWithPoints = user.copy(points=p, pointsSpecialBet=specialPoints)      
-            users.filter(_.id === userWithPoints.id).update(userWithPoints)
-        }
+   def updateUsersPoints(specialBetResult: Option[SpecialBet])(implicit s: Session): Boolean = {
+	        users.list.foreach{ user =>
+	            val points = for{
+	              b <- bets if(b.userId === user.id)
+	            } yield {
+	              b.points
+	            }
+	            val p = points.list.sum 
+	            val specialPoints = calculateSpecialPointsForUser(user, specialBetResult).getOrElse(0)
+	            val userWithPoints = user.copy(points=p, pointsSpecialBet=specialPoints)      
+	            users.filter(_.id === userWithPoints.id).update(userWithPoints)
+	        }
+            true       
    }
    
    
@@ -469,6 +509,9 @@ object BetterDb {
            playerWithTeamId
        }
    }
+
+   
+
    
 }
 
