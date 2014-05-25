@@ -143,9 +143,14 @@ object BetterDb {
        users.filter(u => u.id === userId).firstOption.map(\/-(_)).getOrElse(-\/(s"could not find user with id $userId"))     
    }
    
-   def authenticate(username: String, passwordhash: String)(implicit s: Session):  String \/ User = {
-       users.filter(u => u.username === username && u.passwordhash === passwordhash).firstOption
-       .map( \/-(_)).getOrElse(-\/(s"could not find user for username $username"))
+   def authenticate(username: String, inputPassword: String)(implicit s: Session):  String \/ User = {
+       users.filter(u => u.username === username).firstOption.map{ u => 
+         if(new org.jasypt.util.password.StrongPasswordEncryptor().checkPassword(inputPassword, u.passwordHash)){
+            \/-(u)
+         }else{
+            -\/(s"wrong password or user not found")
+         }       
+       }.getOrElse(-\/(s"wrong password or user not found"))
    }  
      
    /**

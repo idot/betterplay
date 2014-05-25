@@ -2,6 +2,7 @@ package models
 
 import play.api.db.slick.Config.driver.simple._
 import org.joda.time.DateTime
+import scala.slick.jdbc.meta.MTable
 
 import JodaHelper._
 import org.joda.time.Period
@@ -50,6 +51,14 @@ object BetterTables {
     ddl.drop
   }
 
+  def dropCreate()(implicit s: Session){
+      if(MTable.getTables("users").list().isEmpty) {
+           createTables()
+       }else{
+           drop()
+           createTables()
+       }
+  }
   
   class GameLevels(tag: Tag) extends Table[GameLevel](tag, "gamelevel") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)

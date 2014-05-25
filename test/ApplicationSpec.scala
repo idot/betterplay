@@ -45,22 +45,24 @@ class ApplicationSpec extends Specification with JsonMatchers{
   
   
     "allow login for users, protect routes and allow logout" in new WithApplication(app=app){
-       val up = JsObject(Seq("username" -> JsString("name1"), "password" -> JsString("pw1")))
+       val up = JsObject(Seq("username" -> JsString("admin"), "password" -> JsString("admin")))
        
-       val unau = route(FakeRequest("GET", "/my/user")).get
+       val unau = route(FakeRequest("POST", "/api/createBetsForUsers")).get
        status(unau) must equalTo(UNAUTHORIZED)
-        
+               
        val res = route(FakeRequest(POST, "/login").withJsonBody(up)).get
+       println(contentAsString(res))
+       
        val authToken = extractToken(res).get
        
-       val wau = route(FakeRequest(method="GET", path="/my/user").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val wau = route(FakeRequest(method="POST", path="/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wau) must equalTo(OK)
        
        val out = route(FakeRequest(POST, "/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(out) must equalTo(SEE_OTHER)
        redirectLocation(out) must beSome.which(_ == "/")
        
-       val wou = route(FakeRequest(method="GET", path="/my/user").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val wou = route(FakeRequest(method="POST", path="/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wou) must equalTo(UNAUTHORIZED)      
     }
   

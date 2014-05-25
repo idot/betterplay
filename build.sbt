@@ -8,6 +8,8 @@ scalaVersion := "2.10.4"
 
 resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
+parallelExecution in Test := false
+
 libraryDependencies ++= Seq(
   jdbc,
   cache,

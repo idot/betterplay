@@ -25,6 +25,8 @@ GET     /api/users                  controllers.Users.all()
 #GET     /api/user/:name             controllers.Users.get(name: String)  #fetches user + all of his bets 
 #POST    /api/user/:name             controllers.Users.update(name: String) #creates/updates user but not his bets; creates bets on first registration
 
+POST    /api/createBetsForUsers      controllers.Users.createBetsForUsers()
+
 #GET     /api/bet/:id                controllers.Bets.get(id: Long) #not necessary in application for testing     
 #POST    /api/bet/:id                controllers.Bets.update(id: Long) #
 

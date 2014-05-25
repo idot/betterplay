@@ -12,8 +12,12 @@ object DomainHelper {
   
   def gameResultInit(): GameResult = GameResult(0,0,false)  
   def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
+  
+  /**
+   * admins had instructions!
+   */
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
-      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, !isAdmin, true, 0, 0, user.iconurl, registeringUser)
+      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, 0, 0, user.iconurl, registeringUser)
   }
 
   

@@ -40,6 +40,21 @@ trait Users extends Controller with Security {
 //  def getUser(id: Long) = CanEditUser(id) { user => _ =>
 //    Ok(Json.toJson(user))
 //  }
+  
+  /**
+   * todo: should delegate to actor so that only one is active
+   * 
+   */
+   def createBetsForUsers() = HasToken() { token => userId => implicit request =>
+       import scalaz.{\/,-\/,\/-}
+       implicit val session = request.dbSession
+       BetterDb.userById(userId).flatMap{ user =>
+          if(user.isAdmin) BetterDb.createBetsForGamesForAllUsers(user) else -\/("error: must be admin")
+       }.fold(
+          err => Forbidden(Json.obj("err" -> err)),
+          succ => Ok("created bets for users")      
+       )
+   }
 
 }
 

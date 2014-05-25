@@ -67,7 +67,7 @@ class DBSpec extends Specification with ThrownMessages {
           createBetsForGamesForAllUsers(admin)
           BetterTables.bets.list.size === 3
           BetterTables.specialbets.list.size === 1
-          admin.hadInstructions === false
+          admin.hadInstructions === true
           admin.canBet === true
           val dbusers = new ArrayBuffer[User]()
           ObjectMother.dummyUsers.map{u => insertUser(u, false, false, admin.id) }.foreach{ r =>
@@ -149,6 +149,7 @@ class DBSpec extends Specification with ThrownMessages {
           val sp = userWithSpecialBet(users(1).id.get).toOption.get._2
           val spn = sp.copy(topScorer=p1,mvp=p1,winningTeam=t1, semi1=t1, semi2=t1)
           
+          users(0).hadInstructions === true
           users(1).hadInstructions === false
           updateSpecialBet(spn, users(2), firstStart, 90).fold(
              err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
@@ -291,7 +292,7 @@ class DBSpec extends Specification with ThrownMessages {
       }
       
       DB.withSession { implicit s: Session => 
-        BetterTables.createTables()
+        BetterTables.dropCreate()
         insertAdmin()
         insertTeams()
         insertLevels()

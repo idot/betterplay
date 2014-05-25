@@ -82,14 +82,13 @@ trait Application extends Controller with Security {
       formErrors => BadRequest(Json.obj("err" -> formErrors.errorsAsJson)),
       loginData => {
         implicit val session = request.dbSession
-        val encryptedPassword = DomainHelper.encrypt(loginData.password)
-        BetterDb.authenticate(loginData.username, encryptedPassword).map{ user =>
+        BetterDb.authenticate(loginData.username, loginData.password).map{ user =>
           val token = java.util.UUID.randomUUID().toString
           Ok(Json.obj(
             AuthTokenCookieKey -> token,
             "user" -> UserNoPwC(user)
           )).withToken(token -> user.id.get)
-        } getOrElse NotFound(Json.obj("err" -> "User Not Found or Password Invalid"))
+        }.getOrElse(NotFound(Json.obj("err" -> "user not found or password invalid")))
       }
     )
   }
@@ -114,7 +113,7 @@ trait Application extends Controller with Security {
     )
   }
   
-  
+
 }
 
 object Application extends Application
