@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
   "org.postgresql" % "postgresql" % "9.2-1003-jdbc4",
   "org.scalaz" %% "scalaz-core" % "7.0.6",
-  "org.jasypt" % "jasypt" % "1.9.2"
+  "org.jasypt" % "jasypt" % "1.9.2",
+  "commons-io" % "commons-io" % "2.4"
 )
 
 

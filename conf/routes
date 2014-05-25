@@ -36,10 +36,6 @@ POST    /logout                     controllers.Application.logout()
 # Check if token is valid and get user id
 GET    /ping                        controllers.Application.ping()
 
-# Get user data
-GET    /my/user                     controllers.Users.myUserInfo()
-GET    /users/:id                   controllers.Users.getUser(id: Long)
-
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
