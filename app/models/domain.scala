@@ -4,15 +4,20 @@ import org.joda.time.DateTime
 
 
 object DomainHelper {
+  import org.jasypt.util.password.StrongPasswordEncryptor
+  
+  def encrypt(password: String): String = {
+      new StrongPasswordEncryptor().encryptPassword(password)
+  }
   
   def gameResultInit(): GameResult = GameResult(0,0,false)  
   def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
-      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, false, true, 0, 0, user.iconurl, registeringUser)
+      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, !isAdmin, true, 0, 0, user.iconurl, registeringUser)
   }
 
+  
  
-
 }
 
 //embedaable
@@ -33,7 +38,7 @@ case class GameResult(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
 //maybe size could be added
 case class DBImage(format: String, image: String) //unsure of base64 string or array[Byte]
 
-case class Team(id: Option[Long] = None, name: String, dbimage: DBImage)
+case class Team(id: Option[Long] = None, name: String, shortName: String, dbimage: DBImage)
 
 case class Player(id: Option[Long] = None, firstName: String, lastName: String, role: String, teamId: Long, dbimage: DBImage)
 
@@ -84,7 +89,7 @@ case class SpecialBet(id: Option[Long], topScorer: Option[Long], mvp: Option[Lon
 
 case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int)//name: groups, quarter final, semi final, final
 
-case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, start: DateTime, venue: String, group: String){
+case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, start: DateTime, venue: String, group: String, nr: Int){
   //     def GameResultPrettyPrint = if(calculated) GameResult.goalsTeam1+":"+GameResult.goalsTeam2 else "NA"
 	    	 
  //	     def datePrettyPrint = sdf.format(date.getTime)

@@ -21,4 +21,4 @@ class IntegrationSpec extends Specification {
       browser.pageSource must contain("Your new application is ready.")
     }
   }
-}
+} 

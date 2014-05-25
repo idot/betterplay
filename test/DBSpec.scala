@@ -14,8 +14,6 @@ import scala.collection.mutable.ArrayBuffer
 
 class DBSpec extends Specification with ThrownMessages {
   
-
-  
   
   "DB" should {
     "be able to play a little game" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase(
@@ -27,7 +25,7 @@ class DBSpec extends Specification with ThrownMessages {
       val changedStart = firstStart.minusMinutes(30)
       
       import BetterDb._
-
+ 
       def insertAdmin()(implicit s: Session){
           BetterTables.users.list.size === 0
           val admin = insertUser(ObjectMother.adminUser, true, true, None).toOption.get
@@ -243,7 +241,7 @@ class DBSpec extends Specification with ThrownMessages {
                    b1.result === GameResult(0,0,false)
                    b2.result === GameResult(3,i,true)
                 }
-              )
+              ) 
           }
           val gwr = gwt.game.copy(result=GameResult(3,1,false))  
           updateGameResults(gwr, admin, finalGameStart.plusMinutes(91), 90).fold(

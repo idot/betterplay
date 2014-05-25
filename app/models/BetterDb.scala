@@ -22,7 +22,7 @@ object BetterDb {
    def allTeams()(implicit s: Session): Seq[Team] = {
        teams.list
    }
-   
+    
    def allPlayersWithTeam()(implicit s: Session): Seq[(Player,Team)] = {
        val pt = for{
          (p,t) <- players.innerJoin(teams).on(_.teamId === _.id)
@@ -120,7 +120,7 @@ object BetterDb {
         result.fold(
             err => -\/(err.list.mkString("\n")),
             succ => succ match {
-              case (t1@Team(Some(t1id),_,_), t2@Team(Some(t2id),_,_), l@GameLevel(Some(lid),_,_,_,_), _) => {
+              case (t1@Team(Some(t1id),_,_,_), t2@Team(Some(t2id),_,_,_), l@GameLevel(Some(lid),_,_,_,_), _) => {
                  val gameWithTeamsAndLevel = game.copy(team1id=t1id, team2id=t2id, levelId=lid, result=DomainHelper.gameResultInit)
                  val gameId = (games returning games.map(_.id)) += gameWithTeamsAndLevel
                  val dbgame = gameWithTeamsAndLevel.copy(id=Some(gameId))
@@ -137,6 +137,15 @@ object BetterDb {
          (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.id === userId
        }yield (u,s)
        us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user for id $userId"))
+   }  
+   
+   def userById(userId: Long)(implicit s: Session):  String \/ User = {
+       users.filter(u => u.id === userId).firstOption.map(\/-(_)).getOrElse(-\/(s"could not find user with id $userId"))     
+   }
+   
+   def authenticate(username: String, passwordhash: String)(implicit s: Session):  String \/ User = {
+       users.filter(u => u.username === username && u.passwordhash === passwordhash).firstOption
+       .map( \/-(_)).getOrElse(-\/(s"could not find user for username $username"))
    }  
      
    /**
@@ -334,6 +343,7 @@ object BetterDb {
    
    /**
     * sets up all bets including special bets
+    * TODO: only isResitserging users have to check registeringUser!!
     * 
     */
    def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long])(implicit s: Session): String \/ User = {

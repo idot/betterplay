@@ -19,7 +19,7 @@ object PointsCalculator {
      
      def checkTendencyTeam2Wins(betResult: GameResult, gameResult: GameResult): Boolean = {
     	  ! checkExact(betResult, gameResult) && betResult.winner() == 2 && gameResult.winner() == 2 
-     }
+     } 
   
      def checkTendency(betResult: GameResult, gameResult: GameResult): Boolean = {
          checkTendencyTie(betResult, gameResult) || checkTendencyTeam1Wins(betResult, gameResult) || checkTendencyTeam2Wins(betResult, gameResult)        

@@ -21,7 +21,7 @@ object Teams extends Controller {
 //      implicit val session = rs.dbSession
 //      BetterDb.getTeamByName(name).fold(e => NotFound(e), s => Ok(Json.toJson(s)) )
       Ok("")
-  }
+  } 
   
   
   def insert(name: String) = DBAction(parse.json) { implicit rs =>

@@ -17,6 +17,6 @@ object SpecialBets extends Controller {
         
   }
    
-  
+   
 
 }

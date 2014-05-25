@@ -31,7 +31,7 @@ object JsonHelper {
          case DATAREGEX(format, content) => \/-(DBImage(format, content))
          case _ => -\/(s"could not parse image in json: ${s.substring(0,40)}...")
        }
-   }
+   } 
  
    //data:[<mediatype>][;base64],<data>
    implicit val formatByteArrayPNG = new Format[Array[Byte]] {

@@ -20,7 +20,7 @@ object BetterSettings extends Settings {
 	
 //	lazy val defaultUserCustomization = _defaultUserCustomization
 	
-	
+	 
 	/**
 	 * 
 	 * 

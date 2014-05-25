@@ -21,7 +21,7 @@ object JodaHelper { //TODO: check timezone, might have to use calendar
       val seconds = period.getSeconds()
       val result = s"$days days, $hours hours, $minutes minutes, $seconds seconds"
       result  
-  }
+  } 
   
 }
 
@@ -72,12 +72,13 @@ object BetterTables {
     def start = column[DateTime]("start", O.NotNull)
     def venue = column[String]("venue", O.NotNull)
     def group = column[String]("group", O.NotNull)
-
+    def nr = column[Int]("nr", O.NotNull)
+     
     def team1 = foreignKey("GAME_TEAM1_FK", team1Id, teams)(_.id) 
     def team2 = foreignKey("GAME_TEAM2_FK", team2Id, teams)(_.id) 
     def level = foreignKey("GAME_LEVEL_FK", levelId, levels)(_.id) 
     
-    def * = (id.?, result, team1Id, team2Id, levelId, start, venue, group) <> (Game.tupled, Game.unapply)
+    def * = (id.?, result, team1Id, team2Id, levelId, start, venue, group, nr) <> (Game.tupled, Game.unapply)
     def result = (goalsTeam1, goalsTeam2, isSet) <> (GameResult.tupled, GameResult.unapply)
 
   }
@@ -169,12 +170,12 @@ object BetterTables {
   class Teams(tag: Tag) extends Table[Team](tag, "teams") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name", O.NotNull)
-
+    def shortName = column[String]("name", O.NotNull)
     def imageFormat = column[String]("format", O.NotNull)
     def image = column[String]("image", O.NotNull)
      
     def foto = (imageFormat, image) <> (DBImage.tupled, DBImage.unapply)
     
-    def * = (id.?, name, foto) <> (Team.tupled, Team.unapply _)
+    def * = (id.?, name, shortName, foto) <> (Team.tupled, Team.unapply _)
   }
 }

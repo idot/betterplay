@@ -1,0 +1,42 @@
+#!/bin/bash
+export JAVA_OPTS="-Xmx1g -Xms1g"
+cp=''
+exec scala -unchecked -classpath $cp "$0" "$@"
+!#
+
+//git clone git://github.com/openmundi/world.db.git
+//git clone git://github.com/openfootball/world-cup.git
+//sportdb --dbname world-cup-2014.db setup --include ./world-cup --worldinclude ./world.db
+
+//https://github.com/openfootball/build/releases/download/v2014.05.18/worldcup.db
+//sqlite3
+//select * from events where key ='world.2014';
+//20
+//select * from games join rounds on games.round_id == rounds.id where event_id = 20;
+
+//.headers ON
+//.mode TAB
+//.output GAMES2014.tab
+//select * from games join rounds on games.round_id == rounds.id join teams as t1 on games.team1_id == t1.id join teams as t2 on
+//games.team2_id == t2.id join groups on games.group_id == groups.id where games.event_id = 20;
+//select 
+//select * from games join rounds on games.round_id == rounds.id join teams as t1 on games.team1_id == t1.id join teams as t2 on
+//games.team2_id == t2.id join groups on games.group_id == groups.id where rounds.event_id = 20 limit 1;
+
+//select play_at, games.pos, groups.title, t1.key, t1.title, t1.code, t2.key, t2.title, t2.code from games join rounds on games.round_id ==
+//rounds.id join teams as t1 on games.team1_id == t1.id join teams as t2 on games.team2_id == t2.id join groups on games.group_id ==
+//groups.id where rounds.event_id = 20;
+
+//id|key|round_id|pos|group_id|team1_id|team2_id|play_at|postponed|play_at_v2|play_at_v3|ground_id|city_id|knockout|home|score1|score2|score1et|score2et|score1p|score2p|score1i|score2i|score1ii|score2ii|next_game_id|prev_game_id|winner|winner90|created_at|updated_at|id|event_id|title|title2|pos|knockout|start_at|end_at|auto|created_at|updated_at|id|key|title|title2|code|synonyms|country_id|city_id|club|since|address|web|national|created_at|updated_at|id|key|title|title2|code|synonyms|country_id|city_id|club|since|address|web|national|created_at|updated_at
+//773||271|1|101|211|154|2014-06-12 17:00:00.000000|f|||||f|t|||||||||||||||2014-05-18 09:35:40.500194|2014-05-18 09:35:40.500194|271|20|Matchday 1||1|f|2014-06-12|2014-06-12|t|2014-05-18 09:35:37.819292|2014-05-18 09:35:37.819292|211|bra|Brazil||BRA||188||t||||f|2014-05-18 09:31:14.930908|2014-05-18 09:31:14.930908|154|cro|Croatia||CRO||137||t||||f|2014-05-18 09:31:08.018869|2014-05-18 09:31:08.018869
+
+case class Team(short: String, long: String, upc: String)
+case class Game(start: java.util.Calendar, )
+
+parseFileToTab(infile: String){
+  for{
+    line <- scala.io.Source.fromFile(infile).getLines.drop(1)
+  }yield{
+    
+  }
+}

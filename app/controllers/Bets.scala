@@ -15,7 +15,7 @@ object Bets extends Controller {
       Ok("")      
         
   }
-   
+    
   
 
 }
