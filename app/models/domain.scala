@@ -5,8 +5,8 @@ import org.joda.time.DateTime
 
 object DomainHelper {
   
-  def resultInit(): Result = Result(0,0,false)  
-  def betInit(user: User, game: Game): Bet = Bet(None, 0, resultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
+  def gameResultInit(): GameResult = GameResult(0,0,false)  
+  def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
       User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, false, true, 0, 0, user.iconurl, registeringUser)
   }
@@ -16,7 +16,7 @@ object DomainHelper {
 }
 
 //embedaable
-case class Result(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
+case class GameResult(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
      def display = if(isSet) goalsTeam1+":"+goalsTeam2 else "-:-"
      def winner(): Int = {
          if(goalsTeam1 > goalsTeam2){
@@ -37,7 +37,7 @@ case class Team(id: Option[Long] = None, name: String, dbimage: DBImage)
 
 case class Player(id: Option[Long] = None, firstName: String, lastName: String, role: String, teamId: Long, dbimage: DBImage)
 
-case class Bet(id: Option[Long] = None, points: Int, result: Result, gameId: Long, userId: Long){ 
+case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId: Long, userId: Long){ 
 //unique: user/bet game/bet one bet for each user per game 
 }
 
@@ -84,8 +84,8 @@ case class SpecialBet(id: Option[Long], topScorer: Option[Long], mvp: Option[Lon
 
 case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int)//name: groups, quarter final, semi final, final
 
-case class Game(id: Option[Long] = None, result: Result, team1id: Long, team2id: Long, levelId: Long, start: DateTime, venue: String, group: String){
-  //     def resultPrettyPrint = if(calculated) result.goalsTeam1+":"+result.goalsTeam2 else "NA"
+case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, start: DateTime, venue: String, group: String){
+  //     def GameResultPrettyPrint = if(calculated) GameResult.goalsTeam1+":"+GameResult.goalsTeam2 else "NA"
 	    	 
  //	     def datePrettyPrint = sdf.format(date.getTime)
 

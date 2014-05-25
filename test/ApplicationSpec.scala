@@ -4,6 +4,7 @@ import org.junit.runner._
 
 import play.api.test._
 import play.api.test.Helpers._
+import play.api.libs.json._
 
 /**
  * Add your spec here.
@@ -26,5 +27,18 @@ class ApplicationSpec extends Specification {
       contentType(home) must beSome.which(_ == "text/html")
       contentAsString(home) must contain ("Your new application is ready.")
     }
+  
+  
+    "allow login for users, protect routes and allow logout" in new WithApplication {
+       val up = JsObject(Seq("username" -> JsString("name1"), "password" -> JsString("pw1")))
+       route(FakeRequest(POST, "/login").withJsonBody(up)) must beNone      
+      
+    }
+  
+  
+  
   }
+  
+  
+  
 }

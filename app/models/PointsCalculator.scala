@@ -2,30 +2,30 @@ package models
 
 object PointsCalculator {
 
-     def checkExact(betResult: Result, gameResult: Result): Boolean = {
+     def checkExact(betResult: GameResult, gameResult: GameResult): Boolean = {
            betResult.goalsTeam1 == gameResult.goalsTeam1 && betResult.goalsTeam2 == gameResult.goalsTeam2
      }
      
      /**
       * if equals then tendency would be bet 1:1  game 2:2
       */
-     def checkTendencyTie(betResult: Result, gameResult: Result): Boolean = {
+     def checkTendencyTie(betResult: GameResult, gameResult: GameResult): Boolean = {
     	   betResult.winner() == 0 && gameResult.winner() == 0 && betResult.goalsTeam1 != gameResult.goalsTeam1
      }
      
-     def checkTendencyTeam1Wins(betResult: Result, gameResult: Result): Boolean = {
+     def checkTendencyTeam1Wins(betResult: GameResult, gameResult: GameResult): Boolean = {
     	   ! checkExact(betResult, gameResult) && betResult.winner() == 1 && gameResult.winner() == 1 
      }
      
-     def checkTendencyTeam2Wins(betResult: Result, gameResult: Result): Boolean = {
+     def checkTendencyTeam2Wins(betResult: GameResult, gameResult: GameResult): Boolean = {
     	  ! checkExact(betResult, gameResult) && betResult.winner() == 2 && gameResult.winner() == 2 
      }
   
-     def checkTendency(betResult: Result, gameResult: Result): Boolean = {
+     def checkTendency(betResult: GameResult, gameResult: GameResult): Boolean = {
          checkTendencyTie(betResult, gameResult) || checkTendencyTeam1Wins(betResult, gameResult) || checkTendencyTeam2Wins(betResult, gameResult)        
      }
      
-     def pointsForValidGame(betResult: Result, gameResult: Result, gameLevel: GameLevel): Int = {
+     def pointsForValidGame(betResult: GameResult, gameResult: GameResult, gameLevel: GameLevel): Int = {
           if(checkExact(betResult, gameResult)){
 				gameLevel.pointsExact
           }

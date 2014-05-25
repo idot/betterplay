@@ -78,7 +78,7 @@ object BetterTables {
     def level = foreignKey("GAME_LEVEL_FK", levelId, levels)(_.id) 
     
     def * = (id.?, result, team1Id, team2Id, levelId, start, venue, group) <> (Game.tupled, Game.unapply)
-    def result = (goalsTeam1, goalsTeam2, isSet) <> (Result.tupled, Result.unapply)
+    def result = (goalsTeam1, goalsTeam2, isSet) <> (GameResult.tupled, GameResult.unapply)
 
   }
 
@@ -145,7 +145,7 @@ object BetterTables {
     def user = foreignKey("BET_USER_FK", userId, users)(_.id)
     
     def * = (id.?, points, result, gameId, userId) <> (Bet.tupled, Bet.unapply)
-    def result = (goalsTeam1, goalsTeam2, isSet) <> (Result.tupled, Result.unapply)
+    def result = (goalsTeam1, goalsTeam2, isSet) <> (GameResult.tupled, GameResult.unapply)
 
   }
 

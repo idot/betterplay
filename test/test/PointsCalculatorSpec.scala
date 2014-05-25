@@ -1,12 +1,14 @@
 package models
 
+import org.junit.runner._
+import org.specs2.runner._
 import org.specs2._
 import org.specs2.Specification
-import org.specs2.matcher.DataTables
 import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
 import org.specs2.ScalaCheck
+
 import org.scalacheck._
+
 
 object RG {
   
@@ -14,27 +16,27 @@ object RG {
    
    def genResult(setted: Boolean) = {
       for{
-         g1 <- genGoals
+         g1 <- genGoals 
          g2 <- genGoals
-      } yield Result(g1, g2, setted)
+      } yield GameResult(g1, g2, setted)
    }
   
    def genTieResult(setted: Boolean) = {
       for{
         g1 <- genGoals
-      } yield Result(g1, g1, setted)
+      }yield GameResult(g1, g1, setted)
    }
    
    def genWin2Result(setted: Boolean) = {
        for{
          g1 <- genGoals
-       } yield Result(g1, g1 + 1, setted)
+       } yield GameResult(g1, g1 + 1, setted)
    }
    
    def genWin1Result(setted: Boolean) = {
         for{
          g1 <- genGoals
-       } yield Result(g1 + 1, g1, setted)
+        } yield GameResult(g1 + 1, g1, setted)
    }
    
    def genPoints() = {
@@ -56,7 +58,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     val gl = GameLevel(None, "test", 3, 2, 1)
     
     def tendencyTie = {
-        Prop.forAll(RG.genTieResult(true), RG.genTieResult(true)){ (bet: Result, game: Result) =>
+        Prop.forAll(RG.genTieResult(true), RG.genTieResult(true)){ (bet: GameResult, game: GameResult) =>
           Prop.classify(bet != game, "not exact"){
 	           if(bet == game){
 	               PointsCalculator.checkExact(bet, game) === true and 
@@ -78,7 +80,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     }
   
     def exactTrue = {
-        Prop.forAll(RG.genResult(true)){ bet: Result =>
+        Prop.forAll(RG.genResult(true)){ bet: GameResult =>
             PointsCalculator.checkExact(bet, bet) === true and 
             PointsCalculator.checkTendencyTie(bet, bet) === false and 
             PointsCalculator.checkTendencyTeam1Wins(bet, bet) === false and 
@@ -88,7 +90,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     }
     
     def exactFalse = {
-         Prop.forAll(RG.genResult(true), RG.genResult(true)){ (bet: Result, game: Result) =>
+         Prop.forAll(RG.genResult(true), RG.genResult(true)){ (bet: GameResult, game: GameResult) =>
            if(bet != game){
         	   PointsCalculator.checkExact(bet, game) === false and
 	           ( if(PointsCalculator.checkTendency(bet,game)) PointsCalculator.pointsForValidGame(bet, game, gl) === 2 else PointsCalculator.pointsForValidGame(bet, game, gl) === 0 )
@@ -100,7 +102,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     }
     
     def win1 = {
-        Prop.forAll(RG.genWin1Result(true), RG.genWin1Result(true)){ (bet: Result, game: Result) =>
+        Prop.forAll(RG.genWin1Result(true), RG.genWin1Result(true)){ (bet: GameResult, game: GameResult) =>
            if(bet != game){
         	   PointsCalculator.checkTendencyTeam1Wins(bet, game) === true and 
         	   PointsCalculator.checkExact(bet, game)  === false and 
@@ -120,7 +122,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     }
     
     def win2 = {
-        Prop.forAll(RG.genWin2Result(true), RG.genWin2Result(true)){ (bet: Result, game: Result) =>
+        Prop.forAll(RG.genWin2Result(true), RG.genWin2Result(true)){ (bet: GameResult, game: GameResult) =>
            if(bet != game){
         	   PointsCalculator.checkTendencyTeam2Wins(bet, game) === true and 
         	   PointsCalculator.checkExact(bet, game)  === false and 

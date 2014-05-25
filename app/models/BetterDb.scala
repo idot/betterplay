@@ -121,7 +121,7 @@ object BetterDb {
             err => -\/(err.list.mkString("\n")),
             succ => succ match {
               case (t1@Team(Some(t1id),_,_), t2@Team(Some(t2id),_,_), l@GameLevel(Some(lid),_,_,_,_), _) => {
-                 val gameWithTeamsAndLevel = game.copy(team1id=t1id, team2id=t2id, levelId=lid, result=DomainHelper.resultInit)
+                 val gameWithTeamsAndLevel = game.copy(team1id=t1id, team2id=t2id, levelId=lid, result=DomainHelper.gameResultInit)
                  val gameId = (games returning games.map(_.id)) += gameWithTeamsAndLevel
                  val dbgame = gameWithTeamsAndLevel.copy(id=Some(gameId))
                  val gwt = GameWithTeams(dbgame, t1, t2, l) 
@@ -381,7 +381,7 @@ object BetterDb {
    }
    
    def createBetForGameAndUser(gameId: Long, userId: Long)(implicit s: Session){
-       val bet = Bet(None, 0, Result(0,0,false), gameId, userId)
+       val bet = Bet(None, 0, GameResult(0,0,false), gameId, userId)
        bets.insert(bet)
    }
    

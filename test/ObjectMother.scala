@@ -28,7 +28,7 @@ object ObjectMother {
       val nr2 = nr*2
       val t1 = dummyTeams(nr2 - 2).name
       val t2 = dummyTeams(nr2 - 1).name
-      val g = Game(None, Result(3,4,true), 0, 0, 0, totalStart.plusMinutes(10 * (nr-1)), "", "")  
+      val g = Game(None, GameResult(3,4,true), 0, 0, 0, totalStart.plusMinutes(10 * (nr-1)), "", "")  
       (g,t1,t2,0)
   }
   
