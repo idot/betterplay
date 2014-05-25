@@ -6,7 +6,7 @@
 GET     /                           controllers.Application.index
 
 
-GET     /api/teams                  controllers.Teams.all()
+#GET     /api/teams                  controllers.Teams.all()
 #GET     /api/team/:name             controllers.Teams.get(name: String)
 #POST    /api/team/:name             controllers.Teams.insert(name: String)
 
@@ -28,7 +28,17 @@ GET     /api/teams                  controllers.Teams.all()
 #GET     /api/bet/:id                controllers.Bets.get(id: Long) #not necessary in application for testing     
 #POST    /api/bet/:id                controllers.Bets.update(id: Long) #
 
+# Send (user,password) to receive token
+POST    /login                      controllers.Application.login()
+# Invalidate token
+POST    /logout                     controllers.Application.logout()
 
+# Check if token is valid and get user id
+GET    /ping                        controllers.Application.ping()
+
+# Get user data
+GET    /my/user                     controllers.Users.myUserInfo()
+GET    /users/:id                   controllers.Users.getUser(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path

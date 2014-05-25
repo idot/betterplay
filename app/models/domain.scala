@@ -58,6 +58,21 @@ case class User(id: Option[Long] = None, username: String, firstName: String, la
   
 }
 
+case class UserNoPw(id: Option[Long] = None, username: String, firstName: String, 
+         lastName: String, email: String, isAdmin: Boolean, isRegistrant: Boolean,
+         hadInstructions: Boolean, canBet: Boolean, points: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long]){
+  
+  
+}
+   
+object UserNoPwC {
+   def apply(user: User): UserNoPw = {
+        UserNoPw(user.id, user.username, user.firstName, 
+        user.lastName, user.email, user.isAdmin, user.isRegistrant,
+        user.hadInstructions, user.canBet, user.points, user.pointsSpecialBet, user.iconurl, user.registeredBy)  
+   }     
+}      
+         
 
 case class SpecialBet(id: Option[Long], topScorer: Option[Long], mvp: Option[Long], winningTeam: Option[Long], semi1: Option[Long], semi2: Option[Long], semi3: Option[Long], semi4: Option[Long], isSet: Boolean, userId: Long){
   

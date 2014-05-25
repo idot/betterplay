@@ -10,6 +10,7 @@ import play.api.libs.json.JsResult
 import scalaz.{\/,-\/,\/-}
 import play.api.libs.json.JsError
 import play.api.libs.json.JsSuccess
+import play.api.libs.json.Writes
 
 
 object JsonHelper {
@@ -47,7 +48,7 @@ object JsonHelper {
           }
       }
    }
-  
+     
    implicit val imageFormat = new Format[DBImage] {
       def writes(dbImage: DBImage): JsValue = {
           if(dbImage.format != ""){
@@ -67,10 +68,13 @@ object JsonHelper {
           }
       }
    }
-   
+//the user object is never serialized because of the password
+//implicit val userFormat = Json.format[User]  DONTUNCOMMENT
+
+   implicit val userNoPWFormat = Json.format[UserNoPw]        
    implicit val levelFormat = Json.format[GameLevel]
    implicit val resultFormat = Json.format[Result] 
-   implicit val userFormat = Json.format[User]
+
    implicit val gameFormat = Json.format[Game]
    implicit val betFormat = Json.format[Bet]
    implicit val specialBetFormat = Json.format[SpecialBet]
