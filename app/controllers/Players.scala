@@ -11,7 +11,11 @@ import models.JsonHelper._
 
 object Players extends Controller {
   
-
+  def all() = DBAction { implicit rs =>
+      implicit val session = rs.dbSession
+      val json = Json.toJson(BetterDb.allPlayersWithTeam())  
+      Ok(json)
+  }
   
  
 }

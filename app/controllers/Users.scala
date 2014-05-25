@@ -6,17 +6,17 @@ import play.api.libs.json.Json
 import play.api.libs.json.Json._
 import play.api.db.slick.DBAction
 
-//import models._
-//import models.JsonHelper._
+import models._
+import models.JsonHelper._
 
 trait Users extends Controller with Security {
   
-//  def all() = DBAction { implicit rs =>
-//      implicit val session = rs.dbSession
-//      val users = BetterDb.allUsers()
-//      val json =  Json.toJson(users.map(UserNoPwC(_)))
-//      Ok(json)
-//  } 
+  def all() = DBAction { implicit rs =>
+      implicit val session = rs.dbSession
+      val users = BetterDb.allUsers()
+      val json =  Json.toJson(users.map(UserNoPwC(_)))
+      Ok(json)
+  } 
     
 //  /** Example for token protected access */
 //  def myUserInfo() = HasToken() { _ => currentId => implicit request =>

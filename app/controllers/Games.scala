@@ -13,8 +13,9 @@ import models.JsonHelper._
 object Games extends Controller {
   
   def all() = DBAction { implicit rs =>
-          Ok("")
-        
+      implicit val session = rs.dbSession
+      val json = Json.toJson(BetterDb.allGamesWithTeams())  
+      Ok(json)
   }
     
 

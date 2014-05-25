@@ -11,6 +11,7 @@ import scalaz.{\/,-\/,\/-}
 import play.api.libs.json.JsError
 import play.api.libs.json.JsSuccess
 import play.api.libs.json.Writes
+import play.api.libs.json.JsObject
 
 
 object JsonHelper {
@@ -70,7 +71,9 @@ object JsonHelper {
    }
 //the user object is never serialized because of the password
 //implicit val userFormat = Json.format[User]  DONTUNCOMMENT
-
+   
+   
+   
    implicit val userNoPWFormat = Json.format[UserNoPw]        
    implicit val levelFormat = Json.format[GameLevel]
    implicit val resultFormat = Json.format[GameResult] 
@@ -82,6 +85,13 @@ object JsonHelper {
    implicit val playerFormat = Json.format[Player]
    implicit val gameWithTeams = Json.format[GameWithTeams] 
   
+   implicit val playerTeamWrite = new Writes[(Player,Team)]{
+     def writes(pt: (Player,Team)): JsValue = {
+        Json.obj("player" -> pt._1,"team" -> pt._2)
+     }
+   }
+   
+   
 }
 
 

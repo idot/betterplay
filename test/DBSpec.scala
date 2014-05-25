@@ -224,7 +224,7 @@ class DBSpec extends Specification with ThrownMessages {
       def newGames()(implicit s: Session){
           val admin = getAdmin()
           val finalGameStart = firstStart.plusMinutes(100)
-          val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart, "stadium", "groupC")
+          val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart, "stadium", "groupC", 4)
           val teams = BetterTables.teams.list.sortBy(_.id)
           val level = BetterTables.levels.list.sortBy(_.level).reverse.head
           val gwt = insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin).toOption.get

@@ -45,7 +45,7 @@ object InitialData {
       dt.plusHours(5) //TODO: make dependent on venue
       }catch{
         case e: Exception => {
-          Logger.error(str+" "+venue+" "+e.getMessage)
+          Logger.error("error on date: "+str+" "+venue+" "+e.getMessage)
           throw(e)
         }
       }
@@ -54,7 +54,8 @@ object InitialData {
   //play_at|pos|title|key|title|code|key|title|code
   //2014-06-12 17:00:00.000000|1|Group A|bra|Brazil|BRA|cro|Croatia|CRO
   def parseLine(line: String, levelId: Long): (Team,Team, Game) = {
-      val items = line.split("|")
+      Logger.info(line)
+      val items = line.split("\\|")
       val venue = ""
       val date = parseDate(items(0), venue)
       val pos = items(1).toInt
@@ -103,17 +104,22 @@ object InitialData {
     Logger.info("inserting data in db")
     DB.withSession { implicit s: Session =>
        if(MTable.getTables("users").list().isEmpty) {
+        Logger.info("creating tables")
         BetterTables.createTables()
+       }else{
+         Logger.info("dropping tables")
+         BetterTables.drop()
+         BetterTables.createTables()
        }
-       if(BetterDb.allUsers.size == 0){
-	        val admin = BetterDb.insertUser(us(0), true, true, None).toOption.get //admin
-	        val levels = ls.map(l => BetterDb.insertOrUpdateLevelByNr(l, admin)).map(_.toOption.get)
-	        val level = levels(0)
-	        val (teams, ttg) = teamsGames(level.id.get)
-	        teams.map(t => BetterDb.insertOrUpdateTeamByName(t, admin))
-	        ttg.map{ case(t1,t2,g) => BetterDb.insertGame(g, t1, t2, level.level, admin)}        
-	        us.drop(1).foreach(u => BetterDb.insertUser(u, false, false, admin.id))
-       }
+       Logger.info("inserting data")
+       val admin = BetterDb.insertUser(us(0), true, true, None).toOption.get //admin
+       val levels = ls.map(l => BetterDb.insertOrUpdateLevelByNr(l, admin)).map(_.toOption.get)
+       val level = levels(0)
+       val (teams, ttg) = teamsGames(level.id.get)
+       teams.map(t => BetterDb.insertOrUpdateTeamByName(t, admin))
+       ttg.map{ case(t1,t2,g) => BetterDb.insertGame(g, t1, t2, level.level, admin)}        
+       us.drop(1).foreach(u => BetterDb.insertUser(u, false, false, admin.id))
+       Logger.info("inserted data")
     }
     Logger.info("done inserting data in db")
   

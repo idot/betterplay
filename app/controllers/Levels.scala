@@ -12,9 +12,10 @@ import models.JsonHelper._
 
 object Levels extends Controller {
   
-  def all() = DBAction { implicit rs =>
-      Ok("")      
-        
+   def all() = DBAction { implicit rs =>
+      implicit val session = rs.dbSession
+      val json = Json.toJson(BetterDb.allLevels())  
+      Ok(json)
   }
    
    

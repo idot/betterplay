@@ -44,9 +44,10 @@ object BetterTables {
     specialbets.ddl.create
   }
   
-  def ddl()(implicit s: Session){
+  def drop()(implicit s: Session){
     val ddl = users.ddl ++ teams.ddl ++ players.ddl ++ levels.ddl ++ games.ddl ++ bets.ddl ++ specialbets.ddl
-    ddl.createStatements.foreach(println)
+    //ddl.createStatements.foreach(println)
+    ddl.drop
   }
 
   
@@ -170,7 +171,7 @@ object BetterTables {
   class Teams(tag: Tag) extends Table[Team](tag, "teams") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name", O.NotNull)
-    def shortName = column[String]("name", O.NotNull)
+    def shortName = column[String]("shortname", O.NotNull)
     def imageFormat = column[String]("format", O.NotNull)
     def image = column[String]("image", O.NotNull)
      
