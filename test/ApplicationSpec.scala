@@ -50,9 +50,7 @@ class ApplicationSpec extends Specification with JsonMatchers{
        val unau = route(FakeRequest("POST", "/api/createBetsForUsers")).get
        status(unau) must equalTo(UNAUTHORIZED)
                
-       val res = route(FakeRequest(POST, "/login").withJsonBody(up)).get
-       println(contentAsString(res))
-       
+       val res = route(FakeRequest(POST, "/login").withJsonBody(up)).get      
        val authToken = extractToken(res).get
        
        val wau = route(FakeRequest(method="POST", path="/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get

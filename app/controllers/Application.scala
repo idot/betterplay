@@ -51,7 +51,7 @@ trait Application extends Controller with Security {
    
 
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index())
   }
 
   case class Login(username: String, password: String)

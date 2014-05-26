@@ -21,7 +21,11 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.2-1003-jdbc4",
   "org.scalaz" %% "scalaz-core" % "7.0.6",
   "org.jasypt" % "jasypt" % "1.9.2",
-  "commons-io" % "commons-io" % "2.4"
+  "commons-io" % "commons-io" % "2.4",
+  "org.webjars" % "angularjs" % "1.2.16-2",  
+  "org.webjars" % "bootstrap" % "3.1.1-1",
+  "org.webjars" % "requirejs" % "2.1.11-1"
 )
 
 
+pipelineStages := Seq(rjs, digest, gzip)
