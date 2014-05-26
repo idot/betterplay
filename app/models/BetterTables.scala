@@ -34,7 +34,9 @@ object BetterTables {
   val games = TableQuery[Games]
   val bets = TableQuery[Bets]
   val specialbets = TableQuery[SpecialBets]
-  
+  val specialbetstore = TableQuery[SpecialBetsTs] 
+  val specialbetsuser = TableQuery[SpecialBetByUsers]
+ 
   def createTables()(implicit s: Session) {
     users.ddl.create
     teams.ddl.create
@@ -131,14 +133,20 @@ object BetterTables {
      def description = column[String]("description", O.NotNull)
      def points = column[Int]("points", O.NotNull)
      def itemtype = column[String]("itemtype", O.NotNull)
-  
-     def * = (id.?, name, description, points, itemtype) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
+     def resultId = column[Option[Long]]("resultid", O.Nullable) 
+     def * = (id.?, name, description, points, itemtype, resultId) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
   }
   
   
   class SpecialBetByUsers(tag: Tag) extends Table[SpecialBetByUser](tag, "specialbetbyusers"){
      def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+     def userId = column[Long]("userid", O.NotNull)
+     def spId = column[Long]("specialbetid", O.NotNull)
+     def targetId = column[Long]("targetid", O.NotNull)
+     def creationDate = column[DateTime]("creationdate", O.NotNull)
+     def points = column[Int]("points", O.NotNull)
      
+     def * = (id.?, userId, spId, targetId, creationDate, points) <> (SpecialBetByUser.tupled,SpecialBetByUser.unapply)     
     
   }
   

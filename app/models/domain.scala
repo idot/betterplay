@@ -93,7 +93,7 @@ case class SpecialBet(id: Option[Long], topScorer: Option[Long], mvp: Option[Lon
 
 //TODO: convert specialbet 
 case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long, targetId: Long, creationDate: DateTime, points: Int)
-case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, itemType: String)
+case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, itemType: String, resultId: Option[Long])
 
 
 

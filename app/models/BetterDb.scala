@@ -102,7 +102,50 @@ object BetterDb {
    def isAdmin(settingUser: User): Validation[String,User] = {
        if(settingUser.isAdmin) Success(settingUser) else Failure(s"only admin can make these changes")
    }
-      
+
+   def insertSpecialBetInStore(specialBetT: SpecialBetT, submittingUser: User)(implicit s: Session): String \/ SpecialBetT = {
+      if(! submittingUser.isAdmin){
+         return -\/("only admins can create special bets")
+      }else{
+         val spid = (specialbetstore returning specialbetstore.map(_.id)) += specialBetT
+         val sp = specialBetT.copy(id=Some(spid))
+         \/-(sp)
+      }
+   }
+   
+   def validSPU(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User)(implicit s: Session): ValidationNel[String,String] = {
+       val v = startOfGames().map{ startTime => 
+           isGameOpen(startTime, currentTime, closingMinutesToGame)
+       }.getOrElse( Failure("no games yet") ).toValidationNel |@| compareIds(submittingUser.id.getOrElse(-1), sp.userId, "user ids").toValidationNel
+
+       v{ case(time, ids) => Seq(time, ids).mkString("\n") }
+   }
+
+   def insertOrUpdateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User)(implicit s: Session): String \/ SpecialBetByUser = {
+       validSPU(sp, currentTime, closingMinutesToGame, submittingUser).fold(
+         err => -\/(err.list.mkString("\n")),
+         succ => insertOrUpdateSPU(sp, submittingUser)
+       )
+   }
+  
+   //TODO: maybe update can be done in one query?
+   def insertOrUpdateSPU(sp: SpecialBetByUser, submittingUser: User)(implicit s: Session): String \/ SpecialBetByUser = {
+       specialbetsuser.filter(_.id === sp.id).firstOption.map{ spdb =>
+          val updated = sp.copy(points=spdb.points)
+          specialbetsuser.filter(_.id === sp.id).update(updated)
+          \/-(updated)
+       }.getOrElse{
+          val with0Points = sp.copy(points=0)
+          val spid = (specialbetsuser returning specialbetsuser.map(_.id)) += with0Points
+          val nsp = with0Points.copy(id=Some(spid))
+          \/-(nsp)
+       }
+   }
+ 
+   def getSpecialBetsSPUForUser(user: User)(implicit s: Session): Seq[SpecialBetByUser] = {
+       specialbetsuser.filter(_.userId === user.id).list
+   }
+
    /**
     * This is for text import   game details | team1name | team2name | levelNr (| == tab)
     * ids for teams and levels and results are ignored, taken from db and amended in game object
