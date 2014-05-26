@@ -177,7 +177,7 @@ class DBSpec extends Specification with ThrownMessages {
           startOfGames().get === firstStart
           
           //result changes are ignored
-          val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=GameResult(2,2,true),venue="Nowhere",start=changedStart)
+          val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=GameResult(2,2,true),venue="Nowhere",serverStart=changedStart,localStart=changedStart.minusHours(5))
           updateGameDetails(changes, admin, firstStart.minusMinutes(90*5+1), 90).fold(
              err => fail("early change possible1 "+err),
              succ => succ match{ case(g, u) =>
@@ -202,7 +202,7 @@ class DBSpec extends Specification with ThrownMessages {
           BetterTables.users.list.map(_.points).sum === 0
           
           //only result changes are taken over
-          val gameWithResults = changes.copy(team1id=game1.team1id,team2id=game1.team2id,result=GameResult(1,3,false),venue="Everywhere",start=firstStart)
+          val gameWithResults = changes.copy(team1id=game1.team1id,team2id=game1.team2id,result=GameResult(1,3,false),venue="Everywhere",serverStart=firstStart,localStart=firstStart.minusHours(5))
           updateGameResults(gameWithResults, admin, changedStart.plusMinutes(91), 90).fold(
              err => fail("setting result possible now "+err),
              succ => succ match{ case(g, u) =>

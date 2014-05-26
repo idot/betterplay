@@ -8,19 +8,39 @@ define(function() {
 
 var controllers = {};
 
-controllers.MyCtrl1 = function($scope, Restangular) {
+controllers.UsersCtrl = function($scope, Restangular) {
 	var baseUsers = Restangular.all('api/users');
 
 	baseUsers.getList().then(function(users){
 		$scope.allUsers = users;
 	});
+}
+
+controllers.UsersCtrl.$inject = ['$scope', 'Restangular'];
+
+controllers.GamesCtrl = function($scope, Restangular) {
+	var baseGames = Restangular.all('api/games');
 	
+	baseGames.getList().then(function(games){
+		$scope.allGames = games;
+	});
 	
 }
-controllers.MyCtrl1.$inject = ['$scope', 'Restangular'];
+controllers.GamesCtrl.$inject = ['$scope', 'Restangular'];
 
-controllers.MyCtrl2 = function() {}
-controllers.MyCtrl2.$inject = [];
+
+controllers.UserCtrl = function($scope, Restangular, $routeParams) {
+	$scope.params = $routeParams;
+	var baseUser = Restangular.one('api/user', $scope.params.username);
+	
+	baseUser.get().then(function(userWithSpAndGB){
+		  $scope.gameBets = userWithSpAndGB.gameBets;
+		  $scope.user = userWithSpAndGB.user;
+		  $scope.specialBet = userWithSpAndGB.specialBet;
+	});
+}
+
+controllers.UserCtrl.$inject = ['$scope', 'Restangular', '$routeParams'];
 
 return controllers;
 

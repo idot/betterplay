@@ -91,9 +91,20 @@ case class SpecialBet(id: Option[Long], topScorer: Option[Long], mvp: Option[Lon
   
 }
 
+//TODO: convert specialbet 
+case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long, targetId: Long, creationDate: DateTime, points: Int)
+case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, itemType: String)
+
+
+
 case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int)//name: groups, quarter final, semi final, final
 
-case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, start: DateTime, venue: String, group: String, nr: Int){
+/**
+ * startLocal: start in local timezone 
+ * startServer: start in server timezone
+ * 
+ */
+case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: DateTime, localtz: String, serverStart: DateTime, servertz: String, venue: String, group: String, nr: Int){
   //     def GameResultPrettyPrint = if(calculated) GameResult.goalsTeam1+":"+GameResult.goalsTeam2 else "NA"
 	    	 
  //	     def datePrettyPrint = sdf.format(date.getTime)

@@ -139,6 +139,17 @@ object BetterDb {
        us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user for id $userId"))
    }  
    
+   /**
+    * todo: test
+    */
+   def userWithSpecialBet(username: String)(implicit s: Session):  String \/ (User,SpecialBet) = {
+        val us = for{
+         (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.username === username
+       }yield (u,s)
+       us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user for id $username"))  
+   }  
+   
+   
    def userById(userId: Long)(implicit s: Session):  String \/ User = {
        users.filter(u => u.id === userId).firstOption.map(\/-(_)).getOrElse(-\/(s"could not find user with id $userId"))     
    }
@@ -205,8 +216,8 @@ object BetterDb {
     * 
     */
    def startOfGames()(implicit s: Session): Option[DateTime] = {
-        games.sortBy(_.start.asc).firstOption.map{ firstGame =>
-          firstGame.start
+        games.sortBy(_.serverStart.asc).firstOption.map{ firstGame =>
+          firstGame.serverStart
        }
    }
    
@@ -234,7 +245,7 @@ object BetterDb {
     */
    def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (GameWithTeams,Bet,Bet) = {
        betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, dbgame, dbuser) =>
-             compareBet(dbuser.canBet, dbuser.id.getOrElse(-1), submittingUser.id.getOrElse(-1), dbBet.gameId, bet.gameId, dbgame.game.start, currentTime, closingMinutesToGame).fold(
+             compareBet(dbuser.canBet, dbuser.id.getOrElse(-1), submittingUser.id.getOrElse(-1), dbBet.gameId, bet.gameId, dbgame.game.serverStart, currentTime, closingMinutesToGame).fold(
                   err => -\/(err.list.mkString("\n")),
                   succ => {
                     val result = bet.result.copy(isSet=true)
@@ -312,10 +323,10 @@ object BetterDb {
          return -\/("must be admin to change game details")
        }
        games.filter(_.id === game.id).firstOption.map{ dbGame =>
-          isGameOpen(dbGame.start, currentTime: DateTime, gameDuration*5).fold( 
+          isGameOpen(dbGame.serverStart, currentTime: DateTime, gameDuration*5).fold( 
             err => -\/("game will start in 5x90 minutes no more changes! "+err),
             succ =>  {//game open can not set points but can change teams and start time
-                     val gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id, start=game.start, venue=game.venue)
+                     val gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id, localStart=game.localStart, localtz=game.localtz, serverStart=game.serverStart, servertz=game.servertz, venue=game.venue)
                      games.filter(_.id === gameWithTeams.id).update(gameWithTeams)
                      \/-(gameWithTeams, ChangeDetails)
             }         
@@ -334,7 +345,7 @@ object BetterDb {
          return -\/("must be admin to change game results")
        }
        games.filter(_.id === game.id).firstOption.map{ dbGame =>
-            isGameOpen(dbGame.start, currentTime: DateTime, -gameDuration).fold( //game is open until start + duration => points not settable yet
+            isGameOpen(dbGame.serverStart, currentTime: DateTime, -gameDuration).fold( //game is open until start + duration => points not settable yet
                 err => {//game closed can set points but not change teams anymore
 	                     val result = game.result.copy(isSet=true)
 	                     val gameWithResult = dbGame.copy(result=result)

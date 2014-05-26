@@ -22,7 +22,8 @@ GET     /api/games                  controllers.Games.all()
 #POST    /api/game/:id               controllers.Games.post(id: Long)  #creates/updates game with all bets; creates bets if not there
 
 GET     /api/users                  controllers.Users.all()           
-#GET     /api/user/:name             controllers.Users.get(name: String)  #fetches user + all of his bets 
+# fetches user + all of his bets 
+GET     /api/user/:name             controllers.Users.get(name: String)  
 #POST    /api/user/:name             controllers.Users.update(name: String) #creates/updates user but not his bets; creates bets on first registration
 
 POST    /api/createBetsForUsers      controllers.Users.createBetsForUsers()

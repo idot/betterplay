@@ -79,16 +79,20 @@ object BetterTables {
     def team1Id = column[Long]("team1_id", O.NotNull)
     def team2Id = column[Long]("team2_id", O.NotNull)
     def levelId = column[Long]("level_id", O.NotNull)
-    def start = column[DateTime]("start", O.NotNull)
+    def localStart = column[DateTime]("localstart", O.NotNull)
+    def localtz = column[String]("localtz", O.NotNull)
+    def serverStart = column[DateTime]("serverstart", O.NotNull)
+    def servertz = column[String]("servertz", O.NotNull)
     def venue = column[String]("venue", O.NotNull)
     def group = column[String]("group", O.NotNull)
     def nr = column[Int]("nr", O.NotNull)
-     
+
+    
     def team1 = foreignKey("GAME_TEAM1_FK", team1Id, teams)(_.id) 
     def team2 = foreignKey("GAME_TEAM2_FK", team2Id, teams)(_.id) 
     def level = foreignKey("GAME_LEVEL_FK", levelId, levels)(_.id) 
     
-    def * = (id.?, result, team1Id, team2Id, levelId, start, venue, group, nr) <> (Game.tupled, Game.unapply)
+    def * = (id.?, result, team1Id, team2Id, levelId, localStart, localtz, serverStart, servertz, venue, group, nr) <> (Game.tupled, Game.unapply)
     def result = (goalsTeam1, goalsTeam2, isSet) <> (GameResult.tupled, GameResult.unapply)
 
   }
@@ -120,6 +124,24 @@ object BetterTables {
     def * = (id.?, topScorerId, mvpId, winningteamId, semi1, semi2, semi3, semi4, isSet, userId) <> (SpecialBet.tupled, SpecialBet.unapply)
 
   }
+  
+  class SpecialBetsTs(tag: Tag) extends Table[SpecialBetT](tag, "specialbetsstore"){
+     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+     def name = column[String]("name", O.NotNull)
+     def description = column[String]("description", O.NotNull)
+     def points = column[Int]("points", O.NotNull)
+     def itemtype = column[String]("itemtype", O.NotNull)
+  
+     def * = (id.?, name, description, points, itemtype) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
+  }
+  
+  
+  class SpecialBetByUsers(tag: Tag) extends Table[SpecialBetByUser](tag, "specialbetbyusers"){
+     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+     
+    
+  }
+  
 
   class Users(tag: Tag) extends Table[User](tag, "users") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)

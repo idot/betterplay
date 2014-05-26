@@ -30,9 +30,10 @@ require(['angular', './controllers', './directives', './filters', './services', 
 
     angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngRoute','restangular']).
       config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: controllers.MyCtrl1});
-        $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: controllers.MyCtrl2});
-        $routeProvider.otherwise({redirectTo: '/view1'});
+        $routeProvider.when('/users', {templateUrl: 'partials/users.html', controller: controllers.UsersCtrl});
+        $routeProvider.when('/games', {templateUrl: 'partials/games.html', controller: controllers.GamesCtrl});
+        $routeProvider.when('/user/:username', {templateUrl: 'partials/user.html', controller: controllers.UserCtrl});
+        $routeProvider.otherwise({redirectTo: '/users'});
       }]);
 
     angular.bootstrap(document, ['myApp']);

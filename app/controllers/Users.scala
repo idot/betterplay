@@ -17,6 +17,18 @@ trait Users extends Controller with Security {
       val json =  Json.toJson(users.map(UserNoPwC(_)))
       Ok(json)
   } 
+  
+  def get(username: String) = DBAction { implicit rs =>
+      implicit val session = rs.dbSession
+      BetterDb.userWithSpecialBet(username).fold(
+        err => NotFound(Json.obj("err" -> err)),
+        succ => succ match { case(user, sp) =>
+          val gamesWithBets = BetterDb.gamesWithBetForUser(user)
+          val json = Json.obj("user" -> UserNoPwC(user), "specialBet" -> sp, "gameBets" -> gamesWithBets)
+          Ok(json)
+        }  
+      )
+  }
     
 //  /** Example for token protected access */
 //  def myUserInfo() = HasToken() { _ => currentId => implicit request =>

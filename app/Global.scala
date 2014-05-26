@@ -37,12 +37,12 @@ object InitialData {
   
   //2014-06-12 17:00:00.000000
   //TODO: time difference is 5 hours or 6 hours  in Manaus und Cuiab� !!!!
-  def parseDate(str: String, venue: String): DateTime = {
+  def parseDate(str: String, venue: String): (DateTime,DateTime) = {
       try{
       val short = str.substring(0, str.lastIndexOf("."))
       val df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
       val dt = df.parseDateTime(short)
-      dt.plusHours(5) //TODO: make dependent on venue
+      (dt.plusHours(5),dt) //TODO: make dependent on venue
       }catch{
         case e: Exception => {
           Logger.error("error on date: "+str+" "+venue+" "+e.getMessage)
@@ -53,16 +53,18 @@ object InitialData {
   
   //play_at|pos|title|key|title|code|key|title|code
   //2014-06-12 17:00:00.000000|1|Group A|bra|Brazil|BRA|cro|Croatia|CRO
+  
+  //TODO: fix time zone parsing
   def parseLine(line: String, levelId: Long): (Team,Team, Game) = {
       Logger.trace(line)
       val items = line.split("\\|")
       val venue = ""
-      val date = parseDate(items(0), venue)
+      val (localStart, serverStart) = parseDate(items(0), venue)
       val pos = items(1).toInt
       val group = items(2)
       val t1 = Team(None, items(4), items(3), DBImage("",""))
       val t2 = Team(None, items(7), items(6), DBImage("",""))
-      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, date, venue, group, pos)
+      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos)
       (t1,t2,g)
   }
   
@@ -120,6 +122,7 @@ object InitialData {
        teams.map(t => BetterDb.insertOrUpdateTeamByName(t, admin))
        ttg.map{ case(t1,t2,g) => BetterDb.insertGame(g, t1, t2, level.level, admin)}        
        us.drop(1).foreach(u => BetterDb.insertUser(u, false, false, admin.id))
+       BetterDb.createBetsForGamesForAllUsers(admin)
        Logger.info("inserted data")
     }
     Logger.info("done inserting data in db")
