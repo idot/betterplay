@@ -29,8 +29,8 @@ controllers.GamesCtrl = function($scope, Restangular) {
 controllers.GamesCtrl.$inject = ['$scope', 'Restangular'];
 
 
-controllers.UserCtrl = function($scope, Restangular, $routeParams) {
-	$scope.params = $routeParams;
+controllers.UserCtrl = function($scope, Restangular, $stateParams) {
+	$scope.params = $stateParams;
 	var baseUser = Restangular.one('api/user', $scope.params.username);
 	
 	baseUser.get().then(function(userWithSpAndGB){
@@ -40,7 +40,7 @@ controllers.UserCtrl = function($scope, Restangular, $routeParams) {
 	});
 }
 
-controllers.UserCtrl.$inject = ['$scope', 'Restangular', '$routeParams'];
+controllers.UserCtrl.$inject = ['$scope', 'Restangular', '$stateParams'];
 
 return controllers;
 
