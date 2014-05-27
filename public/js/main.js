@@ -10,20 +10,17 @@
 requirejs.config({
   paths: {
     'angular': ['../lib/angularjs/angular'],
- //   'angular-route': ['../lib/angularjs/angular-route'],
     'restangular': ['../lib/restangular/restangular'],
     'underscore': ['../lib/underscorejs/underscore'],
     'angular-ui': ['../lib/angular-ui/angular-ui'],
     'angular-ui-bootstrap': ['../lib/angular-ui-bootstrap/ui-bootstrap'],
-    'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router']
+    'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router'],
+	'ng-table': ['../lib/ng-table/ng-table']
   },
   shim: {
     'angular': {
       exports : 'angular'
     },
-//    'angular-route': {
- //     deps: ['angular']
- //   },
     'restangular': {
         deps: ['underscore', 'angular']
     },
@@ -36,15 +33,18 @@ requirejs.config({
     'angular-ui-router':{
         deps: ['angular-ui']
     }
+    'ng-table':{
+        deps: ['angular']
+    }
   }
 });
 
-require(['angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router'],
+require(['angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table'],
   function(angular, controllers) {
    //  alert("init module");
    
  
-   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router']).
+   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable']).
       config(function($stateProvider, $urlRouterProvider){
       
      $urlRouterProvider.otherwise("/users");

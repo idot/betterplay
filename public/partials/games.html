@@ -1,5 +1,14 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+
+
+   <table ng-table="tableParams" class="table">
+        <tr ng-repeat="gb in $data">
+            <td data-title="'nr'" sortable="'gb.game.nr'">
+                <a href='#/{{gb.game.nr}}'>{{gb.game.nr}}</a>
+            </td>
+            <td data-title="'local start'" sortable="'time'">
+                {{gb.game.start}}
+            </td>
+        </tr>
+   </table>
+
+  

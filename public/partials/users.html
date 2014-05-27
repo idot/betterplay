@@ -1,9 +1,14 @@
-<p>This is the partial for view 1.</p>
+
+   <table ng-table="tableParams" class="table">
+        <tr ng-repeat="user in $data">
+            <td data-title="'user'" sortable="'username'">
+                <a href='#/{{user.username}}'>{{user.username}}</a>
+            </td>
+            <td data-title="'firstname'" sortable="'firstname'">
+                {{user.firstname}}
+            </td>
+        </tr>
+   </table>
 
 
-<ul>
-    <li ng-repeat="user in allUsers">
-      {{user.id}} {{user.username}}
-    </li>
-</ul>
 
