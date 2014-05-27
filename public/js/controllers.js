@@ -29,7 +29,7 @@ controllers.UsersCtrl = function($scope, $filter, Restangular, $stateParams, ngT
     });
 }
 
-controllers.UsersCtrl.$inject = ['$scope', '$filter', 'Restangular', 'stateParams', 'ngTableParams' ];
+controllers.UsersCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams' ];
 
 controllers.GamesCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	var baseGames = Restangular.all('api/games');
@@ -43,13 +43,15 @@ controllers.GamesCtrl = function($scope, $filter, Restangular, $stateParams, ngT
     }, {
         total: 0,           // length of data
         getData: function($defer, params) {
-
-	baseGames.getList().then(function(games){
-		$scope.allGames = games;
-	});
-	
+ 	       baseGames.getList().then(function(games){
+                var data = games;
+ 		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+ 	       });
+		}
+   });
 }
-controllers.GamesCtrl.$inject = ['$scope', '$filter', 'Restangular', 'stateParams', 'ngTableParams'];
+controllers.GamesCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
 controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
@@ -65,15 +67,43 @@ controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTa
     }, {
         total: 0,           // length of data
         getData: function($defer, params) {	
-
-	baseUser.get().then(function(userWithSpAndGB){
-		  $scope.gameBets = userWithSpAndGB.gameBets;
-		  $scope.user = userWithSpAndGB.user;
-		  $scope.specialBet = userWithSpAndGB.specialBet;
-	});
+        	baseUser.get().then(function(userWithSpAndGB){
+				$scope.user = userWithSpAndGB.user;
+				$scope.special = userWithSpAndGB.special;
+				var data = userWithSpAndGB.games;
+ 		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+	        });
+	    }
+     });
 }
-
 controllers.UserCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+
+controllers.GameCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
+	$scope.params = $stateParams;
+	var baseGame = Restangular.one('api/game', $scope.params.gamenr);
+    
+    $scope.tableParams = new ngTableParams({
+        page: 1,            // show first page
+        count: 10,          // count per page
+        sorting: {
+            name: 'asc'     // initial sorting
+        }
+    }, {
+        total: 0,           // length of data
+        getData: function($defer, params) {	
+        	baseUser.get().then(function(userWithSpAndGB){
+				$scope.user = userWithSpAndGB.user;
+				$scope.special = userWithSpAndGB.special;
+				var data = userWithSpAndGB.games;
+ 		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+	        });
+	    }
+     });
+}
+controllers.GameCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+
 
 return controllers;
 

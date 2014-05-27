@@ -97,6 +97,12 @@ object JsonHelper {
      }
    }
    
+   implicit val betUserWrite = new Writes[(Bet,User)]{
+	   def writes(bu: (Bet,User)): JsValue = {
+		   Json.obj("bet" -> bu._1, "user" -> UserNoPwC(bu._2) )
+	   }
+   }
+   
 }
 
 

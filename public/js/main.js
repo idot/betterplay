@@ -32,7 +32,7 @@ requirejs.config({
     },
     'angular-ui-router':{
         deps: ['angular-ui']
-    }
+    },
     'ng-table':{
         deps: ['angular']
     }
@@ -40,33 +40,49 @@ requirejs.config({
 });
 
 require(['angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table'],
-  function(angular, controllers) {
-   //  alert("init module");
-   
+  function(angular, controllers) {   
  
-   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable']).
-      config(function($stateProvider, $urlRouterProvider){
+   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable'])
+      .run([ '$rootScope', '$state', '$stateParams' ,
+         function ($rootScope, $state, $stateParams){
+		     $rootScope.$state = $state;
+             $rootScope.$stateParams = $stateParams;
+      }])
+	  .config(function($stateProvider, $urlRouterProvider){
+		  
+	   
       
-     $urlRouterProvider.otherwise("/users");
+        $urlRouterProvider.otherwise("/users");
 
-	  $stateProvider
-		.state('users', {
-		  url: "/users",
-		  templateUrl: "partials/users.html",
-		  controller: controllers.UsersCtrl
-		})
-		.state('games', {
-		  url: "/games",
-		  templateUrl: "partials/games.html",
-		  controller: controllers.GamesCtrl
-		})  
-		.state('user', {
-		  url: '/user/:username',
-		  templateUrl: "partials/user.html",
-		  controller: controllers.UserCtrl
-		})
+	       $stateProvider
+		      .state('users', {
+		            url:  "/users",
+		            templateUrl: 'partials/users.html',
+		            controller: controllers.UsersCtrl
+		      })
+		      .state('games', {
+		            url: "/games",
+		            templateUrl: 'partials/games.html',
+		            controller: controllers.GamesCtrl
+		      })  
+		      .state('user', {
+		            url:  "/user/:username",
+		            templateUrl: 'partials/user.html',
+		            controller: controllers.UserCtrl
+		      })
+			  .state('game', {
+				  url: "/game/:gamenr",
+				  templateUrl: 'paritals/game.html',
+				  controller: controllers.GameCtrl
+			  });
+	//	.state('home', { home of user
+	//		url: '/home',
+	//		templateUrl: 'partials/home.html',
+	//		controller: controllers.HomeCtrl
+	//	})
     });
-      
+
+
 
     angular.bootstrap(document, ['myApp']);
 

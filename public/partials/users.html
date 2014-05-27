@@ -2,10 +2,10 @@
    <table ng-table="tableParams" class="table">
         <tr ng-repeat="user in $data">
             <td data-title="'user'" sortable="'username'">
-                <a href='#/{{user.username}}'>{{user.username}}</a>
+                <a href='#/user/{{user.username}}'>{{user.username}}</a>
             </td>
-            <td data-title="'firstname'" sortable="'firstname'">
-                {{user.firstname}}
+            <td data-title="'firstname'" sortable="'firstName'">
+                {{user.firstName}}
             </td>
         </tr>
    </table>

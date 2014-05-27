@@ -95,6 +95,15 @@ object BetterDb {
        \/-(t)
    }
    
+   def getGameByNr(gameNr: Int)(implicit s: Session): String \/ GameWithTeams = {
+       val gtt = (for{
+         (((g, t1), t2),l) <- joinGamesTeamsLevels() if g.nr === gameNr
+       } yield {
+         (g, t1, t2,l)
+       })   
+       gtt.firstOption.map{ case(g,t1,t2,l) => \/-(GameWithTeams(g,t1,t2,l)) }.getOrElse( -\/(s"game nr $gameNr not found"))
+   }
+   
    def getTeamByName(teamName: String)(implicit s: Session): String \/ Team = {
        teams.filter(_.name === teamName).firstOption.map{ \/-(_) }.getOrElse{ -\/(s"team not found by name: $teamName") }    
    }
@@ -223,7 +232,7 @@ object BetterDb {
     */   
    def betsWitUsersForGame(game: Game)(implicit s: Session): Seq[(Bet,User)] = {
        val bu = (for{
-         (b, u) <- bets.innerJoin(users).on(_.userId === _.id) if b.gameId === opId(game.id)
+         (b, u) <- bets.innerJoin(users).on(_.userId === _.id) if b.gameId === game.id
        } yield {
          (b,u)
        }) 
@@ -236,7 +245,7 @@ object BetterDb {
     */
    def gamesWithBetForUser(user: User)(implicit s: Session): Seq[(GameWithTeams,Bet)] = {
        val gtt = (for{
-         ((((g, t1), t2),l),b) <- joinGamesTeamsLevels().innerJoin(bets).on(_._1._1._1.id === _.gameId) if b.userId === opId(user.id)
+         ((((g, t1), t2),l),b) <- joinGamesTeamsLevels().innerJoin(bets).on(_._1._1._1.id === _.gameId) if b.userId === user.id
        } yield {
          (g, t1, t2,l,b)
        })   
@@ -271,7 +280,7 @@ object BetterDb {
 
    def betWithGameWithTeamsAndUser(bet: Bet)(implicit s: Session): String \/ (Bet,GameWithTeams,User) = {
        val bg = for{
-        (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id) if b.id === opId(bet.id)
+        (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id) if b.id === bet.id
        } yield (g, t1, t2, l, b, u)
        bg.firstOption.map{ case(g,t1,t2,l,b,u) =>
           \/-(b, GameWithTeams(g,t1,t2,l),u)  

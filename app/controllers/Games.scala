@@ -18,5 +18,17 @@ object Games extends Controller {
       Ok(json)
   }
     
+  def get(gameNr: Int) = DBAction { implicit rs =>
+      implicit val session = rs.dbSession
+      BetterDb.getGameByNr(gameNr).fold(
+        err => NotFound(Json.obj("err" -> err)),
+        game => {
+	      val betsWithUsers = BetterDb.betsWitUsersForGame(game.game)
+          val json = Json.obj("game" -> game, "betsUsers" -> betsWithUsers)
+          Ok(json)
+        }  
+      )
+  }
+
 
 }
