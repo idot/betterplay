@@ -36,26 +36,6 @@ controllers.GamesCtrl = function($scope, $filter, $timeout, Restangular, $stateP
 	var baseGames = Restangular.all('api/games');
 	
 	$scope.df = DATEFILTER;
-	
-	
-	$scope.timeLeft = function(serverTime, current){
-		//boolean true add in/ago
-		//negative values = ago
-		//positive values = in
-	    var s = moment.duration((serverTime -  MSTOCLOSING) - current , "milliseconds").humanize(true);
-		return s;	 
-	};
-	
-	
-	
-	$scope.currentTime = new Date();
-		
-	$scope.onTimeout = function(){
-         mytimeout = $timeout($scope.onTimeout,1000);
-		 $scope.currentTime = new Date();
-	}	
-		
-	var mytimeout = $timeout($scope.onTimeout,1000);	
 		
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page

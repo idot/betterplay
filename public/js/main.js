@@ -47,10 +47,33 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	  moment().format();
    
    angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable'])
-      .run([ '$rootScope', '$state', '$stateParams' ,
-         function ($rootScope, $state, $stateParams){
+      .run([ '$rootScope', '$state', '$stateParams', '$timeout',
+         function ($rootScope, $state, $stateParams, $timeout){
+			 //TODO: check if closing time should not come from the server somehow to prevent submission rejected errors
+			 //I now added one additional minute
+			 var MSTOCLOSING = 61 * 60 * 1000; //in ms
+			 var UPDATEINTERVAL = 60 * 1000; //in ms
 		     $rootScope.$state = $state;
              $rootScope.$stateParams = $stateParams;
+
+	   		 $rootScope.timeLeft = function(serverTime, current){
+	   		   //boolean true add in/ago
+	   		   //negative values = ago
+	   		   //positive values = in
+			   var diff = (serverTime -  MSTOCLOSING) - current;
+	   	       var s = moment.duration(diff, "milliseconds").humanize(true);
+	   		   return s;	 
+	   	     };
+	
+	 	  	 $rootScope.currentTime = new Date();
+		
+	   	     $rootScope.onTimeout = function(){
+	            mytimeout = $timeout($rootScope.onTimeout,UPDATEINTERVAL);
+	   		   $rootScope.currentTime = new Date();
+	   	     }	
+		
+	   	     var mytimeout = $timeout($rootScope.onTimeout,UPDATEINTERVAL);	 
+
       }])
 	  .config(function($stateProvider, $urlRouterProvider){
 		  
