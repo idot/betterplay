@@ -10,6 +10,9 @@ within 1 hour of creation of game change of teams is possible
 afterwards only change of start time
 
 * guard methods with submittinguser:
-  insertUser
+  insertUser ??
 
-* test rankbypoints helper method
+* username: only ascii, no space max 20 char
+
+* 
+

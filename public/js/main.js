@@ -9,6 +9,7 @@
 
 requirejs.config({
   paths: {
+	'moment': ['../lib/momentjs/min/moment.min'],
     'angular': ['../lib/angularjs/angular'],
     'restangular': ['../lib/restangular/restangular'],
     'underscore': ['../lib/underscorejs/underscore'],
@@ -39,9 +40,12 @@ requirejs.config({
   }
 });
 
-require(['angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table'],
-  function(angular, controllers) {   
- 
+
+
+require(['moment','angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table'],
+  function(moment, angular, controllers) {   
+	  moment().format();
+   
    angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable'])
       .run([ '$rootScope', '$state', '$stateParams' ,
          function ($rootScope, $state, $stateParams){

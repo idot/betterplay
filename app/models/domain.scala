@@ -67,18 +67,17 @@ case class User(id: Option[Long] = None, username: String, firstName: String, la
   
 }
 
+
 case class UserNoPw(id: Option[Long] = None, username: String, firstName: String, 
-         lastName: String, email: String, isAdmin: Boolean, isRegistrant: Boolean,
-         hadInstructions: Boolean, canBet: Boolean, points: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long]){
-  
-  
+         lastName: String, isAdmin: Boolean, isRegistrant: Boolean,
+         hadInstructions: Boolean, canBet: Boolean, totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long]){
 }
    
 object UserNoPwC {
    def apply(user: User): UserNoPw = {
         UserNoPw(user.id, user.username, user.firstName, 
-        user.lastName, user.email, user.isAdmin, user.isRegistrant,
-        user.hadInstructions, user.canBet, user.points, user.pointsSpecialBet, user.iconurl, user.registeredBy)  
+        user.lastName, user.isAdmin, user.isRegistrant,
+        user.hadInstructions, user.canBet, user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.registeredBy)  
    }     
 }      
          
@@ -103,7 +102,7 @@ case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, po
  * startLocal: start in local timezone 
  * startServer: start in server timezone
  * 
- */
+ **/
 case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: DateTime, localtz: String, serverStart: DateTime, servertz: String, venue: String, group: String, nr: Int){
   //     def GameResultPrettyPrint = if(calculated) GameResult.goalsTeam1+":"+GameResult.goalsTeam2 else "NA"
 	    	 

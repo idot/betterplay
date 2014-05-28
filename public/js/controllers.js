@@ -32,9 +32,24 @@ controllers.UsersCtrl = function($scope, $filter, Restangular, $stateParams, ngT
 
 controllers.UsersCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams' ];
 
-controllers.GamesCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
+controllers.GamesCtrl = function($scope, $filter, $timeout, Restangular, $stateParams, ngTableParams ) {
 	var baseGames = Restangular.all('api/games');
 	
+	$scope.df = DATEFILTER;
+	
+	$scope.timeLeft = function(serverTime, current){
+	    return serverTime - current;	
+	};
+	
+	$scope.currentTime = new Date();
+		
+	$scope.onTimeout = function(){
+         mytimeout = $timeout($scope.onTimeout,1000);
+		 $scope.currentTime = new Date();
+	}	
+		
+	var mytimeout = $timeout($scope.onTimeout,1000);	
+		
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10,          // count per page
@@ -52,8 +67,9 @@ controllers.GamesCtrl = function($scope, $filter, Restangular, $stateParams, ngT
  	       });
 		}
    });
+   
 }
-controllers.GamesCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+controllers.GamesCtrl.$inject = ['$scope', '$filter', '$timeout', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
 controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
@@ -64,7 +80,7 @@ controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTa
         page: 1,            // show first page
         count: 10,          // count per page
         sorting: {
-            nr : 'asc'     // initial sorting
+           'username' : 'asc'     // initial sorting
         }
     }, {
         total: 0,           // length of data

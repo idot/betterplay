@@ -28,10 +28,10 @@ username: {{user.username}}
             <td data-title="'nr'" sortable="'gb.game.game.nr'">
                 <a href='#/game/{{gb.game.game.nr}}'>{{gb.game.game.nr}}</a>
             </td>
-            <td data-title="'local start'" sortable="'time'">
+            <td data-title="'local start'" sortable="'game.game.serverStart'">
                 {{gb.game.game.localStart | date : 'medium'}}
             </td>
-            <td data-title="'server start'" sortable="'time'">
+            <td data-title="'server start'" sortable="'game.game.serverStart'">
                 {{gb.game.game.serverStart | date : 'medium'}}
             </td>
 			<td data-title="'team1'" sortable="'gb.game.team1.name'">
