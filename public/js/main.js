@@ -65,6 +65,11 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	   		   return s;	 
 	   	     };
 	
+	         $rootScope.betClosed = function(serverTime, current){
+	            var diff = (serverTime -  MSTOCLOSING) - current;
+				return diff < 0;	
+	         };
+	
 	 	  	 $rootScope.currentTime = new Date();
 		
 	   	     $rootScope.onTimeout = function(){
