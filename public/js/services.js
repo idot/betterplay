@@ -5,7 +5,10 @@
 /** global constants **/
 var DATEFILTER = 'dd/MM HH:mm';
 
-/**var MINUTESTOCLOSING = 60 * 1000;**/
+//TODO: check if closing time should not come from the server somehow to prevent submission rejected errors
+//I now added one additional minute
+//m s ms
+var MSTOCLOSING = 61 * 60 * 1000;
 
 
 /** global constants **/

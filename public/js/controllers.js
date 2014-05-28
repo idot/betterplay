@@ -37,9 +37,16 @@ controllers.GamesCtrl = function($scope, $filter, $timeout, Restangular, $stateP
 	
 	$scope.df = DATEFILTER;
 	
+	
 	$scope.timeLeft = function(serverTime, current){
-	    return serverTime - current;	
+		//boolean true add in/ago
+		//negative values = ago
+		//positive values = in
+	    var s = moment.duration((serverTime -  MSTOCLOSING) - current , "milliseconds").humanize(true);
+		return s;	 
 	};
+	
+	
 	
 	$scope.currentTime = new Date();
 		
