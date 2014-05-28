@@ -22,6 +22,7 @@ controllers.UsersCtrl = function($scope, $filter, Restangular, $stateParams, ngT
         getData: function($defer, params) {
 	       baseUsers.getList().then(function(users){
                var data = users;
+			   params.total(data.length);
 		       var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 	       });
@@ -38,13 +39,14 @@ controllers.GamesCtrl = function($scope, $filter, Restangular, $stateParams, ngT
         page: 1,            // show first page
         count: 10,          // count per page
         sorting: {
-            name: 'asc'     // initial sorting
+            'game.nr': 'asc'     // initial sorting
         }
     }, {
         total: 0,           // length of data
         getData: function($defer, params) {
  	       baseGames.getList().then(function(games){
                 var data = games;
+				params.total(data.length);
  		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
  	       });
@@ -55,14 +57,14 @@ controllers.GamesCtrl.$inject = ['$scope', '$filter', 'Restangular', '$statePara
 
 
 controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
-	$scope.params = $stateParams;
-	var baseUser = Restangular.one('api/user', $scope.params.username);
-    
+	$scope.stateParams = $stateParams;
+	var baseUser = Restangular.one('api/user', $scope.stateParams.username);
+
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10,          // count per page
         sorting: {
-            name: 'asc'     // initial sorting
+            nr : 'asc'     // initial sorting
         }
     }, {
         total: 0,           // length of data
@@ -70,7 +72,8 @@ controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTa
         	baseUser.get().then(function(userWithSpAndGB){
 				$scope.user = userWithSpAndGB.user;
 				$scope.special = userWithSpAndGB.special;
-				var data = userWithSpAndGB.games;
+				var data = userWithSpAndGB.gameBets;
+				params.total(data.length);
  		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 	        });
@@ -80,22 +83,22 @@ controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTa
 controllers.UserCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 controllers.GameCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
-	$scope.params = $stateParams;
-	var baseGame = Restangular.one('api/game', $scope.params.gamenr);
+	$scope.stateParams = $stateParams;
+	var baseGame = Restangular.one('api/game', $scope.stateParams.gamenr);
     
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
         count: 10,          // count per page
         sorting: {
-            name: 'asc'     // initial sorting
+            nr: 'asc'     // initial sorting
         }
     }, {
         total: 0,           // length of data
         getData: function($defer, params) {	
-        	baseUser.get().then(function(userWithSpAndGB){
-				$scope.user = userWithSpAndGB.user;
-				$scope.special = userWithSpAndGB.special;
-				var data = userWithSpAndGB.games;
+        	baseGame.get().then(function(gwtWithBetsPerUser){
+				$scope.gwt = gwtWithBetsPerUser.game;
+				var data = gwtWithBetsPerUser.betsUsers;
+				params.total(data.length);
  		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 	        });

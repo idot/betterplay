@@ -1,20 +1,20 @@
 
-
+  
    <table ng-table="tableParams" class="table">
         <tr ng-repeat="gb in $data">
-            <td data-title="'nr'" sortable="'gb.game.nr'">
+            <td data-title="'nr'" sortable="'game.nr'">
                 <a href='#/game/{{gb.game.nr}}'>{{gb.game.nr}}</a>
             </td>
             <td data-title="'local start'" sortable="'time'">
                 {{gb.game.start}}
             </td>
-			<td data-title="'team1'" sortable="'gb.team1.name'">
+			<td data-title="'team1'" sortable="'team1.name'">
 			    {{gb.team1.name}}
 			</td>
-			<td data-title="'team2'" sortable="'gb.team2.name'">
+			<td data-title="'team2'" sortable="'team2.name'">
 			    {{gb.team2.name}}
 			</td>
-            <td data-title="'level'" sortable="'gb.level.name'">
+            <td data-title="'level'" sortable="'level.name'">
 				{{gb.level.name}}
 			</td>
 			<td data-title="'points'">

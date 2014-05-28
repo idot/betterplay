@@ -18,8 +18,10 @@ GET     /api/levels                  controllers.Levels.all()
 #POST    /api/level/:nr               controllers.Levels.post(nr: Long)  #creates new level by nr not id!
 
 GET     /api/games                  controllers.Games.all()
-#GET     /api/game/:id               controllers.Games.get(id: Long)   #gets game with all bets
-#POST    /api/game/:id               controllers.Games.post(id: Long)  #creates/updates game with all bets; creates bets if not there
+
+# gets game with all bets nr is game nr not game id!
+GET     /api/game/:nr              controllers.Games.get(nr: Int)   
+#POST    /api/game/:nr               controllers.Games.post(nr: Int)  #creates/updates game with all bets; creates bets if not there
 
 GET     /api/users                  controllers.Users.all()           
 # fetches user + all of his bets 

@@ -1,0 +1,18 @@
+<ul>
+ <li>{{gwt.game.nr}}</li>
+ <li>{{gwt.game.localStart}}</li>
+ <li>{{gwt.team1.name}}</li>
+ <li>{{gwt.team2.name}}</li>	
+</ul>
+
+  <!-- this is the users table with bets for this game for each user added -->
+   <table ng-table="tableParams" class="table">
+        <tr ng-repeat="user in $data">
+            <td data-title="'user'" sortable="'username'">
+                <a href='#/user/{{user.username}}'>{{user.username}}</a>
+            </td>
+            <td data-title="'firstname'" sortable="'firstName'">
+                {{user.firstName}}
+            </td>
+        </tr>
+   </table>

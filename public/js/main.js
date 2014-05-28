@@ -52,7 +52,7 @@ require(['angular', './controllers', './directives', './filters', './services', 
 		  
 	   
       
-        $urlRouterProvider.otherwise("/users");
+        $urlRouterProvider.otherwise("/users"); //home should be 1. if logged in
 
 	       $stateProvider
 		      .state('users', {
@@ -72,7 +72,7 @@ require(['angular', './controllers', './directives', './filters', './services', 
 		      })
 			  .state('game', {
 				  url: "/game/:gamenr",
-				  templateUrl: 'paritals/game.html',
+				  templateUrl: 'partials/game.html',
 				  controller: controllers.GameCtrl
 			  });
 	//	.state('home', { home of user
