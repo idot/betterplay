@@ -1,7 +1,8 @@
 BetterPlay
 ==========
 
-Tournamtent betting system 
+Tournament style betting system especiall for WM2014 
 
-uses: Play2.3, slick, scala 2.10
+uses: Play2.3, slick, scala 2.10, angular
+
 
