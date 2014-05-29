@@ -1,6 +1,6 @@
-   <h1>{{currentTime | date : 'medium' }}</h1>
+
   
-   <table ng-table="tableParams" class="table">
+   <table ng-table="tableParams" class="betterlist">
         <tr ng-repeat="gb in $data">
             <td data-title="'nr'" sortable="'game.nr'">
                 <a href='#/game/{{gb.game.nr}}'>{{gb.game.nr}}</a>

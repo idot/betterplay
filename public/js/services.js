@@ -3,7 +3,7 @@
 'use strict';
 
 /** global constants **/
-var DATEFILTER = 'dd/MM HH:mm';
+var DATEFILTER = 'MM/dd HH:mm';
 
 
 
