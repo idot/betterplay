@@ -1,11 +1,11 @@
 
   
-   <table ng-table="tableParams" class="betterlist">
+   <table ng-table="tableParams" class="betterlist" show-filter="true">
         <tr ng-repeat="gb in $data">
             <td data-title="'nr'" sortable="'game.nr'">
                 <a href='#/game/{{gb.game.nr}}'>{{gb.game.nr}}</a>
             </td>
-			<td data-title="'team1'" sortable="'team1.name'">
+			<td data-title="'team1'" sortable="'team1.name'" filter="{ 'team1.name': 'text' }">
 			    {{gb.team1.name}}
 			</td>
 			<td data-title="'team2'" sortable="'team2.name'">
@@ -14,7 +14,7 @@
 			<td data-title="'bet closes'" sortable="'game.serverStart'">
 				{{timeLeft(gb.game.serverStart, currentTime)}}
 			</td>
-            <td data-title="'level'" sortable="'level.name'">
+            <td data-title="'level'" sortable="'level.name'"> 
 				{{gb.level.name}}
 			</td>
             <td data-title="'local start'" sortable="'game.serverStart'">
@@ -28,5 +28,3 @@
 			</td>
         </tr>
    </table>
-
-  

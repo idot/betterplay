@@ -10,49 +10,44 @@ var controllers = {};
 
 controllers.UsersCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	var baseUsers = Restangular.all('api/users');
-
-    $scope.tableParams = new ngTableParams({
-        page: 1,            // show first page
-        count: 10,          // count per page
-        sorting: {
-            name: 'asc'     // initial sorting
-        }
-    }, {
-        total: 0,           // length of data
-        getData: function($defer, params) {
-	       baseUsers.getList().then(function(users){
-               var data = users;
-			   params.total(data.length);
-		       var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-               $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-	       });
-        }
+    baseUsers.getList().then(function(users){
+        $scope.users = users;
+		console.log("fetched users: "+users.length);
     });
+	
+
 }
 
 controllers.UsersCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams' ];
 
 controllers.GamesCtrl = function($scope, $filter, $timeout, Restangular, $stateParams, ngTableParams ) {
-	var baseGames = Restangular.all('api/games');
+	var queryGames = Restangular.all('api/games');
+	
 	
 	$scope.df = DATEFILTER;
+	
+	queryGames.getList().then(function(games){
+	    $scope.allGames = games;
 		
-    $scope.tableParams = new ngTableParams({
-        page: 1,            // show first page
-        count: 10,          // count per page
-        sorting: {
-            'game.nr': 'asc'     // initial sorting
-        }
-    }, {
-        total: 0,           // length of data
-        getData: function($defer, params) {
- 	       baseGames.getList().then(function(games){
-                var data = games;
-				params.total(data.length);
- 		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
- 	       });
-		}
+	    $scope.tableParams = new ngTableParams({
+	        page: 1,            // show first page
+	        count: 10,          // count per page
+	        sorting: {
+	            'game.nr': 'asc'     // initial sorting
+	        }
+	    }, {
+	        total: 0,           // length of data
+	        getData: function($defer, params) {
+	                var data = games;
+	 		        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+					console.log(orderedData[1]);
+					orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData; 
+					params.total(orderedData.length);
+					orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())
+					$defer.resolve(orderedData);
+	 	     }
+			}
+	   );
    });
    
 }
