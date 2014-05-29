@@ -47,12 +47,27 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	  moment().format();
    
    angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable'])
-      .run([ '$rootScope', '$state', '$stateParams', '$timeout',
-         function ($rootScope, $state, $stateParams, $timeout){
-			 //TODO: check if closing time should not come from the server somehow to prevent submission rejected errors
-			 //I now added one additional minute
+      .run([ '$rootScope', '$state', '$stateParams', '$timeout', 'Restangular',
+         function ($rootScope, $state, $stateParams, $timeout, Restangular){
+			 var baseTime = Restangular.one('api/time');
+			 
+			 var updateTimeFromServer = function(){ 
+				    baseTime.get().then(function(currentTime){			 
+	 	  	        $rootScope.startupTime = new Date(currentTime.serverTime);
+				    $rootScope.currentTime = $rootScope.startupTime;
+		         })
+			 };
+			
+			 //time before game start that bet closes
+			 //1 minute more than on server to prevent submission errors for users
 			 var MSTOCLOSING = 61 * 60 * 1000; //in ms
-			 var UPDATEINTERVAL = 60 * 1000; //in ms
+			 
+			 //time to update clock
+			 var UPDATEINTERVAL = 1000; //in ms
+			 
+			 //reload clock from server 
+			 var RESETTIMEDIFF = 5 * 60 * 1000; //in ms
+			 
 		     $rootScope.$state = $state;
              $rootScope.$stateParams = $stateParams;
 
@@ -69,14 +84,18 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	            var diff = (serverTime -  MSTOCLOSING) - current;
 				return diff < 0;	
 	         };
-	
-	 	  	 $rootScope.currentTime = new Date();
+	         
 		
 	   	     $rootScope.onTimeout = function(){
-	            mytimeout = $timeout($rootScope.onTimeout,UPDATEINTERVAL);
-	   		   $rootScope.currentTime = new Date();
-	   	     }	
-		
+	           mytimeout = $timeout($rootScope.onTimeout,UPDATEINTERVAL);
+	   		   $rootScope.currentTime = new Date(new Date($rootScope.currentTime).getTime() + UPDATEINTERVAL);
+	   	       var timerunning = $rootScope.currentTime.getTime() - $rootScope.startupTime.getTime();
+			   if(timerunning > RESETTIMEDIFF){
+			       updateTimeFromServer();  	
+			   }
+			 }	
+			 
+		     updateTimeFromServer()
 	   	     var mytimeout = $timeout($rootScope.onTimeout,UPDATEINTERVAL);	 
 
       }])
