@@ -57,6 +57,8 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				    $rootScope.currentTime = $rootScope.startupTime;
 		         })
 			 };
+			 
+			 $rootScope.DF = 'MM/dd HH:mm';
 			
 			 //time before game start that bet closes
 			 //1 minute more than on server to prevent submission errors for users
@@ -84,7 +86,12 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	            var diff = (serverTime -  MSTOCLOSING) - current;
 				return diff < 0;	
 	         };
-	         
+			 
+			 $rootScope.canBet = function(serverTime, current, user, bet){
+			 	var diff = (serverTime -  MSTOCLOSING) - current;
+				var owner = user.id == bet.userId;
+				return diff > 0 && owner;
+			 };
 		
 	   	     $rootScope.onTimeout = function(){
 	           mytimeout = $timeout($rootScope.onTimeout,UPDATEINTERVAL);

@@ -1,6 +1,8 @@
-
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">All Games</div>
   
-   <table ng-table="tableParams" class="betterlist" show-filter="true">
+   <table ng-table="tableParams" class="betterlist" show-filter="false">
         <tr ng-repeat="gb in $data">
             <td data-title="'nr'" sortable="'game.nr'">
                 <a href='#/game/{{gb.game.nr}}'>{{gb.game.nr}}</a>
@@ -18,13 +20,14 @@
 				{{gb.level.name}}
 			</td>
             <td data-title="'local start'" sortable="'game.serverStart'">
-                {{gb.game.localStart | date: df }}
+                {{gb.game.localStart | date: DF }}
             </td>
             <td data-title="'server start'" sortable="'game.serverStart'">
-                {{gb.game.serverStart | date: df }}
+                {{gb.game.serverStart | date: DF }}
             </td>
 			<td data-title="'points'">
 				{{gb.level.pointsExact}}/{{gb.level.pointsTendency}}
 			</td>
         </tr>
    </table>
+</div>

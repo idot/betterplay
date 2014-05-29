@@ -1,6 +1,7 @@
-
-  
-   <!--table ng-table="tableParams" class="table">columns="columnCollection"
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">All Users</div>
+   <table ng-table="tableParams" class="betterlist" show-filter="false">
         <tr ng-repeat="user in $data">
             <td data-title="'user'" sortable="'username'">
                 <a href='#/user/{{user.username}}'>{{user.username}}</a>
@@ -21,7 +22,7 @@
                 {{user.pointsSpecialBet}}
             </td>
         </tr>
-   </table-->
-
+   </table>
+</div>
 
 

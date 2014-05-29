@@ -2,10 +2,31 @@
 
 'use strict';
 
-/** global constants **/
-var DATEFILTER = 'MM/dd HH:mm';
 
 
+
+/**
+* initialSorting should be a javascript object like:
+* { 'game.nr': 'asc'}
+*
+*/
+var setupTable = function(collection, ngTableParams, initialSorting, $scope, $filter){
+    $scope.tableParams = new ngTableParams({
+        page: 1,                 // show first page
+        count: 15,               // count per page
+        sorting: initialSorting  // initial sorting
+    }, {
+        total: 0,           // length of data
+        getData: function($defer, params) {	
+			var data = collection;
+	        var orderedData = params.sorting() ? $filter('orderBy')(collection, params.orderBy()) : collection;
+			orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData; 
+			params.total(orderedData.length);
+			orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())
+			$defer.resolve(orderedData);
+	    }
+     });
+ };
 
 /** global constants **/
 
