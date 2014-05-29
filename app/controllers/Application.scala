@@ -14,6 +14,8 @@ import models.UserNoPw
 import models.UserNoPwC
 import play.api.db.slick.DBSessionRequest
 
+import org.joda.time.DateTime
+
 /***
  * security based on 
  * http://www.jamesward.com/2013/05/13/securing-single-page-apps-and-rest-services
@@ -73,6 +75,13 @@ trait Application extends Controller with Security {
       Cache.remove(token)
       result.discardingCookies(DiscardingCookie(name = AuthTokenCookieKey))
     }
+  }
+  
+  
+  def time() = Action {
+	  val now = new DateTime()
+	  val j = Json.obj("serverTime" -> now)
+	  Ok(j)
   }
   
   
