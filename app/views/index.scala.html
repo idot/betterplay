@@ -25,10 +25,13 @@
     
      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li ng-class="{active: $state.includes('users')}"><a ui-sref="users">users</a></li>
+	    <li ng-class="{active: $state.includes('users')}"><a ui-sref="users">users</a></li>
 		<li ng-class="{active: $state.includes('games')}"><a ui-sref="games">games</a></li>
         <!-- change to if user.isAdmin, move debug down -->
-	    <li ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>
+	    <li ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>		
+		<li ng-if="! loggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
+		<li ng-if="loggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user({ username: loggedInUser.username })">{{loggedInUser.username}}</a></li>
+		<li ng-if="loggedIn()"><a ui-sref="logout">logout</a></li>
 	 </ul>
 	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : DF }}</div>
     </div><!-- /.navbar-collapse -->

@@ -59,7 +59,8 @@ controllers.GameCtrl = function($scope, $filter, Restangular, $stateParams, ngTa
 controllers.GameCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
-controllers.SettingsCtrl = function($scope,$rootScope){
+controllers.SettingsCtrl = function($scope,$rootScope,$stateParams){
+  $scope.stateParams = $stateParams;	
 	
   $scope.opened = false;	
 	
@@ -94,9 +95,38 @@ controllers.SettingsCtrl = function($scope,$rootScope){
   };
 
 }
+controllers.SettingsCtrl.$inject = ['$scope','$rootScope','$stateParams'];
 
-controllers.SettingsCtrl.$inject = ['$scope','$rootScope'];
+
+
+controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, $location){
+	$scope.stateParams = $stateParams;	
+		
+	$scope.username = "";
+	$scope.password = "";
+	
+	$scope.login = function(){
+		var credentials = { 'username': $scope.username, 'password': $scope.password };
+	    Restangular.all("login").post(credentials).then(
+	      function(auth){ 
+			  $rootScope.loggedInUser = auth.user;
+			  $rootScope.authtoken = auth["AUTH-TOKEN"];
+			  Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth["AUTH-TOKEN"]});
+			  $location.url("/users");
+	      },
+	      function(err){
+	        console.log("err "+err);
+	      });
+    };
+
+}
+controllers.LoginCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$location'];
 
 return controllers;
 
 });
+
+
+
+
+

@@ -1,7 +1,7 @@
 <form class="form-inline" role="form">
     <div class="form-group">
-      <label>global time format</label>
-      <select type="text" ng-model="DF" class="form-control" ng-change="setFormat()">
+      <label for="timeformat">global time format</label>
+      <select id="timeformat" type="text" ng-model="DF" class="form-control" ng-change="setFormat()">
 	      <option>MM/dd HH:mm</option>
 	      <option>MM/dd HH:mm:ss</option>
 	      <option>yyyy MM/dd HH:mm:ss</option>
@@ -10,19 +10,17 @@
     </div>
 	<!--div ng-if="betterSettings.debug"-->
 	    <div class="form-group">
-	      <label>time refresh interval (ms)</label>
-		  <input type="number" ng-model="updateInterval" class="form-control" ng-change="setUpdateinterval()">
+	      <label for="refresh">time refresh interval (ms)</label>
+		  <input id="refresh" type="number" ng-model="updateInterval" class="form-control" ng-change="setUpdateinterval()">
 	    </div>
 		<div class="form-group">
-		  <label>date</label>	
-		  <div class="col-md-6">
-		      <p class="input-group">
+		  <label for="dateselect">date</label>	
+		      <p id="dateselect" class="input-group">
 		        <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="GLOBALDATE" is-open="opened" ng-change="updateDate"/>
-		           <span class="input-group-btn">
+		             <span class="input-group-btn">
 		              <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-		           </span>
+		         </span>
 		      </p>
-		  </div>		
 	    </div>
 		<!--/div-->
 <form>

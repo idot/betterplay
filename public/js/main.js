@@ -49,6 +49,20 @@ require(['moment','angular', './controllers', './directives', './filters', './se
    angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable'])
       .run([ '$rootScope', '$state', '$stateParams', '$timeout', 'Restangular',
          function ($rootScope, $state, $stateParams, $timeout, Restangular){
+			 Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+			    // if(response.status === 403) {
+			        // refreshAccesstoken().then(function() {
+			             // Repeat the request and then call the handlers the usual way.
+			      //       $http(response.config).then(responseHandler, deferred.reject);
+			    //         // Be aware that no request interceptors are called this way.
+			    //     });
+
+			   //      return false; // error handled
+			   //  }
+                 console.log("custom error handler: "+response.status+" "+response.text);
+			     return true; // error not handled
+			 });
+			 
 			 var queryTime = Restangular.one('api/time');
 			 Restangular.one('api/settings').get().then(function(settings){
 			 	$rootScope.betterSettings = settings;				
@@ -60,9 +74,15 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				    $rootScope.currentTime = $rootScope.startupTime;
 		         })
 			 };
+			 		 
+			 $rootScope.logout = function(){
+		         $rootScope.loggedInUser = { userId: -1, username: "" };
+				 $rootScope.authtoken = "";		 
+				 Restangular.setDefaultHeaders();	
+			 };
 			 
-		//	 $scope.DF = { format: 'MM/dd HH:mm'};
-			 
+			 $rootScope.logout();
+					 
 			 //should we fetch the time from the server or take the interactively set time
 			 $rootScope.TIMEFROMSERVER = true;
 			 
@@ -90,6 +110,11 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	   	       var s = moment.duration(diff, "milliseconds").humanize(true);
 	   		   return s;	 
 	   	     };
+			 
+			 $rootScope.loggedIn = function(){
+				 console.log("check.login!");
+			   return $rootScope.authtoken != "";
+			 };
 	
 	         $rootScope.betClosed = function(serverTime, current){
 	            var diff = (serverTime -  $rootScope.MSTOCLOSING) - current;
@@ -146,7 +171,20 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			  	  url: "/settings",
 				  templateUrl: 'partials/settings.html',
 				  controller: controllers.SettingsCtrl
+			  })
+			  .state('login', {
+			  	  url: "/login",
+				  templateUrl: 'partials/login.html',
+				  controller: controllers.LoginCtrl
+			  })
+			  .state('logout', {
+				  url: "/logout",
+				  onEnter: function($rootScope, $state) {
+					  $rootScope.logout();
+					  $state.transitionTo("users");
+				  }
 			  });
+			  
 	//	.state('home', { home of user
 	//		url: '/home',
 	//		templateUrl: 'partials/home.html',
