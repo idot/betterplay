@@ -99,7 +99,7 @@ controllers.SettingsCtrl.$inject = ['$scope','$rootScope','$stateParams'];
 
 
 
-controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, $location){
+controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, $state){
 	$scope.stateParams = $stateParams;	
 		
 	$scope.username = "";
@@ -112,7 +112,7 @@ controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, 
 			  $rootScope.loggedInUser = auth.user;
 			  $rootScope.authtoken = auth["AUTH-TOKEN"];
 			  Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth["AUTH-TOKEN"]});
-			  $location.url("/users");
+			  $state.transitionTo("users");
 	      },
 	      function(err){
 	        console.log("err "+err);
@@ -120,7 +120,7 @@ controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, 
     };
 
 }
-controllers.LoginCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$location'];
+controllers.LoginCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state'];
 
 return controllers;
 
