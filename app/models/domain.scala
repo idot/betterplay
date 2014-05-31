@@ -17,7 +17,7 @@ object DomainHelper {
    * admins had instructions!
    */
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
-      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, 0, 0, user.iconurl, registeringUser)
+      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, true, 0, 0, user.iconurl, registeringUser)
   }
 
   
@@ -55,7 +55,7 @@ case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId:
 /***
  * hadinstructions === special bet was set
  */
-case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, email: String, passwordHash: String, isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, points: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long] ){
+case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, email: String, passwordHash: String, isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, isRegistered: Boolean, points: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long] ){
 //  
 //  	def password_=(in: String) = this.password_hash = encrypt(in)
 //	
@@ -117,4 +117,4 @@ case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team
 
 case class GameWithTeams(game: Game, team1: Team, team2: Team, level: GameLevel)
 
-
+case class UserToken(id: Option[Long] = None, userId: Long, token: String, created: DateTime, used: Option[DateTime], tokentype: String)

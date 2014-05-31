@@ -93,7 +93,7 @@ object InitialData {
   def users(): Seq[User] = {
       def uf(name: String, first: String, last: String, email: String, pw: String, admin: Boolean): User = {
           val encrypted = DomainHelper.encrypt(pw)
-          User(None, name, first, last, email, encrypted, admin, admin, admin, true, 0, 0, None, None)
+          User(None, name, first, last, email, encrypted, admin, admin, admin, true, true, 0, 0, None, None)
       }
       val admin = uf("admin", "admin" ,"admin", "admin@admin.com", "admin", true)
       val users = (1 to 10).map(n => uf(s"n$n", s"f$n", s"l$n", s"f${n}.l${n}@betting.com", "p$n", false))

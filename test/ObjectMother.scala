@@ -4,9 +4,9 @@ import org.joda.time.DateTime
 
 object ObjectMother {
 
-  def adminUser(): User = User(None, "a1", "af1","al1", "emaila1", "pwa1", true, true, false, true, 3, 0, None, None)   
+  def adminUser(): User = User(None, "a1", "af1","al1", "emaila1", "pwa1", true, true, true, false, true, 3, 0, None, None)   
   
-  def dummyUsers(): Seq[User] = (1 to 3).map{ nr => User(None, s"u$nr", s"f$nr", s"l$nr", s"f${nr}@betting.at", s"$nr", true, true, true, false, 4 , 2, None, None)}
+  def dummyUsers(): Seq[User] = (1 to 3).map{ nr => User(None, s"u$nr", s"f$nr", s"l$nr", s"f${nr}@betting.at", s"$nr", true, true, true, true, false, 4 , 2, None, None)}
   
   val dummyTeams: Seq[Team] = (1 to 6).map{nr => Team(None, s"t$nr", s"t$nr", DBImage("",""))}
    

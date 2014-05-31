@@ -30,7 +30,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "angular-ui-bootstrap" % "0.11.0-2",
   "org.webjars" % "angular-ui-router" % "0.2.10-1",
   "org.webjars" % "ng-table" % "0.3.2",
-  "org.webjars" % "momentjs" % "2.6.0-2"
+  "org.webjars" % "momentjs" % "2.6.0-2",
+   "org.webjars" % "angular-ui-utils" % "47ff7ef35c"
 )
 
 

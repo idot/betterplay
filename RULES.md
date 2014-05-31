@@ -12,3 +12,10 @@ afterwards only change of start time
 
 * 
 
+
+* create GAMES
+* create USER
+* ? levels?
+* special bets!!
+
+

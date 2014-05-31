@@ -207,7 +207,7 @@ object BetterDb {
    }
    
    def authenticate(username: String, inputPassword: String)(implicit s: Session):  String \/ User = {
-       users.filter(u => u.username === username).firstOption.map{ u => 
+       users.filter(u => u.username === username && u.isRegistered).firstOption.map{ u => 
          if(new org.jasypt.util.password.StrongPasswordEncryptor().checkPassword(inputPassword, u.passwordHash)){
             \/-(u)
          }else{
@@ -410,9 +410,15 @@ object BetterDb {
    }
    
    /**
+    * one of 2 methods for creating users:
+    * this one creates the user directly
     * sets up all bets including special bets
     * TODO: only isResitserging users have to check registeringUser!!
     * 
+    *  the other one is token based, but I don't know if i manage to create this workflow:
+    * 
+    *  user registers with e-mail, token is generated for his id
+    *  user klicks link with token e-mail, opens web, => user signs on..
     */
    def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long])(implicit s: Session): String \/ User = {
       s.withTransaction{ 
@@ -435,6 +441,11 @@ object BetterDb {
           }
       }       
    }
+   
+   
+   
+   
+   
    
    def createBetsForGamesForAllUsers(submittingUser: User)(implicit s: Session): String \/ String = {
        if(submittingUser.isAdmin){ 

@@ -183,13 +183,24 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 					  $rootScope.logout();
 					  $state.transitionTo("users");
 				  }
-			  });
+			  })
+			  .state('createGame', {
+			  	  url: "/createGame",
+				  templateUrl: 'partials/createGame.html',
+				  controller: controllers.CreateGameCtrl
+			  })
+			  .state('registerUser', {
+				  url: "/registerUser",
+				  templateUrl: 'partials/registerUser.html',
+				  controller: controllers.RegisterUserCtrl
+			  })
+		//	  .state('signon', {
+		//		  url: "/signon/:token",
+		//		  templateUrl: 'partials/signon.html',
+		//		  controller: controllers.SignonCtrl
+		//	  })		  
+			  ;
 			  
-	//	.state('home', { home of user
-	//		url: '/home',
-	//		templateUrl: 'partials/home.html',
-	//		controller: controllers.HomeCtrl
-	//	})
     });
 
 

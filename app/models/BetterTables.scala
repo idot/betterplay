@@ -162,14 +162,15 @@ object BetterTables {
     def isAdmin = column[Boolean]("isadmin", O.NotNull)
     def hadInstructions = column[Boolean]("instructions", O.NotNull)
     def canBet = column[Boolean]("canbet", O.NotNull)
-    def points = column[Int]("points", O.NotNull)
+    def isRegistered = column[Boolean]("isregistered", O.NotNull)
+	def points = column[Int]("points", O.NotNull)
     def iconurl = column[Option[String]]("iconurl", O.Nullable)
     def registerby = column[Option[Long]]("registerby", O.Nullable)
     def pointsSpecial = column[Int]("pointsspecial", O.NotNull)
-        
+    
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id) 
     
-    def * = (id.?, username, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, pointsSpecial, iconurl, registerby) <> (User.tupled, User.unapply)
+    def * = (id.?, username, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, isRegistered, points, pointsSpecial, iconurl, registerby) <> (User.tupled, User.unapply)
 
   }
 
@@ -218,4 +219,22 @@ object BetterTables {
     
     def * = (id.?, name, shortName, foto) <> (Team.tupled, Team.unapply _)
   }
+
+
+  class UserTokens(tag: Tag) extends Table[UserToken](tag, "usertokens") {
+	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+	  def userId = column[Long]("user_id", O.NotNull)
+	  def token = column[String]("token", O.NotNull)
+	  def created = column[DateTime]("created", O.NotNull)
+	  def used = column[Option[DateTime]]("used", O.NotNull)
+	  def tokentype = column[String]("type", O.NotNull)
+	  
+	  def user = foreignKey("TOKEN_USER_FK", userId, users)(_.id)
+	  
+	  def * = (id.?, userId, token, created, used, tokentype) <> (UserToken.tupled, UserToken.unapply _)
+  }
+
+
 }
+
+
