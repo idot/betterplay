@@ -84,6 +84,12 @@ trait Application extends Controller with Security {
 	  Ok(j)
   }
   
+  def settings() = Action {
+	  val debug = Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)
+	  val j = Json.obj("debug" -> debug)
+	  Ok(j)
+  }
+  
   
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = DBAction(parse.json) { implicit request =>

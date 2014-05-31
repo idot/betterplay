@@ -36,5 +36,13 @@ define(['angular'], function(angular) {
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', [])
-  .value('version', '0.1')
+  .value('version', '0.1');
+//  .factory('settingsFactory', function(Restangular){
+//	  var settings = {
+//		 Restangular.one('api/settings').get().then(function(stings){
+//		 	var betterSettings = stings;				
+//		 });
+//	  };
+//	  return settings;
+//  });
 });

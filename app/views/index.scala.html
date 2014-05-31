@@ -27,8 +27,10 @@
       <ul class="nav navbar-nav">
         <li ng-class="{active: $state.includes('users')}"><a ui-sref="users">users</a></li>
 		<li ng-class="{active: $state.includes('games')}"><a ui-sref="games">games</a></li>
-     </ul>
-	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : 'MM/dd HH:mm:ss' }}</div>
+        <!-- change to if user.isAdmin, move debug down -->
+	    <li ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>
+	 </ul>
+	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : DF }}</div>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
   

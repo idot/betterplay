@@ -59,6 +59,44 @@ controllers.GameCtrl = function($scope, $filter, Restangular, $stateParams, ngTa
 controllers.GameCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
+controllers.SettingsCtrl = function($scope,$rootScope){
+	
+  $scope.opened = false;	
+	
+  $scope.DF = $rootScope.DF;
+  
+  $scope.setFormat = function(){
+	  $rootScope.DF = $scope.DF;
+  };
+	
+  $scope.setDate = function(newDate){
+      $rootScope.TIMEFROMSERVER = false;
+	  var nm = moment(newDate);
+      var om = currentTime;
+	  nm.hours(om.hours());
+	  nm.minutes(om.minutes());
+	  nm.seconds(om.seconds());
+	  $rootScope.currentTime = new Date(nm.getTime());
+  };
+  
+  $scope.GLOBALDATE = new Date($rootScope.currentTime.getTime());
+
+  $scope.open = function($event){
+	    $event.preventDefault();
+	    $event.stopPropagation();
+	    $scope.opened = true;
+  };
+
+  $scope.updateInterval = $rootScope.UPDATEINTERVAL;
+
+  $scope.setUpdateinterval = function(){
+	  $rootScope.UPDATEINTERVAL = $scope.updateInterval;
+  };
+
+}
+
+controllers.SettingsCtrl.$inject = ['$scope','$rootScope'];
+
 return controllers;
 
 });

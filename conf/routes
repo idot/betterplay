@@ -40,8 +40,8 @@ POST    /login                      controllers.Application.login()
 POST    /logout                     controllers.Application.logout()
 
 # Check if token is valid and get user id
-GET    /ping                        controllers.Application.ping()
-
+GET    /api/ping                    controllers.Application.ping()
+GET    /api/settings				controllers.Application.settings()
 
 # versioned assets
 #GET    /assets/*file    controllers.Assets.versioned(path="/public", file: Asset)
