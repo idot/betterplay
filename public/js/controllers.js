@@ -108,9 +108,7 @@ controllers.LoginCtrl = function($log, $scope, $rootScope, $stateParams, Restang
 		var credentials = { 'username': $scope.username, 'password': $scope.password };
 	    Restangular.all("login").post(credentials).then(
 	      function(auth){ 
-			  $rootScope.loggedInUser = auth.user;
-			  $rootScope.authtoken = auth["AUTH-TOKEN"];
-			  Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth["AUTH-TOKEN"]});
+			  $rootScope.updateLogin(auth.user, auth["AUTH-TOKEN"]);
 			  $state.transitionTo("users");
 	      }
 	    );
@@ -159,21 +157,22 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 	$scope.refreshUser = function(){
 	    var queryUser = Restangular.one('api/userWithEmail');
         queryUser.get().then(function(userWithEmail){
+			$scope.username = userWithEmail.username;
 			$scope.firstName = userWithEmail.firstName;
 			$scope.lastName = userWithEmail.lastName;
 			$scope.email = userWithEmail.email;
 			$scope.icontype = userWithEmail.icontype;
+			$rootScope.updateLogin(userWithEmail);
 		});
     }
-    
-	
+    	
 	$scope.password1 = "";
     $scope.password2 = "";
 		
 	$scope.updatePassword = function(){
 		    $log.debug('submitting new password: '+$scope.password1);
 		    var pu = { 'password': $scope.password1 };
-	    	Restangular.all('api/user/'+$scope.username+'/password').customPost( pu ).then(
+	    	Restangular.all('api/user/'+$scope.username+'/password').customPOST( pu ).then(
 			function(success){
 				toaster.pop('success', "changed password for "+$scope.username);
 				scope.password1 = "";
@@ -185,12 +184,16 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 	
 	$scope.updateDetails = function(){
 	       $log.debug('updating details: ');
-		   	
-		
-		
+		   var u = { firstName: $scope.firstName, lastName: $scope.lastName, email: $scope.email, icontype: $scope.icontype };	
+    	   Restangular.all('api/user/'+$scope.username+'/details').customPOST( u ).then(
+		     function(success){
+			    toaster.pop('success', "updated user details for"+$scope.username);
+                $scope.refreshUser();
+		     }
+		  );
 	};
 	
-	$scope.setFields();
+	$scope.refreshUser();
 }
 controllers.EditUserCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
 

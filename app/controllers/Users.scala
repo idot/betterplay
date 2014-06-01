@@ -4,6 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
+import play.api.libs.json.JsObject
 import play.api.data._
 import play.api.data.Forms._
 import play.api.db.slick.DBAction
@@ -35,9 +36,10 @@ trait Users extends Controller with Security {
       )
   }
      
-  def userWithEmail() = withUser(parse.json){ userId => user => implicit request =>
+  def userWithEmail() = withUser(){ userId => user => implicit request =>
 	  val nop = UserNoPwC(user)
       val jnop = Json.toJson(nop)  
+
 	  val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> user.email ))
       Ok(jnope)	  
   }	  	 

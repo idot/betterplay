@@ -12,7 +12,7 @@ requirejs.config({
 	'underscore': ['../lib/underscorejs/underscore'],
 	'moment': ['../lib/momentjs/min/moment.min'],
     'angular': ['../lib/angularjs/angular'],
-//	'angular-route': ['../lib/angularjs/angular-route'],
+	'angular-cookies': ['../lib/angularjs/angular-cookies'],
 	'angular-animate': ['../lib/angularjs/angular-animate'],
     'restangular': ['../lib/restangular/restangular'],
     'angular-ui': ['../lib/angular-ui/angular-ui'],
@@ -20,15 +20,16 @@ requirejs.config({
     'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router'],
 	'ng-table': ['../lib/ng-table/ng-table'],
 	'angular-ui-utils': ['../lib/angular-ui-utils/ui-utils'],
-	'toaster': ['toaster']
+	'toaster': ['toaster'],
+	
   },
   shim: {
     'angular': {
       exports : 'angular'
     },
-//	'angular-route': {
-//		deps: ['angular']
-//	},
+	'angular-cookies': {
+		deps: ['angular']
+	},
 	'angular-animate': {
 		deps: ['angular']
 	},
@@ -58,13 +59,13 @@ requirejs.config({
 
 
 
-require(['moment','angular', './controllers', './directives', './filters', './services', 'underscore', 'angular-animate', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils', 'toaster'],
+require(['moment','angular', './controllers', './directives', './filters', './services', 'underscore', 'angular-cookies', 'angular-animate', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils', 'toaster'],
   function(moment, angular, controllers) {   
 	  moment().format();
    
-   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngAnimate', 'restangular', 'ui.router', 'ngTable','ui.utils', 'toaster'])
-      .run([ '$rootScope', '$state', '$stateParams', '$timeout', 'Restangular', 'toaster',
-         function ($rootScope, $state, $stateParams, $timeout, Restangular, toaster){
+   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngCookies', 'ngAnimate', 'restangular', 'ui.router', 'ngTable','ui.utils', 'toaster'])
+      .run([ '$rootScope', '$state', '$stateParams', '$timeout', '$cookies', 'Restangular', 'toaster',
+         function ($rootScope, $state, $stateParams, $timeout, $cookies, Restangular, toaster){
 			 Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
 			    // if(response.status === 403) {
 			        // refreshAccesstoken().then(function() {
@@ -96,14 +97,47 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			 		 
 			 $rootScope.logout = function(){
 		         $rootScope.loggedInUser = { id: -1, username: "" };
-				 $rootScope.authtoken = "";		 
+				 $rootScope.authtoken = "";	
+				 delete $cookies["AUTH-TOKEN"];	 
 				 Restangular.setDefaultHeaders();	
 			 };
+			  		 
+			 /**
+			 * opening a new window looses all info in the new window
+			 * we grab the cookie containing the auth token and reload the user
+			 * if cookie not there logout => reset user to default
+			 */
+			 $rootScope.reauthenticate = function(){
+				 if(typeof $rootScope.authtoken === "undefined" || $rootScope.authtoken == ""){
+				 	var auth = $cookies["AUTH-TOKEN"];
+					if(typeof auth !== "undefined"){
+   				       $rootScope.authtoken = auth;
+   			 	       Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth});
+					   Restangular.one('api/userWithEmail').get().then(function(userWithEmail){
+						       $rootScope.loggedInUser = userWithEmail;
+					   });
+					}	
+				 }else{
+				 	$rootScope.logout();
+				 }
+			 };
 			 
-			 $rootScope.logout();
-					 
+			 $rootScope.reauthenticate();	  
+			 
+			 /**
+			 * update user calls this function without auth
+			 * 
+			 **/
+			 $rootScope.updateLogin = function(user, auth){
+				 $rootScope.loggedInUser = user;
+				 if( typeof auth !== "undefined" ) { 
+				     $rootScope.authtoken = auth;
+			 	     Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth});
+				}
+			 }
+
 			 $rootScope.isAdmin = function(){
-			     if($rootScope.loggedInUser.isAdmin === "undefined"){
+			     if(typeof $rootScope.loggedInUser === "undefined" || typeof $rootScope.loggedInUser.isAdmin === "undefined"){
 					 return false;
 				 }else{
 				 	 return $rootScope.loggedInUser.isAdmin;					
@@ -111,16 +145,15 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			 };		 
 			 
 			 $rootScope.isOwner = function(userId){
-				 if($rootScope.loggedInUser.id === "undefined"){
+				 if(typeof $rootScope.loggedInUser === "undefined" || typeof $rootScope.loggedInUser.id === "undefined"){
 					 return false;
 				 }else{
 			         return $rootScope.loggedInUser.id === userId;	
 			     }
 			 };
 			 
-			 $rootScope.loggedIn = function(){
-//				 console.log("check.login!");
-			   return $rootScope.authtoken != "";
+			 $rootScope.isLoggedIn = function(){
+			     return typeof $rootScope.authtoken !== "undefined" && $rootScope.authtoken != "";
 			 };
 					 
 			 //should we fetch the time from the server or take the interactively set time

@@ -8,9 +8,6 @@ afterwards only change of start time
 * guard methods with submittinguser:
   insertUser ??
 
-* username: only ascii, no space max 20 char
-
-* 
 
 
 * create GAMES

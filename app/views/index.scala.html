@@ -30,9 +30,9 @@
 		<li ng-class="{active: $state.includes('games')}"><a ui-sref="games">games</a></li>
         <!-- change to if user.isAdmin, move debug down -->
 	    <li ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>		
-		<li ng-if="! loggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
-		<li ng-if="loggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user({ username: loggedInUser.username })">{{loggedInUser.username}}</a></li>
-		<li ng-if="loggedIn()"><a ui-sref="logout">logout</a></li>
+		<li ng-if="! isLoggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
+		<li ng-if="isLoggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user({ username: loggedInUser.username })">{{loggedInUser.username}}</a></li>
+		<li ng-if="isLoggedIn()"><a ui-sref="logout">logout</a></li>
 	    <li class="dropdown" ng-if="isAdmin()" ng-class="{active: $state.includes('admin')}">
 	         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 	             <ul class="dropdown-menu">
@@ -55,9 +55,6 @@
        <div ui-view></div><!-- for sref above --->
        <!-- We'll also add some navigation: -->
     <toaster-container>  
-	 <h1>
-	   toasts
-	 </h1>
     </toaster-container>
 
 

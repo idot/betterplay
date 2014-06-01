@@ -8,7 +8,7 @@
      </li>
   </ul>
   <div class="form-group" ng-if="isOwner(user.id)">	
-     <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser')" value="Submit" title="Edit">Edit</button>
+     <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
   </div>
 </form>
   

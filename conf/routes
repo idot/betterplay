@@ -11,8 +11,8 @@ GET     /api/teams                  controllers.Teams.all()
 #GET    /api/team/:name             controllers.Teams.get(name: String)
 #POST    /api/team/:name             controllers.Teams.insert(name: String)
 
-GET     /api/players               controllers.Players.all()
-#GET     /api/player/id             controllers.Players.get(id: Long)
+GET     /api/players                 controllers.Players.all()
+#GET     /api/player/id              controllers.Players.get(id: Long)
 
 GET     /api/levels                  controllers.Levels.all()
 #GET     /api/level/:nr               controllers.Levels.get(nr: Long)   #gets level by nr not id!
