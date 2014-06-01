@@ -23,7 +23,7 @@ libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.0.6",
   "org.jasypt" % "jasypt" % "1.9.2",
   "commons-io" % "commons-io" % "2.4",
-  "io.argonaut" %% "argonaut" % "6.0.4",
+  "com.andersen-gott" %% "scravatar" % "1.0.2",  
   "org.webjars" % "angularjs" % "1.2.16-2",  
   "org.webjars" % "requirejs" % "2.1.11-1",
   "org.webjars" % "restangular" % "1.4.0-2",

@@ -17,5 +17,7 @@ afterwards only change of start time
 * create USER
 * ? levels?
 * special bets!!
+* Recaptcha for password reset email
+
 
 

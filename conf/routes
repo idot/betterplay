@@ -27,9 +27,12 @@ GET     /api/game/:nr              controllers.Games.get(nr: Int)
 GET     /api/users                  controllers.Users.all()           
 # fetches user + all of his bets 
 GET     /api/user/:name             controllers.Users.get(name: String)  
+# fetches logged in user with email
+GET     /api/userWithEmail          controllers.Users.userWithEmail()
 #creates/updates user creates bets on first registration; does not update bets
-PUT    /api/user/:name              controllers.Users.update(name: String) 
-
+PUT    /api/user/:name              controllers.Users.create(name: String) 
+POST   /api/user/:name/details      controllers.Users.updateDetails(name: String) 
+POST   /api/user/:name/password     controllers.Users.updatePassword(name: String) 
 
 POST    /api/createBetsForUsers      controllers.Users.createBetsForUsers()
 

@@ -1,26 +1,17 @@
-<ul>
- <li>
-username: {{params.username}}
-  </li>
-  <li>
-username: {{user.username}}
-  </li>
-  <li>
-  lastname: {{user.lastName}}
-  </li>
-  <li>
-  email: {{user.email}}
-  </li>
-</ul>
-<!--
-<ul>
- <li>
- mvp: {{specialBet.mvp}}
- </li>
-</ul>
--->
-
-
+<form class="form col-xs-5" name="userEditForm" role="form">
+  <ul class="list-group">
+     <li class="list-group-item">
+       {{params.username}}  <span class="badge">{{user.points}}</span>
+     </li>
+     <li class="list-group-item">
+       {{user.username}} {{user.lastName}}
+     </li>
+  </ul>
+  <div class="form-group" ng-if="isOwner(user.id)">	
+     <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser')" value="Submit" title="Edit">Edit</button>
+  </div>
+</form>
+  
 
   <!-- this is the games table with bets for each game added -->
    <table ng-table="tableParams" class="table">
@@ -44,7 +35,7 @@ username: {{user.username}}
 				{{gb.game.level.name}}
 			</td>
 			<td data-title="'points'">
-				{{gb.game.level.pointsExact}}/{{gb.game.level.pointsTendency}}
+				 <span class="badge">{{gb.game.level.pointsExact}}/{{gb.game.level.pointsTendency}}</span>
 			</td>
 			<td data-title="'bet'">
 				{{gb.bet.result.goalsTeam1}}

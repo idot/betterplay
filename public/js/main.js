@@ -95,12 +95,33 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			 };
 			 		 
 			 $rootScope.logout = function(){
-		         $rootScope.loggedInUser = { userId: -1, username: "" };
+		         $rootScope.loggedInUser = { id: -1, username: "" };
 				 $rootScope.authtoken = "";		 
 				 Restangular.setDefaultHeaders();	
 			 };
 			 
 			 $rootScope.logout();
+					 
+			 $rootScope.isAdmin = function(){
+			     if($rootScope.loggedInUser.isAdmin === "undefined"){
+					 return false;
+				 }else{
+				 	 return $rootScope.loggedInUser.isAdmin;					
+				 }
+			 };		 
+			 
+			 $rootScope.isOwner = function(userId){
+				 if($rootScope.loggedInUser.id === "undefined"){
+					 return false;
+				 }else{
+			         return $rootScope.loggedInUser.id === userId;	
+			     }
+			 };
+			 
+			 $rootScope.loggedIn = function(){
+//				 console.log("check.login!");
+			   return $rootScope.authtoken != "";
+			 };
 					 
 			 //should we fetch the time from the server or take the interactively set time
 			 $rootScope.TIMEFROMSERVER = true;
@@ -130,11 +151,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	   		   return s;	 
 	   	     };
 			 
-			 $rootScope.loggedIn = function(){
-//				 console.log("check.login!");
-			   return $rootScope.authtoken != "";
-			 };
-	
+
 	         $rootScope.betClosed = function(serverTime, current){
 	            var diff = (serverTime -  $rootScope.MSTOCLOSING) - current;
 				return diff < 0;	
@@ -203,15 +220,20 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 					  $state.transitionTo("users");
 				  }
 			  })
-			  .state('createGame', {
+			  .state('admin.createGame', {
 			  	  url: "/createGame",
 				  templateUrl: 'partials/createGame.html',
 				  controller: controllers.CreateGameCtrl
 			  })
-			  .state('registerUser', {
+			  .state('admin.registerUser', {
 				  url: "/registerUser",
 				  templateUrl: 'partials/registerUser.html',
 				  controller: controllers.RegisterUserCtrl
+			  })
+			  .state('editUser', {
+			  	  url: "/user/:username/edit",
+				  templateUrl: 'partials/editUser.html',
+				  controller: controllers.EditUserCtrl				
 			  })
 		//	  .state('signon', {
 		//		  url: "/signon/:token",

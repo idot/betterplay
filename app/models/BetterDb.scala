@@ -447,14 +447,19 @@ object BetterDb {
 		}       
    }
    
- //  def updateUser(userId: Long, firstName: String, lastName: String, email: String, iconurl: String, submittingUserId: Long): String \/ User = {
- //      withT{
-		   
-	     //  val user = users.filter
-	   
-	   
- //      }
- //  }
+   def updateUser(userId: Long, firstName: String, lastName: String, email: String, password: String, icontype: String, submittingUserId: Long)(implicit s: Session): String \/ User = {
+       if(userId != submittingUserId){
+		   return -\/(s"only the user can change details $userId $submittingUserId")
+	   }
+	   withT{
+          users.filter(u => u.id === userId).firstOption.map{ user => 
+			  val (u,t) = DomainHelper.gravatarUrl(email, icontype)
+		      val updatedUser = user.copy(firstName=firstName, lastName=lastName, email=email, iconurl=u, icontype=t)   
+			  users.filter(u => u.id === userId).update(updatedUser)
+			  \/-(updatedUser)		  
+		  }.getOrElse(-\/(s"user not found $userId"))
+       }
+   }
    
   
 // not neccessary? using getUser(usernmae)   

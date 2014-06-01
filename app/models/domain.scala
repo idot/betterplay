@@ -5,9 +5,23 @@ import org.joda.time.DateTime
 
 object DomainHelper {
   import org.jasypt.util.password.StrongPasswordEncryptor
+  import scravatar._
+  
+  val gts = Seq("monsterid", "identicon", "wavatar", "retro") 
   
   def encrypt(password: String): String = {
       new StrongPasswordEncryptor().encryptPassword(password)
+  }
+  
+  def gravatarUrl(email: String, gravatartype: String): (String,String) = {
+	  val gt = DefaultImage(gravatartype)
+      val url = Gravatar(email).ssl(true).default(gt).maxRatedAs(G).forceDefault(true).size(40).avatarUrl  
+      (url, gravatartype)
+  }
+  
+  def randomGravatarUrl(email: String): (String,String) = {
+      val ri = new scala.util.Random().nextInt(gts.length)
+      gravatarUrl(email, gts(ri))
   }
   
   def gameResultInit(): GameResult = GameResult(0,0,false)  
@@ -17,11 +31,13 @@ object DomainHelper {
    * admins had instructions!
    */
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
-      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, true, 0, 0, user.iconurl, registeringUser)
+	  val (u,t) = randomGravatarUrl(user.email)
+      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, true, 0, 0, u, t, registeringUser)
   }
 
   def userFromUPE(username: String, password: String, email: String, registeringUser: Option[Long]): User = {
-      User(None, username, "", "", email, encrypt(password), false, false, false, true, true, 0, 0, None, registeringUser)
+	  val (u,t) = randomGravatarUrl(email)
+      User(None, username, "", "", email, encrypt(password), false, false, false, true, true, 0, 0, u, t, registeringUser)
   }
  
 }
@@ -57,7 +73,9 @@ case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId:
 /***
  * hadinstructions === special bet was set
  */
-case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, email: String, passwordHash: String, isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, isRegistered: Boolean, points: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long] ){
+case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, email: String, passwordHash: String,
+	        isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, isRegistered: Boolean,
+			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long] ){
 //  
 //  	def password_=(in: String) = this.password_hash = encrypt(in)
 //	
@@ -70,16 +88,16 @@ case class User(id: Option[Long] = None, username: String, firstName: String, la
 }
 
 
-case class UserNoPw(id: Option[Long] = None, username: String, firstName: String, 
-         lastName: String, isAdmin: Boolean, isRegistrant: Boolean,
-         hadInstructions: Boolean, canBet: Boolean, totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int, iconurl: Option[String], registeredBy: Option[Long]){
+case class UserNoPw(id: Option[Long] = None, username: String, firstName: String, lastName: String, 
+	      isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, 
+		  totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long]){
 }
    
 object UserNoPwC {
    def apply(user: User): UserNoPw = {
-        UserNoPw(user.id, user.username, user.firstName, 
-        user.lastName, user.isAdmin, user.isRegistrant,
-        user.hadInstructions, user.canBet, user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.registeredBy)  
+        UserNoPw(user.id, user.username, user.firstName, user.lastName, 
+		user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
+		user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy)  
    }     
 }      
          

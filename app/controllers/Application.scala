@@ -11,6 +11,7 @@ import play.api.data.Form
 import play.api.db.slick.DBAction
 import models.DomainHelper
 import models.BetterDb
+import models.User
 import models.UserNoPw
 import models.UserNoPwC
 import play.api.db.slick.DBSessionRequest
@@ -34,7 +35,15 @@ object FormToV {
  * http://www.jamesward.com/2013/05/13/securing-single-page-apps-and-rest-services
  * and especially
  * http://www.mariussoutier.com/blog/2013/07/14/272/
- */
+ *
+ * It is important to not trust the client.
+ * Every action that requires a certain user should first fetch the user from the database
+ * The User object should not get to the UI there is the UserNoPw for that 
+ * which does not have the fields passwordHash and e-mail
+ * 
+ * actions that reveal sensitive information only fetch from db the user that is logged in by token 
+ *
+ **/
 trait Security { self: Controller =>
 
 	
@@ -49,12 +58,25 @@ trait Security { self: Controller =>
     DBAction(p) { implicit request =>
       val maybeToken = request.headers.get(AuthTokenHeader)
       maybeToken.flatMap{ token =>
-        Cache.getAs[Long](token) map { userid =>
-          f(token)(userid)(request)
+        Cache.getAs[Long](token) map { userId =>
+          f(token)(userId)(request)
         }
       }.getOrElse( Unauthorized(Json.obj("error" -> "no security token")))
     }
   }
+  
+  /**
+  * action with the logged in user fresh from DB
+  */
+  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => DBSessionRequest[A] => Result): Action[A] = {
+	  HasToken(p){ token => userId => implicit request =>
+		 implicit val session = request.dbSession
+         BetterDb.userById(userId).map{ user =>
+	  	     f(userId)(user)(request)		   
+	     }.getOrElse( NotFound(Json.obj("error" -> s"could not find user $userId")))
+	 }
+  }
+  
 }
   
 
@@ -129,7 +151,7 @@ trait Application extends Controller with Security {
   def logout = Action { implicit request =>
     request.headers.get(AuthTokenHeader) map { token =>
       Redirect("/").discardingToken(token)
-    } getOrElse BadRequest(Json.obj("error" -> "no security token"))
+    } getOrElse Unauthorized(Json.obj("error" -> "no security token"))
   }
 
   /**

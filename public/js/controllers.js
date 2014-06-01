@@ -8,7 +8,7 @@ define(function() {
 
 var controllers = {};
 
-controllers.UsersCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
+controllers.UsersCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	var queryUsers = Restangular.all('api/users');
    
 	queryUsers.getList().then(function(users){
@@ -17,9 +17,9 @@ controllers.UsersCtrl = function($scope, $filter, Restangular, $stateParams, ngT
 	});
 }
 
-controllers.UsersCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams' ];
+controllers.UsersCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams' ];
 
-controllers.GamesCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
+controllers.GamesCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	var queryGames = Restangular.all('api/games');
 		
 	queryGames.getList().then(function(games){
@@ -28,10 +28,10 @@ controllers.GamesCtrl = function($scope, $filter, Restangular, $stateParams, ngT
     });
    
 }
-controllers.GamesCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+controllers.GamesCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
-controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
+controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	$scope.stateParams = $stateParams;
 	var queryUser = Restangular.one('api/user', $scope.stateParams.username);
    
@@ -42,24 +42,23 @@ controllers.UserCtrl = function($scope, $filter, Restangular, $stateParams, ngTa
 		setupTable( $scope.gameBets, ngTableParams, { 'game.game.nr': 'asc'}, $scope, $filter );
     });
 }
-controllers.UserCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+controllers.UserCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
-controllers.GameCtrl = function($scope, $filter, Restangular, $stateParams, ngTableParams ) {
+controllers.GameCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	$scope.stateParams = $stateParams;
 	var queryGame = Restangular.one('api/game', $scope.stateParams.gamenr);
     
 	queryGame.get().then(function(gwtWithBetsPerUser){
 		$scope.gwt = gwtWithBetsPerUser.game;
 		$scope.betsUsers = gwtWithBetsPerUser.betsUsers;
-		console.log($scope.betsUsers.length);
 		setupTable( $scope.betsUsers, ngTableParams, { 'game.game.nr': 'asc'}, $scope, $filter );
 	});
 
 }
-controllers.GameCtrl.$inject = ['$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+controllers.GameCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
-controllers.SettingsCtrl = function($scope,$rootScope,$stateParams){
+controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams){
   $scope.stateParams = $stateParams;	
 	
   $scope.opened = false;	
@@ -95,11 +94,11 @@ controllers.SettingsCtrl = function($scope,$rootScope,$stateParams){
   };
 
 }
-controllers.SettingsCtrl.$inject = ['$scope','$rootScope','$stateParams'];
+controllers.SettingsCtrl.$inject = ['$log', '$scope','$rootScope','$stateParams'];
 
 
 
-controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, $state){
+controllers.LoginCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, $state){
 	$scope.stateParams = $stateParams;	
 		
 	$scope.username = "";
@@ -113,16 +112,14 @@ controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, 
 			  $rootScope.authtoken = auth["AUTH-TOKEN"];
 			  Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth["AUTH-TOKEN"]});
 			  $state.transitionTo("users");
-	      },
-	      function(err){
-	        console.log("err "+err);
-	      });
+	      }
+	    );
     };
 
 }
-controllers.LoginCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state'];
+controllers.LoginCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams', 'Restangular', '$state'];
 
-controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restangular, $state, toaster){
+controllers.RegisterUserCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, $state, toaster){
 	$scope.stateParams = $stateParams;	
 	
 	var queryUsers = Restangular.all('api/users');	
@@ -133,18 +130,18 @@ controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restan
 	$scope.setFields = function(){	
 	    $scope.username = "";
 	    $scope.password1 = "";
+		$scope.password2 = "";
     	$scope.email = "";
     };
 	
 	$scope.uniqueUsername = function(username){
 	   	var duplicated = _.find($scope.allUsers, function(u){ return u === username; });
-		console.log("unique: "+username);
+		$log.debug("unique: "+username+" "+duplicated);
 	    return !duplicated;			
 	};
 	
 	$scope.signon = function(){
 		    var pu = { 'username': $scope.username, 'password': $scope.password1, 'email': $scope.email };
-			console.log("sign on "+pu);
 	    	Restangular.all('api/user/'+$scope.username).customPUT( pu ).then(
 			function(success){
 				toaster.pop('success', "registered "+$scope.username, "e-mail is on its way to "+$scope.email);
@@ -154,8 +151,48 @@ controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restan
 	};
 	$scope.setFields();
 }
-controllers.RegisterUserCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
+controllers.RegisterUserCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
 
+controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, $state, toaster){
+	$scope.stateParams = $stateParams;
+	
+	$scope.refreshUser = function(){
+	    var queryUser = Restangular.one('api/userWithEmail');
+        queryUser.get().then(function(userWithEmail){
+			$scope.firstName = userWithEmail.firstName;
+			$scope.lastName = userWithEmail.lastName;
+			$scope.email = userWithEmail.email;
+			$scope.icontype = userWithEmail.icontype;
+		});
+    }
+    
+	
+	$scope.password1 = "";
+    $scope.password2 = "";
+		
+	$scope.updatePassword = function(){
+		    $log.debug('submitting new password: '+$scope.password1);
+		    var pu = { 'password': $scope.password1 };
+	    	Restangular.all('api/user/'+$scope.username+'/password').customPost( pu ).then(
+			function(success){
+				toaster.pop('success', "changed password for "+$scope.username);
+				scope.password1 = "";
+				scope.password2 = "";
+			}
+		);
+	};
+	
+	
+	$scope.updateDetails = function(){
+	       $log.debug('updating details: ');
+		   	
+		
+		
+	};
+	
+	$scope.setFields();
+}
+controllers.EditUserCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
 
 
 

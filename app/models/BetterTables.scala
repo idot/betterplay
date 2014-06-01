@@ -164,13 +164,15 @@ object BetterTables {
     def canBet = column[Boolean]("canbet", O.NotNull)
     def isRegistered = column[Boolean]("isregistered", O.NotNull)
 	def points = column[Int]("points", O.NotNull)
-    def iconurl = column[Option[String]]("iconurl", O.Nullable)
+    def iconurl = column[String]("iconurl", O.NotNull)
+    def icontype = column[String]("icontype", O.NotNull)
+	
     def registerby = column[Option[Long]]("registerby", O.Nullable)
     def pointsSpecial = column[Int]("pointsspecial", O.NotNull)
     
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id) 
     
-    def * = (id.?, username, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, isRegistered, points, pointsSpecial, iconurl, registerby) <> (User.tupled, User.unapply)
+    def * = (id.?, username, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, isRegistered, points, pointsSpecial, iconurl, icontype, registerby) <> (User.tupled, User.unapply)
 
   }
 

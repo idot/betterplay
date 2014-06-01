@@ -33,6 +33,18 @@
 		<li ng-if="! loggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
 		<li ng-if="loggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user({ username: loggedInUser.username })">{{loggedInUser.username}}</a></li>
 		<li ng-if="loggedIn()"><a ui-sref="logout">logout</a></li>
+	    <li class="dropdown" ng-if="isAdmin()" ng-class="{active: $state.includes('admin')}">
+	         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+	             <ul class="dropdown-menu">
+	               <li><a ui-sref="registerUser">register user</a></li>
+	               <li><a ui-sref="createGame">create game</a></li>
+	               <li><a href="#">Something else here</a></li>
+	               <li class="divider"></li>
+	               <li><a href="#">Separated link</a></li>
+	               <li class="divider"></li>
+	               <li><a href="#">One more separated link</a></li>
+	             </ul>
+	   </li>
 	 </ul>
 	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : DF }}</div>
     </div><!-- /.navbar-collapse -->
