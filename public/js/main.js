@@ -9,20 +9,29 @@
 
 requirejs.config({
   paths: {
+	'underscore': ['../lib/underscorejs/underscore'],
 	'moment': ['../lib/momentjs/min/moment.min'],
     'angular': ['../lib/angularjs/angular'],
+//	'angular-route': ['../lib/angularjs/angular-route'],
+	'angular-animate': ['../lib/angularjs/angular-animate'],
     'restangular': ['../lib/restangular/restangular'],
-    'underscore': ['../lib/underscorejs/underscore'],
     'angular-ui': ['../lib/angular-ui/angular-ui'],
     'angular-ui-bootstrap': ['../lib/angular-ui-bootstrap/ui-bootstrap'],
     'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router'],
 	'ng-table': ['../lib/ng-table/ng-table'],
-	'angular-ui-utils': ['../lib/angular-ui-utils/ui-utils']
+	'angular-ui-utils': ['../lib/angular-ui-utils/ui-utils'],
+	'toaster': ['toaster']
   },
   shim: {
     'angular': {
       exports : 'angular'
     },
+//	'angular-route': {
+//		deps: ['angular']
+//	},
+	'angular-animate': {
+		deps: ['angular']
+	},
     'restangular': {
         deps: ['underscore', 'angular']
     },
@@ -41,21 +50,21 @@ requirejs.config({
 	'angular-ui-utils': {
 		deps: ['angular']
 	},
-	'angular-animate': {
-		deps: ['angular']
+	'toaster': {
+		deps: ['angular-animate']
 	}
   }
 });
 
 
 
-require(['moment','angular', 'angular-animate' , './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils'],
+require(['moment','angular', './controllers', './directives', './filters', './services', 'underscore', 'angular-animate', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils', 'toaster'],
   function(moment, angular, controllers) {   
 	  moment().format();
    
-   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngAnimate', 'restangular', 'ui.router', 'ngTable','ui.utils'])
-      .run([ '$rootScope', '$state', '$stateParams', '$timeout', 'Restangular',
-         function ($rootScope, $state, $stateParams, $timeout, Restangular){
+   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngAnimate', 'restangular', 'ui.router', 'ngTable','ui.utils', 'toaster'])
+      .run([ '$rootScope', '$state', '$stateParams', '$timeout', 'Restangular', 'toaster',
+         function ($rootScope, $state, $stateParams, $timeout, Restangular, toaster){
 			 Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
 			    // if(response.status === 403) {
 			        // refreshAccesstoken().then(function() {
@@ -66,7 +75,10 @@ require(['moment','angular', 'angular-animate' , './controllers', './directives'
 
 			   //      return false; // error handled
 			   //  }
-                 console.log("custom error handler: "+response.status+" "+response.text);
+			     var errors = _.map(response.data, function(value, key){ return key + " " +value; });
+				 var errorsum = errors.join("\n");
+			     toaster.pop('error', "application error: "+response.statusText, errorsum);
+                 console.log("custom error handler: "+response.status+" "+response.data);
 			     return true; // error not handled
 			 });
 			 

@@ -122,7 +122,7 @@ controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, 
 }
 controllers.LoginCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state'];
 
-controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restangular, $state){
+controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restangular, $state, toaster){
 	$scope.stateParams = $stateParams;	
 	
 	var queryUsers = Restangular.all('api/users');	
@@ -130,8 +130,11 @@ controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restan
 	    $scope.allUsers = _.map(users, function(u){ return u.username });
 	});	
 		
-	$scope.username = "";
-	$scope.password1 = "";
+	$scope.setFields = function(){	
+	    $scope.username = "";
+	    $scope.password1 = "";
+    	$scope.email = "";
+    };
 	
 	$scope.uniqueUsername = function(username){
 	   	var duplicated = _.find($scope.allUsers, function(u){ return u === username; });
@@ -140,24 +143,18 @@ controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restan
 	};
 	
 	$scope.signon = function(){
-		
-		
-	//	var credentials = { 'username': $scope.username, 'password': $scope.password };
-	//    Restangular.all("login").post(credentials).then(
-	//      function(auth){ 
-	//		  $rootScope.loggedInUser = auth.user;
-	//		  $rootScope.authtoken = auth["AUTH-TOKEN"];
-	//		  Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth["AUTH-TOKEN"]});
-	//		  $state.transitionTo("users");
-	//      },
-	//      function(err){
-	//        console.log("err "+err);
-	//      });
-	     console.log("sign on");
-    };
-
+		    var pu = { 'username': $scope.username, 'password': $scope.password1, 'email': $scope.email };
+			console.log("sign on "+pu);
+	    	Restangular.all('api/user/'+$scope.username).customPUT( pu ).then(
+			function(success){
+				toaster.pop('success', "registered "+$scope.username, "e-mail is on its way to "+$scope.email);
+				$scope.setFields();
+			}
+		);
+	};
+	$scope.setFields();
 }
-controllers.RegisterUserCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state'];
+controllers.RegisterUserCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
 
 
 

@@ -26,7 +26,7 @@ trait Users extends Controller with Security {
   def get(username: String) = DBAction { implicit rs =>
       implicit val session = rs.dbSession
       BetterDb.userWithSpecialBet(username).fold(
-        err => NotFound(Json.obj("err" -> err)),
+        err => NotFound(Json.obj("error" -> err)),
         succ => succ match { case(user, sp) =>
           val gamesWithBets = BetterDb.gamesWithBetForUser(user)
           val json = Json.obj("user" -> UserNoPwC(user), "specialBet" -> sp, "gameBets" -> gamesWithBets)
@@ -77,10 +77,10 @@ trait Users extends Controller with Security {
              if(user.isAdmin){
 			      val created = DomainHelper.userFromUPE(sub.username, sub.password, sub.email, user.id)
 			      BetterDb.insertUser(created, false, false, user.id)		   
-		     } else -\/("error: must be admin")
+		     } else -\/("must be admin")
 		  }
        }.fold(
-          err => Forbidden(Json.obj("err" -> err)),
+          err => Forbidden(Json.obj("error" -> err)),
           succ => Ok("created bets for users")      
        )
    }
@@ -93,9 +93,9 @@ trait Users extends Controller with Security {
    def createBetsForUsers() = HasToken() { token => userId => implicit request =>
        implicit val session = request.dbSession
        BetterDb.userById(userId).flatMap{ user =>
-          if(user.isAdmin) BetterDb.createBetsForGamesForAllUsers(user) else -\/("error: must be admin")
+          if(user.isAdmin) BetterDb.createBetsForGamesForAllUsers(user) else -\/("must be admin")
        }.fold(
-          err => Forbidden(Json.obj("err" -> err)),
+          err => Forbidden(Json.obj("error" -> err)),
           succ => Ok("created bets for users")      
        )
    }

@@ -52,7 +52,7 @@ trait Security { self: Controller =>
         Cache.getAs[Long](token) map { userid =>
           f(token)(userid)(request)
         }
-      }.getOrElse( Unauthorized(Json.obj("err" -> "No Token")) )
+      }.getOrElse( Unauthorized(Json.obj("error" -> "no security token")))
     }
   }
 }
@@ -111,7 +111,7 @@ trait Application extends Controller with Security {
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = DBAction(parse.json) { implicit request =>
      LoginForm.bind(request.body).fold(
-      formErrors => BadRequest(Json.obj("err" -> formErrors.errorsAsJson)),
+      formErrors => BadRequest(formErrors.errorsAsJson),
       loginData => {
         implicit val session = request.dbSession
         BetterDb.authenticate(loginData.username, loginData.password).map{ user =>
@@ -120,7 +120,7 @@ trait Application extends Controller with Security {
             AuthTokenCookieKey -> token,
             "user" -> UserNoPwC(user)
           )).withToken(token -> user.id.get)
-        }.getOrElse(NotFound(Json.obj("err" -> "user not found or password invalid")))
+        }.getOrElse(NotFound(Json.obj("error" -> "user not found or password invalid")))
       }
     )
   }
@@ -129,7 +129,7 @@ trait Application extends Controller with Security {
   def logout = Action { implicit request =>
     request.headers.get(AuthTokenHeader) map { token =>
       Redirect("/").discardingToken(token)
-    } getOrElse BadRequest(Json.obj("err" -> "No Token"))
+    } getOrElse BadRequest(Json.obj("error" -> "no security token"))
   }
 
   /**
@@ -140,7 +140,7 @@ trait Application extends Controller with Security {
   def ping() = HasToken() { token => userId => implicit request =>
     implicit val session = request.dbSession
     BetterDb.userById(userId.toInt).fold(
-      err => NotFound(Json.obj("err" -> err)),
+      err => NotFound(Json.obj("error" -> err)),
       user => Ok(Json.obj("userId" -> userId)).withToken(token -> userId)
     )
   }

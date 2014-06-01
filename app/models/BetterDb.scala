@@ -5,7 +5,7 @@ import org.joda.time.DateTime
 import play.api.db.DB
 
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
-import scalaz.syntax.apply._ //|@|
+import scalaz.syntax.apply._ 
 
 /**
  * message types for games
@@ -18,6 +18,19 @@ case object NewGame extends GameUpdate
 
 object BetterDb {
    import BetterTables._
+  
+   def withT[A,B](f: => String \/ B)(implicit s: Session): String \/ B = {
+       s.withTransaction{
+		   try{
+			   f
+           }catch{
+            case e: Exception => {
+              s.rollback()
+              -\/(e.getMessage)
+            }
+          }
+	   }
+   } 
   
    def allTeams()(implicit s: Session): Seq[Team] = {
        teams.list
@@ -419,29 +432,30 @@ object BetterDb {
     * 
     *  user registers with e-mail, token is generated for his id
     *  user klicks link with token e-mail, opens web, => user signs on..
-    *
+    *  
     */
    def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long])(implicit s: Session): String \/ User = {
-      s.withTransaction{ 
-           try{
-              val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser)
-              val userId = (users returning users.map(_.id)) += initUser
-              val userWithId = initUser.copy(id=Some(userId))
-              users.filter(_.id === userId).firstOption.map{ user =>
-                 specialbets.insert(SpecialBet(None, None, None, None, None, None, None, None, false, userId ))
-                 createBetsForGamesForUser(userWithId)
-              }  
-              \/-(userWithId)
-           }catch{
-            case e: Exception => {
-              s.rollback()
-              
-              -\/(e.getMessage)
-              
-            }
-          }
-      }       
+       withT{ 
+           val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser)
+           val userId = (users returning users.map(_.id)) += initUser
+           val userWithId = initUser.copy(id=Some(userId))
+           users.filter(_.id === userId).firstOption.map{ user =>
+              specialbets.insert(SpecialBet(None, None, None, None, None, None, None, None, false, userId ))
+              createBetsForGamesForUser(userWithId)
+           }   
+		   \/-(userWithId)
+		}       
    }
+   
+ //  def updateUser(userId: Long, firstName: String, lastName: String, email: String, iconurl: String, submittingUserId: Long): String \/ User = {
+ //      withT{
+		   
+	     //  val user = users.filter
+	   
+	   
+ //      }
+ //  }
+   
   
 // not neccessary? using getUser(usernmae)   
 //   def usernameExists(username: String): Boolean = {

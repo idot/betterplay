@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="@routes.Assets.at("lib/angular-ui/angular-ui.min.css")">
   <link rel="stylesheet" href="@routes.Assets.at("lib/angularjs/angular-csp.css")">
   <link rel="stylesheet" href="@routes.Assets.at("lib/ng-table/ng-table.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("css/toaster.css")">
   <script data-main="@routes.Assets.at("js/main.js")" src="@routes.Assets.at("lib/requirejs/require.js")"></script>
 </head>
 <body class="container">
@@ -38,10 +39,14 @@
   </div><!-- /.container-fluid -->
   
 </nav>
-    <div ui-view></div><!-- for sref above --->
-    <!-- We'll also add some navigation: -->
-
-
+  
+       <div ui-view></div><!-- for sref above --->
+       <!-- We'll also add some navigation: -->
+    <toaster-container>  
+	 <h1>
+	   toasts
+	 </h1>
+    </toaster-container>
 
 
     
