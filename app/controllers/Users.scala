@@ -12,6 +12,7 @@ import scalaz.{\/,-\/,\/-}
 
 import models._
 import models.JsonHelper._
+import FormToV._	
 
 trait Users extends Controller with Security {
   
@@ -75,7 +76,7 @@ trait Users extends Controller with Security {
 		   BetterDb.userById(userId).flatMap{ user =>
              if(user.isAdmin){
 			      val created = DomainHelper.userFromUPE(sub.username, sub.password, sub.email, user.id)
-			      BetterDb.insertUser(created, false, false, user)		   
+			      BetterDb.insertUser(created, false, false, user.id)		   
 		     } else -\/("error: must be admin")
 		  }
        }.fold(

@@ -4,6 +4,7 @@ import play.filters.headers.SecurityHeadersFilter
 
 
 
+//object Global extends WithFilters(SecurityHeadersFilter()) with GlobalSettings {
 object Global extends WithFilters(SecurityHeadersFilter()) with GlobalSettings {
 
   override def onStart(app: Application) {

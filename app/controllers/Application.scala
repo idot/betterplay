@@ -4,6 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.cache.Cache
 import play.api.libs.json.Json
+import play.api.libs.json.JsValue
 import play.api.libs.json.Json._
 import play.api.data.Forms._
 import play.api.data.Form
@@ -17,16 +18,14 @@ import play.api.db.slick.DBSessionRequest
 import org.joda.time.DateTime
 
 
-object FormToValidation {
+object FormToV {
   import scalaz.{\/,-\/,\/-}
-  implicit class FtoV[T](form: Form[T]) {
-	  def toV[T](form: Form[T]): T \/ T = {
-		  form.fold(
-		     err => -\/(err),
-			 succ => \/-(succ)	  
-		  )
-	  }
-   }
+  implicit def toV[T](form: Form[T]): JsValue \/ T = {
+	  form.fold(
+	     err => -\/(err.errorsAsJson),
+		 succ => \/-(succ)	  
+      )
+  }
 }
 
 
@@ -37,6 +36,8 @@ object FormToValidation {
  * http://www.mariussoutier.com/blog/2013/07/14/272/
  */
 trait Security { self: Controller =>
+
+	
   implicit val app: play.api.Application = play.api.Play.current
 
   val AuthTokenHeader = "X-AUTH-TOKEN"

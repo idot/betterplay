@@ -40,17 +40,20 @@ requirejs.config({
     },
 	'angular-ui-utils': {
 		deps: ['angular']
+	},
+	'angular-animate': {
+		deps: ['angular']
 	}
   }
 });
 
 
 
-require(['moment','angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils'],
+require(['moment','angular', 'angular-animate' , './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils'],
   function(moment, angular, controllers) {   
 	  moment().format();
    
-   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable','ui.utils'])
+   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngAnimate', 'restangular', 'ui.router', 'ngTable','ui.utils'])
       .run([ '$rootScope', '$state', '$stateParams', '$timeout', 'Restangular',
          function ($rootScope, $state, $stateParams, $timeout, Restangular){
 			 Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
