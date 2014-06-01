@@ -30,7 +30,7 @@ class ApplicationSpec extends Specification with JsonMatchers{
 //   }) 
 //  
   "Application" should {
-
+	  // cant have more tests because of CACHE/JVM problem
 //    "send 404 on a bad request" in new WithApplication(app=app) {
 //      route(FakeRequest(GET, "/boum")) must beNone
 //    }
@@ -57,7 +57,7 @@ class ApplicationSpec extends Specification with JsonMatchers{
        status(wau) must equalTo(OK)
 	   
 	   val upd = JsObject(Seq("firstName" -> JsString("xyfirst1"), "lastName" -> JsString("xylast1"), "email" -> JsString("abcd@abcd.com"), "icontype" -> JsString("super")))
-	   val details = route(FakeRequest(method="POST", path="/api/user/admin/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
+	   val details = route(FakeRequest(method="POST", path="/api/user/irrelevant/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
 	   status(details) must equalTo(OK)
 	          
 	   val userf = route(FakeRequest(method="GET", path="/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	

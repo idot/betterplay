@@ -3,7 +3,10 @@
     <div class="panel-heading">All Users</div>
    <table ng-table="tableParams" class="betterlist" show-filter="false">
         <tr ng-repeat="uuser in $data">
-            <td data-title="'user'" sortable="'username'">
+            <td data-title="'icon'">
+				<a ui-sref="user({ username: uuser.username})"><img src={{uuser.iconurl}}&s=23 alt="gravatar" width="23" height="23"/></a>
+			</td>
+			<td data-title="'user'" sortable="'username'">
                 <a ui-sref="user({ username: uuser.username})">{{uuser.username}}</a>
             </td>
             <td data-title="'firstname'" sortable="'firstName'">
@@ -13,13 +16,13 @@
                 {{uuser.lastName}}
             </td>
             <td data-title="'points total'" sortable="'totalPoints'">
-                {{uuser.totalPoints}}
+                <span class="badge">{{uuser.totalPoints}}</span>
             </td>
             <td data-title="'points games'" sortable="'pointsGames'">
-                {{uuser.pointsGames}}
+                <span class="badge">{{uuser.pointsGames}}</span>
             </td>
             <td data-title="'points special'" sortable="'pointsSpecialBet'">
-                {{uuser.pointsSpecialBet}}
+                <span class="badge">{{uuser.pointsSpecialBet}}</span>
             </td>
         </tr>
    </table>

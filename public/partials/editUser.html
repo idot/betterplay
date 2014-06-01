@@ -1,6 +1,5 @@
-<div >
-<h3>{{username}}</h3>
-<img src="{{iconurl}}&s=80"/>
+<h3>{{formUser.username}}</h3>
+<img src="{{formUser.iconurl}}&s=80"/>
 
 
 <tabset>
@@ -8,7 +7,7 @@
 		<form class="form col-xs-5" name="passwordForm" role="form">
 			<div class="form-group">
 			  <label for="password1">password</label>
-			  <input id="password1" name="password1"  type="password" class="form-control" ng-model="password1" 
+			  <input id="password1" name="password1"  type="password" class="form-control" ng-model="pass.word1" 
 			  required ng-minlength="6" />
 			  <span class="help-block" ng-show="passwordForm.password1.$error.required">required</span>
 			  <span class="help-block" ng-show="passwordForm.password1.$error.identical">passwords don't match</span>
@@ -16,7 +15,7 @@
 			</div>
 			<div class="form-group">
 			  <label for="password">password</label>
-			  <input id="password2" name="password2" type="password" class="form-control" ng-model="password2" required ui-validate="{identical: '$value == password1' }" ui-validate-watch=" 'password1' "/>
+			  <input id="password2" name="password2" type="password" class="form-control" ng-model="pass.word2" required ui-validate="{identical: '$value == password1' }" ui-validate-watch=" 'pass.word1' "/>
 			  <span class="help-block" ng-show="passwordForm.password2.$error.required">required</span>
 			  <span class="help-block" ng-show="passwordForm.password2.$error.identical">passwords don't match</span>
 			</div>
@@ -30,21 +29,21 @@
 		<form class="form col-xs-5" name="updateForm" role="form">
 			<div class="email">
 			  <label for="email">email</label>
-			  <input id="email" name="email" type="email" class="form-control" ng-model="email"	
+			  <input id="email" name="email" type="email" class="form-control" ng-model="formUser.email"	
 			  required />
 			  <span class="help-block" ng-show="updateForm.email.$error.required">Please add a valid e-mail adress so we can notify you of problems</span>
 			</div>
 		    <div class="form-group">
 		      <label for="firstname">first name</label>
-		      <input id="firstname" name="firstname" type="text" class="form-control" ng-model="firstName" />
+		      <input id="firstname" name="firstname" type="text" class="form-control" ng-model="formUser.firstName" />
 		    </div>
 		    <div class="form-group">
 		      <label for="lastname">last name</label>
-		      <input id="lastname" name="lastname" type="text" class="form-control" ng-model="lastName" />
+		      <input id="lastname" name="lastname" type="text" class="form-control" ng-model="formUser.lastName" />
 		    </div>
 		    <div class="form-group">
 		      <label for="icondefault">default icontype</label>
-		      <select id="icondefault" ng-model="icontype" class="form-control">
+		      <select id="icondefault" ng-model="formUser.icontype" class="form-control">
 			      <option>mm</option>
 			      <option>identicon</option>
 			      <option>monsterid</option>

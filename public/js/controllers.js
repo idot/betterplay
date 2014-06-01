@@ -154,30 +154,26 @@ controllers.RegisterUserCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateP
 controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, $state, toaster){
 	$scope.stateParams = $stateParams;
 	
+	
+	
 	$scope.refreshUser = function(){
 	    var queryUser = Restangular.one('api/userWithEmail');
         queryUser.get().then(function(userWithEmail){
-			$scope.username = userWithEmail.username;
-			$scope.firstName = userWithEmail.firstName;
-			$scope.lastName = userWithEmail.lastName;
-			$scope.email = userWithEmail.email;
-			$scope.icontype = userWithEmail.icontype;
-			$scope.iconurl = userWithEmail.iconurl;
+			$scope.formUser = userWithEmail;
 			$rootScope.updateLogin(userWithEmail);
 		});
     }
     	
-	$scope.password1 = "";
-    $scope.password2 = "";
+	$scope.pass = { word1: "", word2: ""};
 		
 	$scope.updatePassword = function(){
-		    $log.debug('submitting new password: '+$scope.password1);
-		    var pu = { 'password': $scope.password1 };
-	    	Restangular.all('api/user/'+$scope.username+'/password').customPOST( pu ).then(
+		    $log.debug('submitting new password: '+$scope.pass.word1);
+		    var pu = { 'password': $scope.pass.word1 };
+	    	Restangular.all('api/user/'+$scope.formUser.username+'/password').customPOST( pu ).then(
 			function(success){
 				toaster.pop('success', "changed password for "+$scope.username+"\n"+success);
-				scope.password1 = "";
-				scope.password2 = "";
+				$scope.pass.word1 = "";
+				$scope.pass.word2 = "";
 			}
 		);
 	};
@@ -185,10 +181,10 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 	
 	$scope.updateDetails = function(){
 	       $log.debug('updating details: ');
-		   var u = { firstName: $scope.firstName, lastName: $scope.lastName, email: $scope.email, icontype: $scope.icontype };	
-    	   Restangular.all('api/user/'+$scope.username+'/details').customPOST( u ).then(
+		   var u = { firstName: $scope.formUser.firstName, lastName: $scope.formUser.lastName, email: $scope.formUser.email, icontype: $scope.formUser.icontype };	
+    	   Restangular.all('api/user/'+$scope.formUser.username+'/details').customPOST( u ).then(
 		     function(success){
-			    toaster.pop('success', "updated user details for"+$scope.username+"\n"+success);
+			    toaster.pop('success', "updated user details for"+$scope.formUser.username+"\n"+success);
                 $scope.refreshUser();
 		     }
 		  );
