@@ -268,6 +268,11 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  templateUrl: 'partials/editUser.html',
 				  controller: controllers.EditUserCtrl				
 			  })
+			  .state('gamesWithBetsForUser', {
+			  	  url: "/games/user/:username",
+				  templateUrl: 'partials/gamesWithBetsForUser.html'
+			//	  controller: controllers.GamesWithBetsForUserCtrl				
+			  })
 		//	  .state('signon', {
 		//		  url: "/signon/:token",
 		//		  templateUrl: 'partials/signon.html',
