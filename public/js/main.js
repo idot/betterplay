@@ -16,7 +16,7 @@ requirejs.config({
 	'angular-animate': ['../lib/angularjs/angular-animate'],
     'restangular': ['../lib/restangular/restangular'],
     'angular-ui': ['../lib/angular-ui/angular-ui'],
-    'angular-ui-bootstrap': ['../lib/angular-ui-bootstrap/ui-bootstrap'],
+    'angular-ui-bootstrap': ['../lib/angular-ui-bootstrap/ui-bootstrap-tpls'],
     'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router'],
 	'ng-table': ['../lib/ng-table/ng-table'],
 	'angular-ui-utils': ['../lib/angular-ui-utils/ui-utils'],
@@ -63,7 +63,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
   function(moment, angular, controllers) {   
 	  moment().format();
    
-   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngCookies', 'ngAnimate', 'restangular', 'ui.router', 'ngTable','ui.utils', 'toaster'])
+   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngCookies', 'ngAnimate', 'restangular', 'ui', 'ui.bootstrap', 'ui.bootstrap.tabs', 'ui.bootstrap.datepicker', 'ui.bootstrap.timepicker', 'ui.router', 'ngTable','ui.utils', 'toaster'])
       .run([ '$rootScope', '$state', '$stateParams', '$timeout', '$cookies', 'Restangular', 'toaster',
          function ($rootScope, $state, $stateParams, $timeout, $cookies, Restangular, toaster){
 			 Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {

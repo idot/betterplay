@@ -1,11 +1,14 @@
-<form class="form col-xs-5" name="loginForm" role="form">
+<form class="form .form-horizontal col-xs-5" name="loginForm" role="form">
    <div class="form-group">
       <label for="username">username</label>
       <input type="text" name="username" id="username" data-ng-model="username" class="form-control" required  placeholder="username"/> 
     </div
     <div class="form-group">
-       <label for="password">Password</label>
+       <label for="password">password</label>
        <input type="password" data-ng-model="password" class="form-control" id="password" placeholder="password" required/>
+	   <span class="help-block" ng-show="loginForm.password.$error.required">required</span>
      </div>
-	<button type="submit" class="btn btn-default" ng-click="login()" ng-disabled="!loginForm.$valid">Submit</button>
+	<div classs="form-group">
+	   <button title="Submit" type="submit" class="btn btn-primary pull-right" ng-click="login()" ng-disabled="!loginForm.$valid">Submit</button>
+    </div>
 </form>

@@ -162,6 +162,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 			$scope.lastName = userWithEmail.lastName;
 			$scope.email = userWithEmail.email;
 			$scope.icontype = userWithEmail.icontype;
+			$scope.iconurl = userWithEmail.iconurl;
 			$rootScope.updateLogin(userWithEmail);
 		});
     }
@@ -174,7 +175,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 		    var pu = { 'password': $scope.password1 };
 	    	Restangular.all('api/user/'+$scope.username+'/password').customPOST( pu ).then(
 			function(success){
-				toaster.pop('success', "changed password for "+$scope.username);
+				toaster.pop('success', "changed password for "+$scope.username+"\n"+success);
 				scope.password1 = "";
 				scope.password2 = "";
 			}
@@ -187,7 +188,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 		   var u = { firstName: $scope.firstName, lastName: $scope.lastName, email: $scope.email, icontype: $scope.icontype };	
     	   Restangular.all('api/user/'+$scope.username+'/details').customPOST( u ).then(
 		     function(success){
-			    toaster.pop('success', "updated user details for"+$scope.username);
+			    toaster.pop('success', "updated user details for"+$scope.username+"\n"+success);
                 $scope.refreshUser();
 		     }
 		  );

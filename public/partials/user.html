@@ -1,15 +1,18 @@
 <form class="form col-xs-5" name="userEditForm" role="form">
   <ul class="list-group">
      <li class="list-group-item">
-       {{params.username}}  <span class="badge">{{user.points}}</span>
+       {{user.username}}  <span class="badge">{{user.points}}</span>
      </li>
      <li class="list-group-item">
-       {{user.username}} {{user.lastName}}
+       {{user.firstName}} {{user.lastName}}
      </li>
+	 <li class="list-group-item">
+		<img src="{{user.iconurl}}&s=80"/>
+	       <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
+	 </li>
   </ul>
-  <div class="form-group" ng-if="isOwner(user.id)">	
-     <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
-  </div>
+  
+
 </form>
   
 

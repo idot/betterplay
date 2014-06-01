@@ -211,7 +211,7 @@ object BetterDb {
         val us = for{
          (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.username === username
        }yield (u,s)
-       us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user for id $username"))  
+       us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user with username $username"))  
    }  
    
    

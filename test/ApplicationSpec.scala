@@ -51,11 +51,22 @@ class ApplicationSpec extends Specification with JsonMatchers{
        status(unau) must equalTo(UNAUTHORIZED)
                
        val res = route(FakeRequest(POST, "/login").withJsonBody(up)).get      
-       val authToken = extractToken(res).get
-       
+       val authToken = extractToken(res).get 
+	   
        val wau = route(FakeRequest(method="POST", path="/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wau) must equalTo(OK)
-       
+	   
+	   val upd = JsObject(Seq("firstName" -> JsString("xyfirst1"), "lastName" -> JsString("xylast1"), "email" -> JsString("abcd@abcd.com"), "icontype" -> JsString("super")))
+	   val details = route(FakeRequest(method="POST", path="/api/user/admin/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
+	   status(details) must equalTo(OK)
+	          
+	   val userf = route(FakeRequest(method="GET", path="/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	
+	   val user = contentAsString(userf) 	  
+	   user must /("firstName" -> "xyfirst1")		  
+	   user must /("lastName" -> "xylast1")	
+	   user must /("email" -> "abcd@abcd.com")	
+	   user must /("icontype" -> "super")	
+			  
        val out = route(FakeRequest(POST, "/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(out) must equalTo(SEE_OTHER)
        redirectLocation(out) must beSome.which(_ == "/")

@@ -71,7 +71,7 @@ trait Security { self: Controller =>
   def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => DBSessionRequest[A] => Result): Action[A] = {
 	  HasToken(p){ token => userId => implicit request =>
 		 implicit val session = request.dbSession
-         BetterDb.userById(userId).map{ user =>
+	     BetterDb.userById(userId).map{ user =>
 	  	     f(userId)(user)(request)		   
 	     }.getOrElse( NotFound(Json.obj("error" -> s"could not find user $userId")))
 	 }
