@@ -419,6 +419,7 @@ object BetterDb {
     * 
     *  user registers with e-mail, token is generated for his id
     *  user klicks link with token e-mail, opens web, => user signs on..
+    *
     */
    def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long])(implicit s: Session): String \/ User = {
       s.withTransaction{ 
@@ -441,11 +442,11 @@ object BetterDb {
           }
       }       
    }
-   
-   
-   
-   
-   
+  
+// not neccessary? using getUser(usernmae)   
+//   def usernameExists(username: String): Boolean = {
+//       users.list.filter(u.username === username).headOption.map(b => true).getOrElse(false)
+//   }
    
    def createBetsForGamesForAllUsers(submittingUser: User)(implicit s: Session): String \/ String = {
        if(submittingUser.isAdmin){ 

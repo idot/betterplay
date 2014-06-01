@@ -122,6 +122,47 @@ controllers.LoginCtrl = function($scope, $rootScope, $stateParams, Restangular, 
 }
 controllers.LoginCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state'];
 
+controllers.RegisterUserCtrl = function($scope, $rootScope, $stateParams, Restangular, $state){
+	$scope.stateParams = $stateParams;	
+	
+	var queryUsers = Restangular.all('api/users');	
+	queryUsers.getList().then(function(users){
+	    $scope.allUsers = _.map(users, function(u){ return u.username });
+	});	
+		
+	$scope.username = "";
+	$scope.password1 = "";
+	
+	$scope.uniqueUsername = function(username){
+	   	var duplicated = _.find($scope.allUsers, function(u){ return u === username; });
+		console.log("unique: "+username);
+	    return !duplicated;			
+	};
+	
+	$scope.signon = function(){
+		
+		
+	//	var credentials = { 'username': $scope.username, 'password': $scope.password };
+	//    Restangular.all("login").post(credentials).then(
+	//      function(auth){ 
+	//		  $rootScope.loggedInUser = auth.user;
+	//		  $rootScope.authtoken = auth["AUTH-TOKEN"];
+	//		  Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth["AUTH-TOKEN"]});
+	//		  $state.transitionTo("users");
+	//      },
+	//      function(err){
+	//        console.log("err "+err);
+	//      });
+	     console.log("sign on");
+    };
+
+}
+controllers.RegisterUserCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Restangular', '$state'];
+
+
+
+
+
 return controllers;
 
 });

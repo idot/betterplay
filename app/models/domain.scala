@@ -20,7 +20,9 @@ object DomainHelper {
       User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, true, 0, 0, user.iconurl, registeringUser)
   }
 
-  
+  def userFromUPE(username: String, password: String, email: String, registeringUser: Option[Long]): User = {
+      User(None, username, "", "", email, encrypt(password), false, false, false, true, true, 0, 0, None, registeringUser)
+  }
  
 }
 

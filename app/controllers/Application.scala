@@ -16,6 +16,20 @@ import play.api.db.slick.DBSessionRequest
 
 import org.joda.time.DateTime
 
+
+object FormToValidation {
+  import scalaz.{\/,-\/,\/-}
+  implicit class FtoV[T](form: Form[T]) {
+	  def toV[T](form: Form[T]): T \/ T = {
+		  form.fold(
+		     err => -\/(err),
+			 succ => \/-(succ)	  
+		  )
+	  }
+   }
+}
+
+
 /***
  * security based on 
  * http://www.jamesward.com/2013/05/13/securing-single-page-apps-and-rest-services
@@ -50,21 +64,15 @@ trait Application extends Controller with Security {
   
   lazy val CacheExpiration =
     app.configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 2 /* minutes */)
-   
 
   def index = Action {
     Ok(views.html.index())
   }
 
-  case class Login(username: String, password: String)
-
-  val loginForm = Form(
-    mapping(
-      "username" -> nonEmptyText,
-      "password" -> nonEmptyText
-    )(Login.apply)(Login.unapply)
-  )
-
+  /**
+  * caches the token with the userid
+  *
+  */
   implicit class ResultWithToken(result: Result) {
     def withToken(token: (String, Long)): Result = {
       Cache.set(token._1, token._2, CacheExpiration)
@@ -90,10 +98,18 @@ trait Application extends Controller with Security {
 	  Ok(j)
   }
   
+  case class Login(username: String, password: String)
+
+  val LoginForm = Form(
+    mapping(
+      "username" -> nonEmptyText,
+      "password" -> nonEmptyText
+    )(Login.apply)(Login.unapply)
+  )
   
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = DBAction(parse.json) { implicit request =>
-     loginForm.bind(request.body).fold( // Bind JSON body to form values
+     LoginForm.bind(request.body).fold(
       formErrors => BadRequest(Json.obj("err" -> formErrors.errorsAsJson)),
       loginData => {
         implicit val session = request.dbSession

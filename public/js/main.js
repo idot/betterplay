@@ -16,7 +16,8 @@ requirejs.config({
     'angular-ui': ['../lib/angular-ui/angular-ui'],
     'angular-ui-bootstrap': ['../lib/angular-ui-bootstrap/ui-bootstrap'],
     'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router'],
-	'ng-table': ['../lib/ng-table/ng-table']
+	'ng-table': ['../lib/ng-table/ng-table'],
+	'angular-ui-utils': ['../lib/angular-ui-utils/ui-utils']
   },
   shim: {
     'angular': {
@@ -36,17 +37,20 @@ requirejs.config({
     },
     'ng-table':{
         deps: ['angular']
-    }
+    },
+	'angular-ui-utils': {
+		deps: ['angular']
+	}
   }
 });
 
 
 
-require(['moment','angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table'],
+require(['moment','angular', './controllers', './directives', './filters', './services', 'underscore', 'restangular','angular-ui','angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils'],
   function(moment, angular, controllers) {   
 	  moment().format();
    
-   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable'])
+   angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'restangular', 'ui.router', 'ngTable','ui.utils'])
       .run([ '$rootScope', '$state', '$stateParams', '$timeout', 'Restangular',
          function ($rootScope, $state, $stateParams, $timeout, Restangular){
 			 Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
@@ -112,7 +116,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 	   	     };
 			 
 			 $rootScope.loggedIn = function(){
-				 console.log("check.login!");
+//				 console.log("check.login!");
 			   return $rootScope.authtoken != "";
 			 };
 	

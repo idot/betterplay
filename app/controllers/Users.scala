@@ -4,7 +4,11 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
+import play.api.data._
+import play.api.data.Forms._
 import play.api.db.slick.DBAction
+
+import scalaz.{\/,-\/,\/-}
 
 import models._
 import models.JsonHelper._
@@ -53,12 +57,39 @@ trait Users extends Controller with Security {
 //    Ok(Json.toJson(user))
 //  }
   
+    /** 
+    *
+    **/
+    case class UserCreate(username: String, password: String, email: String)
+    val FormUserCreate = Form(
+       mapping(
+          "username" -> nonEmptyText(3,20),
+          "password" -> nonEmptyText(6),
+		  "email" -> email
+       )(UserCreate.apply)(UserCreate.unapply)
+   )
+  
+   def update(username: String) = HasToken(parse.json){ token => userId => implicit request =>
+       implicit val session = request.dbSession
+       FormUserCreate.bind(request.body).map{ sub => 
+		   BetterDb.userById(userId).flatMap{ user =>
+             if(user.isAdmin){
+			      val created = DomainHelper.userFromUPE(sub.username, sub.password, sub.email, user.id)
+			      BetterDb.insertUser(created, false, false, user)		   
+		     } else -\/("error: must be admin")
+		  }
+       }.fold(
+          err => Forbidden(Json.obj("err" -> err)),
+          succ => Ok("created bets for users")      
+       )
+   }
+  
+  
   /**
    * todo: should delegate to actor so that only one is active
    * 
    */
    def createBetsForUsers() = HasToken() { token => userId => implicit request =>
-       import scalaz.{\/,-\/,\/-}
        implicit val session = request.dbSession
        BetterDb.userById(userId).flatMap{ user =>
           if(user.isAdmin) BetterDb.createBetsForGamesForAllUsers(user) else -\/("error: must be admin")

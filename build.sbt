@@ -14,6 +14,7 @@ libraryDependencies ++= Seq(
   jdbc,
   cache,
   ws,
+  filters,
   "com.typesafe.play" %% "play-slick" % "0.7.0-SNAPSHOT",
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
@@ -22,6 +23,7 @@ libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.0.6",
   "org.jasypt" % "jasypt" % "1.9.2",
   "commons-io" % "commons-io" % "2.4",
+  "io.argonaut" %% "argonaut" % "6.0.4",
   "org.webjars" % "angularjs" % "1.2.16-2",  
   "org.webjars" % "requirejs" % "2.1.11-1",
   "org.webjars" % "restangular" % "1.4.0-2",
@@ -31,7 +33,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "angular-ui-router" % "0.2.10-1",
   "org.webjars" % "ng-table" % "0.3.2",
   "org.webjars" % "momentjs" % "2.6.0-2",
-   "org.webjars" % "angular-ui-utils" % "47ff7ef35c"
+  "org.webjars" % "angular-ui-utils" % "47ff7ef35c"//,
+//  "com.typesafe" %% "play-plugins-mailer" % "2.0.4"
 )
 
 
