@@ -18,8 +18,12 @@ object InitialData {
   import org.joda.time.format.DateTimeFormat
   import org.joda.time.DateTime
   
-  
-   
+  def parsePlayer(line: String): (Player,String) = {
+      val items = line.split("\t")
+	  val country = items(2)
+ 	  (Player(None, items(0), items(1), items(3), -1, DBImage("","")), country)  
+  }  
+    
   def toLines(file: String): Seq[String] = {
      val is = Play.classloader.getResourceAsStream(file)
      val string = IOUtils.toString(is, "UTF-8")
@@ -83,6 +87,12 @@ object InitialData {
       lines.map(parseLevel)    
   }
   
+  def players(): Seq[(Player,String)] = {
+      Logger.info("parsing teams")
+	  val lines = toLines("players.tab")
+	  lines.map(parsePlayer)
+  }
+  
   def users(): Seq[User] = {
       def uf(name: String, first: String, last: String, email: String, pw: String, admin: Boolean): User = {
           val encrypted = DomainHelper.encrypt(pw)
@@ -97,7 +107,8 @@ object InitialData {
   def insert(): Unit = { //again slick is missing nested transactions!
     val ls = levels()
     val us = users()
-    
+    val ps = players()
+	
     Logger.info("inserting data in db")
     DB.withSession { implicit s: Session =>
        if(MTable.getTables("users").list().isEmpty) {
@@ -116,7 +127,9 @@ object InitialData {
        teams.map(t => BetterDb.insertOrUpdateTeamByName(t, admin))
        ttg.map{ case(t1,t2,g) => BetterDb.insertGame(g, t1, t2, level.level, admin)}        
        us.drop(1).foreach(u => BetterDb.insertUser(u, false, false, admin.id))
-       BetterDb.createBetsForGamesForAllUsers(admin)
+       BetterDb.createBetsForGamesForAllUsers(admin)	   
+	   ps.foreach{ case(p,t) => BetterDb.insertPlayer(p, t, admin)}
+	   
        Logger.info("inserted data")
     }
     Logger.info("done inserting data in db")

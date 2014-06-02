@@ -24,6 +24,7 @@ libraryDependencies ++= Seq(
   "org.jasypt" % "jasypt" % "1.9.2",
   "commons-io" % "commons-io" % "2.4",
   "com.andersen-gott" %% "scravatar" % "1.0.2",  
+  "org.apache.poi" % "poi" % "3.10-FINAL",
   "org.webjars" % "angularjs" % "1.2.16-2",  
   "org.webjars" % "requirejs" % "2.1.11-1",
   "org.webjars" % "restangular" % "1.4.0-2",

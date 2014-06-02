@@ -16,7 +16,7 @@ object ObjectMother {
   
   val dummyTeams: Seq[Team] = (1 to 6).map{nr => Team(None, s"t$nr", s"t$nr", DBImage("",""))}
    
-  val dummyPlayers: Seq[Player] = (1 to 6).map{ nr => Player(None, s"f$nr", s"l$nr", "role", 0, DBImage("",""))}
+  val dummyPlayers: Seq[Player] = (1 to 6).map{ nr => Player(None, s"playername$nr", "role", s"clubname$nr", 0, DBImage("",""))}
   
   val dummyLevels: Seq[GameLevel] = {
       Seq(

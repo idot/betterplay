@@ -195,9 +195,9 @@ object BetterTables {
 
   class Players(tag: Tag) extends Table[Player](tag, "players") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def firstName = column[String]("firstname", O.NotNull)
-    def lastName = column[String]("lastname", O.NotNull)
+    def name = column[String]("name", O.NotNull)
     def role = column[String]("role", O.NotNull)
+	def club = column[String]("club", O.NotNull)
     def teamId = column[Long]("team_id", O.NotNull)
        
     def imageFormat = column[String]("format", O.NotNull)
@@ -206,7 +206,7 @@ object BetterTables {
     def foto = (imageFormat, image) <> (DBImage.tupled, DBImage.unapply)
     
     def team = foreignKey("PLAYER_COUNTRY_FK", teamId, teams)(_.id)    
-    def * = (id.?, firstName, lastName, role, teamId, foto) <> (Player.tupled, Player.unapply _)
+    def * = (id.?, name, role, club, teamId, foto) <> (Player.tupled, Player.unapply _)
 
   }
 
