@@ -168,14 +168,14 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			 $rootScope.TIMEFROMSERVER = true;
 			 
 			 //format for time display
-			 $rootScope.DF = 'MM/dd HH:mm:ss';
+			 $rootScope.DF = 'MM/dd HH:mm';
 			
 			 //time before game start that bet closes
 			 //1 minute more than on server to prevent submission errors for users
 			 $rootScope.MSTOCLOSING = 61 * 60 * 1000; //in ms
 			 
 			 //time to update clock
-			 $rootScope.UPDATEINTERVAL = 1000; //in ms
+			 $rootScope.UPDATEINTERVAL = 1000 * 3; //in ms
 			 
 			 //reload clock from server 
 			 $rootScope.RESETTIMEDIFF = 5 * 60 * 1000; //in ms
@@ -221,7 +221,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 		  
 	   
       
-        $urlRouterProvider.otherwise("/users"); //home should be 1. if logged in
+        $urlRouterProvider.otherwise("/users");
 
 	       $stateProvider
 		      .state('users', {
@@ -233,17 +233,47 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 		            url: "/games",
 		            templateUrl: 'partials/games.html',
 		            controller: controllers.GamesCtrl
-		      })  
+		      })   
 		      .state('user', {
-		            url:  "/user/:username",
-		            templateUrl: 'partials/user.html',
-		            controller: controllers.UserCtrl
+				    abstract: true,
+		            url:  "/user",
+ 	                template: '<ui-view/>'
 		      })
+			  .state('user.userBets', {
+	                url:  "/:username/bets",
+	                templateUrl: 'partials/userBets.html',
+	                controller: controllers.UserCtrl
+			  })
+			  .state('user.userEdit', {
+			  	  url: "/:username/edit",
+				  templateUrl: 'partials/userEdit.html',
+				  controller: controllers.EditUserCtrl				
+			  })
+			  .state('user.specialBetPlayer', {
+			  	  url: "/:username/special/player",
+				  templateUrl: 'partials/userSpecialBetPlayer.html',
+				  controller: controllers.EditUserSpecialPlayerCtrl				
+			  })
+			  .state('user.specialBetTeam', {
+			  	  url: "/:username/special/team",
+				  templateUrl: 'partials/userSpecialBetTeam.html',
+				  controller: controllers.EditUserSpecialTeamCtrl				
+			  })
 			  .state('game', {
-				  url: "/game/:gamenr",
-				  templateUrl: 'partials/game.html',
+				  abstract: true,
+				  url: "/game",
+				  template: '<ui-view/>'
+			  })
+			  .state('game.gameBets', {
+				  url: ":gamenr/bets",
+				  templateUrl: 'partials/gameBets.html',
 				  controller: controllers.GameCtrl
 			  })
+			  .state('game.gameEdit', {
+			  	  url: "/:gamenr/edit",
+				  templateUrl: 'partials/gameEdit.html',
+				  controller: controllers.EditGameCtrl
+			  })	
 			  .state('settings', {
 			  	  url: "/settings",
 				  templateUrl: 'partials/settings.html',
@@ -261,6 +291,11 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 					  $state.transitionTo("users");
 				  }
 			  })
+			  .state('admin', {  
+				  abstract: true,
+			  	  url: "/admin",
+				  template: '<ui-view/>'
+			  })
 			  .state('admin.createGame', {
 			  	  url: "/createGame",
 				  templateUrl: 'partials/createGame.html',
@@ -270,17 +305,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  url: "/registerUser",
 				  templateUrl: 'partials/registerUser.html',
 				  controller: controllers.RegisterUserCtrl
-			  })
-			  .state('editUser', {
-			  	  url: "/user/:username/edit",
-				  templateUrl: 'partials/editUser.html',
-				  controller: controllers.EditUserCtrl				
-			  })
-		//	  .state('signon', {
-		//		  url: "/signon/:token",
-		//		  templateUrl: 'partials/signon.html',
-		//		  controller: controllers.SignonCtrl
-		//	  })		  
+			  }) 
 			  ;
 			  
     });

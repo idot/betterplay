@@ -25,6 +25,7 @@ libraryDependencies ++= Seq(
   "commons-io" % "commons-io" % "2.4",
   "com.andersen-gott" %% "scravatar" % "1.0.2",  
   "org.apache.poi" % "poi" % "3.10-FINAL",
+  "net.sf.opencsv" % "opencsv" % "2.3",
   "org.webjars" % "angularjs" % "1.2.16-2",  
   "org.webjars" % "requirejs" % "2.1.11-1",
   "org.webjars" % "restangular" % "1.4.0-2",
@@ -34,6 +35,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "angular-ui-router" % "0.2.10-1",
   "org.webjars" % "ng-table" % "0.3.2",
   "org.webjars" % "momentjs" % "2.6.0-2",
+  "org.webjars" % "font-awesome" % "4.1.0",
   "org.webjars" % "angular-ui-utils" % "47ff7ef35c"//,
 //  "com.typesafe" %% "play-plugins-mailer" % "2.0.4"
 )

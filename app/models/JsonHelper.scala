@@ -71,9 +71,9 @@ object JsonHelper {
    }
 //the user object is never serialized because of the password
 //implicit val userFormat = Json.format[User]  DONTUNCOMMENT
+//   case class TimeMessage(serverTime: DateTime)
    
-   
-   
+//   implicit val timeMessageFormat = Json.format[TimeMessage]
    implicit val userNoPWFormat = Json.format[UserNoPw]        
    implicit val levelFormat = Json.format[GameLevel]
    implicit val resultFormat = Json.format[GameResult] 
@@ -81,6 +81,9 @@ object JsonHelper {
    implicit val gameFormat = Json.format[Game]
    implicit val betFormat = Json.format[Bet]
    implicit val specialBetFormat = Json.format[SpecialBet]
+   implicit val specialBetByUserFormat = Json.format[SpecialBetByUser]
+   implicit val specialBetTFormat = Json.format[SpecialBetT]
+   
    implicit val teamFormat = Json.format[Team]
    implicit val playerFormat = Json.format[Player]
    implicit val gameWithTeams = Json.format[GameWithTeams] 

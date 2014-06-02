@@ -16,7 +16,7 @@
 		<div class="form-group">
 		      <label for="dateselect">date</label>	
 		      <p id="dateselect" class="input-group">
-		        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="globaldate" is-open="opened" ng-change="updateDate()"/>
+		        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="global.date" is-open="opened" ng-change="updateDate()"/>
 		             <span class="input-group-btn">
 		                  <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 		             </span>
@@ -25,8 +25,13 @@
 		<div class="form-group">
 		      <label for="timeselect">time</label>	
 		      <p id="timeselect" class="input-group">
-				<timepicker ng-model="globaltime" ng-change="updateTime()" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+				<timepicker ng-model="global.time" ng-change="updateTime()" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
 		      </p>
+	    </div>
+		<div class="form-group">
+             <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="resetTime()">Reset Time</button>
+             </span>
 	    </div>
 	</div>	
 <form>

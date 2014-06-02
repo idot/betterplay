@@ -14,6 +14,7 @@ import scalaz.{\/,-\/,\/-}
 import models._
 import models.JsonHelper._
 import FormToV._	
+import models.BetterSettings
 
 trait Users extends Controller with Security {
   
@@ -83,7 +84,7 @@ trait Users extends Controller with Security {
    def updateDetails(username: String) = withUser(parse.json){ userId => user => implicit request =>
        implicit val session = request.dbSession
        FormUserUpdateDetails.bind(request.body).map{ sub => 
-			   BetterDb.updateUser(userId, sub.firstName, sub.lastName, sub.email, user.passwordHash, sub.icontype, userId)		   
+			   BetterDb.updateUserDetails(userId, sub.firstName, sub.lastName, sub.email, sub.icontype)		   
 	   }.fold(
           err => Forbidden(Json.obj("error" -> err)),
           succ => Ok("updated user details")      
@@ -96,7 +97,7 @@ trait Users extends Controller with Security {
 	      err => -\/("password not found"),
 		  succ => {
  		      val encryptedPassword = DomainHelper.encrypt(succ)
- 			  BetterDb.updateUser(userId, user.firstName, user.lastName, user.email, encryptedPassword, user.icontype, userId)		   	 
+ 			  BetterDb.updateUserPassword(userId, encryptedPassword)		   	 
 		  }
 	   ).fold(
           err => Forbidden(Json.obj("error" -> err)),

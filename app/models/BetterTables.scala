@@ -33,7 +33,7 @@ object BetterTables {
   val levels = TableQuery[GameLevels]
   val games = TableQuery[Games]
   val bets = TableQuery[Bets]
-  val specialbets = TableQuery[SpecialBets]
+  val specialbets = TableQuery[SpecialBets] //TBD
   val specialbetstore = TableQuery[SpecialBetsTs] 
   val specialbetsuser = TableQuery[SpecialBetByUsers]
  
@@ -44,11 +44,17 @@ object BetterTables {
     levels.ddl.create
     games.ddl.create
     bets.ddl.create
-    specialbets.ddl.create
+	specialbets.ddl.create //TBD
+    specialbetstore.ddl.create
+	specialbetsuser.ddl.create
+	
   }
   
   def drop()(implicit s: Session){
-    val ddl = users.ddl ++ teams.ddl ++ players.ddl ++ levels.ddl ++ games.ddl ++ bets.ddl ++ specialbets.ddl
+    val ddl = users.ddl ++ teams.ddl ++ players.ddl ++ levels.ddl ++ 
+	games.ddl ++ bets.ddl ++
+	specialbets.ddl ++ //TBD
+	specialbetstore.ddl ++ specialbetsuser.ddl
     //ddl.createStatements.foreach(println)
     ddl.drop
   }
@@ -132,9 +138,10 @@ object BetterTables {
      def name = column[String]("name", O.NotNull)
      def description = column[String]("description", O.NotNull)
      def points = column[Int]("points", O.NotNull)
+	 def closeDate = column[DateTime]("closedate", O.NotNull)
      def itemtype = column[String]("itemtype", O.NotNull)
      def resultId = column[Option[Long]]("resultid", O.Nullable) 
-     def * = (id.?, name, description, points, itemtype, resultId) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
+     def * = (id.?, name, description, points, closeDate, itemtype, resultId) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
   }
   
   
@@ -146,6 +153,8 @@ object BetterTables {
      def creationDate = column[DateTime]("creationdate", O.NotNull)
      def points = column[Int]("points", O.NotNull)
      
+	 def ? = (id.?, userId.?, spId.?, targetId.?, creationDate.?, points.?)
+	 
      def * = (id.?, userId, spId, targetId, creationDate, points) <> (SpecialBetByUser.tupled,SpecialBetByUser.unapply)     
     
   }
@@ -213,13 +222,10 @@ object BetterTables {
   class Teams(tag: Tag) extends Table[Team](tag, "teams") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name", O.NotNull)
-    def shortName = column[String]("shortname", O.NotNull)
-    def imageFormat = column[String]("format", O.NotNull)
-    def image = column[String]("image", O.NotNull)
-     
-    def foto = (imageFormat, image) <> (DBImage.tupled, DBImage.unapply)
-    
-    def * = (id.?, name, shortName, foto) <> (Team.tupled, Team.unapply _)
+    def short3 = column[String]("short3", O.NotNull)
+	def short2 = column[String]("short2", O.NotNull)
+	       
+    def * = (id.?, name, short3, short2) <> (Team.tupled, Team.unapply _)
   }
 
 

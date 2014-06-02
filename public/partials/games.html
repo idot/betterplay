@@ -5,7 +5,7 @@
    <table ng-table="tableParams" class="betterlist" show-filter="false">
         <tr ng-repeat="gb in $data">
             <td data-title="'nr'" sortable="'game.nr'">
-                <a href='#/game/{{gb.game.nr}}'>{{gb.game.nr}}</a>
+				<a ui-sref="game.gameBets({ gamenr: gb.game.nr})">{{gb.game.nr}}</a>
             </td>
 			<td data-title="'team1'" sortable="'team1.name'" filter="{ 'team1.name': 'text' }">
 			    {{gb.team1.name}}
@@ -25,7 +25,7 @@
             <td data-title="'server start'" sortable="'game.serverStart'">
                 {{gb.game.serverStart | date: DF }}
             </td>
-			<td data-title="'points'">
+			<td data-title="'reward'">
 				<span class="badge">{{gb.level.pointsExact}}/{{gb.level.pointsTendency}}</span>
 			</td>
         </tr>

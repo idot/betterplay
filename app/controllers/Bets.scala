@@ -29,20 +29,13 @@ object Bets extends Controller with Security {
 				val mtg = BetterSettings.closingMinutesToGame
 				BetterDb.updateBetResult(bet, user, now, mtg).fold(
 				   err => UnprocessableEntity(Json.obj("error" -> err)),
-				   succ => {
+				   succ => succ match {  case(game,betold,betnew) =>
 					   //TODO: add broadcast succ is (game,betold, betnew)
-					   Ok(s"updated bet: bet")
+					   Ok(Json.obj("game" -> game, "betold" -> betold, "betnew" -> betnew))
 				   }
 				)
 			}
 		)
-		
-		
-  	    val nop = UserNoPwC(user)
-        val jnop = Json.toJson(nop)  
-
-  	    val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> user.email ))
-        Ok(jnope)	  
     }	  	 
     
   

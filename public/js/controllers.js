@@ -26,6 +26,7 @@ controllers.GamesCtrl = function($log, $scope, $filter, Restangular, $stateParam
 	    $scope.allGames = games;
 		setupTable( games, ngTableParams, { 'game.nr': 'asc'}, $scope, $filter );
     });
+	
    
 }
 controllers.GamesCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
@@ -41,22 +42,6 @@ controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams
 		$scope.gameBets = userWithSpAndGB.gameBets;
 		setupTable( $scope.gameBets, ngTableParams, { 'game.game.nr': 'asc'}, $scope, $filter );
     });
-	
-	$scope.updateBet = function(bet){
-	    var queryBet = Restangular.all('api/bet/'+bet.id).customPOST(bet).then(
-		    function(success){
-	//	        toaster.pop('success', "updated bet "+success);
-		    }		
-		);			
-	};
-	
-	$scope.prettyBet = function(bet){
-		if(bet.result.isSet){
-			return bet.result.goalsTeam1+":"+bet.result.goalsTeam2;
-		}else{
-			return "-:-"
-		}
-	}
 	
 }
 controllers.UserCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'toaster'];
@@ -75,7 +60,7 @@ controllers.GameCtrl = function($log, $scope, $filter, Restangular, $stateParams
 controllers.GameCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
-controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams){
+controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, toaster){
   $scope.stateParams = $stateParams;	
 	
   $scope.opened = false;	
@@ -85,28 +70,48 @@ controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams){
   $scope.setFormat = function(){
 	  $rootScope.DF = $scope.DF;
   };
+  
+  $scope.updateTimeOnServer = function(time){
+  	Restangular.all('api/time').customPOST( { serverTime: time.getTime() } ).then(
+	   function(success){
+		    toaster.pop('success', "changed time", success);
+	   })
+   };	
+  
 	
   $scope.updateDate = function(){
       $rootScope.TIMEFROMSERVER = false;
-	  var nm = moment($scope.globaldate);
+	  var nm = moment($scope.global.date);
       var om = moment($rootScope.currentTime);
 	  nm.hours(om.hours());
 	  nm.minutes(om.minutes());
 	  nm.seconds(om.seconds());
 	  $rootScope.currentTime = nm.toDate();
+	  $scope.updateTimeOnServer($rootScope.currentTime);
   };
   
   $scope.updateTime = function(){
       $rootScope.TIMEFROMSERVER = false;
-	  var nm = moment($scope.globaltime);
+	  var nm = moment($scope.global.time);
       var om = moment($rootScope.currentTime);
 	  om.hours(nm.hours());
 	  om.minutes(nm.minutes());
 	  $rootScope.currentTime = om.toDate();
+	  $scope.updateTimeOnServer($rootScope.currentTime);
   };
   
-  $scope.globaldate = new Date($rootScope.currentTime.getTime());
-  $scope.globaltime = new Date($rootScope.currentTime.getTime());
+  
+  $scope.resetTime = function(){
+      Restangular.all('api/time/reset').customPOST().then(
+  	   function(success){
+	 	    $rootScope.TIMEFROMSERVER = true;
+	 	    $rootScope.updateTimeFromServer()
+  		    toaster.pop('success', "reset time", success);
+  	   })
+  };
+    
+  
+  $scope.global = { date : new Date($rootScope.currentTime.getTime()), time: new Date($rootScope.currentTime.getTime())};
 
   $scope.open = function($event){
 	    $event.preventDefault();
@@ -121,7 +126,7 @@ controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams){
   };
 
 }
-controllers.SettingsCtrl.$inject = ['$log', '$scope','$rootScope','$stateParams'];
+controllers.SettingsCtrl.$inject = ['$log', '$scope','$rootScope','$stateParams', 'Restangular', 'toaster'];
 
 
 
@@ -135,8 +140,12 @@ controllers.LoginCtrl = function($log, $scope, $rootScope, $stateParams, Restang
 		var credentials = { 'username': $scope.username, 'password': $scope.password };
 	    Restangular.all("login").post(credentials).then(
 	      function(auth){ 
-			  $rootScope.updateLogin(auth.user, auth["AUTH-TOKEN"]);
-			  $state.transitionTo("users");
+			  $rootScope.updateLogin(auth.user, auth["AUTH-TOKEN"]);	
+			  if(auth.user.hadInstructions){  
+			     $state.transitionTo("user.userBets", { username: $scope.username });
+			  } else {
+				 $state.transitionTo("user.userEdit", { username: $scope.username });
+			  } 
 	      }
 	    );
     };
@@ -180,8 +189,7 @@ controllers.RegisterUserCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateP
 
 controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, $state, toaster){
 	$scope.stateParams = $stateParams;
-	
-	
+		
 	
 	$scope.refreshUser = function(){
 	    var queryUser = Restangular.one('api/userWithEmail');
@@ -198,7 +206,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 		    var pu = { 'password': $scope.pass.word1 };
 	    	Restangular.all('api/user/'+$scope.formUser.username+'/password').customPOST( pu ).then(
 			function(success){
-				toaster.pop('success', "changed password for "+$scope.username+"\n"+success);
+				toaster.pop('success', "changed password");
 				$scope.pass.word1 = "";
 				$scope.pass.word2 = "";
 			}
@@ -211,7 +219,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 		   var u = { firstName: $scope.formUser.firstName, lastName: $scope.formUser.lastName, email: $scope.formUser.email, icontype: $scope.formUser.icontype };	
     	   Restangular.all('api/user/'+$scope.formUser.username+'/details').customPOST( u ).then(
 		     function(success){
-			    toaster.pop('success', "updated user details for"+$scope.formUser.username+"\n"+success);
+			    toaster.pop('success', "updated user details");
                 $scope.refreshUser();
 		     }
 		  );
@@ -221,7 +229,118 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 }
 controllers.EditUserCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
 
+controllers.EditGameCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, $state, toaster) {
+    console.log("st: "+$stateParams);
+	$scope.stateParams = $stateParams;
+	console.log("sd: "+$scope.stateParams);
+	var queryGame = Restangular.one('api/game', $scope.stateParams.gamenr);
+    
+	queryGame.get().then(function(gwtWithBetsPerUser){
+		$scope.gwt = gwtWithBetsPerUser.game;
+	});
+	
 
+	$scope.submitResult = function(){
+	    var queryBet = Restangular.all('api/game/results').customPOST($scope.gwt.game).then(
+		    function(success){
+		        toaster.pop('success', "updated game", success);
+		    }		
+		);			
+	};
+}
+controllers.EditGameCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
+
+
+
+controllers.BetCtrl = function($scope, $rootScope, Restangular, toaster){
+	
+	$scope.saveBet = function(bet){
+	    var queryBet = Restangular.all('api/bet/'+bet.id).customPOST(bet).then(
+		    function(success){
+				var game = success.game;
+				var betold = success.betold;
+				var betnew = success.betnew;
+				var show = success.game.game.nr+": "+$scope.prettyBet(betold)+" -> "+$scope.prettyBet(betnew)
+				toaster.pop('success', "updated bet ", show);
+				bet['marked'] = false;
+		    }		
+		);			
+	};
+
+	$scope.markBet = function(bet){
+	    bet['marked'] = true;	
+	};
+
+    $scope.withTime = $rootScope.currentTime;
+
+   
+	$scope.saveButton = function(bet){
+		if(typeof bet.marked === "undefined" || bet.marked == false){
+			return "btn btn-default btn-xs";
+		}else{
+			return "btn btn-warning btn-xs";
+		}
+	};
+
+	$scope.prettyBet = function(bet){
+		if(bet.result.isSet){
+			return bet.result.goalsTeam1+":"+bet.result.goalsTeam2;
+		}else{
+			return "-:-"
+		}
+	}
+	
+}
+controllers.BetCtrl.$inject = ['$scope','$rootScope', 'Restangular', 'toaster'];
+
+controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
+	     $scope.stateParams = $stateParams;
+         $log.debug("special team");
+         Restangular.all('api/specialbets').getList().then(
+			 function(success){
+			     //left join must make to usable structure
+				 $scope.bets = success;
+				 setupTable( $scope.teams, ngTableParams, { 'name': 'asc'}, $scope, $filter );
+			 }
+		 );		 
+		 
+		 $scope.selectTeam = function(team){
+		     
+			 //	
+		 };
+}
+controllers.UserSpecialBetsCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
+
+
+
+controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
+	     $scope.stateParams = $stateParams;
+	     $log.debug("special player");
+         Restangular.all('api/players').getList.then(
+			 function(success){
+				 $scope.players = success;
+				 setupTable( $scope.players, ngTableParams, { 'name': 'asc'}, $scope, $filter );
+			 }
+		 );		 
+}
+controllers.EditUserSpecialPlayerCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
+
+controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
+	     $scope.stateParams = $stateParams;
+         $log.debug("special team");
+         Restangular.all('api/teams').getList().then(
+			 function(success){
+				 $scope.teams = success;
+				 setupTable( $scope.teams, ngTableParams, { 'name': 'asc'}, $scope, $filter );
+			 }
+		 );		 
+		 
+		 $scope.selectTeam = function(team){
+		     
+			 //	
+		 };
+}
+controllers.EditUserSpecialTeamCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
 
 
 return controllers;
