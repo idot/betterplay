@@ -31,7 +31,7 @@ controllers.GamesCtrl = function($log, $scope, $filter, Restangular, $stateParam
 controllers.GamesCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
 
 
-controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
+controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams, toaster ) {
 	$scope.stateParams = $stateParams;
 	var queryUser = Restangular.one('api/user', $scope.stateParams.username);
    
@@ -41,8 +41,25 @@ controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams
 		$scope.gameBets = userWithSpAndGB.gameBets;
 		setupTable( $scope.gameBets, ngTableParams, { 'game.game.nr': 'asc'}, $scope, $filter );
     });
+	
+	$scope.updateBet = function(bet){
+	    var queryBet = Restangular.all('api/bet/'+bet.id).customPOST(bet).then(
+		    function(success){
+	//	        toaster.pop('success', "updated bet "+success);
+		    }		
+		);			
+	};
+	
+	$scope.prettyBet = function(bet){
+		if(bet.result.isSet){
+			return bet.result.goalsTeam1+":"+bet.result.goalsTeam2;
+		}else{
+			return "-:-"
+		}
+	}
+	
 }
-controllers.UserCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+controllers.UserCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'toaster'];
 
 controllers.GameCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	$scope.stateParams = $stateParams;
@@ -62,24 +79,34 @@ controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams){
   $scope.stateParams = $stateParams;	
 	
   $scope.opened = false;	
-	
+		
   $scope.DF = $rootScope.DF;
   
   $scope.setFormat = function(){
 	  $rootScope.DF = $scope.DF;
   };
 	
-  $scope.setDate = function(newDate){
+  $scope.updateDate = function(){
       $rootScope.TIMEFROMSERVER = false;
-	  var nm = moment(newDate);
-      var om = currentTime;
+	  var nm = moment($scope.globaldate);
+      var om = moment($rootScope.currentTime);
 	  nm.hours(om.hours());
 	  nm.minutes(om.minutes());
 	  nm.seconds(om.seconds());
-	  $rootScope.currentTime = new Date(nm.getTime());
+	  $rootScope.currentTime = nm.toDate();
   };
   
-  $scope.GLOBALDATE = new Date($rootScope.currentTime.getTime());
+  $scope.updateTime = function(){
+      $rootScope.TIMEFROMSERVER = false;
+	  var nm = moment($scope.globaltime);
+      var om = moment($rootScope.currentTime);
+	  om.hours(nm.hours());
+	  om.minutes(nm.minutes());
+	  $rootScope.currentTime = om.toDate();
+  };
+  
+  $scope.globaldate = new Date($rootScope.currentTime.getTime());
+  $scope.globaltime = new Date($rootScope.currentTime.getTime());
 
   $scope.open = function($event){
 	    $event.preventDefault();

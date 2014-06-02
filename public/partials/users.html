@@ -4,7 +4,9 @@
    <table ng-table="tableParams" class="betterlist" show-filter="false">
         <tr ng-repeat="uuser in $data">
             <td data-title="'icon'">
-				<a ui-sref="user({ username: uuser.username})"><img src={{uuser.iconurl}}&s=23 alt="gravatar" width="23" height="23"/></a>
+				<a ui-sref="user({ username: uuser.username})">
+					<img ng-src="{{uuser && uuser.iconurl+'&s=23'}}" alt="gravatar" width="23" height="23"/>
+				</a>
 			</td>
 			<td data-title="'user'" sortable="'username'">
                 <a ui-sref="user({ username: uuser.username})">{{uuser.username}}</a>

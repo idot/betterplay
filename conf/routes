@@ -37,7 +37,7 @@ POST   /api/user/:name/password     controllers.Users.updatePassword(name: Strin
 POST    /api/createBetsForUsers      controllers.Users.createBetsForUsers()
 
 #GET     /api/bet/:id                controllers.Bets.get(id: Long) #not necessary in application for testing     
-#POST    /api/bet/:id                controllers.Bets.update(id: Long) #
+POST    /api/bet/:id                 controllers.Bets.update(id: Long) 
 
 # Send (user,password) to receive token
 POST    /login                      controllers.Application.login()

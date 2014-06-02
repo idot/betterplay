@@ -9,7 +9,7 @@
         <tr ng-repeat="bu in $data">
             <td data-title="'user'" sortable="'username'">
                 <a href='#/user/{{user.username}}'>{{bu.user.username}}</a>
-				<img src="{{user.iconurl}}&s=20"/>
+				<img ng-src="{{user && user.iconurl+'&s=23'}}" alt="gravatar" width="23" height="23"/>
             </td>
 
             <td data-title="'firstname'" sortable="'firstName'">

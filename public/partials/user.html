@@ -7,15 +7,15 @@
        {{user.firstName}} {{user.lastName}}
      </li>
 	 <li class="list-group-item">
-		<img src="{{user.iconurl}}&s=80"/>
-	       <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
+		<img ng-src="{{user && user.iconurl+'&s=80'}}" alt="gravatar" height="80" width="80"/>
+	       <button ng-if="isOwner(user.id)" type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
 	 </li>
   </ul>
   
 
 </form>
   
-
+<form name="betForm">
   <!-- this is the games table with bets for each game added -->
    <table ng-table="tableParams" class="table">
         <tr ng-repeat="gb in $data">
@@ -23,11 +23,14 @@
                 <a href='#/game/{{gb.game.game.nr}}'>{{gb.game.game.nr}}</a>
             </td>
             <td data-title="'local start'" sortable="'game.game.serverStart'">
-                {{gb.game.game.localStart | date : 'medium'}}
+                {{gb.game.game.localStart | date : DF}}
             </td>
             <td data-title="'server start'" sortable="'game.game.serverStart'">
-                {{gb.game.game.serverStart | date : 'medium'}}
+                {{gb.game.game.serverStart | date : DF}}
             </td>
+			<td data-title="'bet close'" sortable="'game.game.serverStart'">
+				{{timeLeft(gb.game.game.serverStart, currentTime)}}
+			</td>
 			<td data-title="'team1'" sortable="'gb.game.team1.name'">
 			    {{gb.game.team1.name}}
 			</td>
@@ -40,11 +43,24 @@
 			<td data-title="'points'">
 				 <span class="badge">{{gb.game.level.pointsExact}}/{{gb.game.level.pointsTendency}}</span>
 			</td>
+			<td data-title="'points'">
+				 <span class="badge">{{gb.bet.points}}</span>
+			</td>
 			<td data-title="'bet'">
-				{{gb.bet.result.goalsTeam1}}
+				 <div ng-if="canBet(gb.game.game.serverStart, currentTime, gb.bet)">
+					  <input class="betCell" type="number" min="0" max="30" 
+					  ng-minlength="1" ng-maxlength="2" 
+					  ng-model="gb.bet.result.goalsTeam1" ng-change="updateBet(gb.bet)"/>
+					  <input class="betCell" type="number" min="0" max="30" 
+					  ng-minlength="1" ng-maxlength="2" 
+					  ng-model="gb.bet.result.goalsTeam2" ng-change="updateBet(gb.bet)"/>
+				 </div>
+				 <div ng-if="! canBet(gb.game.game.serverStart, currentTime, gb.bet)">
+				      {{prettyBet(gb.bet)}}
+			     </div>
 			</td>
         </tr>
    </table>
-  
+</form>  
 
   

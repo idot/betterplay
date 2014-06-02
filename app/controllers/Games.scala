@@ -4,13 +4,19 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
+import play.api.libs.json.JsObject
+import play.api.data._
+import play.api.data.Forms._
 import play.api.db.slick.DBAction
+
+import scalaz.{\/,-\/,\/-}
 
 import models._
 import models.JsonHelper._
+import FormToV._	
 
 
-object Games extends Controller {
+object Games extends Controller with Security {
   
   def all() = DBAction { implicit rs =>
       implicit val session = rs.dbSession

@@ -22,7 +22,6 @@ var setupTable = function(collection, ngTableParams, initialSorting, $scope, $fi
 	        var orderedData = params.sorting() ? $filter('orderBy')(collection, params.orderBy()) : collection;
 			orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData; 
 			params.total(orderedData.length);
-			console.log( params.page()+" "+params.count()+ " " +  (params.page() - 1) * params.count() + " "+params.page() * params.count());
 			var slice = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())
 			$defer.resolve(slice);
 	    }

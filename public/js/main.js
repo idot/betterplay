@@ -155,7 +155,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			 $rootScope.isLoggedIn = function(){
 			     return typeof $rootScope.authtoken !== "undefined" && $rootScope.authtoken != "";
 			 };
-					 
+					 					 
 			 //should we fetch the time from the server or take the interactively set time
 			 $rootScope.TIMEFROMSERVER = true;
 			 
@@ -175,24 +175,24 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 		     $rootScope.$state = $state;
              $rootScope.$stateParams = $stateParams;
 
-	   		 $rootScope.timeLeft = function(serverTime, current){
+	   		 $rootScope.timeLeft = function(serverStart, current){
 	   		   //boolean true add in/ago
 	   		   //negative values = ago
 	   		   //positive values = in
-			   var diff = (serverTime -  $rootScope.MSTOCLOSING) - current;
+			   var diff = (serverStart -  $rootScope.MSTOCLOSING) - current;
 	   	       var s = moment.duration(diff, "milliseconds").humanize(true);
 	   		   return s;	 
 	   	     };
 			 
 
-	         $rootScope.betClosed = function(serverTime, current){
-	            var diff = (serverTime -  $rootScope.MSTOCLOSING) - current;
+	         $rootScope.betClosed = function(serverStart, current){
+	            var diff = (serverStart -  $rootScope.MSTOCLOSING) - current;
 				return diff < 0;	
 	         };
 			 
-			 $rootScope.canBet = function(serverTime, current, user, bet){
-			 	var diff = (serverTime -  $rootScope.MSTOCLOSING) - current;
-				var owner = user.id == bet.userId;
+			 $rootScope.canBet = function(serverStart, current, bet){
+				 var diff = (serverStart -  $rootScope.MSTOCLOSING) - current;
+				 var owner = $rootScope.isOwner(bet.userId);
 				return diff > 0 && owner;
 			 };
 		
@@ -267,11 +267,6 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			  	  url: "/user/:username/edit",
 				  templateUrl: 'partials/editUser.html',
 				  controller: controllers.EditUserCtrl				
-			  })
-			  .state('gamesWithBetsForUser', {
-			  	  url: "/games/user/:username",
-				  templateUrl: 'partials/gamesWithBetsForUser.html'
-			//	  controller: controllers.GamesWithBetsForUserCtrl				
 			  })
 		//	  .state('signon', {
 		//		  url: "/signon/:token",

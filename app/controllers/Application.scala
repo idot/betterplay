@@ -14,6 +14,7 @@ import models.BetterDb
 import models.User
 import models.UserNoPw
 import models.UserNoPwC
+import models.BetterSettings
 import play.api.db.slick.DBSessionRequest
 
 import org.joda.time.DateTime
@@ -110,7 +111,7 @@ trait Application extends Controller with Security {
   
   
   def time() = Action {
-	  val now = new DateTime()
+	  val now = BetterSettings.now
 	  val j = Json.obj("serverTime" -> now)
 	  Ok(j)
   }
