@@ -95,6 +95,14 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 		         })
 			 };
 			 		 
+			 $rootScope.isDebug = function(){
+			     if(typeof $rootScope.betterSettings !== "undefined"){
+			     	 return $rootScope.betterSettings.debug;
+			     }else{
+					 return false;
+			     }	
+			 };		 
+					 
 			 $rootScope.logout = function(){
 		         $rootScope.loggedInUser = { id: -1, username: "" };
 				 $rootScope.authtoken = "";	

@@ -1,34 +1,50 @@
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">User bets for: Game {{gwt.game.nr}} {{gwt.team1.name}}:{{gwt.team2.name}} {{gwt.level.name}} server start: {{gwt.game.localStart | date: DF}} bet closes {{timeLeft(gwt.game.serverStart, currentTime)}}</div>
-
+  <form class="form col-xs-5" name="gameEditForm" role="form">
+    <ul class="list-group">
+       <li class="list-group-item list-group-item-heading">
+         {{gwt.game.nr}}  {{gwt.team1.name}}:{{gwt.team2.name}} {{gwt.level.name}}
+       </li>
+       <li class="list-group-item">
+         bet close {{timeLeft(gwt.game.serverStart, currentTime)}} 
+       </li>
+	   <li class="list-group-item">
+		 local: {{gwt.game.localStart | date: DF }} server: {{gwt.game.serverStart | date: DF }}	
+	  </li>	
+  	  <li ng-if="isAdmin()" class="list-group-item">
+   	       <button ng-if="isOwner(user.id)" type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
+  	  </li>
+    </ul>
+  </form>
 
 
    <!-- this is the users table with bets for this game for each user added -->
    <table ng-table="tableParams" class="betterlist" show-filter="false">
         <tr ng-repeat="bu in $data">
-            <td data-title="'user'" sortable="'username'">
-                <a href='#/user/{{user.username}}'>{{bu.user.username}}</a>
-				<img ng-src="{{user && user.iconurl+'&s=23'}}" alt="gravatar" width="23" height="23"/>
+            <td data-title="'icon'">
+				<a ui-sref="user({ username: bu.user.username})">
+					<img ng-src="{{bu && bu.user.iconurl+'&s=23'}}" alt="gravatar" width="23" height="23"/>
+				</a>
+			</td>
+			<td data-title="'user'" sortable="'user.username'">
+                <a ui-sref="user({ username: bu.user.username})">{{bu.user.username}}</a>
             </td>
-
-            <td data-title="'firstname'" sortable="'firstName'">
-                {{bu.user.firstName}}
+            <td data-title="'points total'" sortable="'user.totalPoints'">
+                <span class="badge">{{bu.user.totalPoints}}</span>
             </td>
-            <td data-title="'lastname'" sortable="'lastName'">
-                {{bu.user.lastName}}
+            <td data-title="'points bet'" sortable="'bet.points'">
+                <span class="badge">{{bu.bet.points}}</span>
             </td>
-            <td data-title="'points total'" sortable="'totalPoints'">
-                {{bu.user.totalPoints}}
-            </td>
-            <td data-title="'bet'">
-				//if can bet: 
-				select 
-				else string: if isSet: x:Y else -:-
-                {{bu.bet.result.goalsTeam1}} //select!!  {{bu.bet.goalsTeam2}}
-            </td>
-            <td data-title="'points bet'" sortable="'bu.bet.points'">
-                {{bu.bet.points}}
-            </td>
+			<td data-title="'bet'">
+				 <div ng-if="canBet(gb.game.game.serverStart, currentTime, gb.bet)">
+					  <input class="betCell" type="number" min="0" max="30" 
+					  ng-minlength="1" ng-maxlength="2" 
+					  ng-model="gb.bet.result.goalsTeam1" ng-change="updateBet(gb.bet)"/>
+					  <input class="betCell" type="number" min="0" max="30" 
+					  ng-minlength="1" ng-maxlength="2" 
+					  ng-model="gb.bet.result.goalsTeam2" ng-change="updateBet(gb.bet)"/>
+				 </div>
+				 <div ng-if="! canBet(gb.game.game.serverStart, currentTime, gb.bet)">
+				      {{prettyBet(gb.bet)}}
+			     </div>
+			</td>
    </table>
 </div>

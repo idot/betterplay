@@ -1,7 +1,7 @@
 <form class="form col-xs-5" name="userEditForm" role="form">
   <ul class="list-group">
-     <li class="list-group-item">
-       {{user.username}}  <span class="badge">{{user.points}}</span>
+     <li class="list-group-item list-group-item-heading">
+       {{user.username}}  <span class="badge pull-right">{{user.totalPoints}}</span>
      </li>
      <li class="list-group-item">
        {{user.firstName}} {{user.lastName}}
@@ -11,8 +11,6 @@
 	       <button ng-if="isOwner(user.id)" type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
 	 </li>
   </ul>
-  
-
 </form>
   
 <form name="betForm">
