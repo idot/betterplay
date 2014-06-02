@@ -6,7 +6,10 @@
 GET     /                           controllers.Application.index
 
 GET     /api/time                   controllers.Application.time()
-
+# in debug mode its possible to set times
+POST    /api/time					controllers.Application.setDebugTime()
+POST    /api/time/reset             controllers.Application.resetTime() 
+ 
 GET     /api/teams                  controllers.Teams.all()
 #GET    /api/team/:name             controllers.Teams.get(name: String)
 #POST    /api/team/:name             controllers.Teams.insert(name: String)
@@ -20,8 +23,11 @@ GET     /api/levels                  controllers.Levels.all()
 
 GET     /api/games                  controllers.Games.all()
 
+#Posts
+POST    /api/game/results           controllers.Games.submitResult()               
+
 # gets game with all bets nr is game nr not game id!
-GET     /api/game/:nr              controllers.Games.get(nr: Int)   
+GET     /api/game/:nr                controllers.Games.get(nr: Int)   
 #POST    /api/game/:nr               controllers.Games.post(nr: Int)  #creates/updates game with all bets; creates bets if not there
 
 GET     /api/users                  controllers.Users.all()           

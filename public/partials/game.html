@@ -9,8 +9,8 @@
 	   <li class="list-group-item">
 		 local: {{gwt.game.localStart | date: DF }} server: {{gwt.game.serverStart | date: DF }}	
 	  </li>	
-  	  <li ng-if="isAdmin()" class="list-group-item">
-   	       <button ng-if="isOwner(user.id)" type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editUser', {'username': user.username})" value="Submit" title="Edit">Edit</button>
+  	  <li class="list-group-item">
+   	       <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editGame', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result {{gwt.game.nr}}</button>
   	  </li>
     </ul>
   </form>
@@ -34,16 +34,16 @@
                 <span class="badge">{{bu.bet.points}}</span>
             </td>
 			<td data-title="'bet'">
-				 <div ng-if="canBet(gb.game.game.serverStart, currentTime, gb.bet)">
+				 <div ng-if="canBet(gwt.game.serverStart, currentTime, bu.bet)">
 					  <input class="betCell" type="number" min="0" max="30" 
 					  ng-minlength="1" ng-maxlength="2" 
-					  ng-model="gb.bet.result.goalsTeam1" ng-change="updateBet(gb.bet)"/>
+					  ng-model="bu.bet.result.goalsTeam1" ng-change="updateBet(bu.bet)"/>
 					  <input class="betCell" type="number" min="0" max="30" 
 					  ng-minlength="1" ng-maxlength="2" 
-					  ng-model="gb.bet.result.goalsTeam2" ng-change="updateBet(gb.bet)"/>
+					  ng-model="bu.bet.result.goalsTeam2" ng-change="updateBet(bu.bet)"/>
 				 </div>
-				 <div ng-if="! canBet(gb.game.game.serverStart, currentTime, gb.bet)">
-				      {{prettyBet(gb.bet)}}
+				 <div ng-if="! canBet(gwt.game.serverStart, currentTime, bu.bet)">
+				      {{prettyBet(bu.bet)}}
 			     </div>
 			</td>
    </table>

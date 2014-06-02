@@ -17,6 +17,7 @@ import models.UserNoPwC
 import models.BetterSettings
 import play.api.db.slick.DBSessionRequest
 
+
 import org.joda.time.DateTime
 
 
@@ -62,7 +63,7 @@ trait Security { self: Controller =>
         Cache.getAs[Long](token) map { userId =>
           f(token)(userId)(request)
         }
-      }.getOrElse( Unauthorized(Json.obj("error" -> "no security token")))
+      }.getOrElse( Unauthorized(Json.obj("error" -> "no security token. Please login again")))
     }
   }
   
@@ -78,6 +79,14 @@ trait Security { self: Controller =>
 	 }
   }
   
+  def withAdmin[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => DBSessionRequest[A] => Result): Action[A] = {
+	  withUser(p){ userId => user => implicit request =>
+		   if(user.isAdmin) f(userId)(user)(request) else Unauthorized(Json.obj("error" -> s"must be admin"))	   
+	  }
+  }
+  
+ 
+  
 }
   
 
@@ -87,7 +96,7 @@ trait Application extends Controller with Security {
   import models.JsonHelper._
   
   lazy val CacheExpiration =
-    app.configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 2 /* minutes */)
+    app.configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
 
   def index = Action {
     Ok(views.html.index())
@@ -116,8 +125,31 @@ trait Application extends Controller with Security {
 	  Ok(j)
   }
   
+  
+  def setDebugTime() = withAdmin(parse.json) { userId => admin => implicit request =>
+	  if(debug){
+         (request.body \ "serverTime").validate[DateTime].fold(
+		   err => BadRequest(Json.obj("error" -> "could not parse json")),
+		   succ => {
+			    BetterSettings.setDebugTime(succ)	
+				Ok("set time to debug")
+		   } 
+		 )
+      }else{
+	     Unauthorized(Json.obj("error" -> "setting of time only in debug modus! No cheating!!!"))
+	  }
+  }
+  
+  def resetTime() = withAdmin(parse.json) { userId => admin => implicit request =>
+	  BetterSettings.resetTime()
+	  Ok("reset time to system clock")
+  }
+  
+  def debug(): Boolean = {
+      Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)  
+  }
+  
   def settings() = Action {
-	  val debug = Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)
 	  val j = Json.obj("debug" -> debug)
 	  Ok(j)
   }

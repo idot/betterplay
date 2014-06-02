@@ -276,6 +276,11 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  templateUrl: 'partials/editUser.html',
 				  controller: controllers.EditUserCtrl				
 			  })
+			  .state('editGame', {
+			  	  url: "/game/:gamenr/edit",
+				  templateUrl: 'partials/editGame.html',
+				  controller: controllers.EditGameCtrl
+			  })
 		//	  .state('signon', {
 		//		  url: "/signon/:token",
 		//		  templateUrl: 'partials/signon.html',

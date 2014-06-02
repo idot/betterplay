@@ -14,6 +14,7 @@ import scalaz.{\/,-\/,\/-}
 import models._
 import models.JsonHelper._
 import FormToV._	
+import models.BetterSettings
 
 trait Users extends Controller with Security {
   

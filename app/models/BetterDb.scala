@@ -15,6 +15,8 @@ case object SetResult extends GameUpdate
 case object ChangeDetails extends GameUpdate
 case object NewGame extends GameUpdate
 
+case class UpdatePoints(session: Session)
+
 
 object BetterDb {
    import BetterTables._
@@ -402,7 +404,7 @@ object BetterDb {
    /**
     * 
     * from ui with correct foreign keys set by ui
-    * ui should initiate points calculation
+    * contoller should initiate points calculation
     * 
     */
    def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int)(implicit s: Session): String \/ (Game,GameUpdate) = {
