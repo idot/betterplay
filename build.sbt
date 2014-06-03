@@ -34,6 +34,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "angular-ui-router" % "0.2.10-1",
   "org.webjars" % "ng-table" % "0.3.2",
   "org.webjars" % "momentjs" % "2.6.0-2",
+  "org.webjars" % "font-awesome" % "4.1.0",
   "org.webjars" % "angular-ui-utils" % "47ff7ef35c"//,
 //  "com.typesafe" %% "play-plugins-mailer" % "2.0.4"
 )

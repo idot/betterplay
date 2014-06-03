@@ -44,12 +44,29 @@ controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams
     });
 	
 		/** duplicated with GameCtr **/
-	$scope.updateBet = function(bet){
+	$scope.saveBet = function(bet){
 	    var queryBet = Restangular.all('api/bet/'+bet.id).customPOST(bet).then(
 		    function(success){
-	//	        toaster.pop('success', "updated bet "+success);
+				var game = success.game;
+				var betold = success.betold;
+				var betnew = success.betnew;
+				var show = success.game.game.nr+": "+$scope.prettyBet(betold)+" -> "+$scope.prettyBet(betnew)
+				toaster.pop('success', "updated bet ", show);
+				bet['marked'] = false;
 		    }		
 		);			
+	};
+	
+	$scope.markBet = function(bet){
+	    bet['marked'] = true;	
+	};
+	
+	$scope.saveButton = function(bet){
+		if(typeof bet.marked === "undefined" || bet.marked == false){
+			return "btn btn-default btn-xs";
+		}else{
+			return "btn btn-warning btn-xs";
+		}
 	};
 	
 		/** duplicated with GameCtr **/
@@ -138,7 +155,15 @@ controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams, Rest
   };
   
   
-  
+  $scope.resetTime = function(){
+      Restangular.all('api/time/reset').customPOST().then(
+  	   function(success){
+	 	    $rootScope.TIMEFROMSERVER = true;
+	 	    $rootScope.updateTimeFromServer()
+  		    toaster.pop('success', "reset time", success);
+  	   })
+  };
+    
   
   $scope.global = { date : new Date($rootScope.currentTime.getTime()), time: new Date($rootScope.currentTime.getTime())};
 
@@ -231,7 +256,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 		    var pu = { 'password': $scope.pass.word1 };
 	    	Restangular.all('api/user/'+$scope.formUser.username+'/password').customPOST( pu ).then(
 			function(success){
-				toaster.pop('success', "changed password for "+$scope.username+"\n"+success);
+				toaster.pop('success', "changed password");
 				$scope.pass.word1 = "";
 				$scope.pass.word2 = "";
 			}
@@ -244,7 +269,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 		   var u = { firstName: $scope.formUser.firstName, lastName: $scope.formUser.lastName, email: $scope.formUser.email, icontype: $scope.formUser.icontype };	
     	   Restangular.all('api/user/'+$scope.formUser.username+'/details').customPOST( u ).then(
 		     function(success){
-			    toaster.pop('success', "updated user details for"+$scope.formUser.username+"\n"+success);
+			    toaster.pop('success', "updated user details");
                 $scope.refreshUser();
 		     }
 		  );
@@ -275,6 +300,14 @@ controllers.EditGameCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 }
 controllers.EditGameCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams', 'Restangular', '$state', 'toaster'];
 
+
+
+controllers.BetResultCtrl = function($scope){
+	$scope.value = "myscopevalue";
+	
+	
+}
+controllers.BetResultCtrl.$inject = ['$scope'];
 
 return controllers;
 

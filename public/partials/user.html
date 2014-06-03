@@ -47,15 +47,19 @@
 			<td data-title="'bet'">
 				 <div ng-if="canBet(gb.game.game.serverStart, currentTime, gb.bet)">
 					  <input class="betCell" type="number" min="0" max="30" 
-					  ng-minlength="1" ng-maxlength="2" 
-					  ng-model="gb.bet.result.goalsTeam1" ng-change="updateBet(gb.bet)"/>
+					  ng-minlength="1" ng-maxlength="2" ng-change="markBet(gb.bet)"
+					  ng-model="gb.bet.result.goalsTeam1"/>
 					  <input class="betCell" type="number" min="0" max="30" 
-					  ng-minlength="1" ng-maxlength="2" 
-					  ng-model="gb.bet.result.goalsTeam2" ng-change="updateBet(gb.bet)"/>
+					  ng-minlength="1" ng-maxlength="2" ng-change="markBet(gb.bet)"
+					  ng-model="gb.bet.result.goalsTeam2"/>
+					  <button type="button" ng-class="saveButton(gb.bet)" ng-click="saveBet(gb.bet)"><i class="fa fa-floppy-o fa-lg"></i></button>
 				 </div>
 				 <div ng-if="! canBet(gb.game.game.serverStart, currentTime, gb.bet)">
 				      {{prettyBet(gb.bet)}}
 			     </div>
+			</td>
+			<td data-title="'betresult'" sortable="'pointsSpecialBet'">
+			    <ng-betresult ng-model="gb.bet"></ng-betresult>
 			</td>
         </tr>
    </table>

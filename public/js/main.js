@@ -221,7 +221,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 		  
 	   
       
-        $urlRouterProvider.otherwise("/users"); //home should be 1. if logged in
+        $urlRouterProvider.otherwise("/user/admin"); //TODO: home should be 1. if logged in
 
 	       $stateProvider
 		      .state('users', {
@@ -281,6 +281,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  templateUrl: 'partials/editGame.html',
 				  controller: controllers.EditGameCtrl
 			  })
+			  
 		//	  .state('signon', {
 		//		  url: "/signon/:token",
 		//		  templateUrl: 'partials/signon.html',
