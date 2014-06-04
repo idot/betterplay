@@ -20,6 +20,14 @@ import play.api.db.slick.DBSessionRequest
 
 import org.joda.time.DateTime
 
+object PlayHelper {
+
+   def debug(): Boolean = {
+        Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)  
+   }
+
+}
+
 
 object FormToV {
   import scalaz.{\/,-\/,\/-}
@@ -94,6 +102,7 @@ trait Security { self: Controller =>
 
 trait Application extends Controller with Security {
   import models.JsonHelper._
+  import PlayHelper._
   
   lazy val CacheExpiration =
     app.configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
@@ -145,9 +154,7 @@ trait Application extends Controller with Security {
 	  Ok("reset time to system clock")
   }
   
-  def debug(): Boolean = {
-      Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)  
-  }
+
   
   def settings() = Action {
 	  val j = Json.obj("debug" -> debug)

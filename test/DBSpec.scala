@@ -91,7 +91,23 @@ class DBSpec extends Specification with ThrownMessages {
           }.toSet.size === 6
       }
       
-      
+      def insertSpecialBetTemplates()(implicit s: Session){
+		  val admin = getAdmin()
+		  val specialT = ObjectMother.specialTemplates(SpecialBetType.team, firstStart)
+		  val specialP = ObjectMother.specialTemplates(SpecialBetType.player, firstStart)
+		  (specialT ++ specialP).foreach{ t => 
+		  	   BetterDb.insertSpecialBetInStore(t, admin)
+		  }
+	  }
+	  
+	  def makeSpecialBets()(implicit s: Session){
+	      val users = BetterTables.users.list.sortBy(_.id)
+		  val u = users(3)
+	   //   val playertemplates = BetterDb.getSpecialPlayerBetsForUser(u)
+	      
+	  
+	  }	  
+	  
       def makeBets1()(implicit s: Session){
          val users = BetterTables.users.list.sortBy(_.id)
          val gb1 = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
@@ -314,7 +330,7 @@ class DBSpec extends Specification with ThrownMessages {
       }
     }
     
-//
+
 //    "use the default db settings when no other possible options are available" in new WithApplication {
 //      DB.withSession { implicit s: Session =>
 //        import BetterDb._

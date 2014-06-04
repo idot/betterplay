@@ -60,7 +60,7 @@ case class GameResult(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
 //maybe size could be added
 case class DBImage(format: String, image: String) //unsure of base64 string or array[Byte]
 
-case class Team(id: Option[Long] = None, name: String, shortName: String, dbimage: DBImage)
+case class Team(id: Option[Long] = None, name: String, short3: String, short2: String)
 
 case class Player(id: Option[Long] = None, name: String, role: String, club: String, teamId: Long,  dbimage: DBImage)
 
@@ -110,9 +110,15 @@ case class SpecialBet(id: Option[Long], topScorer: Option[Long], mvp: Option[Lon
   
 }
 
+object SpecialBetType {
+	val team = "team"
+	val player = "player"
+}
+
 //TODO: convert specialbet 
 case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long, targetId: Long, creationDate: DateTime, points: Int)
-case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, itemType: String, resultId: Option[Long])
+case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: DateTime, itemType: String, resultId: Option[Long])
+
 
 
 

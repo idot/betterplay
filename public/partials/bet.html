@@ -1,0 +1,12 @@
+<div ng-if="$root.canBet(start, $root.currentTime, bet)">
+  <input class="betCell" type="number" min="0" max="30" 
+  ng-minlength="1" ng-maxlength="2" ng-change="markBet(bet)"
+  ng-model="bet.result.goalsTeam1"/>
+  <input class="betCell" type="number" min="0" max="30" 
+  ng-minlength="1" ng-maxlength="2" ng-change="markBet(bet)"
+  ng-model="bet.result.goalsTeam2"/>
+  <button type="button" ng-class="saveButton(bet)" ng-click="saveBet(bet)"><i class="fa fa-floppy-o fa-lg"></i></button>
+</div>
+<div ng-if="! $root.canBet(start, $root.currentTime, bet)">
+  {{prettyBet(bet)}}
+</div>

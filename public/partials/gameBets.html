@@ -4,13 +4,13 @@
          {{gwt.game.nr}}  {{gwt.team1.name}}:{{gwt.team2.name}} {{gwt.level.name}}
        </li>
        <li class="list-group-item">
-         bet close {{timeLeft(gwt.game.serverStart, currentTime)}} 
+         bet close {{timeLeft(gwt.game.serverStart, currentTime)}}  reward: <span class="badge">{{gb.game.level.pointsExact}}/{{gb.game.level.pointsTendency}}</span>
        </li>
 	   <li class="list-group-item">
 		 local: {{gwt.game.localStart | date: DF }} server: {{gwt.game.serverStart | date: DF }}	
 	  </li>	
-  	  <li class="list-group-item">
-   	       <button type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('editGame', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result {{gwt.game.nr}}</button>
+  	  <li ng-if="isAdmin() && betClosed(gwt.game.serverStart, currentTime)" class="list-group-item">
+   	       <button type="submit" class="btn btn-primary" ng-click="$state.transitionTo('game.editGame', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result</button>
   	  </li>
     </ul>
   </form>
@@ -20,12 +20,12 @@
    <table ng-table="tableParams" class="betterlist" show-filter="false">
         <tr ng-repeat="bu in $data">
             <td data-title="'icon'">
-				<a ui-sref="user({ username: bu.user.username})">
+				<a ui-sref="user.userBets({ username: bu.user.username})">
 					<img ng-src="{{bu && bu.user.iconurl+'&s=23'}}" alt="gravatar" width="23" height="23"/>
 				</a>
 			</td>
 			<td data-title="'user'" sortable="'user.username'">
-                <a ui-sref="user({ username: bu.user.username})">{{bu.user.username}}</a>
+                <a ui-sref="user.userBets({ username: bu.user.username})">{{bu.user.username}}</a>
             </td>
             <td data-title="'points total'" sortable="'user.totalPoints'">
                 <span class="badge">{{bu.user.totalPoints}}</span>
@@ -34,17 +34,7 @@
                 <span class="badge">{{bu.bet.points}}</span>
             </td>
 			<td data-title="'bet'">
-				 <div ng-if="canBet(gwt.game.serverStart, currentTime, bu.bet)">
-					  <input class="betCell" type="number" min="0" max="30" 
-					  ng-minlength="1" ng-maxlength="2" 
-					  ng-model="bu.bet.result.goalsTeam1" ng-change="updateBet(bu.bet)"/>
-					  <input class="betCell" type="number" min="0" max="30" 
-					  ng-minlength="1" ng-maxlength="2" 
-					  ng-model="bu.bet.result.goalsTeam2" ng-change="updateBet(bu.bet)"/>
-				 </div>
-				 <div ng-if="! canBet(gwt.game.serverStart, currentTime, bu.bet)">
-				      {{prettyBet(bu.bet)}}
-			     </div>
+			    <better-bet bet="bu.bet" start="gwt.game.serverStart"></better-bet>
 			</td>
    </table>
 </div>

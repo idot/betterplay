@@ -12,18 +12,27 @@ angular.module('myApp.directives', [])
       elm.text(version);
     };
   }])
-  .directive('ngBetresult', function(){
+  .directive('betterBet', ['$rootScope', function($rootScope){
 	 return {
 	      restrict: 'E',
-	      require: '^ngModel',
 		  scope: {
-		    ngModel: '=',     // Bind the ngModel to the object given
-		    onSend: '&',      // Pass a reference to the method 
-		    fromName: '@'     // Store the string associated by fromName
+		    bet: '=bet',     // Bind the betBet to the object given
+	//	    onSend: '&',      // Pass a reference to the method 
+			start: '=start'   
 		  },
-	      templateUrl: 'partials/betresult.html',
-		  controller: controllers.BetResultCtrl
+	      templateUrl: 'partials/bet.html',
+		  controller: controllers.BetCtrl
 	 } 	
+  }])
+  .directive('teamFlag', function(){  //<span class="f32"><span class="flag ag"></span></span>
+  	  return {
+  	     replace: true,
+		 restrict: 'E',
+		 link: function(scope, element, attrs) {//"attrs.iso"
+    	        var flag = '<span class="f32"><span class="flag '+attrs.iso+'"></span></span>';
+   	            element.append(flag);
+		 }
+  	  }	
   })
   ;
 

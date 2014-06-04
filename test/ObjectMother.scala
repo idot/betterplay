@@ -14,7 +14,7 @@ object ObjectMother {
 	  User(None, s"u$nr", s"f$nr", s"l$nr", email, s"$nr", true, true, true, true, false, 4 , 2, g, t, None)
   }
   
-  val dummyTeams: Seq[Team] = (1 to 6).map{nr => Team(None, s"t$nr", s"t$nr", DBImage("",""))}
+  val dummyTeams: Seq[Team] = (1 to 6).map{nr => Team(None, s"t$nr", s"t$nr", s"t$nr")}
    
   val dummyPlayers: Seq[Player] = (1 to 6).map{ nr => Player(None, s"playername$nr", "role", s"clubname$nr", 0, DBImage("",""))}
   
@@ -24,6 +24,11 @@ object ObjectMother {
         GameLevel(None, "semi", 6, 3, 1),
         GameLevel(None, "final", 12, 5, 2)
       )
+  }
+  
+  def specialTemplates(stype: String, start: DateTime): Seq[SpecialBetT] = {
+	  val nm = "template "+stype
+	  (1 to 4).map{ i =>  SpecialBetT(None, s"$nm $i", "$nm $i", i, start, stype, None )}.toList
   }
   
   /**

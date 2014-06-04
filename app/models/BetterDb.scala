@@ -449,10 +449,17 @@ object BetterDb {
 		}       
    }
    
-   def updateUser(userId: Long, firstName: String, lastName: String, email: String, password: String, icontype: String, submittingUserId: Long)(implicit s: Session): String \/ User = {
-       if(userId != submittingUserId){
-		   return -\/(s"only the user can change details $userId $submittingUserId")
-	   }
+   def updateUserPassword(userId: Long, passwordHash: String)(implicit s: Session): String \/ User = {
+	   withT{
+          users.filter(u => u.id === userId).firstOption.map{ user => 
+		      val updatedUser = user.copy(passwordHash=passwordHash)   
+			  users.filter(u => u.id === userId).update(updatedUser)
+			  \/-(updatedUser)		  
+		  }.getOrElse(-\/(s"user not found $userId"))
+       }
+   }
+   
+   def updateUserDetails(userId: Long, firstName: String, lastName: String, email: String, icontype: String)(implicit s: Session): String \/ User = {
 	   withT{
           users.filter(u => u.id === userId).firstOption.map{ user => 
 			  val (u,t) = DomainHelper.gravatarUrl(email, icontype)
@@ -620,9 +627,19 @@ object BetterDb {
            playerWithTeamId
        }
    }
-
    
-
+   
+   //http://stackoverflow.com/questions/20386593/slick-left-right-outer-joins-with-option
+  //  def getSpecialPlayerBetsForUser(user: User)(implicit s: Session): String \/ Seq[(SpecialBetT,Option[SpecialBetByUser],Option[Player])] = {
+	//   val tbps = for {
+	//	   (t, b) <- specialbetstore.leftJoin(specialbetsuser)
+//		               .on( (temp,bet) => temp.id === bet.spId && bet.userId === user.id )
+//					//   .leftJoin(players).on( (tb, player) => tb._2.targetId === player.id )
+//	       } yield (t, b.?)   
+//	    
+//	   tbps.list.map{ case(t,b) => (t,b) }
+//    }
+    
    
 }
 

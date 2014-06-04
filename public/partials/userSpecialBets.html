@@ -1,0 +1,29 @@
+<form name="specialBetsForm" class="form col-xs-3" role="form">
+   <h2>special bets</h2>
+   
+   <table ng-table="tableParams" class="table">
+        <tr ng-repeat="bet in $data" >
+			<td data-title="'name'">
+                 {{bet.template.name}}
+            </td>
+			<td data-title="'reward'">
+				 {{bet.template.points}}
+			</td>
+			<td data-title="'bet close'">
+				 {{bet.template.closeDate}}
+			</td>
+			<td data-title="'actual'">
+				 {{bet.template.closeDate}}
+			</td>
+			<td data-title="'prediction'">
+				 {{bet.bet.prediction}}
+			</td>
+			<td data-title="'points'">
+                 {{bet.bet.points}}
+			</td>
+			<td data-title="'change'">
+				 <i class="fa fa-plus-square fa-lg"></i>
+			</td>
+		</tr>
+   </table>
+</form>  
