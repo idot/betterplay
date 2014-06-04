@@ -33,7 +33,6 @@ object BetterTables {
   val levels = TableQuery[GameLevels]
   val games = TableQuery[Games]
   val bets = TableQuery[Bets]
-  val specialbets = TableQuery[SpecialBets] //TBD
   val specialbetstore = TableQuery[SpecialBetsTs] 
   val specialbetsuser = TableQuery[SpecialBetByUsers]
  
@@ -44,7 +43,6 @@ object BetterTables {
     levels.ddl.create
     games.ddl.create
     bets.ddl.create
-	specialbets.ddl.create //TBD
     specialbetstore.ddl.create
 	specialbetsuser.ddl.create
 	
@@ -53,7 +51,6 @@ object BetterTables {
   def drop()(implicit s: Session){
     val ddl = users.ddl ++ teams.ddl ++ players.ddl ++ levels.ddl ++ 
 	games.ddl ++ bets.ddl ++
-	specialbets.ddl ++ //TBD
 	specialbetstore.ddl ++ specialbetsuser.ddl
     //ddl.createStatements.foreach(println)
     ddl.drop
@@ -105,33 +102,6 @@ object BetterTables {
 
   }
 
-  class SpecialBets(tag: Tag) extends Table[SpecialBet](tag, "specialbets") {
-    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def topScorerId = column[Option[Long]]("topscorer_id")
-    def mvpId = column[Option[Long]]("mvp_id")
-    def winningteamId = column[Option[Long]]("winningteam_id")
-    def semi1 = column[Option[Long]]("semi1_id")
-    def semi2 = column[Option[Long]]("semi2_id")
-    def semi3 = column[Option[Long]]("semi3_id")
-    def semi4 = column[Option[Long]]("semi4_id")
-    def userId = column[Long]("user_id")
-    def isSet = column[Boolean]("isset")
-    
-    def topScorer = foreignKey("SP_TOP_FK", topScorerId, players)(_.id) 
-    def mvp = foreignKey("SP_MVP_FK", topScorerId, players)(_.id) 
-    
-    def winningTeam = foreignKey("SP_WINNING_FK", topScorerId, teams)(_.id) 
-
-    def semiFinal1 = foreignKey("SP_SEMI1_FK", semi1, teams)(_.id) 
-    def semiFinal2 = foreignKey("SP_SEMI2_FK", semi2, teams)(_.id) 
-    def semiFinal3 = foreignKey("SP_SEMI3_FK", semi3, teams)(_.id) 
-    def semiFinal4 = foreignKey("SP_SEMI4_FK", semi4, teams)(_.id) 
-    
-    def user = foreignKey("SP_USER_FK", userId, users)(_.id)
-    
-    def * = (id.?, topScorerId, mvpId, winningteamId, semi1, semi2, semi3, semi4, isSet, userId) <> (SpecialBet.tupled, SpecialBet.unapply)
-
-  }
   
   class SpecialBetsTs(tag: Tag) extends Table[SpecialBetT](tag, "specialbetsstore"){
      def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -139,9 +109,10 @@ object BetterTables {
      def description = column[String]("description", O.NotNull)
      def points = column[Int]("points", O.NotNull)
 	 def closeDate = column[DateTime]("closedate", O.NotNull)
+	 def betGroup = column[String]("betgroup", O.NotNull)
      def itemtype = column[String]("itemtype", O.NotNull)
-     def resultId = column[Option[Long]]("resultid", O.Nullable) 
-     def * = (id.?, name, description, points, closeDate, itemtype, resultId) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
+     def result = column[String]("result", O.NotNull) 
+     def * = (id.?, name, description, points, closeDate, betGroup, itemtype, result) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
   }
   
   
@@ -149,13 +120,10 @@ object BetterTables {
      def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
      def userId = column[Long]("userid", O.NotNull)
      def spId = column[Long]("specialbetid", O.NotNull)
-     def targetId = column[Long]("targetid", O.NotNull)
-     def creationDate = column[DateTime]("creationdate", O.NotNull)
+     def prediction = column[String]("prediction", O.NotNull)
      def points = column[Int]("points", O.NotNull)
-     
-	 def ? = (id.?, userId.?, spId.?, targetId.?, creationDate.?, points.?)
-	 
-     def * = (id.?, userId, spId, targetId, creationDate, points) <> (SpecialBetByUser.tupled,SpecialBetByUser.unapply)     
+    
+     def * = (id.?, userId, spId, prediction, points) <> (SpecialBetByUser.tupled,SpecialBetByUser.unapply)     
     
   }
   

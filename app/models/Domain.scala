@@ -102,22 +102,18 @@ object UserNoPwC {
 }      
          
 
-case class SpecialBet(id: Option[Long], topScorer: Option[Long], mvp: Option[Long], winningTeam: Option[Long], semi1: Option[Long], semi2: Option[Long], semi3: Option[Long], semi4: Option[Long], isSet: Boolean, userId: Long){
-  
-  def semiIds(): Set[Long] = {
-      Set(semi1, semi2, semi3, semi4).flatten 
-  }
-  
-}
-
 object SpecialBetType {
 	val team = "team"
 	val player = "player"
 }
 
 //TODO: convert specialbet 
-case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long, targetId: Long, creationDate: DateTime, points: Int)
-case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: DateTime, itemType: String, resultId: Option[Long])
+case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long, prediction: String, points: Int)
+/**
+* the betgroupID allows grouping for multiple results e.g. semifinal1 seimifinal2 .. semifinal4 should all have the same groupId
+*
+*/
+case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: DateTime, betGroup: String, itemType: String, result: String)
 
 
 

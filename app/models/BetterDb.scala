@@ -57,17 +57,17 @@ object BetterDb {
        users.list
    }
 
-   def usersWithSpecialBetsAndRank()(implicit s: Session): Seq[(User,SpecialBet,Int,Int)] = {
-       val us = for{
-          (u,s) <- users.innerJoin(specialbets).on(_.id === _.userId) 
-       } yield (u,s)
-       val sorted = us.list.sortBy(_._1.totalPoints).reverse
-       val points = sorted.map(_._1.totalPoints) 
-       val ranks = PointsCalculator.pointsToRanks(points)
-       sorted.zip(ranks).map{ case ((u,s),r) =>
-          (u,s,u.totalPoints,r)
-       }
-   }
+ //  def usersWithSpecialBetsAndRank()(implicit s: Session): Seq[(User,SpecialBet,Int,Int)] = {
+ //      val us = for{
+ //         (u,s) <- users.innerJoin(specialbets).on(_.id === _.userId) 
+ //      } yield (u,s)
+ //      val sorted = us.list.sortBy(_._1.totalPoints).reverse
+ //      val points = sorted.map(_._1.totalPoints) 
+ //      val ranks = PointsCalculator.pointsToRanks(points)
+ //      sorted.zip(ranks).map{ case ((u,s),r) =>
+ //        (u,s,u.totalPoints,r)
+ //      }
+ //  }
  
    def allGamesWithTeams()(implicit s: Session): Seq[GameWithTeams] = {
        val gtt = (for{
@@ -199,21 +199,40 @@ object BetterDb {
         )   
    }
     
-   def userWithSpecialBet(userId: Long)(implicit s: Session):  String \/ (User,SpecialBet) = {
+  // def userWithSpecialBet(condition: User => Boolean): Boolean = {
+  // 
+  // 
+  // }	
+	
+   def userWithSpecialBet(userId: Long)(implicit s: Session):  String \/ (User, Seq[SpecialBetByUser]) = {
        val us = for{
-         (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.id === userId
+         (u,s) <- users.join(specialbetsuser).on(_.id === _.userId) if u.id === userId
        }yield (u,s)
-       us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user for id $userId"))
+	   val usList = us.list
+	   if(usList.size > 0){
+		   val user = usList(0)._1
+		   val bets = usList.map{ case(u,b) => b}
+	       \/-((user,bets))
+		}else{
+		   -\/(s"could not find user for id $userId")  
+		}
    }  
    
    /**
     * todo: test
     */
-   def userWithSpecialBet(username: String)(implicit s: Session):  String \/ (User,SpecialBet) = {
-        val us = for{
-         (u,s) <- users.join(specialbets).on(_.id === _.userId) if u.username === username
+   def userWithSpecialBet(username: String)(implicit s: Session):  String \/ (User, Seq[SpecialBetByUser]) = {
+       val us = for{
+         (u,s) <- users.join(specialbetsuser).on(_.id === _.userId) if u.username === username
        }yield (u,s)
-       us.firstOption.map{ case(u,s) => \/-((u,s))}.getOrElse(-\/(s"could not find user with username $username"))  
+	   val usList = us.list
+	   if(usList.size > 0){
+		   val user = usList(0)._1
+		   val bets = usList.map{ case(u,b) => b}
+	       \/-((user,bets))
+		}else{
+		   -\/(s"could not find user with $username")  
+		}
    }  
    
    
@@ -348,37 +367,6 @@ object BetterDb {
        }    
    }
    
-   /**
-    * 
-    * checking if start of games, specialbet from user, user can bet
-    * 
-    * 
-    */
-   def updateSpecialBet(specialBet: SpecialBet, user: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (SpecialBet,User) = {
-       startOfGames().map{ startTime =>
-          isGameOpen(startTime, currentTime, closingMinutesToGame).fold(
-              err => -\/(err),
-              succ => updateOpenSpecialbet(specialBet, user)      
-          )}.getOrElse(-\/("no games yet"))
-   }
-   
-   
-   def updateOpenSpecialbet(specialBet: SpecialBet, submittingUser: User)(implicit s: Session): String \/ (SpecialBet,User) = {
-        s.withTransaction{ 
-                 userWithSpecialBet(specialBet.userId).flatMap{ case(udb, spdb) =>
-                         checkSpecial(udb.canBet, opId(submittingUser.id), spdb.userId).fold(
-                             err => -\/(err.list.mkString("\n")),
-                             succ => {
-                                  val nsb = specialBet.copy(isSet=true)
-			                      specialbets.filter(_.id === nsb.id).update(nsb)
-			                      val nu = udb.copy(hadInstructions=true)
-			                      users.filter(_.id === nu.id).update(nu)
-		                          \/-((nsb,nu))
-                             }                         
-                         )
-                    }
-        }
-   }
 
    /**
     * this should only be called immediately after game creation if there has been an error!
@@ -442,7 +430,7 @@ object BetterDb {
            val userId = (users returning users.map(_.id)) += initUser
            val userWithId = initUser.copy(id=Some(userId))
            users.filter(_.id === userId).firstOption.map{ user =>
-			  createSpecialBetsForUser(userWithId, new DateTime())
+			  createSpecialBetsForUser(userWithId)
               createBetsForGamesForUser(userWithId)
            }   
 		   \/-(userWithId)
@@ -551,11 +539,11 @@ object BetterDb {
     * has return value for return result and free actor
     * 
     **/
-   def calculatePoints(specialBetResult: Option[SpecialBet], submittingUser: User)(implicit s: Session): String \/ Boolean = {
+   def calculatePoints(submittingUser: User)(implicit s: Session): String \/ Boolean = {
         if(submittingUser.isAdmin){
            s.withTransaction {
               updateBetsWithPoints()
-              updateUsersPoints(specialBetResult)
+              updateUsersPoints()
               \/-(true)
            }
         }else{
@@ -588,7 +576,7 @@ object BetterDb {
     * updates the tally of the bet points in the user 
     * 
     */
-   def updateUsersPoints(specialBetResult: Option[SpecialBet])(implicit s: Session): Boolean = {
+   def updateUsersPoints()(implicit s: Session): Boolean = {
 	        users.list.foreach{ user =>
 	            val points = for{
 	              b <- bets if(b.userId === user.id)
@@ -596,8 +584,8 @@ object BetterDb {
 	              b.points
 	            }
 	            val p = points.list.sum 
-	            val specialPoints = calculateSpecialPointsForUser(user, specialBetResult).getOrElse(0)
-	            val userWithPoints = user.copy(points=p, pointsSpecialBet=specialPoints)      
+	      //      val specialPoints = calculateSpecialPointsForUser(user).getOrElse(0)
+	            val userWithPoints = user.copy(points=p, pointsSpecialBet=0)      
 	            users.filter(_.id === userWithPoints.id).update(userWithPoints)
 	        }
             true       
@@ -609,12 +597,8 @@ object BetterDb {
     * calculates but does not set special points for user
     * 
     */
-   def calculateSpecialPointsForUser(user: User, specialBetResult: Option[SpecialBet])(implicit s: Session): Option[Int] = {
-       specialBetResult.map{ spr =>
-            specialbets.filter(_.userId === user.id).firstOption.map{ spb =>   //correct long === Option[Long]???
-                PointsCalculator.calculateSpecialBets(spb, spr)               
-            }.getOrElse(0)
-       }
+   def calculateSpecialPointsForUser(user: User)(implicit s: Session): Option[Int] = {
+       ???
    }
    
    def insertPlayer(player: Player, teamName: String, submittingUser: User)(implicit s: Session): String \/ Player = {
@@ -628,9 +612,9 @@ object BetterDb {
        }
    }
    
-   def createSpecialBetsForUser(user: User, creationDate: DateTime)(implicit s: Session){
+   def createSpecialBetsForUser(user: User)(implicit s: Session){
        specialbetstore.list.foreach{ sp => 
-	      val us = SpecialBetByUser(None, user.id.get, sp.id.get, -1, creationDate, 0)
+	      val us = SpecialBetByUser(None, user.id.get, sp.id.get, "", 0)
 	      specialbetsuser.insert(us)
 	   }
    }
@@ -641,23 +625,14 @@ object BetterDb {
    //
    //we generate for each user the correct bets when he signs in
    //http://stackoverflow.com/questions/20386593/slick-left-right-outer-joins-with-option
-   def getSpecialPlayerBetsForUser(user: User)(implicit s: Session): Seq[(SpecialBetT,SpecialBetByUser,Player)] = {
-	   val tbps = for {
-		   ((t, b), p) <- specialbetstore.join(specialbetsuser)
-		            .on( (temp,bet) => temp.id === bet.spId )
-					.join(players).on{ case((t,b), p) => b.targetId === p.id }
-	   } yield (t,b,p)	
-	   tbps.list.map{ case(t,b,p) => (t,b,p)}
+   def getSpecialBetsForUser(user: User)(implicit s: Session): Seq[(SpecialBetT,SpecialBetByUser)] = {
+	   val tbs = for {
+		   (t,b) <- specialbetstore.join(specialbetsuser).on( (temp,bet) => temp.id === bet.spId ) if b.userId === user.id
+	   } yield (t,b)	
+	   tbs.list
 	}
     
-    def getSpecialTeamBetsForUser(user: User)(implicit s: Session): Seq[(SpecialBetT,SpecialBetByUser,Team)] = {
-	   val tbps = for {
-		   ((t, b), p) <- specialbetstore.join(specialbetsuser)
-		            .on( (temp,bet) => temp.id === bet.spId )
-					.join(teams).on{ case((t,b), p) => b.targetId === p.id }
-	   } yield (t,b,p)	
-	   tbps.list.map{ case(t,b,p) => (t,b,p)}
-	}
+  
    
    
 }

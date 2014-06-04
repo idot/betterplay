@@ -66,7 +66,6 @@ class DBSpec extends Specification with ThrownMessages {
           BetterTables.bets.list.size === 0
           createBetsForGamesForAllUsers(admin)
           BetterTables.bets.list.size === 3
-          BetterTables.specialbets.list.size === 1
           admin.hadInstructions === true
           admin.canBet === true
           val dbusers = new ArrayBuffer[User]()
@@ -82,7 +81,6 @@ class DBSpec extends Specification with ThrownMessages {
           BetterTables.bets.list.size === (3 * 4)
           createBetsForGamesForAllUsers(admin)
           BetterTables.bets.list.size === (3 * 4)
-          BetterTables.specialbets.list.size === 4
           val gamesBets = gamesWithBetForUser(dbusers(2))
           gamesBets.flatMap{case(g, b) => 
              g.level.level === 0
@@ -162,33 +160,33 @@ class DBSpec extends Specification with ThrownMessages {
           )
           
           
-          val sp = userWithSpecialBet(users(1).id.get).toOption.get._2
-          val spn = sp.copy(topScorer=p1,mvp=p1,winningTeam=t1, semi1=t1, semi2=t1)
+       //   val sp = userWithSpecialBet(users(1).id.get).toOption.get._2
+        //  val spn = sp.copy(topScorer=p1,mvp=p1,winningTeam=t1, semi1=t1, semi2=t1)
           
           users(0).hadInstructions === true
-          users(1).hadInstructions === false
-          updateSpecialBet(spn, users(2), firstStart, 90).fold(
-             err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
-             succ => fail("wrong time")
-          )
-          updateSpecialBet(spn, users(2), firstStart.minusMinutes(91), 90).fold(
-             err => err === "user ids differ 3 2",
-             succ => fail("wrong user")
-          ) 
-          updateSpecialBet(spn, users(1), firstStart.minusMinutes(91), 90).fold(
-             err => err ===  fail("should work"),
-             succ => succ match { case (sp,u) =>
-               sp.topScorer === p1
-               sp.mvp === p1
-               sp.winningTeam === t1
-               sp.semi1 === t1
-               sp.semi2 === t1
-               sp.semi3 === None
-               sp.semi4 === None
-               sp.isSet === true
-               userWithSpecialBet(users(1).id.get).toOption.get._1.hadInstructions === true              
-             }            
-          ) 
+     //     users(1).hadInstructions === false
+    //      updateSpecialBet(spn, users(2), firstStart, 90).fold(
+     //        err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
+    //         succ => fail("wrong time")
+    //      )
+    //      updateSpecialBet(spn, users(2), firstStart.minusMinutes(91), 90).fold(
+    //         err => err === "user ids differ 3 2",
+    //         succ => fail("wrong user")
+    //      ) 
+    //      updateSpecialBet(spn, users(1), firstStart.minusMinutes(91), 90).fold(
+    //         err => err ===  fail("should work"),
+    //         succ => succ match { case (sp,u) =>
+    //           sp.topScorer === p1
+    //           sp.mvp === p1
+    //           sp.winningTeam === t1
+    //           sp.semi1 === t1
+    //           sp.semi2 === t1
+    //           sp.semi3 === None
+    //           sp.semi4 === None
+    //           sp.isSet === true
+    //           userWithSpecialBet(users(1).id.get).toOption.get._1.hadInstructions === true              
+    //         }            
+    //      ) 
           
           startOfGames().get === firstStart
           
@@ -208,13 +206,13 @@ class DBSpec extends Specification with ThrownMessages {
           
           startOfGames().get === changedStart
           
-          updateSpecialBet(spn, users(1), changedStart.minusMinutes(90), 90).fold(
-             err => err === "game closed since 0 days, 0 hours, 0 minutes, 0 seconds",
-             succ => fail("wrong time again because of game change ")
-          )
+     //     updateSpecialBet(spn, users(1), changedStart.minusMinutes(90), 90).fold(
+     //        err => err === "game closed since 0 days, 0 hours, 0 minutes, 0 seconds",
+     //        succ => fail("wrong time again because of game change ")
+     //     )
           
           
-          calculatePoints(None, admin)
+          calculatePoints(admin)
           BetterTables.users.list.map(_.points).sum === 0
           
           //only result changes are taken over
@@ -231,7 +229,7 @@ class DBSpec extends Specification with ThrownMessages {
              }
           )
           
-          calculatePoints(None, admin)
+          calculatePoints(admin)
           BetterTables.users.list.map(_.points).sum === 4
       }
       
@@ -275,18 +273,18 @@ class DBSpec extends Specification with ThrownMessages {
           )
           
           BetterTables.users.list.map(_.points).sum === 4  
-          calculatePoints(None, admin)
+          calculatePoints(admin)
           val pointsBets =  4 + 12 + 5 + 5  //1xexact + 2x tendency          
-          val pointsSpecial = 8 // mvp , winner, semi, 3,3,2 user1 , 2x t1 for semi because he's dumb. UI should prevent this
+     //     val pointsSpecial = 8 // mvp , winner, semi, 3,3,2 user1 , 2x t1 for semi because he's dumb. UI should prevent this
           BetterTables.users.list.map(_.points).sum === pointsBets 
           val players = BetterTables.players.list.sortBy(_.id)
 
-          val sp = SpecialBet(None, players(0).id, players(3).id, gwt.team1.id, gwt.team1.id, gwt.team2.id, teams(2).id, teams(3).id, true, 0)          
+    //      val sp = SpecialBet(None, players(0).id, players(3).id, gwt.team1.id, gwt.team1.id, gwt.team2.id, teams(2).id, teams(3).id, true, 0)          
          
-          calculatePoints(Some(sp), admin)
+      //    calculatePoints(admin)
           BetterTables.users.list.map(_.points).sum === pointsBets
-          BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial 
-          BetterTables.users.list.map(_.totalPoints).sum === pointsBets + pointsSpecial 
+     //     BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial 
+          BetterTables.users.list.map(_.totalPoints).sum === pointsBets 
                  
           val users = BetterTables.users.list.sortBy(_.id)
           invalidateGame(gwt.game, users(2)).fold(
@@ -295,15 +293,15 @@ class DBSpec extends Specification with ThrownMessages {
           )
           
           invalidateGame(gwt.game, admin).isRight === true
-          calculatePoints(Some(sp), admin)
+          calculatePoints(admin)
           BetterTables.users.list.map(_.points).sum === 4       
-          BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial
+   //       BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial
           
-          val usersSpecialBets = usersWithSpecialBetsAndRank()            
-          usersSpecialBets.map(_._2.isSet) === Seq(true,false,false,false)
-          usersSpecialBets.map(_._1.totalPoints) === Seq(9, 3, 0, 0)
-          usersSpecialBets.map(_._4) === Seq(1,2,3,3)
-          usersSpecialBets.map(_._3) === Seq(9, 3, 0, 0)  
+    //      val usersSpecialBets = usersWithSpecialBetsAndRank()            
+    //      usersSpecialBets.map(_._2.isSet) === Seq(true,false,false,false)
+    //      usersSpecialBets.map(_._1.totalPoints) === Seq(9, 3, 0, 0)
+   //       usersSpecialBets.map(_._4) === Seq(1,2,3,3)
+   //       usersSpecialBets.map(_._3) === Seq(9, 3, 0, 0)  
         
       }
       

@@ -49,31 +49,29 @@ object PointsCalculator {
      }     
   
      
+	 def calculateSpecialBet(t: SpecialBetT, b: SpecialBetByUser): Int = {
+	     if(t.result == b.prediction) t.points else 0	 
+	 }
+	 
+	 
      /**
       * compare special bet 
       * TODO: points for special bets hardcoded
       * b is the bet
       * r is the result
-      * 
+      * TODO: the special bets have to be:
+	  * 
+	  *  grouped by groupId, for the group calculated and sorted approriatley the correct hits to update the points in 
+	  *  the correct bet
+	  *  Then one has to 
+	  *
       */
-     def calculateSpecialBets(b: SpecialBet, r: SpecialBet): Int = {
-         val mvp = compare(b.mvp, r.mvp, 3)
-         val top = compare(b.topScorer, r.topScorer, 3)
-         val win = compare(b.winningTeam, r.winningTeam, 3)
-         val semis = compareSemi(b.semiIds, r.semiIds, 2)
-         Seq(mvp,top,win,semis).sum         
-     }
-     
-     def compareSemi(bet: Set[Long], result: Set[Long], points: Int): Int = {
-           (bet & result).size * points
-     }
-     
-     def compare(bet: Option[Long], result: Option[Long], points: Int): Int = {
-          (bet, result) match {
-               case (Some(b), Some(r)) if b == r => points      
-               case _ => 0
-          }
-     }
+     def calculateSpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser,Int)] = {
+		 ???
+		 //val points = bets.map{ case(t,b) => calculateSpecialBet(t,b) }      
+          
+	     
+	 }
      
      
    /**
