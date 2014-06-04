@@ -8,6 +8,8 @@ scalaVersion := "2.10.4"
 
 resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
+resolvers += "thirdpary" at "http://mammut:8082/nexus/content/repositories/hirdparty"
+
 parallelExecution in Test := false
 
 libraryDependencies ++= Seq(
@@ -15,7 +17,7 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   filters,
-  "com.typesafe.play" %% "play-slick" % "0.7.0-SNAPSHOT",
+  "com.typesafe.play" %% "play-slick" % "0.7.0-M1",
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
   "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",

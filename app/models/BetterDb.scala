@@ -442,7 +442,7 @@ object BetterDb {
            val userId = (users returning users.map(_.id)) += initUser
            val userWithId = initUser.copy(id=Some(userId))
            users.filter(_.id === userId).firstOption.map{ user =>
-              specialbets.insert(SpecialBet(None, None, None, None, None, None, None, None, false, userId ))
+			  createSpecialBetsForUser(userWithId, new DateTime())
               createBetsForGamesForUser(userWithId)
            }   
 		   \/-(userWithId)
@@ -628,18 +628,37 @@ object BetterDb {
        }
    }
    
+   def createSpecialBetsForUser(user: User, creationDate: DateTime)(implicit s: Session){
+       specialbetstore.list.foreach{ sp => 
+	      val us = SpecialBetByUser(None, user.id.get, sp.id.get, -1, creationDate, 0)
+	      specialbetsuser.insert(us)
+	   }
+   }
    
+   //the optimum would be a left outer join with an and within the on clause!, but this is too complicated becasue there is
+   //no option[row].? as return type possible for slick yet
+   //(t, b) <- specialbetstore.join(specialbetsuser).on( (temp,bet) => temp.id === bet.spId  && bet.userId === user.id
+   //
+   //we generate for each user the correct bets when he signs in
    //http://stackoverflow.com/questions/20386593/slick-left-right-outer-joins-with-option
-  //  def getSpecialPlayerBetsForUser(user: User)(implicit s: Session): String \/ Seq[(SpecialBetT,Option[SpecialBetByUser],Option[Player])] = {
-	//   val tbps = for {
-	//	   (t, b) <- specialbetstore.leftJoin(specialbetsuser)
-//		               .on( (temp,bet) => temp.id === bet.spId && bet.userId === user.id )
-//					//   .leftJoin(players).on( (tb, player) => tb._2.targetId === player.id )
-//	       } yield (t, b.?)   
-//	    
-//	   tbps.list.map{ case(t,b) => (t,b) }
-//    }
+   def getSpecialPlayerBetsForUser(user: User)(implicit s: Session): Seq[(SpecialBetT,SpecialBetByUser,Player)] = {
+	   val tbps = for {
+		   ((t, b), p) <- specialbetstore.join(specialbetsuser)
+		            .on( (temp,bet) => temp.id === bet.spId )
+					.join(players).on{ case((t,b), p) => b.targetId === p.id }
+	   } yield (t,b,p)	
+	   tbps.list.map{ case(t,b,p) => (t,b,p)}
+	}
     
+    def getSpecialTeamBetsForUser(user: User)(implicit s: Session): Seq[(SpecialBetT,SpecialBetByUser,Team)] = {
+	   val tbps = for {
+		   ((t, b), p) <- specialbetstore.join(specialbetsuser)
+		            .on( (temp,bet) => temp.id === bet.spId )
+					.join(teams).on{ case((t,b), p) => b.targetId === p.id }
+	   } yield (t,b,p)	
+	   tbps.list.map{ case(t,b,p) => (t,b,p)}
+	}
+   
    
 }
 
