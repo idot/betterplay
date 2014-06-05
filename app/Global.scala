@@ -11,7 +11,9 @@ object Global extends GlobalSettings {
 	  val debug = PlayHelper.debug()
 	  val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
 	  Logger.info("starting up "+debugString)
-     // InitialData.insert(debug)
+      if(debug){
+	     InitialData.insert(debug)
+      }
   }
  
   override def onStop(app: Application){

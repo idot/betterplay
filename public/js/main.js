@@ -66,7 +66,8 @@ require(['moment','angular', './controllers', './directives', './filters', './se
    angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngCookies', 'ngAnimate', 'restangular', 'ui', 'ui.bootstrap', 'ui.bootstrap.tabs', 'ui.bootstrap.datepicker', 'ui.bootstrap.timepicker', 'ui.router', 'ngTable','ui.utils', 'toaster'])
       .run([ '$rootScope', '$state', '$stateParams', '$timeout', '$cookies', 'Restangular', 'toaster',
          function ($rootScope, $state, $stateParams, $timeout, $cookies, Restangular, toaster){
-			 Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+			 
+             Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
 			    // if(response.status === 403) {
 			        // refreshAccesstoken().then(function() {
 			             // Repeat the request and then call the handlers the usual way.
@@ -83,8 +84,8 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			     return true; // error not handled
 			 });
 			 
-			 var queryTime = Restangular.one('api/time');
-			 Restangular.one('api/settings').get().then(function(settings){
+			 var queryTime = Restangular.one('wm2014/api/time');
+			 Restangular.one('wm2014/api/settings').get().then(function(settings){
 			 	$rootScope.betterSettings = settings;				
 			 });
 			 
@@ -121,7 +122,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 					if(typeof auth !== "undefined"){
    				       $rootScope.authtoken = auth;
    			 	       Restangular.setDefaultHeaders({'X-AUTH-TOKEN': auth});
-					   Restangular.one('api/userWithEmail').get().then(function(userWithEmail){
+					   Restangular.one('wm2014/api/userWithEmail').get().then(function(userWithEmail){
 						       $rootScope.loggedInUser = userWithEmail;
 					   });
 					}	
@@ -270,7 +271,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  template: '<ui-view/>'
 			  })
 			  .state('game.gameBets', {
-				  url: ":gamenr/bets",
+				  url: "/:gamenr/bets",
 				  templateUrl: 'partials/gameBets.html',
 				  controller: controllers.GameCtrl
 			  })

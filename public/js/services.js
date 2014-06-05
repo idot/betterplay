@@ -39,7 +39,7 @@ angular.module('myApp.services', [])
   .value('version', '0.1');
 //  .factory('settingsFactory', function(Restangular){
 //	  var settings = {
-//		 Restangular.one('api/settings').get().then(function(stings){
+//		 Restangular.one('wm2014/api/settings').get().then(function(stings){
 //		 	var betterSettings = stings;				
 //		 });
 //	  };

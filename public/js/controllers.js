@@ -9,7 +9,7 @@ define(function() {
 var controllers = {};
 
 controllers.UsersCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
-	var queryUsers = Restangular.all('api/users');
+	var queryUsers = Restangular.all('wm2014/api/users');
    
 	queryUsers.getList().then(function(users){
 	    $scope.allUsers = users;
@@ -20,7 +20,7 @@ controllers.UsersCtrl = function($log, $scope, $filter, Restangular, $stateParam
 controllers.UsersCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams' ];
 
 controllers.GamesCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
-	var queryGames = Restangular.all('api/games');
+	var queryGames = Restangular.all('wm2014/api/games');
 		
 	queryGames.getList().then(function(games){
 	    $scope.allGames = games;
@@ -34,7 +34,7 @@ controllers.GamesCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$s
 
 controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams, toaster ) {
 	$scope.stateParams = $stateParams;
-	var queryUser = Restangular.one('api/user', $scope.stateParams.username);
+	var queryUser = Restangular.one('wm2014/api/user', $scope.stateParams.username);
    
     queryUser.get().then(function(userWithSpAndGB){
 		$scope.user = userWithSpAndGB.user;
@@ -48,7 +48,7 @@ controllers.UserCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$st
 
 controllers.GameCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	$scope.stateParams = $stateParams;
-	var queryGame = Restangular.one('api/game', $scope.stateParams.gamenr);
+	var queryGame = Restangular.one('wm2014/api/game', $scope.stateParams.gamenr);
     
 	queryGame.get().then(function(gwtWithBetsPerUser){
 		$scope.gwt = gwtWithBetsPerUser.game;
@@ -72,7 +72,7 @@ controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams, Rest
   };
   
   $scope.updateTimeOnServer = function(time){
-  	Restangular.all('api/time').customPOST( { serverTime: time.getTime() } ).then(
+  	Restangular.all('wm2014/api/time').customPOST( { serverTime: time.getTime() } ).then(
 	   function(success){
 		    toaster.pop('success', "changed time", success);
 	   })
@@ -102,7 +102,7 @@ controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams, Rest
   
   
   $scope.resetTime = function(){
-      Restangular.all('api/time/reset').customPOST().then(
+      Restangular.all('wm2014/api/time/reset').customPOST().then(
   	   function(success){
 	 	    $rootScope.TIMEFROMSERVER = true;
 	 	    $rootScope.updateTimeFromServer()
@@ -138,7 +138,7 @@ controllers.LoginCtrl = function($log, $scope, $rootScope, $stateParams, Restang
 	
 	$scope.login = function(){
 		var credentials = { 'username': $scope.username, 'password': $scope.password };
-	    Restangular.all("login").post(credentials).then(
+	    Restangular.all("wm2014/login").post(credentials).then(
 	      function(auth){ 
 			  $rootScope.updateLogin(auth.user, auth["AUTH-TOKEN"]);	
 			  if(auth.user.hadInstructions){  
@@ -156,7 +156,7 @@ controllers.LoginCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParams',
 controllers.RegisterUserCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, $state, toaster){
 	$scope.stateParams = $stateParams;	
 	
-	var queryUsers = Restangular.all('api/users');	
+	var queryUsers = Restangular.all('wm2014/api/users');	
 	queryUsers.getList().then(function(users){
 	    $scope.allUsers = _.map(users, function(u){ return u.username });
 	});	
@@ -176,7 +176,7 @@ controllers.RegisterUserCtrl = function($log, $scope, $rootScope, $stateParams, 
 	
 	$scope.signon = function(){
 		    var pu = { 'username': $scope.username, 'password': $scope.password1, 'email': $scope.email };
-	    	Restangular.all('api/user/'+$scope.username).customPUT( pu ).then(
+	    	Restangular.all('wm2014/api/user/'+$scope.username).customPUT( pu ).then(
 			function(success){
 				toaster.pop('success', "registered "+$scope.username, "e-mail is on its way to "+$scope.email);
 				$scope.setFields();
@@ -192,7 +192,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 		
 	
 	$scope.refreshUser = function(){
-	    var queryUser = Restangular.one('api/userWithEmail');
+	    var queryUser = Restangular.one('wm2014/api/userWithEmail');
         queryUser.get().then(function(userWithEmail){
 			$scope.formUser = userWithEmail;
 			$rootScope.updateLogin(userWithEmail);
@@ -204,7 +204,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 	$scope.updatePassword = function(){
 		    $log.debug('submitting new password: '+$scope.pass.word1);
 		    var pu = { 'password': $scope.pass.word1 };
-	    	Restangular.all('api/user/'+$scope.formUser.username+'/password').customPOST( pu ).then(
+	    	Restangular.all('wm2014/api/user/'+$scope.formUser.username+'/password').customPOST( pu ).then(
 			function(success){
 				toaster.pop('success', "changed password");
 				$scope.pass.word1 = "";
@@ -217,7 +217,7 @@ controllers.EditUserCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 	$scope.updateDetails = function(){
 	       $log.debug('updating details: ');
 		   var u = { firstName: $scope.formUser.firstName, lastName: $scope.formUser.lastName, email: $scope.formUser.email, icontype: $scope.formUser.icontype };	
-    	   Restangular.all('api/user/'+$scope.formUser.username+'/details').customPOST( u ).then(
+    	   Restangular.all('wm2014/api/user/'+$scope.formUser.username+'/details').customPOST( u ).then(
 		     function(success){
 			    toaster.pop('success', "updated user details");
                 $scope.refreshUser();
@@ -233,7 +233,7 @@ controllers.EditGameCtrl = function($log, $scope, $rootScope, $stateParams, Rest
     console.log("st: "+$stateParams);
 	$scope.stateParams = $stateParams;
 	console.log("sd: "+$scope.stateParams);
-	var queryGame = Restangular.one('api/game', $scope.stateParams.gamenr);
+	var queryGame = Restangular.one('wm2014/api/game', $scope.stateParams.gamenr);
     
 	queryGame.get().then(function(gwtWithBetsPerUser){
 		$scope.gwt = gwtWithBetsPerUser.game;
@@ -241,7 +241,7 @@ controllers.EditGameCtrl = function($log, $scope, $rootScope, $stateParams, Rest
 	
 
 	$scope.submitResult = function(){
-	    var queryBet = Restangular.all('api/game/results').customPOST($scope.gwt.game).then(
+	    var queryBet = Restangular.all('wm2014/api/game/results').customPOST($scope.gwt.game).then(
 		    function(success){
 		        toaster.pop('success', "updated game", success);
 		    }		
@@ -255,7 +255,7 @@ controllers.EditGameCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParam
 controllers.BetCtrl = function($scope, $rootScope, Restangular, toaster){
 	
 	$scope.saveBet = function(bet){
-	    var queryBet = Restangular.all('api/bet/'+bet.id).customPOST(bet).then(
+	    var queryBet = Restangular.all('wm2014/api/bet/'+bet.id).customPOST(bet).then(
 		    function(success){
 				var game = success.game;
 				var betold = success.betold;
@@ -296,7 +296,7 @@ controllers.BetCtrl.$inject = ['$scope','$rootScope', 'Restangular', 'toaster'];
 controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
 	     $scope.stateParams = $stateParams;
 		 
-         Restangular.one('api/specialBets', $scope.stateParams.username).get().then(
+         Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
 			 function(success){
 			     // join must make to usable structure
 				 $scope.user = success.user;
@@ -325,7 +325,7 @@ controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filt
 		 
 		 $log.debug("special player");
 		 
-		 Restangular.one('api/specialBets', $scope.stateParams.username).get().then(
+		 Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
 		     function(success){
 				 $scope.user = success.user;
 				 $scope.templatebets = success.templatebets;
@@ -334,7 +334,7 @@ controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filt
 		     }		 
 		 );
 		 
-         Restangular.all('api/players').getList().then(
+         Restangular.all('wm2014/api/players').getList().then(
 			 function(success){
 				 var forFilter = _.map(success, function(pt){ pt.pname = pt.player.name; pt.tname = pt.team.name; return pt; });
 				 $scope.playerWithTeams = forFilter;
@@ -347,10 +347,10 @@ controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filt
              var selected = _.filter($scope.playerWithTeams, function(t){ return t.selected; })[0];
 		     bet.prediction = selected.player.name;
 		  
-		     Restangular.all('api/specialBet').customPOST(bet).then(
+		     Restangular.all('wm2014/api/specialBet').customPOST(bet).then(
 			    function(success){	 
 			   	 if(! $scope.user.hadInstructions){
-		             Restangular.all('api/userhadinstructions').customPOST().then(
+		             Restangular.all('wm2014/api/userhadinstructions').customPOST().then(
 		                function(success){
 		                   toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
 		                }		
@@ -370,7 +370,7 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
 		 
          $log.debug("special team "+$scope.betId);
          
-		 Restangular.one('api/specialBets', $scope.stateParams.username).get().then(
+		 Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
 		     function(success){
 				 $scope.user = success.user;
 				 $scope.templatebets = success.templatebets;
@@ -380,7 +380,7 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
 		 );
 		 
 
-		 Restangular.all('api/teams').getList().then(
+		 Restangular.all('wm2014/api/teams').getList().then(
 			 function(success){
 				 $scope.teams = success;
 				 setupTable( $scope.teams, ngTableParams, { 'name': 'asc'}, $scope, $filter );
@@ -392,10 +392,10 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
               var selected = _.filter($scope.teams, function(t){ return t.selected; })[0];
 			  bet.prediction = selected.name;
 			  
-			  Restangular.all('api/specialBet').customPOST(bet).then(
+			  Restangular.all('wm2014/api/specialBet').customPOST(bet).then(
 				  function(success){	 
 					 if(! $scope.user.hadInstructions){
-			             Restangular.all('api/userhadinstructions').customPOST().then(
+			             Restangular.all('wm2014/api/userhadinstructions').customPOST().then(
 			                function(success){
 			                   toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
 			                }		
