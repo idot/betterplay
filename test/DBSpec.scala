@@ -27,9 +27,11 @@ class DBSpec extends Specification with ThrownMessages {
       import BetterDb._
  
       def insertAdmin()(implicit s: Session){
+		  BetterTables.specialbetsuser.list.size === 0
           BetterTables.users.list.size === 0
           val admin = insertUser(ObjectMother.adminUser, true, true, None).toOption.get
           BetterTables.users.list.size === 1
+		  BetterTables.specialbetsuser.list.size === 12
       }
 
       def getAdmin()(implicit s: Session): User = {
@@ -63,6 +65,7 @@ class DBSpec extends Specification with ThrownMessages {
       
       def insertUsers()(implicit s: Session){
           val admin = getAdmin()
+		  BetterTables.specialbetsuser.list.size === 12
           BetterTables.bets.list.size === 0
           createBetsForGamesForAllUsers(admin)
           BetterTables.bets.list.size === 3
@@ -78,6 +81,7 @@ class DBSpec extends Specification with ThrownMessages {
               }
             )
           }
+		  BetterTables.specialbetsuser.list.size === 12 * BetterTables.users.list.size
           BetterTables.bets.list.size === (3 * 4)
           createBetsForGamesForAllUsers(admin)
           BetterTables.bets.list.size === (3 * 4)
@@ -90,21 +94,12 @@ class DBSpec extends Specification with ThrownMessages {
       }
       
       def insertSpecialBetTemplates()(implicit s: Session){
-		  val admin = getAdmin()
 		  val specialT = ObjectMother.specialTemplates(SpecialBetType.team, firstStart)
 		  val specialP = ObjectMother.specialTemplates(SpecialBetType.player, firstStart)
 		  (specialT ++ specialP).foreach{ t => 
-		  	   BetterDb.insertSpecialBetInStore(t, admin)
+		  	   BetterDb.insertSpecialBetInStore(t)
 		  }
 	  }
-	  
-	  def makeSpecialBets()(implicit s: Session){
-	      val users = BetterTables.users.list.sortBy(_.id)
-		  val u = users(3)
-	   //   val playertemplates = BetterDb.getSpecialPlayerBetsForUser(u)
-	      
-	  
-	  }	  
 	  
       def makeBets1()(implicit s: Session){
          val users = BetterTables.users.list.sortBy(_.id)
@@ -164,7 +159,7 @@ class DBSpec extends Specification with ThrownMessages {
         //  val spn = sp.copy(topScorer=p1,mvp=p1,winningTeam=t1, semi1=t1, semi2=t1)
           
           users(0).hadInstructions === true
-     //     users(1).hadInstructions === false
+          users(1).hadInstructions === false
     //      updateSpecialBet(spn, users(2), firstStart, 90).fold(
      //        err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
     //         succ => fail("wrong time")
@@ -307,6 +302,7 @@ class DBSpec extends Specification with ThrownMessages {
       
       DB.withSession { implicit s: Session => 
         BetterTables.dropCreate()
+		insertSpecialBetTemplates()
         insertAdmin()
         insertTeams()
         insertLevels()

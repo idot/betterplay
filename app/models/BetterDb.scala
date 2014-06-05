@@ -127,14 +127,10 @@ object BetterDb {
        if(settingUser.isAdmin) Success(settingUser) else Failure(s"only admin can make these changes")
    }
 
-   def insertSpecialBetInStore(specialBetT: SpecialBetT, submittingUser: User)(implicit s: Session): String \/ SpecialBetT = {
-      if(! submittingUser.isAdmin){
-         return -\/("only admins can create special bets")
-      }else{
-         val spid = (specialbetstore returning specialbetstore.map(_.id)) += specialBetT
-         val sp = specialBetT.copy(id=Some(spid))
-         \/-(sp)
-      }
+   def insertSpecialBetInStore(specialBetT: SpecialBetT)(implicit s: Session): String \/ SpecialBetT = {
+       val spid = (specialbetstore returning specialbetstore.map(_.id)) += specialBetT
+       val sp = specialBetT.copy(id=Some(spid))
+       \/-(sp)
    }
    
    def validSPU(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User)(implicit s: Session): ValidationNel[String,String] = {
