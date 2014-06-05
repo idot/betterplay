@@ -110,16 +110,24 @@ trait Users extends Controller with Security {
    * todo: should delegate to actor so that only one is active
    * 
    */
-   def createBetsForUsers() = withUser(){ userId => user => implicit request =>
+   def createBetsForUsers() = withAdmin(){ userId => admin => implicit request =>
        implicit val session = request.dbSession
-       if(user.isAdmin){ 
-		   BetterDb.createBetsForGamesForAllUsers(user).fold(
-			   err => Forbidden(Json.obj("error" -> err)),
-			   succ => Ok("created bets for users")
-		   )
-	   } else Forbidden(Json.obj("error" -> "must be admin"))
+	   BetterDb.createBetsForGamesForAllUsers(admin).fold(
+		   err => Forbidden(Json.obj("error" -> err)),
+		   succ => Ok("created bets for users")
+	   ) 
    }
 
+   def updateUserHadInstructions() = withUser(){ userId => user => implicit request =>
+	   implicit val session = request.dbSession
+       BetterDb.updateUserHadInstructions(user).fold(
+           err => UnprocessableEntity(Json.obj("error" -> err)),
+		   succ => Ok(succ)	   
+	   )
+   }
+   
+   
+   
 }
 
 object Users extends Users

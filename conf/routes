@@ -39,11 +39,15 @@ GET     /api/userWithEmail          controllers.Users.userWithEmail()
 PUT    /api/user/:name              controllers.Users.create(name: String) 
 POST   /api/user/:name/details      controllers.Users.updateDetails(name: String) 
 POST   /api/user/:name/password     controllers.Users.updatePassword(name: String) 
+POST   /api/userhadinstructions     controllers.Users.updateUserHadInstructions()
 
 POST    /api/createBetsForUsers      controllers.Users.createBetsForUsers()
 
 #GET     /api/bet/:id                controllers.Bets.get(id: Long) #not necessary in application for testing     
 POST    /api/bet/:id                 controllers.Bets.update(id: Long) 
+
+GET     /api/specialBets/:username     controllers.SpecialBets.specialBetsForUser(username: String)
+
 
 # Send (user,password) to receive token
 POST    /login                      controllers.Application.login()

@@ -141,25 +141,26 @@ object BetterDb {
        v{ case(time, ids) => Seq(time, ids).mkString("\n") }
    }
 
-   def insertOrUpdateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User)(implicit s: Session): String \/ SpecialBetByUser = {
+   /**
+   * API
+   */
+   def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User)(implicit s: Session): String \/ SpecialBetByUser = {
        validSPU(sp, currentTime, closingMinutesToGame, submittingUser).fold(
          err => -\/(err.list.mkString("\n")),
-         succ => insertOrUpdateSPU(sp, submittingUser)
+         succ => updateSPU(sp)
        )
-   }
+   }  
   
    //TODO: maybe update can be done in one query?
-   def insertOrUpdateSPU(sp: SpecialBetByUser, submittingUser: User)(implicit s: Session): String \/ SpecialBetByUser = {
-       specialbetsuser.filter(_.id === sp.id).firstOption.map{ spdb =>
-          val updated = sp.copy(points=spdb.points)
-          specialbetsuser.filter(_.id === sp.id).update(updated)
-          \/-(updated)
-       }.getOrElse{
-          val with0Points = sp.copy(points=0)
-          val spid = (specialbetsuser returning specialbetsuser.map(_.id)) += with0Points
-          val nsp = with0Points.copy(id=Some(spid))
-          \/-(nsp)
-       }
+   //internal
+   def updateSPU(sp: SpecialBetByUser)(implicit s: Session): String \/ SpecialBetByUser = {
+       withT{
+	      specialbetsuser.filter(_.id === sp.id).firstOption.map{ spdb =>
+             val updated = sp.copy(points=spdb.points)
+             specialbetsuser.filter(_.id === sp.id).update(updated)
+             \/-(updated)
+          }.getOrElse(-\/(s"no special bet found with ${sp.id}"))
+	   }
    }
  
    def getSpecialBetsSPUForUser(user: User)(implicit s: Session): Seq[SpecialBetByUser] = {
@@ -454,6 +455,13 @@ object BetterDb {
        }
    }
    
+   def updateUserHadInstructions(user: User)(implicit s: Session): String \/ String = {
+       withT{
+		   val withInstructions = user.copy(hadInstructions = true)
+		   users.filter(u => u.id === user.id).update(withInstructions)
+		   \/-("first special bet! Excellent")
+	   }   
+   }   
   
 // not neccessary? using getUser(usernmae)   
 //   def usernameExists(username: String): Boolean = {

@@ -295,18 +295,22 @@ controllers.BetCtrl.$inject = ['$scope','$rootScope', 'Restangular', 'toaster'];
 
 controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
 	     $scope.stateParams = $stateParams;
-         $log.debug("special team");
-         Restangular.all('api/specialbets').getList().then(
+		 
+         Restangular.one('/api/specialBets', $scope.stateParams.username).getList().then(
 			 function(success){
-			     //left join must make to usable structure
-				 $scope.bets = success;
-				 setupTable( $scope.teams, ngTableParams, { 'name': 'asc'}, $scope, $filter );
+			     // join must make to usable structure
+				 $scope.user = success.user;
+				 $scope.templatebets = success.templatebets;
+				 setupTable( $scope.templatebets, ngTableParams, { 'name': 'asc'}, $scope, $filter );
 			 }
 		 );		 
-		 
-		 $scope.selectTeam = function(team){
-		     
-			 //	
+
+		 $scope.change = function(templatebet){
+		     switch(templatebet.template.itemType){
+		     	case "team": $state.transitionTo("user.specialBetTeam", { username: $scope.user.username });  break;
+			    case "player": $state.transitionTo("user.specialBetPlayer", { username: $scope.user.username });  break;
+			    default:  toaster.pop('error', "someting is wrong!", "could not decide if its bet for player or team. Please inform somebody by email");  
+		     }
 		 };
 }
 controllers.UserSpecialBetsCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
@@ -316,29 +320,60 @@ controllers.UserSpecialBetsCtrl.$inject = ['$log', '$scope', '$rootScope', '$fil
 controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
 	     $scope.stateParams = $stateParams;
 	     $log.debug("special player");
+		 
+		 Restangular.one('/api/user', $scope.stateParams.username).get().then(
+		     function(success){
+		        $scope.user = success.user;	
+		     }		 
+		 );
+		 
          Restangular.all('api/players').getList.then(
 			 function(success){
-				 $scope.players = success;
-				 setupTable( $scope.players, ngTableParams, { 'name': 'asc'}, $scope, $filter );
+				 $scope.playerWithTeams = success;
+				 setupTable( $scope.playerWithTeams, ngTableParams, { 'player.name': 'asc' }, $scope, $filter );
 			 }
 		 );		 
+		 
+		 $scope.selectPlayer = function(playerWithTeam){
+		      if(! $scope.user.hadInstructions){
+		          Restangular.all('/api/userhadinstructions').customPOST().then(
+		              function(success){
+		                 toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
+		              }		
+		          );			  	
+			  };
+		 };		 
 }
 controllers.EditUserSpecialPlayerCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
 
 controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
 	     $scope.stateParams = $stateParams;
          $log.debug("special team");
-         Restangular.all('api/teams').getList().then(
+         
+		 Restangular.one('/api/user', $scope.stateParams.username).get().then(
+		     function(success){
+		        $scope.user = success.user;	
+		     }		 
+		 );
+		 
+		 Restangular.all('api/teams').getList().then(
 			 function(success){
 				 $scope.teams = success;
 				 setupTable( $scope.teams, ngTableParams, { 'name': 'asc'}, $scope, $filter );
 			 }
 		 );		 
 		 
-		 $scope.selectTeam = function(team){
-		     
-			 //	
-		 };
+		 $scope.selectPlayer = function(team){
+			  
+			 
+		      if(! $scope.user.hadInstructions){
+		          Restangular.all('/api/userhadinstructions').customPOST().then(
+		              function(success){
+		                 toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
+		              }		
+		          );			  	
+			  };
+		 };		 
 }
 controllers.EditUserSpecialTeamCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
 
