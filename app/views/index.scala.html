@@ -25,7 +25,7 @@
       </button>
       <a class="navbar-brand" href="#">WM2014</a>
     </div>
-    
+     
      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
 	    <li ng-class="{active: $state.includes('users')}"><a ui-sref="users">users</a></li>
@@ -35,17 +35,7 @@
 		<li ng-if="! isLoggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
 		<li ng-if="isLoggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user.userBets({ username: loggedInUser.username })" style="padding-top: 10px; padding-bottom: 10px;"><img ng-src="{{ loggedInUser && loggedInUser.iconurl+'&s=30'}}" alt="gravatar" width="30" height="30"/></a></li>
 		<li ng-if="isLoggedIn()"><a ui-sref="logout">logout</a></li>
-	    <li class="dropdown" ng-if="isAdmin()" ng-class="{active: $state.includes('admin')}">
-	         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
-	             <ul class="dropdown-menu">
-	               <li><a ui-sref="admin.registerUser">register user</a></li>
-	               <li><a href="#">Something else here</a></li>
-	               <li class="divider"></li>
-	               <li><a href="#">Separated link</a></li>
-	               <li class="divider"></li>
-	               <li><a href="#">One more separated link</a></li>
-	             </ul>
-	   </li>
+		<li ng-if="isAdmin()"><a ui-sref="admin.registerUser">register user</a></li>
 	 </ul>
 	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : DF }}</div>
     </div><!-- /.navbar-collapse -->

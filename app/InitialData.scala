@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
+import play.api.db.slick.Config.driver.simple._
 
 /**
  * DATA FROM:
@@ -32,6 +33,21 @@ object InitialData {
 	 }
 	 lines.map(FIFA2ISO).toMap
   }  
+  
+  def specialBets(): Seq[SpecialBetT] = {
+	  val start = new DateTime(2014, 6, 12, 17, 0)
+	  val s = Seq(
+	     SpecialBetT(None, "topscorer", "highest scoring player", 7 , start, "topscorer" , SpecialBetType.player, "" ),
+		 SpecialBetT(None, "mvp", "most valuable player", 7 , start, "mvp" , SpecialBetType.player, "" ),
+         SpecialBetT(None, "world champion", "world champion", 11 , start, "world champion" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" )
+	  )
+	  s
+  }
+  
   
   def parsePlayer(line: String): (Player,String) = {
       val items = line.split("\t")
@@ -132,7 +148,7 @@ object InitialData {
     val ls = levels()
     val us = users(debug)
     val ps = players()
-	
+	val sp = specialBets()
     Logger.info("inserting data in db")
     DB.withSession { implicit s: Session =>
        if(MTable.getTables("users").list().isEmpty) {
@@ -144,13 +160,14 @@ object InitialData {
          BetterTables.createTables()
        }
        Logger.info("inserting data")
-       val admin = BetterDb.insertUser(us(0), true, true, None).toOption.get //admin
+	   sp.foreach{ t => BetterDb.insertSpecialBetInStore(t) }
+	   us.foreach{ u => BetterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) }   
+	   val admin = BetterTables.users.filter(u => u.isAdmin).sortBy(_.id).firstOption.get
        val levels = ls.map(l => BetterDb.insertOrUpdateLevelByNr(l, admin)).map(_.toOption.get)
        val level = levels(0)
        val (teams, ttg) = teamsGames(level.id.get)
        teams.map(t => BetterDb.insertOrUpdateTeamByName(t, admin))
        ttg.map{ case(t1,t2,g) => BetterDb.insertGame(g, t1, t2, level.level, admin)}        
-       us.drop(1).foreach(u => BetterDb.insertUser(u, false, false, admin.id))
        BetterDb.createBetsForGamesForAllUsers(admin)	   
 	   ps.foreach{ case(p,t) => BetterDb.insertPlayer(p, t, admin)}
 	   
