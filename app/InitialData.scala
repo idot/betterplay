@@ -139,7 +139,7 @@ object InitialData {
          val users = (1 to 10).map(n => uf(s"n$n", s"f$n", s"l$n", s"f${n}.l${n}@betting.com", "p$n", false))
          admin +: users
 	  }else{
-	      val names = Seq("thomasd", "someadmin", "idot")
+	      val names = Seq("anjae","thomasd", "andreas")
           names.map(n => uf(n, "","", "", n, false))		  		    
   	  }
   }
