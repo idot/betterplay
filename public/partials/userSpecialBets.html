@@ -1,13 +1,13 @@
-<form name="specialBetsForm" class="form col-xs-3" role="form">
+<form name="specialBetsForm" class="form col-xs-5" role="form">
    <h2>special bets {{user.username}}</h2>
-   <h3 ng-if="! user.hadInstructions()">you can change these <em>only until</em> start of the games (~ -2 hours)</h3>
+   <h3 ng-if="noInstructions()">you can change these <em>only until</em> start of the games (~ -2 hours)</h3>
    <table ng-table="tableParams" class="table">
         <tr ng-repeat="bet in $data" >
 			<td data-title="'name'">
                  {{bet.template.name}}
             </td>
 			<td data-title="'reward'">
-				 {{bet.template.points}}
+				<span class="badge">{{bet.template.points}}</span>
 			</td>
 			<td data-title="'description'">
 				 {{bet.template.description}}
@@ -16,9 +16,9 @@
 				 {{bet.bet.prediction}}
 			</td>
 			<td data-title="'points'">
-                 {{bet.bet.points}}
+                 <span class="badge">{{bet.bet.points}}</span>
 			</td>
-			<td nf-if="isOwner(user.id)" data-title="'change'">
+			<td ng-if="$root.isOwner(bet.bet.userId)" data-title="'change'">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="change(bet)"><i class="fa fa-plus-square fa-lg"></i></button>
                 </span>

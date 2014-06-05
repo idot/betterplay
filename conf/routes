@@ -47,7 +47,7 @@ POST    /api/createBetsForUsers      controllers.Users.createBetsForUsers()
 POST    /api/bet/:id                 controllers.Bets.update(id: Long) 
 
 GET     /api/specialBets/:username     controllers.SpecialBets.specialBetsForUser(username: String)
-
+POST    /api/specialBet                controllers.SpecialBets.updateSpecialBet()
 
 # Send (user,password) to receive token
 POST    /login                      controllers.Application.login()

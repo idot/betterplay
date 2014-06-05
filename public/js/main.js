@@ -249,13 +249,18 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  templateUrl: 'partials/userEdit.html',
 				  controller: controllers.EditUserCtrl				
 			  })
-			  .state('user.specialBetPlayer', {
-			  	  url: "/:username/special/player",
+			  .state('user.specialBets', {
+			      url: "/:username/special",
+				  templateUrl: 'partials/userSpecialBets.html',
+				  controller: controllers.UserSpecialBetsCtrl
+			  })
+			  .state('user.specialBetsspecialPlayers', {
+			  	  url: "/:username/special/player/:id",
 				  templateUrl: 'partials/userSpecialBetPlayer.html',
 				  controller: controllers.EditUserSpecialPlayerCtrl				
 			  })
-			  .state('user.specialBetTeam', {
-			  	  url: "/:username/special/team",
+			  .state('user.specialBetsspecialTeams', {
+			  	  url: "/:username/special/team/:id",
 				  templateUrl: 'partials/userSpecialBetTeam.html',
 				  controller: controllers.EditUserSpecialTeamCtrl				
 			  })

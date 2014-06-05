@@ -1,12 +1,17 @@
-<form name="teamForm" class="form col-xs-3" role="form">
-   <h2>{{challenge}} {{points}}</h2>
-   <p>{{description}}</p>
-   <p>please select one team from the list by clicking the checkbox</p>
+<form name="teamForm" class="form col-xs-5" role="form">
+   <ul class="list-group">
+      <li class="list-group-item list-group-item-heading">
+		 {{tb.template.name}} <span class="badge">{{tb.template.points}}</span>
+	  </li>
+      <li class="list-group-item">
+		  please select one team from the list by clicking the checkbox
+	  </li>
+   </ul>
    
    <table ng-table="tableParams" show-filter="true" class="table">
         <tr ng-repeat="team in $data" >
             <td>
-			    <input type="checkbox" ng-change="selectTeam(team)"> 
+			    <input type="checkbox" ng-model="team.selected" ng-change="selectTeam(team)"> 
 			</td>
 			<td data-title="'name'" filter="{ 'name': 'text' }" sortable="'name'">
                  {{team.name}}

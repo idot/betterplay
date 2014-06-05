@@ -31,7 +31,7 @@ trait Users extends Controller with Security {
         err => NotFound(Json.obj("error" -> err)),
         succ => succ match { case(user, sp) =>
           val gamesWithBets = BetterDb.gamesWithBetForUser(user)
-          val json = Json.obj("user" -> UserNoPwC(user), "specialBet" -> sp, "gameBets" -> gamesWithBets)
+          val json = Json.obj("user" -> UserNoPwC(user), "specialBets" -> sp, "gameBets" -> gamesWithBets)
           Ok(json)
         }  
       )

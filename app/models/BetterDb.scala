@@ -218,14 +218,14 @@ object BetterDb {
    /**
     * todo: test
     */
-   def userWithSpecialBet(username: String)(implicit s: Session):  String \/ (User, Seq[SpecialBetByUser]) = {
+   def userWithSpecialBet(username: String)(implicit s: Session):  String \/ (User, Seq[(SpecialBetT,SpecialBetByUser)]) = {
        val us = for{
-         (u,s) <- users.join(specialbetsuser).on(_.id === _.userId) if u.username === username
-       }yield (u,s)
+         ((u,b),t) <- users.join(specialbetsuser).on(_.id === _.userId).join(specialbetstore).on(_._2.spId === _.id ) if u.username === username
+       }yield (u,b,t)
 	   val usList = us.list
 	   if(usList.size > 0){
 		   val user = usList(0)._1
-		   val bets = usList.map{ case(u,b) => b}
+		   val bets = usList.map{ case(u,b,t) => (t,b)}
 	       \/-((user,bets))
 		}else{
 		   -\/(s"could not find user with $username")  

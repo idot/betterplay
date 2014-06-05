@@ -7,9 +7,11 @@
        {{user.firstName}} {{user.lastName}}
      </li>
 	 <li class="list-group-item">
-		<img ng-src="{{user && user.iconurl+'&s=80'}}" alt="gravatar" height="80" width="80"/>
+		   <img ng-src="{{user && user.iconurl+'&s=80'}}" alt="gravatar" height="80" width="80"/>
+		   <button type="submit" class="btn btn-info" ng-click="$state.transitionTo('user.specialBets', {'username': user.username})" value="Submit" title="Special Bets">Special Bets</button>
 	       <button ng-if="isOwner(user.id)" type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('user.userEdit', {'username': user.username})" value="Submit" title="Edit">Edit</button>
 	 </li>
+	 
   </ul>
 </form>
   
