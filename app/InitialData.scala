@@ -140,7 +140,7 @@ object InitialData {
          admin +: users
 	  }else{
 	      val names = Seq("anjae","thomasd", "andreas")
-          names.map(n => uf(n, "","", "", n, false))		  		    
+          names.map(n => uf(n, "","", "", n, true))		  		    
   	  }
   }
   
