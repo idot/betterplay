@@ -1,28 +1,53 @@
 <form name="specialBetsForm" class="form col-xs-5" role="form">
-   <h2>special bets {{user.username}}</h2>
+   <h2>special bets {{user.username}} <img ng-src="{{user && user.iconurl+'&s=50'}}" alt="gravatar" height="50" width="50"/>
+   </h2>
    <h3 ng-if="noInstructions()">you can change these <em>only until</em> start of the games (~ -2 hours)</h3>
-   <table ng-table="tableParams" class="table">
-        <tr ng-repeat="bet in $data" >
-			<td data-title="'name'">
+   <table class="table">
+	   <thead>
+	   <tr>
+	    <th>
+			name
+	   </th>
+	   <th>
+	       reward
+	   </th>
+	   <th>
+		   description
+	   </th>
+       <th>
+		   prediction
+	   </th>
+	   <th>
+		   points
+	   </th>
+	   <th ng-if="$root.isOwner(bet.bet.userId)">
+		   change
+	   </th>
+	 </tr>
+	  </thead>
+      <tbody>	  
+	    <tr ng-repeat="bet in templatebets">
+			<td>
                  {{bet.template.name}}
             </td>
-			<td data-title="'reward'">
+			<td>
 				<span class="badge">{{bet.template.points}}</span>
 			</td>
-			<td data-title="'description'">
+			<td>
 				 {{bet.template.description}}
 			</td>
-			<td data-title="'prediction'">
+			<td>
 				 {{bet.bet.prediction}}
 			</td>
-			<td data-title="'points'">
+			<td>
                  <span class="badge">{{bet.bet.points}}</span>
 			</td>
-			<td ng-if="$root.isOwner(bet.bet.userId)" data-title="'change'">
+			<td ng-if="$root.isOwner(bet.bet.userId)">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="change(bet)"><i class="fa fa-plus-square fa-lg"></i></button>
                 </span>
 			</td>
 		</tr>
+	</tbody>
    </table>
 </form>  

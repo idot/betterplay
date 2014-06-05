@@ -302,7 +302,6 @@ controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $s
 				 $scope.user = success.user;
 				 $scope.templatebets = success.templatebets;
 				 $scope.noInstructions = ! $scope.user.hadInstructions;
-				 setupTable( $scope.templatebets, ngTableParams, { 'name': 'asc'}, $scope, $filter );
 			 }
 		 );		 
 		 		 
@@ -318,68 +317,49 @@ controllers.UserSpecialBetsCtrl.$inject = ['$log', '$scope', '$rootScope', '$fil
 
 
 
-controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
+controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams, specialBetService ) {	
 	     $scope.stateParams = $stateParams;
-	     
-		  $scope.betId = $stateParams.id;
-		 
-		 $log.debug("special player");
-		 
+	     		 
+		 $scope.betId = $stateParams.id;		 
+				 
 		 Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
 		     function(success){
 				 $scope.user = success.user;
-				 $scope.templatebets = success.templatebets;
-				 var tb = _.filter($scope.templatebets, function(b){ return b.bet.id == $scope.betId; })[0];
+				 var templatebets = success.templatebets;
+				 var tb = _.filter(templatebets, function(b){ return b.bet.id == $scope.betId; })[0];
 				 $scope.tb = tb;
 		     }		 
 		 );
 		 
          Restangular.all('wm2014/api/players').getList().then(
 			 function(success){
-				 var forFilter = _.map(success, function(pt){ pt.pname = pt.player.name; pt.tname = pt.team.name; return pt; });
+				 var forFilter = _.map(success, function(pt){ pt.name = pt.player.name; pt.tname = pt.team.name; return pt; });
 				 $scope.playerWithTeams = forFilter;
 				 setupTable( $scope.playerWithTeams, ngTableParams, { 'player.name': 'asc' }, $scope, $filter );
 			 }
 		 );		 
 		 
-		 $scope.selectPlayer = function(playerWithTeam){
-		     var bet = $scope.tb.bet;
-             var selected = _.filter($scope.playerWithTeams, function(t){ return t.selected; })[0];
-		     bet.prediction = selected.player.name;
-		  
-		     Restangular.all('wm2014/api/specialBet').customPOST(bet).then(
-			    function(success){	 
-			   	 if(! $scope.user.hadInstructions){
-		             Restangular.all('wm2014/api/userhadinstructions').customPOST().then(
-		                function(success){
-		                   toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
-		                }		
-		             );			  	
-			     };
-				 $state.transitionTo("user.specialBets", { username: $scope.user.username }); 		
-			  }
-	      )
-		 };		 
+		 $scope.selectPlayer = function(){
+		 	specialBetService.saveSelected($scope.tb.bet, $scope.user, $scope.playerWithTeams);	
+		 };
 }
-controllers.EditUserSpecialPlayerCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
+controllers.EditUserSpecialPlayerCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams','specialBetService'];	
 
-controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
+controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams, specialBetService ) {	
 	     $scope.stateParams = $stateParams;
 		 
 		 $scope.betId = $stateParams.id;
 		 
-         $log.debug("special team "+$scope.betId);
-         
+        
 		 Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
 		     function(success){
 				 $scope.user = success.user;
-				 $scope.templatebets = success.templatebets;
-				 var tb = _.filter($scope.templatebets, function(b){ return b.bet.id == $scope.betId; })[0];
+				 var templatebets = success.templatebets;
+				 var tb = _.filter(templatebets, function(b){ return b.bet.id == $scope.betId; })[0];
 				 $scope.tb = tb;
 		     }		 
 		 );
 		 
-
 		 Restangular.all('wm2014/api/teams').getList().then(
 			 function(success){
 				 $scope.teams = success;
@@ -387,26 +367,12 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
 			 }
 		 );		 
 		 
-		 $scope.selectTeam = function(team){
-			  var bet = $scope.tb.bet;
-              var selected = _.filter($scope.teams, function(t){ return t.selected; })[0];
-			  bet.prediction = selected.name;
-			  
-			  Restangular.all('wm2014/api/specialBet').customPOST(bet).then(
-				  function(success){	 
-					 if(! $scope.user.hadInstructions){
-			             Restangular.all('wm2014/api/userhadinstructions').customPOST().then(
-			                function(success){
-			                   toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
-			                }		
-			             );			  	
-				     };
-					 $state.transitionTo("user.specialBets", { username: $scope.user.username }); 		
-				  }
-		      )
-		 };		 
+		 $scope.selectTeam = function(){
+	     	 specialBetService.saveSelected($scope.tb.bet, $scope.user, $scope.teams)
+		 };
+		  
 }
-controllers.EditUserSpecialTeamCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
+controllers.EditUserSpecialTeamCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams', 'specialBetService'];	
 
 
 return controllers;

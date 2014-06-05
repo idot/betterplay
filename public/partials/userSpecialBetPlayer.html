@@ -11,10 +11,10 @@
    <table ng-table="tableParams" show-filter="true" class="table">
         <tr ng-repeat="pt in $data" >
             <td>
-			    <input type="checkbox" ng-model="pt.selected" ng-change="selectPlayer(b)"> 
+			    <input type="checkbox" ng-model="pt.selected" ng-change="selectPlayer()"> 
 			</td>
-			<td data-title="'name'" filter="{ 'pname': 'text' }" sortable="'pname'">
-                 {{pt.player.name}}
+			<td data-title="'name'" filter="{ 'name': 'text' }" sortable="'name'">
+                 {{pt.name}}
             </td>
             <td data-title="'team'" filter="{ 'tname': 'text' }" sortable="'tname'">
                  {{pt.team.name}}

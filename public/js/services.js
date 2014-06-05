@@ -36,7 +36,39 @@ define(['angular'], function(angular) {
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', [])
-  .value('version', '0.1');
+  .value('version', '0.1')
+  .factory('specialBetService', function($state, Restangular, toaster){
+	  return {
+		 
+		getSpecialBet: function(betId, username, callback){	 
+ 		     Restangular.one('wm2014/api/specialBets', username).get().then(
+	 		     function(success){
+					 var user = success.user;
+	 				 var templatebets = success.templatebets;
+	 				 var tb = _.filter(templatebets, function(b){ return b.bet.id == betId; })[0];
+	 				 callback(user, tb);
+	 		     }	
+		)},	 
+ 		
+	    saveSelected : function(bet, user, selectedList){
+	         var selected = _.filter(selectedList, function(t){ return t.selected; })[0];
+			 bet.prediction = selected.name;
+		     Restangular.all('wm2014/api/specialBet').customPOST(bet).then(
+			     function(success){	 
+			          if(! user.hadInstructions){
+		                      Restangular.all('wm2014/api/userhadinstructions').customPOST().then(
+		                           function(success){
+		                                 toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
+		                           }		
+		                      );			  	
+			 		   };
+				       $state.transitionTo("user.specialBets", { username: user.username }); 
+			 }); 		
+	     }}; 
+	 });
+ 
+
+
 //  .factory('settingsFactory', function(Restangular){
 //	  var settings = {
 //		 Restangular.one('wm2014/api/settings').get().then(function(stings){

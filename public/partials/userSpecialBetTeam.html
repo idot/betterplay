@@ -11,7 +11,7 @@
    <table ng-table="tableParams" show-filter="true" class="table">
         <tr ng-repeat="team in $data" >
             <td>
-			    <input type="checkbox" ng-model="team.selected" ng-change="selectTeam(team)"> 
+			    <input type="checkbox" ng-model="team.selected" ng-change="selectTeam()"> 
 			</td>
 			<td data-title="'name'" filter="{ 'name': 'text' }" sortable="'name'">
                  {{team.name}}
