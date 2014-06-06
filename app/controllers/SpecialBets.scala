@@ -42,6 +42,14 @@ object SpecialBets extends Controller with Security {
 	  )
   }
   
-
+  def specialBetsByTemplate(templateId: Long) = DBAction { implicit rs =>
+	  implicit val session = rs.dbSession
+      BetterDb.specialBetsByTemplate(templateId).fold(
+	      err => NotFound(Json.obj("error" -> err)),
+		  succ => succ match { case(t,bs) =>
+			  Ok(Json.obj("template" -> t, "bets" -> bs))
+	      }
+	  )
+  }
 
 }

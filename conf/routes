@@ -31,8 +31,11 @@ GET     /wm2014/api/game/:nr                controllers.Games.get(nr: Int)
 #POST    /wm2014/api/game/:nr               controllers.Games.post(nr: Int)  #creates/updates game with all bets; creates bets if not there
 
 GET     /wm2014/api/users                  controllers.Users.all()           
+
 # fetches user + all of his bets 
-GET     /wm2014/api/user/:name             controllers.Users.get(name: String)  
+GET     /wm2014/api/user/:name             controllers.Users.get(name: String)
+GET     /wm2014/api/user/:username/specialBets  controllers.SpecialBets.specialBetsForUser(username: String)  
+
 # fetches logged in user with email
 GET     /wm2014/api/userWithEmail          controllers.Users.userWithEmail()
 #creates/updates user creates bets on first registration; does not update bets
@@ -46,8 +49,8 @@ POST    /wm2014/api/createBetsForUsers      controllers.Users.createBetsForUsers
 #GET     /wm2014/api/bet/:id                controllers.Bets.get(id: Long) #not necessary in application for testing     
 POST    /wm2014/api/bet/:id                 controllers.Bets.update(id: Long) 
 
-GET     /wm2014/api/specialBets/:username     controllers.SpecialBets.specialBetsForUser(username: String)
-POST    /wm2014/api/specialBet                controllers.SpecialBets.updateSpecialBet()
+POST    /wm2014/api/specialBet               controllers.SpecialBets.updateSpecialBet()
+GET     /wm2014/api/specialBets/:id          controllers.SpecialBets.specialBetsByTemplate(id: Long)
 
 # Send (user,password) to receive token
 POST    /wm2014/login                      controllers.Application.login()

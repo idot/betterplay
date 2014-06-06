@@ -39,7 +39,7 @@ angular.module('myApp.services', [])
   .value('version', '0.1')
   .factory('specialBetService', function($state, Restangular, toaster){
 	  return {
-		 
+		  //this does not work, the callback is never called!
 		getSpecialBet: function(betId, username, callback){	 
  		     Restangular.one('wm2014/api/specialBets', username).get().then(
 	 		     function(success){

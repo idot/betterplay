@@ -178,7 +178,7 @@ controllers.RegisterUserCtrl = function($log, $scope, $rootScope, $stateParams, 
 		    var pu = { 'username': $scope.username, 'password': $scope.password1, 'email': $scope.email };
 	    	Restangular.all('wm2014/api/user/'+$scope.username).customPUT( pu ).then(
 			function(success){
-				toaster.pop('success', "registered "+$scope.username, "e-mail is on its way to "+$scope.email);
+				toaster.pop('success', "registered "+$scope.username); //TODO: email
 				$scope.setFields();
 			}
 		);
@@ -253,8 +253,10 @@ controllers.EditGameCtrl.$inject = ['$log', '$scope', '$rootScope', '$stateParam
 
 
 controllers.BetCtrl = function($scope, $rootScope, Restangular, toaster){
+	$scope.disabled = false;
 	
 	$scope.saveBet = function(bet){
+		$scope.disabled = true;
 	    var queryBet = Restangular.all('wm2014/api/bet/'+bet.id).customPOST(bet).then(
 		    function(success){
 				var game = success.game;
@@ -263,6 +265,7 @@ controllers.BetCtrl = function($scope, $rootScope, Restangular, toaster){
 				var show = success.game.game.nr+": "+$scope.prettyBet(betold)+" -> "+$scope.prettyBet(betnew)
 				toaster.pop('success', "updated bet ", show);
 				bet['marked'] = false;
+				$scope.disabled = false;
 		    }		
 		);			
 	};
@@ -296,7 +299,7 @@ controllers.BetCtrl.$inject = ['$scope','$rootScope', 'Restangular', 'toaster'];
 controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
 	     $scope.stateParams = $stateParams;
 		 
-         Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
+         Restangular.one('wm2014/api/user', $scope.stateParams.username).one('specialBets').get().then(
 			 function(success){
 			     // join must make to usable structure
 				 $scope.user = success.user;
@@ -322,7 +325,7 @@ controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filt
 	     		 
 		 $scope.betId = $stateParams.id;		 
 				 
-		 Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
+		 Restangular.one('wm2014/api/user', $scope.stateParams.username).one('specialBets').get().then(
 		     function(success){
 				 $scope.user = success.user;
 				 var templatebets = success.templatebets;
@@ -351,7 +354,7 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
 		 $scope.betId = $stateParams.id;
 		 
         
-		 Restangular.one('wm2014/api/specialBets', $scope.stateParams.username).get().then(
+		 Restangular.one('wm2014/api/user', $scope.stateParams.username).one('specialBets').get().then(
 		     function(success){
 				 $scope.user = success.user;
 				 var templatebets = success.templatebets;

@@ -1,10 +1,11 @@
-  <form class="form col-xs-5" name="gameEditForm" role="form">
-    <ul class="list-group">
+<form class="form col-xs-8" name="gameEditForm" role="form">
+    <div class="col-xs-5">
+	<ul class="list-group">
        <li class="list-group-item list-group-item-heading">
          {{gwt.game.nr}}  {{gwt.team1.name}}:{{gwt.team2.name}} {{gwt.level.name}}
        </li>
        <li class="list-group-item">
-         bet close {{timeLeft(gwt.game.serverStart, currentTime)}}  reward: <span class="badge">{{gb.game.level.pointsExact}}/{{gb.game.level.pointsTendency}}</span>
+         bet close {{timeLeft(gwt.game.serverStart, currentTime)}}  reward: <span class="badge">{{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}</span>
        </li>
 	   <li class="list-group-item">
 		 local: {{gwt.game.localStart | date: DF }} server: {{gwt.game.serverStart | date: DF }}	
@@ -13,7 +14,7 @@
    	       <button type="submit" class="btn btn-primary" ng-click="$state.transitionTo('game.editGame', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result</button>
   	  </li>
     </ul>
-  </form>
+   </div>
 
 
    <!-- this is the users table with bets for this game for each user added -->
@@ -37,4 +38,6 @@
 			    <better-bet bet="bu.bet" start="gwt.game.serverStart"></better-bet>
 			</td>
    </table>
-</div>
+</form>
+
+

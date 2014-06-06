@@ -1,12 +1,12 @@
-play_at|pos|title|key|title|code|key|title|code
+play_at|pos|title|key|title|code|key|title|code|shift
 2014-06-12 17:00:00.000000|1|Group A|bra|Brazil|BRA|cro|Croatia|CRO
 2014-06-13 13:00:00.000000|2|Group A|mex|Mexico|MEX|cmr|Cameroon|CMR
 2014-06-13 16:00:00.000000|3|Group B|esp|Spain|ESP|ned|Netherlands|NED
-2014-06-13 18:00:00.000000|4|Group B|chi|Chile|CHI|aus|Australia|AUS
+2014-06-13 18:00:00.000000|4|Group B|chi|Chile|CHI|aus|Australia|AUS|+
 2014-06-14 13:00:00.000000|5|Group C|col|Colombia|COL|gre|Greece|GRE
 2014-06-14 22:00:00.000000|6|Group C|civ|Côte d'Ivoire|CIV|jpn|Japan|JPN
 2014-06-14 16:00:00.000000|7|Group D|uru|Uruguay|URU|crc|Costa Rica|CRC
-2014-06-14 18:00:00.000000|8|Group D|eng|England|ENG|ita|Italy|ITA
+2014-06-14 18:00:00.000000|8|Group D|eng|England|ENG|ita|Italy|ITA|+
 2014-06-15 13:00:00.000000|9|Group E|sui|Switzerland|SUI|ecu|Ecuador|ECU
 2014-06-15 16:00:00.000000|10|Group E|fra|France|FRA|hon|Honduras|HON
 2014-06-15 19:00:00.000000|11|Group F|arg|Argentina|ARG|bih|Bosnia-Herzegovina|BIH
@@ -15,8 +15,8 @@ play_at|pos|title|key|title|code|key|title|code
 2014-06-16 19:00:00.000000|14|Group G|gha|Ghana|GHA|usa|United States|USA
 2014-06-17 16:00:00.000000|17|Group A|bra|Brazil|BRA|mex|Mexico|MEX
 2014-06-17 13:00:00.000000|15|Group H|bel|Belgium|BEL|alg|Algeria|ALG
-2014-06-17 18:00:00.000000|16|Group H|rus|Russia|RUS|kor|South Korea|KOR
-2014-06-18 18:00:00.000000|18|Group A|cmr|Cameroon|CMR|cro|Croatia|CRO
+2014-06-17 18:00:00.000000|16|Group H|rus|Russia|RUS|kor|South Korea|KOR|+
+2014-06-18 18:00:00.000000|18|Group A|cmr|Cameroon|CMR|cro|Croatia|CRO|+
 2014-06-18 16:00:00.000000|19|Group B|esp|Spain|ESP|chi|Chile|CHI
 2014-06-18 13:00:00.000000|20|Group B|aus|Australia|AUS|ned|Netherlands|NED
 2014-06-19 13:00:00.000000|21|Group C|col|Colombia|COL|civ|Côte d'Ivoire|CIV
@@ -26,20 +26,20 @@ play_at|pos|title|key|title|code|key|title|code
 2014-06-20 16:00:00.000000|25|Group E|sui|Switzerland|SUI|fra|France|FRA
 2014-06-20 19:00:00.000000|26|Group E|hon|Honduras|HON|ecu|Ecuador|ECU
 2014-06-21 13:00:00.000000|27|Group F|arg|Argentina|ARG|irn|Iran|IRN
-2014-06-21 18:00:00.000000|28|Group F|nga|Nigeria|NGA|bih|Bosnia-Herzegovina|BIH
+2014-06-21 18:00:00.000000|28|Group F|nga|Nigeria|NGA|bih|Bosnia-Herzegovina|BIH|+
 2014-06-21 16:00:00.000000|29|Group G|ger|Germany|GER|gha|Ghana|GHA
-2014-06-22 18:00:00.000000|30|Group G|usa|United States|USA|por|Portugal|POR
+2014-06-22 18:00:00.000000|30|Group G|usa|United States|USA|por|Portugal|POR|+
 2014-06-22 13:00:00.000000|31|Group H|bel|Belgium|BEL|rus|Russia|RUS
 2014-06-22 16:00:00.000000|32|Group H|kor|South Korea|KOR|alg|Algeria|ALG
 2014-06-23 17:00:00.000000|33|Group A|cmr|Cameroon|CMR|bra|Brazil|BRA
 2014-06-23 17:00:00.000000|34|Group A|cro|Croatia|CRO|mex|Mexico|MEX
 2014-06-23 13:00:00.000000|35|Group B|aus|Australia|AUS|esp|Spain|ESP
 2014-06-23 13:00:00.000000|36|Group B|ned|Netherlands|NED|chi|Chile|CHI
-2014-06-24 16:00:00.000000|37|Group C|jpn|Japan|JPN|col|Colombia|COL
+2014-06-24 16:00:00.000000|37|Group C|jpn|Japan|JPN|col|Colombia|COL|+
 2014-06-24 17:00:00.000000|38|Group C|civ|Côte d'Ivoire|CIV|gre|Greece|GRE
 2014-06-24 13:00:00.000000|39|Group D|ita|Italy|ITA|uru|Uruguay|URU
 2014-06-24 13:00:00.000000|40|Group D|crc|Costa Rica|CRC|eng|England|ENG
-2014-06-25 16:00:00.000000|41|Group E|hon|Honduras|HON|sui|Switzerland|SUI
+2014-06-25 16:00:00.000000|41|Group E|hon|Honduras|HON|sui|Switzerland|SUI|+
 2014-06-25 17:00:00.000000|42|Group E|ecu|Ecuador|ECU|fra|France|FRA
 2014-06-25 13:00:00.000000|43|Group F|nga|Nigeria|NGA|arg|Argentina|ARG
 2014-06-25 13:00:00.000000|44|Group F|bih|Bosnia-Herzegovina|BIH|irn|Iran|IRN

@@ -636,7 +636,12 @@ object BetterDb {
 	   tbs.list
 	}
     
-  
+    def specialBetsByTemplate(id: Long)(implicit s: Session): String \/ (SpecialBetT,Seq[SpecialBetByUser]) = {
+		specialbetstore.filter(_.id === id).firstOption.map{ template => 
+		    val sp = specialbetsuser.filter(s => s.spId === template.id).list
+		    \/-((template,sp))
+		}.getOrElse( -\/(s"special bet $id not found"))
+	}
    
    
 }

@@ -35,11 +35,11 @@ object InitialData {
   }  
   
   def specialBets(): Seq[SpecialBetT] = {
-	  val start = new DateTime(2014, 6, 12, 17, 0)
+	  val start = new DateTime(2014, 6, 12, 22, 0)
 	  val s = Seq(
-	     SpecialBetT(None, "topscorer", "highest scoring player", 7 , start, "topscorer" , SpecialBetType.player, "" ),
-		 SpecialBetT(None, "mvp", "most valuable player", 7 , start, "mvp" , SpecialBetType.player, "" ),
-         SpecialBetT(None, "world champion", "world champion", 11 , start, "world champion" , SpecialBetType.team, "" ),
+	     SpecialBetT(None, "topscorer", "highest scoring player", 8 , start, "topscorer" , SpecialBetType.player, "" ),
+		 SpecialBetT(None, "mvp", "most valuable player", 8 , start, "mvp" , SpecialBetType.player, "" ),
+         SpecialBetT(None, "world champion", "world champion", 10 , start, "world champion" , SpecialBetType.team, "" ),
 		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
 		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
 		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
@@ -70,7 +70,8 @@ object InitialData {
       val short = str.substring(0, str.lastIndexOf("."))
       val df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
       val dt = df.parseDateTime(short)
-      (dt.plusHours(5),dt) //TODO: make dependent on venue
+	  val shift = if(venue == "+") 1 else 0
+      (dt,dt.plusHours(5+shift)) 
       }catch{
         case e: Exception => {
           Logger.error("error on date: "+str+" "+venue+" "+e.getMessage)
@@ -83,10 +84,10 @@ object InitialData {
   //2014-06-12 17:00:00.000000|1|Group A|bra|Brazil|BRA|cro|Croatia|CRO
   
   //TODO: fix time zone parsing
-  def parseLine(line: String, levelId: Long): (Team,Team, Game) = {
+  def parseGame(line: String, levelId: Long): (Team,Team, Game) = {
       Logger.trace(line)
       val items = line.split("\\|")
-      val venue = ""
+      val venue = if(items.length == 10) items(9) else ""
       val (localStart, serverStart) = parseDate(items(0), venue)
       val pos = items(1).toInt
       val group = items(2)
@@ -103,7 +104,7 @@ object InitialData {
   def teamsGames(levelId: Long): (Set[Team], Seq[(String,String,Game)]) = {
       Logger.info("parsing games")
       val lines = toLines("GAMES2014.txt")    
-      val ttg = lines.map(parseLine(_,levelId))
+      val ttg = lines.map(parseGame(_,levelId))
       val teams = ttg.map{case(t1,t2,g) => Seq(t1,t2)}.flatten.toSet
       val ssg = ttg.map{case(t1,t2,g) => (t1.name, t2.name, g)}
       (teams, ssg)     
