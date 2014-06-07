@@ -23,9 +23,9 @@ object BetterDb {
   
    def withT[A,B](f: => String \/ B)(implicit s: Session): String \/ B = {
        s.withTransaction{
-		   try{
+		    try{
 			   f
-           }catch{
+            }catch{
             case e: Exception => {
               s.rollback()
               -\/(e.getMessage)

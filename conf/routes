@@ -3,8 +3,9 @@
 # ~~~~
 
 # Home page
+GET     /                                  controllers.Application.toPrefix()
+GET     /wm2014                            controllers.Application.index
 GET     /wm2014/                           controllers.Application.index
-
 GET     /wm2014/api/time                   controllers.Application.time()
 # in debug mode its possible to set times
 POST    /wm2014/api/time					controllers.Application.setDebugTime()

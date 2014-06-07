@@ -2,10 +2,77 @@
 
 'use strict';
 
+/**
+* dependencies are declared manually based on huntc comment:
+* https://github.com/huntc/angular-seed-play-1/commit/1c4dad20cd881c6045592aa4f055663b724c19ae#commitcomment-6434953
+**/
 
+requirejs.config({
+  paths: {
+	'underscore': ['../lib/underscorejs/underscore'],
+	'moment': ['../lib/momentjs/min/moment.min'],
+    'angular': ['../lib/angularjs/angular'],
+	'angular-cookies': ['../lib/angularjs/angular-cookies'],
+	'angular-animate': ['../lib/angularjs/angular-animate'],
+    'restangular': ['../lib/restangular/restangular'],
+    'angular-ui': ['../lib/angular-ui/angular-ui'],
+    'angular-ui-bootstrap': ['../lib/angular-ui-bootstrap/ui-bootstrap-tpls'],
+    'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router'],
+	'ng-table': ['../lib/ng-table/ng-table'],
+	'angular-ui-utils': ['../lib/angular-ui-utils/ui-utils'],
+	'toaster': ['toaster'],
+	'd3js': ['../lib/d3js/d3'],
+	'nvd3': ['../lib/nvd3/nv.d3'],
+	'angular-nvd3': ['../lib/angularjs-nvd3-directives/angularjs-nvd3-directives']
+  },
+  shim: {
+    'angular': {
+      exports : 'angular'
+    },
+	'angular-cookies': {
+		deps: ['angular']
+	},
+	'angular-animate': {
+		deps: ['angular']
+	},
+    'restangular': {
+        deps: ['underscore', 'angular']
+    },
+    'angular-ui': {
+        deps: ['angular']
+    },
+    'angular-ui-bootstrap': {
+        deps: ['angular-ui']
+    },
+    'angular-ui-router':{
+        deps: ['angular-ui']
+    },
+    'ng-table':{
+        deps: ['angular']
+    },
+	'angular-ui-utils': {
+		deps: ['angular']
+	},
+	'toaster': {
+		deps: ['angular-animate']
+	},
+    'd3js': {
+       exports: 'd3'
+    },
+    'nvd3': {
+        deps: ['d3js']
+    },
+    'angular-nvd3': {
+        deps: ['angular', 'nvd3']
+    }
+	
+  }
+});
 
-require(['./reqconfig'], function(reqconfig){
-	           require(['moment','angular', './controllers', './directives', './filters', './services',
+require(['d3js'], function(d3) {
+            window.d3 = d3;
+            require(['nvd3', 'angular-nvd3'], function(nvd3) {
+require(['moment','angular', './controllers', './directives', './filters', './services',
 			            'underscore', 'angular-cookies', 'angular-animate', 'restangular', 'angular-ui',
 						'angular-ui-bootstrap','angular-ui-router', 'ng-table', 'angular-ui-utils', 'toaster'],
 						
@@ -14,7 +81,8 @@ require(['./reqconfig'], function(reqconfig){
    
    angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngCookies', 'ngAnimate', 
                             'restangular', 'ui', 'ui.bootstrap', 'ui.bootstrap.tabs', 'ui.bootstrap.datepicker',
-							 'ui.bootstrap.timepicker', 'ui.router', 'ngTable','ui.utils', 'toaster'])
+							 'ui.bootstrap.timepicker', 'ui.router', 'ngTable','ui.utils', 'toaster', 'nvd3ChartDirectives'
+							])
 							 
       .run([ '$rootScope', '$state', '$stateParams', '$timeout', '$cookies', 'Restangular', 'toaster',
          function ($rootScope, $state, $stateParams, $timeout, $cookies, Restangular, toaster){
@@ -260,9 +328,28 @@ require(['./reqconfig'], function(reqconfig){
 			  })
 			  .state('admin.registerUser', {
 				  url: "/registerUser",
-				  templateUrl: 'partials/registerUser.html',
+				  templateUrl: 'partials/registerUser.html',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 				  controller: controllers.RegisterUserCtrl
 			  }) 
+			  .state('statistics', {
+				  url: '/statistics',
+				  templateUrl: 'partials/statistics.html'
+			  })
+			  .state('statistics.statViews', {
+			      views: {
+			        'mvp@statistics' : {
+			          templateUrl: 'partials/plot.html',
+			          controller:  controllers.PlotCtrl
+			        }
+			     }
+			  })
+			  .state('plot', {
+				  url: '/plot',
+		          templateUrl: 'partials/plot.html',
+		          controller:  controllers.PlotCtrl
+				
+			  })
+			  
 			  ;
 			  
     });
@@ -271,5 +358,5 @@ require(['./reqconfig'], function(reqconfig){
 
     angular.bootstrap(document, ['myApp']);
 
-
-})});
+})})
+});

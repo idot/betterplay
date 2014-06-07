@@ -110,6 +110,11 @@ trait Application extends Controller with Security {
   def index = Action {
     Ok(views.html.index())
   }
+  
+  
+  def toPrefix() = Action {
+	  Redirect(routes.Application.index)
+  }
 
   /**
   * caches the token with the userid
@@ -153,7 +158,6 @@ trait Application extends Controller with Security {
 	  BetterSettings.resetTime()
 	  Ok("reset time to system clock")
   }
-  
 
   
   def settings() = Action {
