@@ -192,8 +192,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			 $rootScope.DF = 'MM/dd HH:mm';
 			
 			 //time before game start that bet closes
-			 //1 minute more than on server to prevent submission errors for users
-			 $rootScope.MSTOCLOSING = 61 * 60 * 1000; //in ms
+			 $rootScope.MSTOCLOSING = 60 * 60 * 1000; //in ms
 			 
 			 //time to update clock
 			 $rootScope.UPDATEINTERVAL = 1000 * 3; //in ms

@@ -1,5 +1,5 @@
 <form class="form col-xs-8" name="gameEditForm" role="form">
-    <div class="col-xs-5">
+    <div class="col-xs-7">
 	<ul class="list-group">
        <li class="list-group-item list-group-item-heading">
          {{gwt.game.nr}}  {{gwt.team1.name}}:{{gwt.team2.name}} {{gwt.level.name}}
@@ -18,14 +18,14 @@
 
 
    <!-- this is the users table with bets for this game for each user added -->
-   <table ng-table="tableParams" class="betterlist" show-filter="false">
+   <table ng-table="tableParams" class="betterlist" show-filter="true">
         <tr ng-repeat="bu in $data">
             <td data-title="'icon'">
 				<a ui-sref="user.userBets({ username: bu.user.username})">
 					<img ng-src="{{bu && bu.user.iconurl+'&s=23'}}" alt="gravatar" width="23" height="23"/>
 				</a>
 			</td>
-			<td data-title="'user'" sortable="'user.username'">
+			<td data-title="'user'" sortable="'user.username'" filter="{ 'username': 'text' }">
                 <a ui-sref="user.userBets({ username: bu.user.username})">{{bu.user.username}}</a>
             </td>
             <td data-title="'points total'" sortable="'user.totalPoints'">

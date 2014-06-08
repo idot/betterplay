@@ -11,6 +11,8 @@ var controllers = {};
 controllers.UsersCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
 	var queryUsers = Restangular.all('wm2014/api/users');
    
+    
+   
 	queryUsers.getList().then(function(users){
 	    $scope.allUsers = users;
 		setupTable( users, ngTableParams, { 'username': 'asc'}, $scope, $filter );
@@ -19,45 +21,78 @@ controllers.UsersCtrl = function($log, $scope, $filter, Restangular, $stateParam
 
 controllers.UsersCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams' ];
 
-controllers.GamesCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
+controllers.GamesCtrl = function($log, $scope, $rootScope, $filter, Restangular, $stateParams, ngTableParams, selectFilter ) {
 	var queryGames = Restangular.all('wm2014/api/games');
+	
+	$scope.openFilter = selectFilter.from(['open','closed']);
+		
+	$scope.levelFilter = selectFilter.from(['group','last16','quarter','semi','final','third']);	
+		
+	var transformGame = function(game){
+	   game.team1name = game.team1.name;
+	   game.team2name = game.team2.name;	
+	   game.openGame = $rootScope.betClosed(game.serverStart, $rootScope.currentTime) ? "closed" : "open" ;
+	   game.levelname = game.level.name;
+	};
 		
 	queryGames.getList().then(function(games){
-	    $scope.allGames = games;
-		setupTable( games, ngTableParams, { 'game.nr': 'asc'}, $scope, $filter );
+	    var allGames = games;
+		$scope.allGames = _.each(allGames, function(g){ transformGame(g)});		
+		setupTable( $scope.allGames, ngTableParams, { 'game.nr': 'asc'}, $scope, $filter );
     });
-	
-   
+	  
 }
-controllers.GamesCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+controllers.GamesCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'selectFilter'];
 
 
-controllers.UserCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams, toaster ) {
+controllers.UserCtrl = function($log, $scope, $rootScope, $filter, Restangular, $stateParams, ngTableParams, toaster, selectFilter ) {
 	$scope.stateParams = $stateParams;
 	var queryUser = Restangular.one('wm2014/api/user', $scope.stateParams.username);
+   
+	$scope.openFilter = selectFilter.from(['open','closed']);
+		
+	$scope.levelFilter = selectFilter.from(['group','last16','quarter','semi','final','third']);	
+		
+	$scope.bettedFilter = selectFilter.from(['set','not']);	
+   
+    var transformGameBets = function(gb){
+		gb.team1name = gb.game.team1.name;
+		gb.team2name = gb.game.team2.name;
+		gb.levelname = gb.game.level.name;
+		gb.openGame = $rootScope.betClosed(gb.game.serverStart, $rootScope.currentTime) ? "closed" : "open";
+		gb.betset = gb.bet.result.isSet ? "set" : "not";
+    };
    
     queryUser.get().then(function(userWithSpAndGB){
 		$scope.user = userWithSpAndGB.user;
 		$scope.special = userWithSpAndGB.special;
-		$scope.gameBets = userWithSpAndGB.gameBets;
+		var gameBets = userWithSpAndGB.gameBets;
+		$scope.gameBets = _.each(gameBets, function(gb){ transformGameBets(gb) });
+		
 		setupTable( $scope.gameBets, ngTableParams, { 'game.game.nr': 'asc'}, $scope, $filter );
     });
-	
 }
-controllers.UserCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'toaster'];
+controllers.UserCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'toaster', 'selectFilter'];
 
-controllers.GameCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams ) {
+
+
+controllers.GameCtrl = function($log, $scope, $filter, Restangular, $stateParams, ngTableParams, selectFilter) {
 	$scope.stateParams = $stateParams;
 	var queryGame = Restangular.one('wm2014/api/game', $scope.stateParams.gamenr);
-    
+    	
+	var transformBetsUser = function(bu){
+	    bu.username = bu.user.username;	
+	};
+		
 	queryGame.get().then(function(gwtWithBetsPerUser){
 		$scope.gwt = gwtWithBetsPerUser.game;
-		$scope.betsUsers = gwtWithBetsPerUser.betsUsers;
+		var betsUsers = gwtWithBetsPerUser.betsUsers;
+		$scope.betsUsers = _.each(betsUsers, function(bu){ bu.username = bu.user.username; });
 		setupTable( $scope.betsUsers, ngTableParams, { 'game.game.nr': 'asc'}, $scope, $filter );
 	});
 
 }
-controllers.GameCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams'];
+controllers.GameCtrl.$inject = ['$log', '$scope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'selectFilter'];
 
 
 controllers.SettingsCtrl = function($log, $scope, $rootScope, $stateParams, Restangular, toaster){
@@ -396,6 +431,8 @@ controllers.PlotSpecialBetsCtrl = function($scope, $stateParams, $state, special
 	// };	 
 }
 controllers.PlotSpecialBetsCtrl.$inject = ['$scope', '$stateParams', '$state', 'specialBetService'];
+
+
 
 return controllers;
 

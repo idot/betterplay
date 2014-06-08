@@ -2,21 +2,22 @@
   <!-- Default panel contents -->
   <div class="panel-heading">All Games</div>
   
-   <table ng-table="tableParams" class="betterlist" show-filter="false">
+   <table ng-table="tableParams" class="betterlist" show-filter="true">
         <tr ng-repeat="gb in $data">
             <td data-title="'nr'" sortable="'game.nr'">
 				<a ui-sref="game.gameBets({ gamenr: gb.game.nr})">{{gb.game.nr}}</a>
             </td>
-			<td data-title="'team1'" sortable="'team1.name'" filter="{ 'team1.name': 'text' }">
+			<td data-title="'team1'" sortable="'team1.name'" filter="{ 'team1name': 'text' }">
 			    {{gb.team1.name}}
 			</td>
-			<td data-title="'team2'" sortable="'team2.name'">
+			<td data-title="'team2'" sortable="'team2.name'" filter="{ 'team2name': 'text' }">
 			    {{gb.team2.name}}
 			</td>
-			<td data-title="'bet close'" sortable="'game.serverStart'">
+			<td data-title="'bet close'" sortable="'game.serverStart'" 
+			          filter="{ 'openGame': 'select' }" filter-data="openFilter()"> 
 				{{timeLeft(gb.game.serverStart, currentTime)}}
 			</td>
-            <td data-title="'level'" sortable="'level.name'"> 
+            <td data-title="'level'" sortable="'level.name'" filter="{ 'levelname': 'select' }" filter-data="levelFilter()"> 
 				{{gb.level.name}}
 			</td>
             <td data-title="'local start'" sortable="'game.serverStart'">

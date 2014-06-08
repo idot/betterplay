@@ -37,6 +37,18 @@ define(['angular'], function(angular) {
 // In this case it is a simple value service.
 angular.module('myApp.services', [])
   .value('version', '0.1')
+  .factory('selectFilter', function($q){
+  	 return { 
+		 from: function(items){
+			 return function(){
+		       var arr = _.map(items, function(i){ return { id: i, title: i}; });	
+               var deferred = $q.defer();
+			   deferred.resolve(arr);
+			   return deferred;
+			 };		
+		 }
+	 };
+  })
   .factory('specialBetService', function($state, Restangular, toaster){
 	  return {
 		  //this does not work, the callback is never called!
