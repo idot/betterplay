@@ -15,18 +15,20 @@ class BetterSettingsSpec extends Specification { def is =
 	
 	
 	def validate = {
+		val secret = "the secret"
 		val rand = new scala.util.Random()
 		val messageSize = rand.nextInt(10000)
 		val arr = new Array[Byte](messageSize)
 	    val message = rand.nextBytes(arr)
-		val filename = BetterSettings.fileName(arr)
+		val filename = BetterSettings.fileName(arr, secret)
 
-		BetterSettings.validate(arr, filename).toOption.get === "valid file"
+		BetterSettings.validate(arr, filename, secret).toOption.get === "valid file"
 		val filenameD = filename.replace(filename.substring(5,9), "2013")
-		BetterSettings.validate(arr, filenameD).swap.toOption.get === "invalid file content changed"
+		BetterSettings.validate(arr, filenameD, secret).swap.toOption.get === "invalid file content changed"
+		BetterSettings.validate(arr, filename, secret+" ").swap.toOption.get === "invalid file content changed"
 		arr(0) = (arr(0) + 1).toByte
-		BetterSettings.validate(arr, filename).swap.toOption.get === "invalid file content changed"
-		
+		BetterSettings.validate(arr, filename, secret).swap.toOption.get === "invalid file content changed"
+
 	}
 
 

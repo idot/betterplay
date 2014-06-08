@@ -331,6 +331,10 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  templateUrl: 'partials/registerUser.html',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 				  controller: controllers.RegisterUserCtrl
 			  }) 
+			  .state('excel', {
+			  	  url: "/excel",
+				  templateUrl: 'partials/excel.html'		
+			  })
 			  .state('statistics', {
 				  url: '/statistics',
 				  views: {
