@@ -38,6 +38,10 @@ object Bets extends Controller with Security {
 		)
     }	  	 
     
-  
+    def log() = DBAction { implicit rs =>
+        implicit val session = rs.dbSession
+		val str = BetterDb.allBetLogs().map{ log => log.toText }.mkString("\n")
+		Ok(str)
+    }	  	 
 
 }

@@ -333,15 +333,18 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			  }) 
 			  .state('statistics', {
 				  url: '/statistics',
-				  templateUrl: 'partials/statistics.html'
-			  })
-			  .state('statistics.statViews', {
-			      views: {
+				  views: {
+				    '': {
+						templateUrl: 'partials/statistics.html'
+					},
 			        'mvp@statistics' : {
 			          templateUrl: 'partials/plot.html',
-			          controller:  controllers.PlotCtrl
+			          controller:  controllers.PlotCtrl,
+					  data : {
+						  templateId: 1
+					  }
 			        }
-			     }
+				  }
 			  })
 			  .state('plot', {
 				  url: '/plot',

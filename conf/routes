@@ -47,11 +47,14 @@ POST   /wm2014/api/userhadinstructions     controllers.Users.updateUserHadInstru
 
 POST    /wm2014/api/createBetsForUsers      controllers.Users.createBetsForUsers()
 
-#GET     /wm2014/api/bet/:id                controllers.Bets.get(id: Long) #not necessary in application for testing     
+GET     /wm2014/api/bet/log                 controllers.Bets.log()   
 POST    /wm2014/api/bet/:id                 controllers.Bets.update(id: Long) 
+
 
 POST    /wm2014/api/specialBet               controllers.SpecialBets.updateSpecialBet()
 GET     /wm2014/api/specialBets/:id          controllers.SpecialBets.specialBetsByTemplate(id: Long)
+GET     /wm2014/api/statistics/excel         controllers.Statistics.excel()
+
 
 # Send (user,password) to receive token
 POST    /wm2014/login                      controllers.Application.login()

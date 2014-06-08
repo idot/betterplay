@@ -35,6 +35,7 @@ object BetterTables {
   val bets = TableQuery[Bets]
   val specialbetstore = TableQuery[SpecialBetsTs] 
   val specialbetsuser = TableQuery[SpecialBetByUsers]
+  val betlogs = TableQuery[BetLogs]
  
   def createTables()(implicit s: Session) {
     users.ddl.create
@@ -45,13 +46,14 @@ object BetterTables {
     bets.ddl.create
     specialbetstore.ddl.create
 	specialbetsuser.ddl.create
+	betlogs.ddl.create
 	
   }
   
   def drop()(implicit s: Session){
     val ddl = users.ddl ++ teams.ddl ++ players.ddl ++ levels.ddl ++ 
 	games.ddl ++ bets.ddl ++
-	specialbetstore.ddl ++ specialbetsuser.ddl
+	specialbetstore.ddl ++ specialbetsuser.ddl ++ betlogs.ddl
     //ddl.createStatements.foreach(println)
     ddl.drop
   }
@@ -192,7 +194,7 @@ object BetterTables {
     def name = column[String]("name", O.NotNull)
     def short3 = column[String]("short3", O.NotNull)
 	def short2 = column[String]("short2", O.NotNull)
-	       
+	     
     def * = (id.?, name, short3, short2) <> (Team.tupled, Team.unapply _)
   }
 
@@ -210,7 +212,26 @@ object BetterTables {
 	  def * = (id.?, userId, token, created, used, tokentype) <> (UserToken.tupled, UserToken.unapply _)
   }
 
+  class BetLogs(tag: Tag) extends Table[BetLog](tag, "betlogs") {
+	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+	  def userId = column[Long]("user_id", O.NotNull)
+	  def gameId = column[Long]("game_id", O.NotNull)
+	  def betId = column[Long]("bet_id", O.NotNull)
+      def t1old = column[Int]("t1old", O.NotNull)
+      def t1new = column[Int]("t1new", O.NotNull)
+      def t2old = column[Int]("t2old", O.NotNull)
+      def t2new = column[Int]("t2new", O.NotNull)
+	  def created = column[DateTime]("change", O.NotNull)
+	  
+	  def user = foreignKey("LOG_USER_FK", userId, users)(_.id)
+	  def game = foreignKey("LOG_GAME_FK", gameId, games)(_.id)
+	  def bet = foreignKey("LOG_BET_FK",betId, bets)(_.id)
 
+	  def * = (id.?, userId, gameId, betId, t1old, t1new, t2old, t2new, created) <> (BetLog.tupled, BetLog.unapply _)
+  }
+  
+
+  
 }
 
 

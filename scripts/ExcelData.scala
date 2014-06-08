@@ -18,16 +18,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.hssf.util.HSSFColor
 import org.apache.poi.ss.usermodel.CellStyle
 
-import at.idot.scimplbetter.model.Game
-import at.idot.scimplbetter.model.SpecialBet
-import at.idot.scimplbetter.model.Team
-import at.idot.scimplbetter.model.Player
 
-class ExcelData {
-	val creator = new UserRowCreator()
-	val userRows = creator.createUserRows()
-	creator.assignLeading(userRows)
-	val games = GameRepository.allGames
+
+class ExcelData(userRows: Seq[UserRow]) {
+
 	
 	def createExcelSheetComplete(): Array[Byte] = {
 	  var wb = new HSSFWorkbook()
@@ -147,7 +141,7 @@ class ExcelData {
 		for( (ur,rowNr) <- userRows.zipWithIndex.map(t => (t._1, t._2+1)) ){
 			val r = s.createRow(rowNr)
 			c = r.createCell(0)
-			c.setCellValue(new HSSFRichTextString(ur.user.userName))		
+			c.setCellValue(new HSSFRichTextString(ur.user.username))		
 			c = r.createCell(1)
             if( ur.leader){
                 c.setCellStyle( leadingCell )

@@ -65,7 +65,23 @@ angular.module('myApp.services', [])
 				       $state.transitionTo("user.specialBets", { username: user.username }); 
 			 }); 		
 	     }}; 
-	 });
+	 })
+	.factory('specialBetStats', function(Restangular){
+	    return {
+	       getStats: function(templateId){
+		  	    Restangular.one('/wm2014/api/specialBets/', $scope.templateId).get().then(
+		  		    function(success){
+		  			   var template = success.template;
+		  			   var grouped = _.groupBy(success.bets, function(b){ return b.prediction; });
+		  			   var bets = _.map(grouped, function(k,v){ return { label: k, value: v.length }; });
+					   var bets = { values: bets };
+					   return { template: template, bets: bets };
+		  		    }
+		  	    );		 	    
+	       }
+	    };
+	})
+	;
  
 
 

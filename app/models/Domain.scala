@@ -7,6 +7,8 @@ object DomainHelper {
   import org.jasypt.util.password.StrongPasswordEncryptor
   import scravatar._
   
+  type SpecialBets = Seq[(SpecialBetT,SpecialBetByUser)]
+  
   val gts = Seq("monsterid", "identicon", "wavatar", "retro") 
   
   def encrypt(password: String): String = {
@@ -40,6 +42,10 @@ object DomainHelper {
       User(None, username, "", "", email, encrypt(password), false, false, false, true, true, 0, 0, u, t, registeringUser)
   }
  
+  def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: DateTime): BetLog = {
+      BetLog(None, user.id.get, game.id.get, betOld.id.get, betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time)
+  }
+ 
 }
 
 //embedaable
@@ -66,6 +72,14 @@ case class Player(id: Option[Long] = None, name: String, role: String, club: Str
 
 case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId: Long, userId: Long){ 
 //unique: user/bet game/bet one bet for each user per game 
+}
+
+case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, betId: Long, t1old: Int, t1new: Int, t2old: Int, t2new: Int, time: DateTime){
+	def toText(): String = {
+		val betchange = Seq(GameResult(t1old, t2old, true).display, "->",  GameResult(t1old, t2old, true).display).mkString(" ")
+		val format = org.joda.time.format.DateTimeFormat.fullDateTime() 
+	    Seq(id, userId, gameId, betId, betchange, format.print(time)).mkString("\t")
+    } 
 }
 
 
@@ -107,16 +121,21 @@ object SpecialBetType {
 	val player = "player"
 }
 
-//TODO: convert specialbet 
+
 case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long, prediction: String, points: Int)
 /**
 * the betgroupID allows grouping for multiple results e.g. semifinal1 seimifinal2 .. semifinal4 should all have the same groupId
 *
-*/
+**/
 case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: DateTime, betGroup: String, itemType: String, result: String)
 
+case class SpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]){
+	
+	def byTemplateName(name: String): Option[SpecialBetByUser] = {
+	    bets.filter{ case(t,b)  => t.name == name}.headOption.map(_._2)
+	}
 
-
+}
 
 case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int)//name: groups, quarter final, semi final, final
 

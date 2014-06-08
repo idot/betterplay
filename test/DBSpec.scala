@@ -107,12 +107,20 @@ class DBSpec extends Specification with ThrownMessages {
          gb1.size === 3
          val b1 = gb1(0)._2.copy(result=GameResult(1,2,false))
          updateBetResult(b1, users(0), firstStart, 60).fold(
-            fail => fail === "user ids differ 2 1\ngame closed since 0 days, 1 hours, 0 minutes, 0 seconds",
+            fail => {
+				BetterTables.betlogs.list.size === 1
+				BetterTables.betlogs.list.head === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, -1, 0, -1, firstStart)
+				fail === "user ids differ 2 1\ngame closed since 0 days, 1 hours, 0 minutes, 0 seconds"
+			},
             succ => failure("should not be possible because of time and different user")  
          )
          updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60).fold(
-            fail => failure("should be possible") ,
+            fail => {
+				failure("should be possible") 
+			},
             succ => succ match { case(g,b1,b2) =>
+			   BetterTables.betlogs.list.size === 2
+			   BetterTables.betlogs.list.sortBy(_.id).reverse.head === BetLog(Some(2l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61))
                b1.result === GameResult(0,0,false)
                b2.result === GameResult(1,2,true)
             }

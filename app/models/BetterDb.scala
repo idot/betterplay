@@ -7,6 +7,8 @@ import play.api.db.DB
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
 import scalaz.syntax.apply._ 
 
+
+
 /**
  * message types for games
  */
@@ -56,18 +58,17 @@ object BetterDb {
    def allUsers()(implicit s: Session): Seq[User] = {
        users.list
    }
-
- //  def usersWithSpecialBetsAndRank()(implicit s: Session): Seq[(User,SpecialBet,Int,Int)] = {
- //      val us = for{
- //         (u,s) <- users.innerJoin(specialbets).on(_.id === _.userId) 
- //      } yield (u,s)
- //      val sorted = us.list.sortBy(_._1.totalPoints).reverse
- //      val points = sorted.map(_._1.totalPoints) 
- //      val ranks = PointsCalculator.pointsToRanks(points)
- //      sorted.zip(ranks).map{ case ((u,s),r) =>
- //        (u,s,u.totalPoints,r)
- //      }
- //  }
+   
+   def usersWithSpecialBetsAndRank()(implicit s: Session): Seq[(User,SpecialBets,Int)] = {
+       val ust = for{
+          ((u,s),t) <- users.join(specialbetsuser).on(_.id === _.userId).join(specialbetstore).on(_._2.spId === _.id)
+       } yield (u,s,t)
+	   val perUser = ust.list.groupBy{ case(u,s,t) => u }.mapValues{ usts => SpecialBets(usts.map{ case(u,s,t) => (t,s)})}
+       val sorted = perUser.toList.sortBy(_._1.totalPoints).reverse
+       val points = sorted.map(_._1.totalPoints) 
+       val ranks = PointsCalculator.pointsToRanks(points)
+       sorted.zip(ranks).map{ case ((u,sp),r) => (u,sp,r) }
+   }
  
    def allGamesWithTeams()(implicit s: Session): Seq[GameWithTeams] = {
        val gtt = (for{
@@ -329,16 +330,27 @@ object BetterDb {
    def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int)(implicit s: Session): String \/ (GameWithTeams,Bet,Bet) = {
        betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, dbgame, dbuser) =>
              compareBet(dbuser.canBet, dbuser.id.getOrElse(-1), submittingUser.id.getOrElse(-1), dbBet.gameId, bet.gameId, dbgame.game.serverStart, currentTime, closingMinutesToGame).fold(
-                  err => -\/(err.list.mkString("\n")),
+                  err => {
+		 		     val invalid = GameResult(-1,-1,true)
+		 		     val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, dbBet.copy(result=invalid), currentTime)
+		 			 betlogs.insert(log)
+					  -\/(err.list.mkString("\n"))
+				  },
                   succ => {
                     val result = bet.result.copy(isSet=true)
   	                val updatedBet = dbBet.copy(result=result)
 	                bets.filter(_.id === updatedBet.id).update(updatedBet)
+					val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, updatedBet, currentTime)
+					betlogs.insert(log)
                     \/-(dbgame, dbBet, updatedBet)
              })
        }
    }
    
+   
+   def allBetLogs()(implicit s: Session): Seq[BetLog] = {
+       betlogs.list
+   }
    
    def compareIds(original: Long, proposed: Long, idName: String): Validation[String,String] = {
        if(original == proposed) Success("valid id") else Failure(s"$idName differ $original $proposed")
@@ -614,6 +626,10 @@ object BetterDb {
            players.insert(playerWithTeamId)
            playerWithTeamId
        }
+   }
+   
+   def specialBetTemplates()(implicit s: Session): Seq[SpecialBetT] = {
+       specialbetstore.list
    }
    
    def createSpecialBetsForUser(user: User)(implicit s: Session){
