@@ -146,6 +146,7 @@ object BetterTables {
     def iconurl = column[String]("iconurl", O.NotNull)
     def icontype = column[String]("icontype", O.NotNull)
 	
+	def usernameidx = index("USER_USERNAME_INDEX", (username))
     def registerby = column[Option[Long]]("registerby", O.Nullable)
     def pointsSpecial = column[Int]("pointsspecial", O.NotNull)
     

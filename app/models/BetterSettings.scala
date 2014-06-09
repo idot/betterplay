@@ -42,7 +42,7 @@ object BetterSettings {
 		val digester = new StandardByteDigester()
 		val combined = time+excelSecret 
 		val saltdigest = createSalt(time, excelSecret)
-		digester.setSaltGenerator(salter(saltdigest))
+		digester.setSaltGenerator(new org.jasypt.salt.StringFixedSaltGenerator((saltdigest)))
 		digester
 	}
 	
@@ -51,17 +51,10 @@ object BetterSettings {
 		val combined = time + excelSecret
 		val digester = new org.jasypt.digest.StandardStringDigester()
 		digester.setIterations(1)
-		val generator = new org.jasypt.salt.FixedStringSaltGenerator()
-		generator.setSalt("irrelevant")
+		val generator = new org.jasypt.salt.StringFixedSaltGenerator("irrelevant")
 		digester.setSaltGenerator(generator)
 	    digester.digest(combined)
-	}
-	
-	def salter(date: String): SaltGenerator = {
-		 val s = new org.jasypt.salt.FixedStringSaltGenerator()
-		 s.setSalt(date)
-		 s   	
-	}
+	}	
 	
 	def fileName(message: Array[Byte], excelSecret: String): String = {
 		val time = now()

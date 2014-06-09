@@ -339,7 +339,12 @@ controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $s
 			     // join must make to usable structure
 				 $scope.user = success.user;
 				 $scope.templatebets = success.templatebets;
-				 $scope.noInstructions = ! $scope.user.hadInstructions;
+				 if($rootScope.isOwner($scope.user.id) && ! $scope.user.hadInstructions){
+					$scope.noInstructions = true;
+				 	toaster.pop('info', "Welcome "+success.user.username+"!", "Please place special bets until start of the game.\n Have fun!")
+				 }else{
+				 	$scope.noInstructions = false;
+				 }
 			 }
 		 );		 
 		 		 

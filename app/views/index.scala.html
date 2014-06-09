@@ -30,12 +30,17 @@
       <ul class="nav navbar-nav">
 	    <li ng-class="{active: $state.includes('users')}"><a ui-sref="users">users</a></li>
 		<li ng-class="{active: $state.includes('games')}"><a ui-sref="games">games</a></li>
-        <!-- change to if user.isAdmin, move debug down -->
-	    <li ng-if="isDebug()" ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>		
+ 	    <li class="dropdown" ng-class="{active: $state.includes('statistics')}">
+ 	         <a href="#" class="dropdown-toggle" data-toggle="dropdown">statistics <b class="caret"></b></a>
+ 	             <ul class="dropdown-menu">
+ 	               <li><a ui-sref="statistics.excel">excel</a></li>
+	             </ul>
+ 	   </li>  	
 		<li ng-if="! isLoggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
 		<li ng-if="isLoggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user.userBets({ username: loggedInUser.username })" style="padding-top: 10px; padding-bottom: 10px;"><img ng-src="{{ loggedInUser && loggedInUser.iconurl+'&s=30'}}" alt="gravatar" width="30" height="30"/></a></li>
 		<li ng-if="isLoggedIn()"><a ui-sref="logout">logout</a></li>
 		<li ng-if="isAdmin()"><a ui-sref="admin.registerUser">register user</a></li>
+		<li ng-if="isDebug()" ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>	
 	 </ul>
 	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : DF }}</div>
     </div><!-- /.navbar-collapse -->

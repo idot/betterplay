@@ -146,7 +146,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 						       $rootScope.loggedInUser = userWithEmail;
 					   });
 					}	
-				 }else{
+				 } else {
 				 	$rootScope.logout();
 				 }
 			 };
@@ -330,31 +330,37 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  templateUrl: 'partials/registerUser.html',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 				  controller: controllers.RegisterUserCtrl
 			  }) 
-			  .state('excel', {
+			  .state('statistics', {
+			    abstract: true,
+	            url:  "/statistics",
+                template: '<ui-view/>'
+			  })
+			  .state('statistics.excel', {
 			  	  url: "/excel",
 				  templateUrl: 'partials/excel.html'		
 			  })
-			  .state('statistics', {
-				  url: '/statistics',
-				  views: {
-				    '': {
-						templateUrl: 'partials/statistics.html'
-					},
-			        'mvp@statistics' : {
-			          templateUrl: 'partials/plot.html',
-			          controller:  controllers.PlotCtrl,
-					  data : {
-						  templateId: 1
-					  }
-			        }
-				  }
-			  })
-			  .state('plot', {
-				  url: '/plot',
-		          templateUrl: 'partials/plot.html',
-		          controller:  controllers.PlotCtrl
-				
-			  })
+//			  .state('statistics', {
+//				  url: '/statistics',
+//				  views: {
+//				    '': {
+//						templateUrl: 'partials/statistics.html'
+//					},
+//			        'mvp@statistics' : {
+//			          templateUrl: 'partials/plot.html',
+//			          controller:  controllers.PlotCtrl,
+//					  data : {
+//						  templateId: 1
+//					  }
+//			        }
+//				  }
+//			  })
+//			  .state('plot', {
+//				  url: '/plot',
+//		          templateUrl: 'partials/plot.html',
+//		          controller:  controllers.PlotCtrl
+//				
+//			  })
+
 			  
 			  ;
 			  

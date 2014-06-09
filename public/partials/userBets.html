@@ -18,15 +18,12 @@
 
   
 
-<form name="betsForm" class="form col-xs-10" role="form">
+<form name="betsForm" class="form col-xs-12" role="form">
   <!-- this is the games table with bets for each game added -->
    <table ng-table="tableParams" class="table" show-filter="true">
         <tr ng-repeat="gb in $data">
             <td data-title="'nr'" sortable="'gb.game.game.nr'">
                 <a ui-sref="game.gameBets({ gamenr: gb.game.game.nr })">{{gb.game.game.nr}}</a>
-            </td>
-            <td data-title="'local start'" sortable="'game.game.serverStart'">
-                {{gb.game.game.localStart | date : DF}}
             </td>
             <td data-title="'server start'" sortable="'game.game.serverStart'">
                 {{gb.game.game.serverStart | date : DF}}
@@ -34,12 +31,6 @@
 			<td data-title="'bet close'" sortable="'game.game.serverStart'"
 			   filter="{ 'openGame': 'select' }" filter-data="openFilter()">
 				{{timeLeft(gb.game.game.serverStart, currentTime)}}
-			</td>
-			<td data-title="'team1'" sortable="'gb.game.team1.name'" filter="{ 'team1name': 'text' }">
-			    {{gb.game.team1.name}}
-			</td>
-			<td data-title="'team2'" sortable="'gb.game.team2.name'" filter="{ 'team2name': 'text' }">
-			    {{gb.game.team2.name}}
 			</td>
             <td data-title="'level'" sortable="'gb.game.level.name'" filter="{ 'levelname': 'select' }" filter-data="levelFilter()">
 				{{gb.game.level.name}}
@@ -49,6 +40,12 @@
 			</td>
 			<td data-title="'points'">
 				 <span class="badge">{{gb.bet.points}}</span>
+			</td>
+			<td data-title="'team1'" sortable="'gb.game.team1.name'" filter="{ 'team1name': 'text' }">
+			    {{gb.game.team1.name}}
+			</td>
+			<td data-title="'team2'" sortable="'gb.game.team2.name'" filter="{ 'team2name': 'text' }">
+			    {{gb.game.team2.name}}
 			</td>
 			<td data-title="'bet'" filter="{ 'betset': 'select' }" filter-data="bettedFilter()">
 			    <better-bet bet="gb.bet" start="gb.game.game.serverStart"></better-bet>

@@ -70,7 +70,7 @@ angular.module('myApp.services', [])
 			          if(! user.hadInstructions){
 		                      Restangular.all('wm2014/api/userhadinstructions').customPOST().then(
 		                           function(success){
-		                                 toaster.pop('success', "Congratulations!", success+ " Please don't forget to place all special bets until start of the games");
+		                                 toaster.pop('success', "Congratulations "+user.username+"!", "You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.");
 		                           }		
 		                      );			  	
 			 		   };
