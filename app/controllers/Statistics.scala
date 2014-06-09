@@ -17,8 +17,8 @@ object Statistics extends Controller {
   def excel() = DBAction { implicit rs =>
        implicit val session = rs.dbSession
 	   val helper = new StatsHelper()(session)     
-	   val gwts = BetterDb.allGamesWithTeams()
 	   val templates = BetterDb.specialBetTemplates()
+	   val gwts = helper.getGwts()
        val excelD = new ExcelData(helper.createUserRows, gwts, templates)
 	   val excel = excelD.createExcelSheetComplete()
 	   val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

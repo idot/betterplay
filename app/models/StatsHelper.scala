@@ -95,6 +95,8 @@ class StatsHelper()(implicit s: Session){
           bets.map(b => UserRow(b, gwts))
 	  }
 	  
+	  def getGwts(): Seq[GameWithTeams] = gwts
+	  
 }
 
 
