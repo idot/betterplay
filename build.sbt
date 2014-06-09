@@ -12,6 +12,7 @@ resolvers += "thirdpary" at "http://mammut:8082/nexus/content/repositories/hirdp
 
 parallelExecution in Test := false
 
+
 libraryDependencies ++= Seq(
   jdbc,
   cache,
@@ -20,7 +21,10 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "0.7.0-M1",
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
-  "org.scalacheck" %% "scalacheck" % "1.11.4",
+  "org.specs2" %% "specs2" % "2.3.12" % "test",
+  "org.specs2" %% "specs2-matcher-extra" % "2.3.12" % "test",
+  "org.specs2" %% "specs2-scalacheck" % "2.3.12" % "test",
+  "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
   "org.postgresql" % "postgresql" % "9.2-1003-jdbc4",
   "org.scalaz" %% "scalaz-core" % "7.0.6",
   "org.jasypt" % "jasypt" % "1.9.2",
