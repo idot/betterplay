@@ -236,8 +236,12 @@ class DBSpec extends Specification with ThrownMessages {
           BetterTables.users.list.map(_.points).sum === 4
       }
       
-           
-
+//      def createStats()(implicit s: Session){00
+//	      val statsH = new StatsHelper()
+//		  val rows = statsH.createUserRows()
+//		  val bets = statsH.createUsersBets()
+//	  }
+	  
  
       def newGames()(implicit s: Session){
           val admin = getAdmin()

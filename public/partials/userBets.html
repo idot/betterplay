@@ -22,17 +22,17 @@
   <!-- this is the games table with bets for each game added -->
    <table ng-table="tableParams" class="table" show-filter="true">
         <tr ng-repeat="gb in $data">
-            <td data-title="'nr'" sortable="'gb.game.game.nr'">
+            <td data-title="'nr'" sortable="'gamenr'">
                 <a ui-sref="game.gameBets({ gamenr: gb.game.game.nr })">{{gb.game.game.nr}}</a>
             </td>
-            <td data-title="'server start'" sortable="'game.game.serverStart'">
+            <td data-title="'server start'" sortable="'serverStart'">
                 {{gb.game.game.serverStart | date : DF}}
             </td>
-			<td data-title="'bet close'" sortable="'game.game.serverStart'"
+			<td data-title="'bet close'" sortable="'serverStart'"
 			   filter="{ 'openGame': 'select' }" filter-data="openFilter()">
 				{{timeLeft(gb.game.game.serverStart, currentTime)}}
 			</td>
-            <td data-title="'level'" sortable="'gb.game.level.name'" filter="{ 'levelname': 'select' }" filter-data="levelFilter()">
+            <td data-title="'level'" sortable="'levelname'" filter="{ 'levelname': 'select' }" filter-data="levelFilter()">
 				{{gb.game.level.name}}
 			</td>
 			<td data-title="'reward'">
@@ -41,10 +41,10 @@
 			<td data-title="'points'">
 				 <span class="badge">{{gb.bet.points}}</span>
 			</td>
-			<td data-title="'team1'" sortable="'gb.game.team1.name'" filter="{ 'team1name': 'text' }">
+			<td data-title="'team1'" sortable="'team1name'" filter="{ 'team1name': 'text' }">
 			    {{gb.game.team1.name}}
 			</td>
-			<td data-title="'team2'" sortable="'gb.game.team2.name'" filter="{ 'team2name': 'text' }">
+			<td data-title="'team2'" sortable="'team2name'" filter="{ 'team2name': 'text' }">
 			    {{gb.game.team2.name}}
 			</td>
 			<td data-title="'bet'" filter="{ 'betset': 'select' }" filter-data="bettedFilter()">

@@ -29,10 +29,12 @@ controllers.GamesCtrl = function($log, $scope, $rootScope, $filter, Restangular,
 	$scope.levelFilter = selectFilter.from(['group','last16','quarter','semi','final','third']);	
 		
 	var transformGame = function(game){
+	   game.gamenr = game.game.nr;
 	   game.team1name = game.team1.name;
 	   game.team2name = game.team2.name;	
-	   game.openGame = $rootScope.betClosed(game.serverStart, $rootScope.currentTime) ? "closed" : "open" ;
+	   game.openGame = $rootScope.betClosed(game.game.serverStart, $rootScope.currentTime) ? "closed" : "open" ;
 	   game.levelname = game.level.name;
+	   game.serverStart = game.game.serverStart;
 	};
 		
 	queryGames.getList().then(function(games){
@@ -59,8 +61,10 @@ controllers.UserCtrl = function($log, $scope, $rootScope, $filter, Restangular, 
 		gb.team1name = gb.game.team1.name;
 		gb.team2name = gb.game.team2.name;
 		gb.levelname = gb.game.level.name;
-		gb.openGame = $rootScope.betClosed(gb.game.serverStart, $rootScope.currentTime) ? "closed" : "open";
+		gb.openGame = $rootScope.betClosed(gb.game.game.serverStart, $rootScope.currentTime) ? "closed" : "open";
 		gb.betset = gb.bet.result.isSet ? "set" : "not";
+		gb.serverStart = gb.game.game.serverStart;
+		gb.gamenr = gb.game.game.nr;
     };
    
     queryUser.get().then(function(userWithSpAndGB){
