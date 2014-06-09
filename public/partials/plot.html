@@ -1,9 +1,15 @@
-<nvd3-bar-chart
-    	data="bets"
-        id="exampleId"
-        xAxisTickFormat="xAxisTickFormatFunction()"
-        width="550"
-        height="350"
-        showXAxis="true"
-        showYAxis="true">
-</nvd3-bar-chart>
+ <div>
+ <h3>{{template.name}}</h3>
+ <nvd3-discrete-bar-chart
+            data="plotData"
+            showXAxis="true"
+            showYAxis="true"
+            showValues="false"
+            showLegend="true"
+            xaxisrotatelabels="90"
+			width="350"
+			height="350"
+			margin="{left:50,top:50,bottom:100,right:50}"
+			>
+ </nvd3-discrete-bar-chart>
+</div>

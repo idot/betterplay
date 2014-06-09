@@ -51,14 +51,13 @@ angular.module('myApp.services', [])
   })
   .factory('specialBetService', function($state, Restangular, toaster){
 	  return {
-		  //this does not work, the callback is never called!
-		getSpecialBet: function(betId, username, callback){	 
- 		     Restangular.one('wm2014/api/specialBets', username).get().then(
+		getSpecialBet: function(betId, username){	 
+ 		     return Restangular.one('wm2014/api/user', username).one('specialBets').get().then(
 	 		     function(success){
 					 var user = success.user;
 	 				 var templatebets = success.templatebets;
 	 				 var tb = _.filter(templatebets, function(b){ return b.bet.id == betId; })[0];
-	 				 callback(user, tb);
+	 				 return { user: user, templateBets: tb };
 	 		     }	
 		)},	 
  		
@@ -81,14 +80,19 @@ angular.module('myApp.services', [])
 	.factory('specialBetStats', function(Restangular){
 	    return {
 	       getStats: function(templateId){
-		  	    Restangular.one('/wm2014/api/specialBets/', $scope.templateId).get().then(
-		  		    function(success){
-		  			   var template = success.template;
-		  			   var grouped = _.groupBy(success.bets, function(b){ return b.prediction; });
-		  			   var bets = _.map(grouped, function(k,v){ return { label: k, value: v.length }; });
-					   var bets = { values: bets };
-					   return { template: template, bets: bets };
-		  		    }
+		  	      return Restangular.one('wm2014/api/specialBets', templateId).get().then(
+					 function(success){
+						 console.log("success");
+  		  			     var template = success.template;
+		  			     var grouped = _.groupBy(success.bets, function(b){ return b.prediction; });
+						 var bets = _.map(grouped, function(v, k){ 
+						 		var item = k.toString() == "" ? "undecided" : k.toString(); 
+						 		var arr = [ item, v.length ]; 
+						 		return arr;
+						 });
+						 var result = { template: template, data: [{ key: template.name, values : bets }]};
+		  		         return result;
+					 }
 		  	    );		 	    
 	       }
 	    };

@@ -339,29 +339,32 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			  	  url: "/excel",
 				  templateUrl: 'partials/excel.html'		
 			  })
-//			  .state('statistics', {
-//				  url: '/statistics',
-//				  views: {
-//				    '': {
-//						templateUrl: 'partials/statistics.html'
-//					},
-//			        'mvp@statistics' : {
-//			          templateUrl: 'partials/plot.html',
-//			          controller:  controllers.PlotCtrl,
-//					  data : {
-//						  templateId: 1
-//					  }
-//			        }
-//				  }
-//			  })
-//			  .state('plot', {
-//				  url: '/plot',
-//		          templateUrl: 'partials/plot.html',
-//		          controller:  controllers.PlotCtrl
-//				
-//			  })
-
-			  
+			  .state('statistics.plots', {
+				  url: "/plots",
+				  views: {
+				     '': { 
+						templateUrl: 'partials/specialPlots.html'
+				     },
+				     'mvp@statistics.plots': {
+				  	 templateUrl: 'partials/plot.html',
+					 controller: controllers.PlotSpecialBetsCtrl,
+					 resolve: {
+						 tid: function(){ return { templateId: "1"};}
+				     }},
+				     'svp@statistics.plots': {
+				  	 templateUrl: 'partials/plot.html',
+					 controller: controllers.PlotSpecialBetsCtrl,
+					 resolve: {
+						 tid: function(){ return { templateId: "2"};}
+					 }},
+				     'champion@statistics.plots': {
+				  	 templateUrl: 'partials/plot.html',
+					 controller: controllers.PlotSpecialBetsCtrl,
+					 resolve: {
+						 tid: function(){ return { templateId: "3"};}
+					 }},
+				   } 
+			  })
 			  ;
 			  
     });

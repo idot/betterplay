@@ -145,6 +145,10 @@ object InitialData {
   	  }
   }
   
+  def updateChampion()(implicit s: Session){
+	  BetterTables.specialbetsuser.filter(s => s.spId === 3l).map(_.prediction).update("Argentinia")  
+  }
+  
   def insert(debug: Boolean): Unit = { //again slick is missing nested transactions!
     val ls = levels()
     val us = users(debug)
@@ -171,7 +175,8 @@ object InitialData {
        ttg.map{ case(t1,t2,g) => BetterDb.insertGame(g, t1, t2, level.level, admin)}        
        BetterDb.createBetsForGamesForAllUsers(admin)	   
 	   ps.foreach{ case(p,t) => BetterDb.insertPlayer(p, t, admin)}
-	   
+	   updateChampion()
+	   	   
        Logger.info("inserted data")
     }
     Logger.info("done inserting data in db")

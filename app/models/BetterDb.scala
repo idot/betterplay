@@ -226,7 +226,7 @@ object BetterDb {
 	   val usList = us.list
 	   if(usList.size > 0){
 		   val user = usList(0)._1
-		   val bets = usList.map{ case(u,b,t) => (t,b)}
+		   val bets = usList.map{ case(u,b,t) => (t,b)}.sortBy(_._1.id)
 	       \/-((user,bets))
 		}else{
 		   -\/(s"could not find user with $username")  

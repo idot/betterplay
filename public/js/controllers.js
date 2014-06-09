@@ -335,14 +335,13 @@ controllers.BetCtrl = function($scope, $rootScope, Restangular, toaster){
 }
 controllers.BetCtrl.$inject = ['$scope','$rootScope', 'Restangular', 'toaster'];
 
-controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams ) {	
+controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams, specialBetService ) {	
 	     $scope.stateParams = $stateParams;
 		 
-         Restangular.one('wm2014/api/user', $scope.stateParams.username).one('specialBets').get().then(
-			 function(success){
-			     // join must make to usable structure
+         specialBetService.getSpecialBet($scope.betId, $scope.stateParams.username).then(function(success){	
+				     // join must make to usable structure
 				 $scope.user = success.user;
-				 $scope.templatebets = success.templatebets;
+				 $scope.templatebets = success.templateBets;
 				 if($rootScope.isOwner($scope.user.id) && ! $scope.user.hadInstructions){
 					$scope.noInstructions = true;
 				 	toaster.pop('info', "Welcome "+success.user.username+"!", "Please place special bets until start of the game.\n Have fun!")
@@ -360,7 +359,7 @@ controllers.UserSpecialBetsCtrl = function($log, $scope, $rootScope, $filter, $s
 		     }
 		 };
 }
-controllers.UserSpecialBetsCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams'];	
+controllers.UserSpecialBetsCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams', 'specialBetService'];	
 
 
 
@@ -368,13 +367,10 @@ controllers.EditUserSpecialPlayerCtrl = function($log, $scope, $rootScope, $filt
 	     $scope.stateParams = $stateParams;
 	     		 
 		 $scope.betId = $stateParams.id;		 
-				 
-		 Restangular.one('wm2014/api/user', $scope.stateParams.username).one('specialBets').get().then(
-		     function(success){
+		
+		 specialBetService.getSpecialBet($scope.betId, $scope.stateParams.username).then(function(success){		 
 				 $scope.user = success.user;
-				 var templatebets = success.templatebets;
-				 var tb = _.filter(templatebets, function(b){ return b.bet.id == $scope.betId; })[0];
-				 $scope.tb = tb;
+				 $scope.tb = success.templateBets;
 		     }		 
 		 );
 		 
@@ -397,19 +393,15 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
 		 
 		 $scope.betId = $stateParams.id;
         
-		 Restangular.one('wm2014/api/user', $scope.stateParams.username).one('specialBets').get().then(
-		     function(success){
-				 $scope.user = success.user;
-				 var templatebets = success.templatebets;
-				 var tb = _.filter(templatebets, function(b){ return b.bet.id == $scope.betId; })[0];
-				 $scope.tb = tb;
-				 specialBetService.specialBetStats(tb.template.id).then(
-					 function(tb){
-					   $scope.bets = tb.bets;	
-				     }
-				 );	 
-		     }		 
-		 );
+		 specialBetService.getSpecialBet($scope.betId, $scope.stateParams.username).then(function(success){
+			 $scope.user = success.user;
+			 $scope.tb = success.templateBets;
+	//		 specialBetService.specialBetStats(tb.template.id).then(
+	//			 function(tb){
+	//			   $scope.bets = tb.bets;	
+	//		     }
+	//		 );	 
+		 });
 		 
 		 Restangular.all('wm2014/api/teams').getList().then(
 			 function(success){
@@ -428,18 +420,21 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
 controllers.EditUserSpecialTeamCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams', 'specialBetService'];	
 
 
-controllers.PlotSpecialBetsCtrl = function($scope, $stateParams, $state, specialBetService){
+controllers.PlotSpecialBetsCtrl = function($scope, $stateParams, $state, specialBetStats, tid){
    //  $scope.stateParams = $stateParams; not applicable within a nested view
- 
-   //  $scope.templateId = $state.templateId;
-	 $scope.templateId = 1;
-	  
-	// specialBetService.specialBetStats(1).then(tb){
-	//    $scope.template = tb.template;
-	//	$scope.bets = tb.bets;	
-	// };	 
+   if(typeof tid !== "undefined"){
+	   $scope.templateId =  tid.templateId;
+   }else{
+	   //extract from parameters
+   }
+   
+   specialBetStats.getStats($scope.templateId).then(function(tb){
+         $scope.template = tb.template;
+		 $scope.plotData = tb.data;  
+   });
+   
 }
-controllers.PlotSpecialBetsCtrl.$inject = ['$scope', '$stateParams', '$state', 'specialBetService'];
+controllers.PlotSpecialBetsCtrl.$inject = ['$scope', '$stateParams', '$state', 'specialBetStats','tid'];
 
 
 
