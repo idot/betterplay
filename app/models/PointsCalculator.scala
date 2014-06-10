@@ -1,5 +1,15 @@
 package models
 
+case class MiniQ(labels: Seq[String]){
+    var i = 0
+	def next(): String = {
+		val r = labels(i)
+		i += 1
+		r
+	}
+}
+
+
 object PointsCalculator {
 
      def checkExact(betResult: GameResult, gameResult: GameResult): Boolean = {
@@ -48,9 +58,25 @@ object PointsCalculator {
     	if(bet.result.isSet && game.result.isSet) pointsForValidGame(bet.result, game.result, gameLevel) else 0
      }     
   
-     
-	 def calculateSpecialBet(t: SpecialBetT, b: SpecialBetByUser): Int = {
-	     if(t.result == b.prediction) t.points else 0	 
+     /***
+	 *  rearrange predictions in the bets so they will align with the result if there is one correct in the template
+	 *  
+	 *  returns a copy of updated specialbets with setted points for correct predictions with the spId of the identical result
+	 *
+	 *
+	 ***/
+	 def calculateSpecialBetForGroup(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser,Int)] = {
+		 val tMap = bets.map{ case(t,b) => (t.result,t)}.toMap
+		 val bMap = bets.map{ case(t,b) => (b.prediction, b)}.toMap
+		 val bad = bMap.values.map(_.prediction).filter(p => tMap.contains(p))
+		 val wrongQ = MiniQ(bad.toSeq)
+		 val correctedBets = bets.map{ case(t,b) => 
+			 val correct = bMap.contains(t.result)
+			 val newResult = if(correct) t.result else wrongQ.next
+			 val points = if(correct) t.points else 0
+			 (t,b.copy(prediction = newResult), points) 
+		 }
+		 correctedBets
 	 }
 	 
 	 
@@ -67,12 +93,14 @@ object PointsCalculator {
 	  *
       */
      def calculateSpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser,Int)] = {
-		 ???
-		 //val points = bets.map{ case(t,b) => calculateSpecialBet(t,b) }      
-          
-	     
+		 extractBetGroups(bets).flatMap{ betGroup => calculateSpecialBetForGroup(betGroup) }
 	 }
      
+	 
+	 def extractBetGroups(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[Seq[(SpecialBetT,SpecialBetByUser)]] = {
+		 bets.groupBy(_._1.betGroup).values.toSeq	
+	 }   
+	 
      
    /**
    * descending sorted points to ranks respecting ties

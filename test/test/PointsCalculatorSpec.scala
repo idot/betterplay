@@ -9,7 +9,7 @@ import org.specs2.Specification
 import org.scalacheck._
 
 import org.junit.runner.RunWith
-
+import org.joda.time.DateTime
 
 object RG {
   
@@ -43,6 +43,37 @@ object RG {
    def genPoints() = {
       Gen.containerOf[List,Int](Gen.chooseNum(0,20))
    }
+   
+//   case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long, prediction: String, points: Int)
+   /**
+   * the betgroupID allows grouping for multiple results e.g. semifinal1 seimifinal2 .. semifinal4 should all have the same groupId
+   *
+   **/
+ //  case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: DateTime, betGroup: String, itemType: String, result: String)
+   
+   
+   def genResult = Gen.oneOf("","A","B","C","D","E","F","G","H","I")
+   
+   def genTemplate(id: Long, group: String) = {
+       genResult.map{ r => 
+		   SpecialBetT(Some(id), "name", "description", 3, new DateTime(), group, "itemtype", r)
+	   } 
+   }
+   
+   def genSpecialBet(id: Long, group: String) = {
+       genResult.map{ r => 
+	       SpecialBetByUser(Some(1000), 1l, id, r, 0)
+	   }   
+   }
+
+	
+   def genSpecials(id: Long, group: String) = {
+       for{
+		   t <- genTemplate(id, group)
+	       sp <- genSpecialBet(id, group)
+	   } yield (t,sp)
+   }
+   
 }
 
 @RunWith(classOf[JUnitRunner])
@@ -54,6 +85,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     "A pointsCalculator returns true for win1 if the game was won by 1" ! win1 ^
     "A pointsCalculator returns true for win1 if the game was won by 1" ! win2 ^
     "A pointsCalculater has a method to turn a decreasingly sorted set of points into ranks" ! torank ^
+//	"A pointsCalculator can evaluate special bets" ! specialBets ^
     end
     
     val gl = GameLevel(None, "test", 3, 2, 1)
@@ -164,5 +196,14 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
       }   
       
     }
+	
+	
+	
+	def specialBets = {
+	    
+	
+	
+	
+	}
     
 }
