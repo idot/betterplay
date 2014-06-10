@@ -55,9 +55,8 @@ angular.module('myApp.services', [])
  		     return Restangular.one('wm2014/api/user', username).one('specialBets').get().then(
 	 		     function(success){
 					 var user = success.user;
-	 				 var templatebets = success.templatebets;
-	 				 var tb = _.filter(templatebets, function(b){ return b.bet.id == betId; })[0];
-	 				 return { user: user, templateBets: tb };
+	 				 var tb = _.filter(success.templateBets, function(b){ return b.bet.id == betId; })[0];
+	 				 return { user: user, templateBet: tb };
 	 		     }	
 		)},	 
  		
@@ -82,7 +81,6 @@ angular.module('myApp.services', [])
 	       getStats: function(templateId){
 		  	      return Restangular.one('wm2014/api/specialBets', templateId).get().then(
 					 function(success){
-						 console.log("success");
   		  			     var template = success.template;
 		  			     var grouped = _.groupBy(success.bets, function(b){ return b.prediction; });
 						 var bets = _.map(grouped, function(v, k){ 

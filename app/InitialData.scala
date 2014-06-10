@@ -16,7 +16,7 @@ import play.api.db.slick.Config.driver.simple._
  * look at scripts folder
  * https://raw.githubusercontent.com/datasets/country-codes/master/data/country-codes.csv 
  * for conversion from FIFA to 2 letter country; of course data is sh*t ENG missing
- */
+ **/
 object InitialData {
   import org.joda.time.format.DateTimeFormat
   import org.joda.time.DateTime

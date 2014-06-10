@@ -21,9 +21,9 @@ object SpecialBets extends Controller with Security {
 	  BetterDb.userWithSpecialBet(username).fold(
 	     err => NotFound(Json.obj("error" -> err)),
 		 succ => succ match { case(u, tb) =>
-	         Ok(Json.obj("user" -> UserNoPwC(u), "templatebets" -> tb)) 
+	         Ok(Json.obj("user" -> UserNoPwC(u), "templateBets" -> tb)) 
 		 }
-	  )
+	  ) 
   }
   //nicer would be post to id resource. But I have all in the body
   //
