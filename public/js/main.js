@@ -195,7 +195,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			 $rootScope.MSTOCLOSING = 60 * 60 * 1000; //in ms
 			 
 			 //time to update clock
-			 $rootScope.UPDATEINTERVAL = 1000 * 3; //in ms
+			 $rootScope.UPDATEINTERVAL = 1000 * 5; //in ms
 			 
 			 //reload clock from server 
 			 $rootScope.RESETTIMEDIFF = 5 * 60 * 1000; //in ms
