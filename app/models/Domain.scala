@@ -43,7 +43,7 @@ object DomainHelper {
   }
  
   def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: DateTime): BetLog = {
-      BetLog(None, user.id.get, game.id.get, betOld.id.get, betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time)
+      BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time)
   }
  
 }

@@ -7,7 +7,7 @@ import play.api.db.DB
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
 import scalaz.syntax.apply._ 
 
-
+import play.api.Logger
 
 /**
  * message types for games
@@ -27,8 +27,9 @@ object BetterDb {
        s.withTransaction{
 		    try{
 			   f
-            }catch{
+            } catch {
             case e: Exception => {
+			  Logger.error(e.getMessage)	
               s.rollback()
               -\/(e.getMessage)
             }
@@ -331,18 +332,22 @@ object BetterDb {
        betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, dbgame, dbuser) =>
              compareBet(dbuser.canBet, dbuser.id.getOrElse(-1), submittingUser.id.getOrElse(-1), dbBet.gameId, bet.gameId, dbgame.game.serverStart, currentTime, closingMinutesToGame).fold(
                   err => {
-		 		     val invalid = GameResult(-1,-1,true)
-		 		     val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, dbBet.copy(result=invalid), currentTime)
-		 			 betlogs.insert(log)
-					  -\/(err.list.mkString("\n"))
+					 withT{ 
+		 		        val invalid = GameResult(-1,-1,true)
+		 		        val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, dbBet.copy(result=invalid), currentTime)
+		 			    betlogs.insert(log)
+					     -\/(err.list.mkString("\n"))
+					 }
 				  },
                   succ => {
-                    val result = bet.result.copy(isSet=true)
-  	                val updatedBet = dbBet.copy(result=result)
-	                bets.filter(_.id === updatedBet.id).update(updatedBet)
-					val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, updatedBet, currentTime)
-					betlogs.insert(log)
-                    \/-(dbgame, dbBet, updatedBet)
+					  withT{
+                        val result = bet.result.copy(isSet=true)
+  	                    val updatedBet = dbBet.copy(result=result)
+	                    bets.filter(_.id === updatedBet.id).update(updatedBet)
+					    val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, updatedBet, currentTime)
+					    betlogs.insert(log)
+                        \/-(dbgame, dbBet, updatedBet)
+					 }
              })
        }
    }

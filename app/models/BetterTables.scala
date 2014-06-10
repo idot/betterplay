@@ -213,6 +213,7 @@ object BetterTables {
 	  def * = (id.?, userId, token, created, used, tokentype) <> (UserToken.tupled, UserToken.unapply _)
   }
 
+  //no constraints in id columns so its possible to see what went wrong
   class BetLogs(tag: Tag) extends Table[BetLog](tag, "betlogs") {
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 	  def userId = column[Long]("user_id", O.NotNull)
@@ -224,10 +225,6 @@ object BetterTables {
       def t2new = column[Int]("t2new", O.NotNull)
 	  def created = column[DateTime]("change", O.NotNull)
 	  
-	  def user = foreignKey("LOG_USER_FK", userId, users)(_.id)
-	  def game = foreignKey("LOG_GAME_FK", gameId, games)(_.id)
-	  def bet = foreignKey("LOG_BET_FK",betId, bets)(_.id)
-
 	  def * = (id.?, userId, gameId, betId, t1old, t1new, t2old, t2new, created) <> (BetLog.tupled, BetLog.unapply _)
   }
   

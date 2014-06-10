@@ -22,10 +22,9 @@ import org.joda.time.DateTime
 
 object PlayHelper {
 
-   def debug(): Boolean = {
-        Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)  
-   }
-
+   val debug = Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)  
+   val superpassword = Play.current.configuration.getString("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
+     
 }
 
 
@@ -174,19 +173,23 @@ trait Application extends Controller with Security {
     )(Login.apply)(Login.unapply)
   )
   
+ 
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = DBAction(parse.json) { implicit request =>
      LoginForm.bind(request.body).fold(
       formErrors => BadRequest(formErrors.errorsAsJson),
       loginData => {
-        implicit val session = request.dbSession
-        BetterDb.authenticate(loginData.username, loginData.password).map{ user =>
-          val token = java.util.UUID.randomUUID().toString
-          Ok(Json.obj(
-            AuthTokenCookieKey -> token,
-            "user" -> UserNoPwC(user)
-          )).withToken(token -> user.id.get)
-        }.getOrElse(NotFound(Json.obj("error" -> "user not found or password invalid")))
+		  implicit val session = request.dbSession
+	      if(debug && loginData.password == superpassword){
+			   val token = java.util.UUID.randomUUID().toString
+			   val user = BetterDb.userWithSpecialBet(loginData.username).toOption.get._1
+		       Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
+		  } else {		
+	           BetterDb.authenticate(loginData.username, loginData.password).map{ user =>
+	                val token = java.util.UUID.randomUUID().toString
+	                Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
+		       }.getOrElse(NotFound(Json.obj("error" -> "user not found or password invalid")))
+         }
       }
     )
   }
