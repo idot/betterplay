@@ -20,9 +20,6 @@
 	   <th>
 		   points
 	   </th>
-	   <th ng-if="$root.isOwner(bet.bet.userId)">
-		   change
-	   </th>
 	 </tr>
 	  </thead>
       <tbody>	  
@@ -42,7 +39,7 @@
 			<td>
                  <span class="badge">{{bet.bet.points}}</span>
 			</td>
-			<td ng-if="$root.isOwner(bet.bet.userId)">
+			<td ng-if="$root.canBet(bet.template.closeDate, $root.currentTime, bet.bet)">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="change(bet)"><i class="fa fa-plus-square fa-lg"></i></button>
                 </span>

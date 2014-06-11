@@ -560,13 +560,13 @@ object BetterDb {
     * has return value for return result and free actor
     * 
     **/
-   def calculatePoints(submittingUser: User)(implicit s: Session): String \/ Boolean = {
+   def calculatePoints(submittingUser: User)(implicit s: Session): String \/ String = {
         if(submittingUser.isAdmin){
-           s.withTransaction {
+			withT{
               updateBetsWithPoints()
               updateUsersPoints()
-              \/-(true)
-           }
+              \/-("updated bets")
+		  }
         }else{
           -\/("only admin can calculate points")
         }
@@ -579,18 +579,18 @@ object BetterDb {
     * the game is invalid
     *
     */
-   def updateBetsWithPoints()(implicit s: Session): Boolean = {
-       val gamesLevelBets = for{
-           ((g,l),b) <- games.join(levels).on(_.levelId === _.id).join(bets).on(_._1.id === _.gameId) if b.isSet
-        } yield {
+   def updateBetsWithPoints()(implicit s: Session): String \/ String = {
+         val gamesLevelBets = for{
+              ((g,l),b) <- games.join(levels).on(_.levelId === _.id).join(bets).on(_._1.id === _.gameId) if b.isSet
+           } yield {
            (g,l,b)
-        }
-        gamesLevelBets.list.foreach{ case (g,l,b) =>
+         }
+         gamesLevelBets.list.foreach{ case (g,l,b) =>
               val points = PointsCalculator.calculatePoints(b, g, l) 
               val betWithPoints = b.copy(points=points)
               bets.filter(_.id === betWithPoints.id).update(betWithPoints)
-        }
-        true
+         }
+	  \/-("updated")
    }
    
    /***

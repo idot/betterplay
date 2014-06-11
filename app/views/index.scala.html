@@ -35,6 +35,10 @@
  	             <ul class="dropdown-menu">
 				   <li><a ui-sref="statistics.plots">plots</a></li>
  	               <li><a ui-sref="statistics.excel">excel</a></li>
+				   <li class="nav-divider"></li>
+				   <li><a target="_blank" href="http://www.goldmansachs.com/our-thinking/outlook/world-cup-and-economics-2014-folder/world-cup-economics-report.pdf">goldman sachs</a></li>
+				   <li><a target="_blank" href="http://fivethirtyeight.com/interactives/world-cup/">538</a></li>
+				   <li><a target="_blank" href="http://www.bloomberg.com/visual-data/world-cup/#0,0,-1">bloomberg</a></li>
 	             </ul>
  	   </li>  	
 		<li ng-if="! isLoggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
@@ -51,7 +55,7 @@
     
 	
        <div ui-view></div><!-- for sref above --->
-       <!-- We'll also add some navigation: -->
+
     <toaster-container>  
     </toaster-container>
 

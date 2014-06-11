@@ -48,8 +48,10 @@ object Games extends Controller with Security {
 	       BetterDb.updateGameResults(game, admin, BetterSettings.now, BetterSettings.closingMinutesToGame).fold(
 		      err => UnprocessableEntity(Json.obj("error" -> err)),
 			  success => {
-			      WorkQueue(Akka.system).instance ! UpdatePoints(session) 
-				  Ok(s"updated result for game $success")
+				  BetterDb.calculatePoints(admin).fold(
+				     err => UnprocessableEntity(Json.obj("error" -> err)),
+					 succ => Ok(s"updated all points")	  
+				  )
 			  }
 		   )
 		}

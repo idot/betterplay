@@ -163,33 +163,32 @@ class DBSpec extends Specification with ThrownMessages {
           )
           
           
-       //   val sp = userWithSpecialBet(users(1).id.get).toOption.get._2
-        //  val spn = sp.copy(topScorer=p1,mvp=p1,winningTeam=t1, semi1=t1, semi2=t1)
+      
           
           users(0).hadInstructions === true
           users(1).hadInstructions === false
-    //      updateSpecialBet(spn, users(2), firstStart, 90).fold(
-     //        err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
-    //         succ => fail("wrong time")
-    //      )
-    //      updateSpecialBet(spn, users(2), firstStart.minusMinutes(91), 90).fold(
-    //         err => err === "user ids differ 3 2",
-    //         succ => fail("wrong user")
-    //      ) 
-    //      updateSpecialBet(spn, users(1), firstStart.minusMinutes(91), 90).fold(
-    //         err => err ===  fail("should work"),
-    //         succ => succ match { case (sp,u) =>
-    //           sp.topScorer === p1
-    //           sp.mvp === p1
-    //           sp.winningTeam === t1
-    //           sp.semi1 === t1
-    //           sp.semi2 === t1
-    //           sp.semi3 === None
-    //           sp.semi4 === None
-    //           sp.isSet === true
-    //           userWithSpecialBet(users(1).id.get).toOption.get._1.hadInstructions === true              
-    //         }            
-    //      ) 
+		  
+		  val usp = getSpecialBetsSPUForUser(users(2))
+		  val sps = usp.sortBy(_.specialbetId)
+		  
+		  val sp3 = sps(3).copy(prediction="XY")
+		  updateSpecialBetForUser(sp3, firstStart, 90, users(2)).fold(
+             err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
+             succ => fail("wrong time")
+          )
+		  updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(3)).fold(
+              err => err === "user ids differ 4 3",
+              succ => fail("wrong user")
+          )
+
+
+          updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(2)).fold(
+             err => err ===  fail("should work"),
+             succ => {
+				 succ.prediction === "XY"
+                 userWithSpecialBet(users(2).id.get).toOption.get._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
+             }           
+          ) 
           
           startOfGames().get === firstStart
           
@@ -208,12 +207,7 @@ class DBSpec extends Specification with ThrownMessages {
           )
           
           startOfGames().get === changedStart
-          
-     //     updateSpecialBet(spn, users(1), changedStart.minusMinutes(90), 90).fold(
-     //        err => err === "game closed since 0 days, 0 hours, 0 minutes, 0 seconds",
-     //        succ => fail("wrong time again because of game change ")
-     //     )
-          
+                  
           
           calculatePoints(admin)
           BetterTables.users.list.map(_.points).sum === 0
@@ -236,12 +230,7 @@ class DBSpec extends Specification with ThrownMessages {
           BetterTables.users.list.map(_.points).sum === 4
       }
       
-//      def createStats()(implicit s: Session){00
-//	      val statsH = new StatsHelper()
-//		  val rows = statsH.createUserRows()
-//		  val bets = statsH.createUsersBets()
-//	  }
-	  
+
  
       def newGames()(implicit s: Session){
           val admin = getAdmin()

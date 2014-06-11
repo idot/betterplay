@@ -49,13 +49,14 @@ object UserRow {
 			if(bet.result.isSet){
 				var points = bet.points
 				cPoints += points
-				pointsPerGame.set(points.toString, index)
 				if(gwt.game.result.isSet){
 				   resultFirstTeam.set(gwt.game.result.goalsTeam1.toString, index)
 				   resultSecondTeam.set(gwt.game.result.goalsTeam2.toString, index)
+				   pointsPerGame.set(points.toString, index)
 			    }else{
- 				   resultFirstTeam.set("-", index)
- 				   resultSecondTeam.set("-", index)
+ 				   resultFirstTeam.set(noBetString, index)
+ 				   resultSecondTeam.set(noBetString, index)
+				   pointsPerGame.set(noBetString, index)
 				}
 			}	
 			else{

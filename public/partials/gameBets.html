@@ -11,7 +11,7 @@
 		 local: {{gwt.game.localStart | date: DF }} server: {{gwt.game.serverStart | date: DF }}	
 	  </li>	
   	  <li ng-if="isAdmin() && betClosed(gwt.game.serverStart, currentTime)" class="list-group-item">
-   	       <button type="submit" class="btn btn-primary" ng-click="$state.transitionTo('game.editGame', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result</button>
+   	       <button type="submit" class="btn btn-primary" ng-click="$state.transitionTo('game.gameEdit', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result</button>
   	  </li>
     </ul>
    </div>
