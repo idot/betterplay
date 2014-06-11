@@ -131,8 +131,8 @@ case class SpecialBetT(id: Option[Long], name: String, description: String, poin
 
 case class SpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]){
 	
-	def byTemplateName(name: String): Option[SpecialBetByUser] = {
-	    bets.filter{ case(t,b)  => t.name == name}.headOption.map(_._2)
+	def byTemplateId(id: Option[Long]): Option[SpecialBetByUser] = {
+	    bets.filter{ case(t,b)  => t.id == id }.headOption.map(_._2)
 	}
 
 }

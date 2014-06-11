@@ -20,7 +20,8 @@ import org.apache.poi.ss.usermodel.CellStyle
 
 
 class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemplates: Seq[SpecialBetT]){
-    val headingStrings = specialBetTemplates.sortBy(_.id).map(_.name)
+    val specialBetTs = specialBetTemplates.sortBy(_.id)
+	val headingStrings = specialBetTs.map(_.name)
 	
 	def createExcelSheetComplete(): Array[Byte] = {
 	  var wb = new HSSFWorkbook()
@@ -70,9 +71,9 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		val user = userRow.user 
 		val c = row.createCell(0)
 		c.setCellValue(userRow.user.username)
-		headingStrings.zipWithIndex.foreach{ case(s,i) => 
+		specialBetTs.zipWithIndex.foreach{ case(t,i) => 
 			val c = row.createCell(i+1)
-			val pred = userRow.specialBets.byTemplateName(s).map(_.prediction).getOrElse("NA")
+			val pred = userRow.specialBets.byTemplateId(t.id).map(_.prediction).getOrElse("NA")
 			c.setCellValue(pred)
 	    }
 	}

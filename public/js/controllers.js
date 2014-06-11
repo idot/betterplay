@@ -430,7 +430,28 @@ controllers.PlotSpecialBetsCtrl = function($scope, $stateParams, $state, special
 }
 controllers.PlotSpecialBetsCtrl.$inject = ['$scope', '$stateParams', '$state', 'specialBetStats','tid'];
 
+controllers.ExcelCtrl = function($scope, $stateParams, $state, Restangular, $http){
 
+    $scope.filename = ""
+	
+	$scope.upload = function(){
+	    var f = document.getElementById('file').files[0],
+	        r = new FileReader();
+	    r.onloadend = function(e){
+	      var data = e.target.result;
+	      var blob = new Blob([data.content], {type: 'application/xls', filename: $scope.filename });
+		  $http.post('/data/fileupload', fd, {
+		   transformRequest: angular.identity,
+		   headers: {
+		     'Content-Type': undefined
+		   }
+		 });
+	    }
+		r.readAsArrayBuffer()
+	};
+
+}
+controllers.ExcelCtrl.$inject = ['$scope', '$stateParams', '$state', 'Restangular', 'http'];
 
 return controllers;
 
