@@ -20,7 +20,7 @@ requirejs.config({
     'angular-ui-router': ['../lib/angular-ui-router/angular-ui-router'],
 	'ng-table': ['../lib/ng-table/ng-table'],
 	'angular-ui-utils': ['../lib/angular-ui-utils/ui-utils'],
-	'toaster': ['toaster'],
+	'toaster': ['../lib/angularjs-toaster/toaster'],
 	'd3js': ['../lib/d3js/d3'],
 	'nvd3': ['../lib/nvd3/nv.d3'],
 	'angular-nvd3': ['../lib/angularjs-nvd3-directives/angularjs-nvd3-directives']
@@ -298,6 +298,11 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 				  templateUrl: 'partials/gameEdit.html',
 				  controller: controllers.EditGameCtrl
 			  })	
+			  .state('game.gameCreate', {
+			  	  url: "/create",
+				  templateUrl: 'partials/gameCreate.html',
+				  controller: controllers.CreateGameCtrl
+			  })	
 			  .state('settings', {
 			  	  url: "/settings",
 				  templateUrl: 'partials/settings.html',
@@ -322,7 +327,7 @@ require(['moment','angular', './controllers', './directives', './filters', './se
 			  })
 			  .state('admin.createGame', {
 			  	  url: "/createGame",
-				  templateUrl: 'partials/createGame.html',
+				  templateUrl: 'partials/gameCreate.html',
 				  controller: controllers.CreateGameCtrl
 			  })
 			  .state('admin.registerUser', {

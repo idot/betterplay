@@ -414,6 +414,76 @@ controllers.EditUserSpecialTeamCtrl = function($log, $scope, $rootScope, $filter
 controllers.EditUserSpecialTeamCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams', 'specialBetService'];	
 
 
+controllers.CreateGameCtrl = function($log, $scope, $rootScope, $filter, $stateParams, Restangular, $state, toaster, ngTableParams, specialBetService ) {	
+	     $scope.stateParams = $stateParams;
+		       		 
+		 Restangular.all('wm2014/api/teams').getList().then(
+			 function(success){
+				 $scope.teams = success;	
+				 $scope.team1 = $scope.teams[0];
+				 $scope.team2 = $scope.teams[0]; 
+			 }
+		 );		 
+		 
+		 Restangular.all('wm2014/api/levels').getList().then(
+		     function(success){
+		         $scope.levels = success;	
+				 $scope.level = $scope.levels[0];
+		     } 		 
+		 );
+		 
+		 $scope.servero = false;	
+         $scope.localo = false;
+		 
+	     $scope.opens = function($event){
+	   	    $event.preventDefault();
+	   	    $event.stopPropagation();
+	   	    $scope.servero = true;
+	     };
+ 
+	     $scope.openl = function($event){
+	   	    $event.preventDefault();
+	   	    $event.stopPropagation();
+	   	    $scope.localo = true;
+	     };
+		 
+         var toDateTime = function(d, t){
+	   	     var md = moment(d);
+	         var mt = moment(t);
+	   	     md.hours(mt.hours());
+	   	     md.minutes(mt.minutes());
+	   	     return md.toDate();	
+         };
+
+         var now = function(){
+         	var md = new Date();
+			var m = moment(md);
+			m.hours(18);
+			m.minutes(0);
+			return { date: m.toDate(), time: m.toDate() };	
+         };
+		 
+		 $scope.server = now();
+		 $scope.local = now();
+		 $scope.disabled = false;
+		 
+		 $scope.submit = function(){
+             $scope.disabled = true;
+			 var server = toDateTime($scope.server.date, $scope.server.time);
+			 var local = toDateTime($scope.local.date, $scope.local.time);
+			 var createdGame = { serverStart: server.getTime() , localStart: local.getTime() ,  team1: $scope.team1.name, team2: $scope.team2.name, level: $scope.level.level};
+			 Restangular.all('wm2014/api/game').customPOST( createdGame ).then(
+		 	   function(success){
+		 		    toaster.pop('success', "created game", success);
+					$scope.disabled = false;
+		 	   }
+		     );
+		 };		
+}
+controllers.CreateGameCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', '$stateParams', 'Restangular', '$state', 'toaster', 'ngTableParams', 'specialBetService'];	
+
+
+
 controllers.PlotSpecialBetsCtrl = function($scope, $stateParams, $state, specialBetStats, tid){
    //  $scope.stateParams = $stateParams; not applicable within a nested view
    if(typeof tid !== "undefined"){

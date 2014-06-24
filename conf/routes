@@ -28,8 +28,9 @@ GET     /wm2014/api/games                  controllers.Games.all()
 POST    /wm2014/api/game/results           controllers.Games.submitResult()               
 
 # gets game with all bets nr is game nr not game id!
-GET     /wm2014/api/game/:nr                controllers.Games.get(nr: Int)   
-#POST    /wm2014/api/game/:nr               controllers.Games.post(nr: Int)  #creates/updates game with all bets; creates bets if not there
+GET     /wm2014/api/game/:nr               controllers.Games.get(nr: Int)   
+#creates/updates game with all bets; creates bets if not there
+POST    /wm2014/api/game                   controllers.Games.createGame()  
 
 GET     /wm2014/api/users                  controllers.Users.all()           
 

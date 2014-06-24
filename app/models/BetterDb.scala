@@ -170,7 +170,7 @@ object BetterDb {
    }
 
    /**
-    * This is for text import   game details | team1name | team2name | levelNr (| == tab)
+    * This is for text import  and creation of game game details | team1name | team2name | levelNr (| == tab)
     * ids for teams and levels and results are ignored, taken from db and amended in game object
     * todo: add updatingUser
     *
@@ -187,7 +187,8 @@ object BetterDb {
             err => -\/(err.list.mkString("\n")),
             succ => succ match {
               case (t1@Team(Some(t1id),_,_,_), t2@Team(Some(t2id),_,_,_), l@GameLevel(Some(lid),_,_,_,_), _) => {
-                 val gameWithTeamsAndLevel = game.copy(team1id=t1id, team2id=t2id, levelId=lid, result=DomainHelper.gameResultInit)
+				 val gameNr = if(game.nr == 0) Query(games.map(_.nr).max).first.map(m => m+1).getOrElse(0) else game.nr
+                 val gameWithTeamsAndLevel = game.copy(team1id=t1id, team2id=t2id, levelId=lid, result=DomainHelper.gameResultInit, nr=gameNr)
                  val gameId = (games returning games.map(_.id)) += gameWithTeamsAndLevel
                  val dbgame = gameWithTeamsAndLevel.copy(id=Some(gameId))
                  val gwt = GameWithTeams(dbgame, t1, t2, l) 
@@ -196,7 +197,7 @@ object BetterDb {
               case _ => -\/("problem with ids of team1, team2 or level")
             }
         )   
-   }
+  }
     
   // def userWithSpecialBet(condition: User => Boolean): Boolean = {
   // 

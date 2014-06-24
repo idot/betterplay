@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="@routes.Assets.at("lib/angular-ui/angular-ui.min.css")">
   <link rel="stylesheet" href="@routes.Assets.at("lib/angularjs/angular-csp.css")">
   <link rel="stylesheet" href="@routes.Assets.at("lib/ng-table/ng-table.css")">
-  <link rel="stylesheet" href="@routes.Assets.at("css/toaster.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("lib/angularjs-toaster/toaster.css")">
   <!--link rel="stylesheet" href="@routes.Assets.at("css/flags32.css")" does not work yet-->
   <script data-main="@routes.Assets.at("js/main.js")" src="@routes.Assets.at("lib/requirejs/require.js")"></script>
 </head>
@@ -45,6 +45,7 @@
 		<li ng-if="isLoggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user.userBets({ username: loggedInUser.username })" style="padding-top: 10px; padding-bottom: 10px;"><img ng-src="{{ loggedInUser && loggedInUser.iconurl+'&s=30'}}" alt="gravatar" width="30" height="30"/></a></li>
 		<li ng-if="isLoggedIn()"><a ui-sref="logout">logout</a></li>
 		<li ng-if="isAdmin()"><a ui-sref="admin.registerUser">register user</a></li>
+		<li ng-if="isAdmin()"><a ui-sref="admin.createGame">create game</a></li>
 		<li ng-if="isDebug()" ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>	
 	 </ul>
 	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : DF }}</div>
