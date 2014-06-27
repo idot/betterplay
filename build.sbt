@@ -8,7 +8,7 @@ scalaVersion := "2.10.4"
 
 resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
-resolvers += "thirdpary" at "http://mammut:8082/nexus/content/repositories/hirdparty"
+resolvers += "thirdpary" at "http://mammut:8082/nexus/content/repositories/thirdparty"
 
 parallelExecution in Test := false
 
