@@ -39,13 +39,16 @@
 				 <span class="badge">{{gb.game.level.pointsExact}}/{{gb.game.level.pointsTendency}}</span>
 			</td>
 			<td data-title="'points'">
-				 <span class="badge">{{gb.bet.points}}</span>
+				 <span class="{{badge(gb.game.game)}}">{{gb.bet.points}}</span>
 			</td>
 			<td data-title="'team1'" sortable="'team1name'" filter="{ 'team1name': 'text' }">
 			    {{gb.game.team1.name}}
 			</td>
 			<td data-title="'team2'" sortable="'team2name'" filter="{ 'team2name': 'text' }">
 			    {{gb.game.team2.name}}
+			</td>
+			<td data-title="'result'">
+			    {{prettyGame(gb.game.game)}}
 			</td>
 			<td data-title="'bet'" filter="{ 'betset': 'select' }" filter-data="bettedFilter()">
 			    <better-bet bet="gb.bet" start="gb.game.game.serverStart"></better-bet>

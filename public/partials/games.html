@@ -13,6 +13,9 @@
 			<td data-title="'team2'" sortable="'team2name'" filter="{ 'team2name': 'text' }">
 			    {{gb.team2.name}}
 			</td>
+			<td data-title="'result'">
+			    {{prettyGame(gb.game)}}
+			</td>
 			<td data-title="'bet close'" sortable="'serverStart'" 
 			          filter="{ 'openGame': 'select' }" filter-data="openFilter()"> 
 				{{timeLeft(gb.game.serverStart, currentTime)}}

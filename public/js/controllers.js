@@ -42,6 +42,14 @@ controllers.GamesCtrl = function($log, $scope, $rootScope, $filter, Restangular,
 		$scope.allGames = _.each(allGames, function(g){ transformGame(g)});		
 		setupTable( $scope.allGames, ngTableParams, { 'game.nr': 'asc'}, $scope, $filter );
     });
+	
+	$scope.prettyGame = function(game){
+		if(game.result.isSet){
+			return game.result.goalsTeam1+":"+game.result.goalsTeam2;
+		}else{
+			return "-:-"
+		}
+	}  
 	  
 }
 controllers.GamesCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'selectFilter'];
@@ -75,6 +83,18 @@ controllers.UserCtrl = function($log, $scope, $rootScope, $filter, Restangular, 
 		
 		setupTable( $scope.gameBets, ngTableParams, { 'game.game.nr': 'asc'}, $scope, $filter );
     });
+	
+	$scope.badge = function(game){
+	    return game.result.isSet ? "badge badge-resultset" : "badge";
+	};
+	
+	$scope.prettyGame = function(game){
+		if(game.result.isSet){
+			return game.result.goalsTeam1+":"+game.result.goalsTeam2;
+		}else{
+			return "-:-"
+		}		
+	};
 }
 controllers.UserCtrl.$inject = ['$log', '$scope', '$rootScope', '$filter', 'Restangular', '$stateParams', 'ngTableParams', 'toaster', 'selectFilter'];
 
