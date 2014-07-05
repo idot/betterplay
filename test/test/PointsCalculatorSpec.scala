@@ -85,7 +85,10 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
     "A pointsCalculator returns true for win1 if the game was won by 1" ! win1 ^
     "A pointsCalculator returns true for win1 if the game was won by 1" ! win2 ^
     "A pointsCalculater has a method to turn a decreasingly sorted set of points into ranks" ! torank ^
-//	"A pointsCalculator can evaluate special bets" ! specialBets ^
+	"A pointsCalculator can evaluate special bets for a single item" ! specialBetsForGroup1  ^
+	"A pointsCalculator can evaluate special bets for a group all wrong item" ! specialBetsForGroupAllWrong ^ 
+	"A pointsCalculator can evaluate special bets for a group all correct item" ! specialBetsForGroupAllCorrect ^
+	"A pointsCalculator can evaluate special bets for a group partially correct item" ! specialBetsForGroupPartCorrect ^ 
     end
     
     val gl = GameLevel(None, "test", 3, 2, 1)
@@ -197,13 +200,51 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
       
     }
 	
+	// calculateSpecialBetForGroup(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser,Int)] 
 	
-	
-	def specialBets = {
-	    
-	
-	
+	def specialBetsForGroup1 = {
+		val id = 10
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result")
+	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "result", 0)
+		val b2 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)
+		PointsCalculator.calculateSpecialBetForGroup(Seq((t1,b1))) === Seq((t1,b1.copy(points=3))) and
+		PointsCalculator.calculateSpecialBetForGroup(Seq((t1,b2))) === Seq((t1,b2))
 	
 	}
+	
+	def specialBetsForGroupAllWrong = {
+		val id = 10
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result1")
+		val t2 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result2")
+	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)
+		val b2 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)
+		val input = Seq((t1,b1),(t2,b2))
+		PointsCalculator.calculateSpecialBetForGroup(input) === input
+	}
+	
+	def specialBetsForGroupAllCorrect = {
+		val id = 10
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result1")
+		val t2 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result2")
+	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "result2", 0)
+		val b2 = SpecialBetByUser(Some(1000), 1l, id, "result1", 0)
+		val input = Seq((t1,b1),(t2,b2))
+		val result = Seq((t1,b1.copy(points=3)),(t2,b2.copy(points=3)))
+		PointsCalculator.calculateSpecialBetForGroup(input) === result
+	}
+	
+	def specialBetsForGroupPartCorrect = {
+		val id = 10
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result1")
+		val t2 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result2")
+		val t3 = SpecialBetT(Some(id), "name", "description", 3, new DateTime(), "group1", "itemtype", "result3")
+	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "result2", 0)
+		val b2 = SpecialBetByUser(Some(1000), 1l, id, "result3", 0)
+		val b3 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)
+		val input = Seq((t1,b1),(t2,b2),(t3,b3))
+		val result = Seq((t1,b1.copy(points=3)),(t2,b2.copy(points=3)),(t3,b3))
+		PointsCalculator.calculateSpecialBetForGroup(input) === result
+	}
+	
     
 }

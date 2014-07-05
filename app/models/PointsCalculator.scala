@@ -59,24 +59,18 @@ object PointsCalculator {
      }     
   
      /***
-	 *  rearrange predictions in the bets so they will align with the result if there is one correct in the template
 	 *  
-	 *  returns a copy of updated specialbets with setted points for correct predictions with the spId of the identical result
+	 *  
+	 * 
 	 *
 	 *
 	 ***/
-	 def calculateSpecialBetForGroup(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser,Int)] = {
-		 val tMap = bets.map{ case(t,b) => (t.result,t)}.toMap
-		 val bMap = bets.map{ case(t,b) => (b.prediction, b)}.toMap
-		 val bad = bMap.values.map(_.prediction).filter(p => tMap.contains(p))
-		 val wrongQ = MiniQ(bad.toSeq)
-		 val correctedBets = bets.map{ case(t,b) => 
-			 val correct = bMap.contains(t.result)
-			 val newResult = if(correct) t.result else wrongQ.next
-			 val points = if(correct) t.points else 0
-			 (t,b.copy(prediction = newResult), points) 
+	 def calculateSpecialBetForGroup(tbets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser)] = {		 
+		 val tMap = tbets.map{ case(t,b) => (t.result,t)}.toMap
+		 tbets.map{ case(t,b) =>
+		     val tb = if(tMap.contains(b.prediction)) b.copy(points = t.points) else b.copy(points = 0)
+             (t,tb)
 		 }
-		 correctedBets
 	 }
 	 
 	 
@@ -92,7 +86,7 @@ object PointsCalculator {
 	  *  Then one has to 
 	  *
       */
-     def calculateSpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser,Int)] = {
+     def calculateSpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser)] = {
 		 extractBetGroups(bets).flatMap{ betGroup => calculateSpecialBetForGroup(betGroup) }
 	 }
      
