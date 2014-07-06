@@ -57,7 +57,15 @@ object BetterDb {
    }
    
    def allUsers()(implicit s: Session): Seq[User] = {
-       users.list
+	   users.list
+   }
+   
+   def allUsersWithRank()(implicit s: Session): Seq[(User,Int)] = {
+	   val us = users.list
+       val sorted = us.sortBy(_.totalPoints).reverse
+       val points = sorted.map(_.totalPoints) 
+       val ranks = PointsCalculator.pointsToRanks(points)
+       sorted.zip(ranks)
    }
    
    def usersWithSpecialBetsAndRank()(implicit s: Session): Seq[(User,SpecialBets,Int)] = {

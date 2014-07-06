@@ -104,14 +104,14 @@ case class User(id: Option[Long] = None, username: String, firstName: String, la
 
 case class UserNoPw(id: Option[Long] = None, username: String, firstName: String, lastName: String, 
 	      isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, 
-		  totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long]){
+		  totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long], rank: Int){
 }
    
 object UserNoPwC {
-   def apply(user: User): UserNoPw = {
+   def apply(user: User, rank: Int = 0): UserNoPw = {
         UserNoPw(user.id, user.username, user.firstName, user.lastName, 
 		user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
-		user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy)  
+		user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, rank)  
    }     
 }      
          

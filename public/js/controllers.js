@@ -12,7 +12,16 @@ controllers.UsersCtrl = function($log, $scope, $filter, Restangular, $stateParam
 	var queryUsers = Restangular.all('wm2014/api/users');
    
     
-   
+    $scope.badgecolour = function(rank){
+        switch(rank){
+		 case 1: return "badge-gold"; break;
+	     case 2: return "badge-silver"; break;
+	     case 3: return "badge-bronze"; break;
+		 default: return "";
+        }
+    };
+	
+	
 	queryUsers.getList().then(function(users){
 	    $scope.allUsers = users;
 		setupTable( users, ngTableParams, { 'username': 'asc'}, $scope, $filter );

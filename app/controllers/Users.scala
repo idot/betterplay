@@ -20,8 +20,8 @@ trait Users extends Controller with Security {
   
   def all() = DBAction { implicit rs =>
       implicit val session = rs.dbSession
-      val users = BetterDb.allUsers()
-      val json =  Json.toJson(users.map(UserNoPwC(_)))
+      val usersRank = BetterDb.allUsersWithRank()
+      val json =  Json.toJson(usersRank.map{ case(u, r) => UserNoPwC(u, r)})
       Ok(json)
   } 
   

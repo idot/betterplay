@@ -11,6 +11,9 @@
 			<td data-title="'user'" sortable="'username'" filter="{ 'username': 'text' }">
                 <a ui-sref="user.userBets({ username: uuser.username})">{{uuser.username}}</a>
             </td>
+			<td data-title="'rank'" sortable="'rank'">
+                <span class="badge {{badgecolour(uuser.rank)}}">{{uuser.rank}}</span>
+            </td>
             <td data-title="'points total'" sortable="'totalPoints'">
                 <span class="badge">{{uuser.totalPoints}}</span>
             </td>
