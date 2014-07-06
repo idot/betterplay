@@ -199,10 +199,6 @@ object BetterDb {
         )   
   }
     
-  // def userWithSpecialBet(condition: User => Boolean): Boolean = {
-  // 
-  // 
-  // }	
 	
    def userWithSpecialBet(userId: Long)(implicit s: Session):  String \/ (User, Seq[SpecialBetByUser]) = {
        val us = for{
@@ -606,8 +602,8 @@ object BetterDb {
 	              b.points
 	            }
 	            val p = points.list.sum 
-	      //      val specialPoints = calculateSpecialPointsForUser(user).getOrElse(0)
-	            val userWithPoints = user.copy(points=p, pointsSpecialBet=0)      
+	            val specialPoints = calculateSpecialPointsForUser(user)
+	            val userWithPoints = user.copy(points=p, pointsSpecialBet=specialPoints)      
 	            users.filter(_.id === userWithPoints.id).update(userWithPoints)
 	        }
             true       
@@ -619,8 +615,15 @@ object BetterDb {
     * calculates but does not set special points for user
     * 
     */
-   def calculateSpecialPointsForUser(user: User)(implicit s: Session): Option[Int] = {
-       ???
+   def calculateSpecialPointsForUser(user: User)(implicit s: Session): Int = {
+       val tbets = getSpecialBetsForUser(user)
+	   val updated = PointsCalculator.calculateSpecialBets(tbets)
+	   val bets = updated.map{ case(t,b) => b }
+	   val sum = bets.map(_.points).sum
+	   bets.foreach{ b => 
+	      specialbetsuser.filter(_.id === b.id).update(b)
+       }
+	   sum
    }
    
    def insertPlayer(player: Player, teamName: String, submittingUser: User)(implicit s: Session): String \/ Player = {

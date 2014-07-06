@@ -189,6 +189,8 @@ class DBSpec extends Specification with ThrownMessages {
                  userWithSpecialBet(users(2).id.get).toOption.get._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
              }           
           ) 
+		  
+		  BetterTables.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY")
           
           startOfGames().get === firstStart
           
@@ -271,16 +273,16 @@ class DBSpec extends Specification with ThrownMessages {
           BetterTables.users.list.map(_.points).sum === 4  
           calculatePoints(admin)
           val pointsBets =  4 + 12 + 5 + 5  //1xexact + 2x tendency          
-     //     val pointsSpecial = 8 // mvp , winner, semi, 3,3,2 user1 , 2x t1 for semi because he's dumb. UI should prevent this
+          val pointsSpecial = 4 
           BetterTables.users.list.map(_.points).sum === pointsBets 
           val players = BetterTables.players.list.sortBy(_.id)
 
-    //      val sp = SpecialBet(None, players(0).id, players(3).id, gwt.team1.id, gwt.team1.id, gwt.team2.id, teams(2).id, teams(3).id, true, 0)          
+          
          
       //    calculatePoints(admin)
           BetterTables.users.list.map(_.points).sum === pointsBets
-     //     BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial 
-          BetterTables.users.list.map(_.totalPoints).sum === pointsBets 
+          BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial 
+          BetterTables.users.list.map(_.totalPoints).sum === pointsBets + pointsSpecial 
                  
           val users = BetterTables.users.list.sortBy(_.id)
           invalidateGame(gwt.game, users(2)).fold(
@@ -291,13 +293,7 @@ class DBSpec extends Specification with ThrownMessages {
           invalidateGame(gwt.game, admin).isRight === true
           calculatePoints(admin)
           BetterTables.users.list.map(_.points).sum === 4       
-   //       BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial
-          
-    //      val usersSpecialBets = usersWithSpecialBetsAndRank()            
-    //      usersSpecialBets.map(_._2.isSet) === Seq(true,false,false,false)
-    //      usersSpecialBets.map(_._1.totalPoints) === Seq(9, 3, 0, 0)
-   //       usersSpecialBets.map(_._4) === Seq(1,2,3,3)
-   //       usersSpecialBets.map(_._3) === Seq(9, 3, 0, 0)  
+  
         
       }
       

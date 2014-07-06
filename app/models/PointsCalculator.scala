@@ -68,7 +68,7 @@ object PointsCalculator {
 	 def calculateSpecialBetForGroup(tbets: Seq[(SpecialBetT,SpecialBetByUser)]): Seq[(SpecialBetT,SpecialBetByUser)] = {		 
 		 val tMap = tbets.map{ case(t,b) => (t.result,t)}.toMap
 		 tbets.map{ case(t,b) =>
-		     val tb = if(tMap.contains(b.prediction)) b.copy(points = t.points) else b.copy(points = 0)
+		     val tb = if(b.prediction != "" && tMap.contains(b.prediction)) b.copy(points = t.points) else b.copy(points = 0)
              (t,tb)
 		 }
 	 }
