@@ -1,7 +1,11 @@
-import com.typesafe.sbt.web.Import._
-import play.twirl.sbt.Import.TwirlKeys
-import sbt.Keys._
 import sbt._
+import sbt.Keys._
+import play.sbt.PlayRunHook
+import play.sbt.PlayImport.PlayKeys._
+import play.twirl.sbt.Import.TwirlKeys
+import com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._
+import com.typesafe.sbt.web.Import._
+
 
 object PlayGulp {
 

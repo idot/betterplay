@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   filters,
-  "com.typesafe.play" %% "play-slick" % "0.7.0-M1",
+  "com.typesafe.play" %% "play-slick" % "1.1.1",
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
   "org.specs2" %% "specs2" % "2.3.12" % "test",
@@ -42,7 +42,7 @@ libraryDependencies ++= Seq(
   "org.scalaz" %% "scalaz-core" % "7.0.6",
   "org.jasypt" % "jasypt" % "1.9.2",
   "commons-io" % "commons-io" % "2.4",
-  "com.andersen-gott" %% "scravatar" % "1.0.2",  
+  "com.andersen-gott" %% "scravatar" % "1.0.3",  
   "org.apache.poi" % "poi" % "3.10-FINAL",
   "net.sf.opencsv" % "opencsv" % "2.3"
 //,
