@@ -1,7 +1,7 @@
 package models 
 
 
-import play.api.db.slick.Config.driver.simple._
+
 
 case class SpecialBet(betType: String, prediction: String)
 

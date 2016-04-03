@@ -1,8 +1,8 @@
 package models
 
-import play.api.db.slick.Config.driver.simple._
+
 import org.joda.time.DateTime
-import scala.slick.jdbc.meta.MTable
+import slick.jdbc.meta.MTable
 
 import JodaHelper._
 import org.joda.time.Period

@@ -12,7 +12,7 @@ import akka.event.Logging
 
 import models.BetterDb
 import models.UpdatePoints
-import play.api.db.slick.Config.driver.simple._
+
 
 
 //A work queue based on one singleton executing actor

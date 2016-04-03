@@ -2,13 +2,12 @@ import play.api._
 import play.api.Play.current
 import play.api.Logger
 import play.api.db.slick._
-import scala.slick.jdbc.meta.MTable
+import slick.jdbc.meta.MTable
 
 import java.text.SimpleDateFormat
 import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
-import play.api.db.slick.Config.driver.simple._
 
 /**
  * DATA FROM:

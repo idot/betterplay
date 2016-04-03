@@ -2,7 +2,6 @@ package test
 
 import org.specs2.mutable._
 import play.api.db.slick.DB
-import play.api.db.slick.Config.driver.simple._
 import play.api.test._
 import play.api.test.Helpers._
 import models._

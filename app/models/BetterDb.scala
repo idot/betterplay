@@ -1,6 +1,6 @@
 package models
 
-import play.api.db.slick.Config.driver.simple._
+
 import org.joda.time.DateTime
 import play.api.db.DB
 
@@ -20,9 +20,10 @@ case object NewGame extends GameUpdate
 case class UpdatePoints(session: Session)
 
 
+
 object BetterDb {
    import BetterTables._
-  
+
    def withT[A,B](f: => String \/ B)(implicit s: Session): String \/ B = {
        s.withTransaction{
 		    try{

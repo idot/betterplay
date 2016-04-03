@@ -1,6 +1,11 @@
 package controllers
 
+
+
+
 import play.api._
+import play.api.db.DatabaseConfig
+import play.api.db.slick.DatabaseConfigProvider
 import play.api.mvc._
 import play.api.cache.Cache
 import play.api.libs.json.Json
@@ -8,14 +13,12 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json._
 import play.api.data.Forms._
 import play.api.data.Form
-import play.api.db.slick.DBAction
 import models.DomainHelper
 import models.BetterDb
 import models.User
 import models.UserNoPw
 import models.UserNoPwC
 import models.BetterSettings
-import play.api.db.slick.DBSessionRequest
 
 
 import org.joda.time.DateTime
@@ -23,6 +26,7 @@ import javax.inject.{Inject, Provider, Singleton}
 import play.api.mvc.{Action, Controller}
 import play.api.routing.{JavaScriptReverseRoute, JavaScriptReverseRouter, Router}
 import play.api.inject.ApplicationLifecycle
+import slick.driver.JdbcProfile
 
 object PlayHelper {
 
@@ -59,15 +63,18 @@ object FormToV {
  **/
 trait Security { self: Controller =>
 
-	
+
   implicit val app: play.api.Application = play.api.Play.current
 
   val AuthTokenHeader = "X-AUTH-TOKEN"
   val AuthTokenCookieKey = "AUTH-TOKEN"
   val AuthTokenUrlKey = "auth"
 
+
+
   /** Checks that a token is either in the header ***/ 
   def HasToken[A](p: BodyParser[A] = parse.anyContent)(f: String => Long => DBSessionRequest[A] => Result): Action[A] = {
+    import dbConfig.driver.api._
     DBAction(p) { implicit request =>
       val maybeToken = request.headers.get(AuthTokenHeader)
       maybeToken.flatMap{ token =>
@@ -106,11 +113,20 @@ trait Security { self: Controller =>
 class Application(env: Environment,
                   gulpAssets: GulpAssets,
                   lifecycle: ApplicationLifecycle,
+                  dbConfigProvider: DatabaseConfigProvider,
                   router: => Option[Router] = None) extends Controller with Security {
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
   @Inject
-  def this(env: Environment, gulpAssets: GulpAssets, lifecycle: ApplicationLifecycle, router: Provider[Router]) =
+  def this(env: Environment, gulpAssets: GulpAssets,
+            lifecycle: ApplicationLifecycle,
+            dbConfigProvider: DatabaseConfigProvider,
+            router: Provider[Router]) =
     this(env, gulpAssets, lifecycle, Some(router.get))
+
+
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+  val db = dbConfig.db
+  import dbConfig.driver.api._
 
   /**
    * Returns ui/src/index.html in dev/test mode and ui/dist/index.html in production mode
