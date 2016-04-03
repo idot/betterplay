@@ -7,6 +7,7 @@ GET     /                                  controllers.Application.toPrefix()
 GET     /wm2014                            controllers.Application.index
 GET     /wm2014/                           controllers.Application.index
 GET     /wm2014/api/time                   controllers.Application.time()
+
 # in debug mode its possible to set times
 POST    /wm2014/api/time					controllers.Application.setDebugTime()
 POST    /wm2014/api/time/reset             controllers.Application.resetTime() 
@@ -40,6 +41,7 @@ GET     /wm2014/api/user/:username/specialBets  controllers.SpecialBets.specialB
 
 # fetches logged in user with email
 GET     /wm2014/api/userWithEmail          controllers.Users.userWithEmail()
+
 #creates/updates user creates bets on first registration; does not update bets
 PUT    /wm2014/api/user/:name              controllers.Users.create(name: String) 
 POST   /wm2014/api/user/:name/details      controllers.Users.updateDetails(name: String) 
@@ -66,8 +68,8 @@ POST    /wm2014/logout                     controllers.Application.logout()
 GET    /wm2014/api/ping                    controllers.Application.ping()
 GET    /wm2014/api/settings				controllers.Application.settings()
 
-# versioned assets
-#GET    /wm2014/assets/*file    controllers.Assets.versioned(path="/public", file: Asset)
+GET        /routes                     controllers.Application.routes
+GET        /jsroutes.js                controllers.Application.jsRoutes(varName ?= "jsRoutes")
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /wm2014/*file               controllers.Assets.at(path="/public", file)
+GET     /wm2014/*file                  controllers.GulpAssets.at(file)

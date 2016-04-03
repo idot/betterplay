@@ -19,6 +19,10 @@ import play.api.db.slick.DBSessionRequest
 
 
 import org.joda.time.DateTime
+import javax.inject.{Inject, Provider, Singleton}
+import play.api.mvc.{Action, Controller}
+import play.api.routing.{JavaScriptReverseRoute, JavaScriptReverseRouter, Router}
+import play.api.inject.ApplicationLifecycle
 
 object PlayHelper {
 
@@ -95,11 +99,56 @@ trait Security { self: Controller =>
  
   
 }
-  
 
 
 
-trait Application extends Controller with Security {
+@Singleton
+class Application(env: Environment,
+                  gulpAssets: GulpAssets,
+                  lifecycle: ApplicationLifecycle,
+                  router: => Option[Router] = None) extends Controller with Security {
+  // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
+  @Inject
+  def this(env: Environment, gulpAssets: GulpAssets, lifecycle: ApplicationLifecycle, router: Provider[Router]) =
+    this(env, gulpAssets, lifecycle, Some(router.get))
+
+  /**
+   * Returns ui/src/index.html in dev/test mode and ui/dist/index.html in production mode
+   */
+  def index = gulpAssets.index
+
+  def oldhome = Action {
+    Ok(views.html.index("Play Framework"))
+  }
+
+  val routeCache: Array[JavaScriptReverseRoute] = {
+    val jsRoutesClass = classOf[controllers.routes.javascript]
+    for {
+      controller <- jsRoutesClass.getFields.map(_.get(null))
+      method <- controller.getClass.getDeclaredMethods if method.getReturnType == classOf[JavaScriptReverseRoute]
+    } yield method.invoke(controller).asInstanceOf[JavaScriptReverseRoute]
+  }
+
+  /**
+   * Returns the JavaScript router that the client can use for "type-safe" routes.
+   * @param varName The name of the global variable, defaults to `jsRoutes`
+   */
+  def jsRoutes(varName: String = "jsRoutes") = Action { implicit request =>
+    Ok(JavaScriptReverseRouter(varName)(routeCache: _*)).as(JAVASCRIPT)
+  }
+
+  val herokuDemo = true
+
+  /**
+   * Returns a list of all the HTTP action routes for easier debugging
+   */
+  def routes = Action { request =>
+    if (env.mode == Mode.Prod && !herokuDemo)
+      NotFound
+    else
+      Ok(views.html.devRoutes(request.method, request.uri, Some(router.get)))
+  }
+
   import models.JsonHelper._
   import PlayHelper._
   
@@ -213,8 +262,17 @@ trait Application extends Controller with Security {
       user => Ok(Json.obj("userId" -> userId)).withToken(token -> userId)
     )
   }
-  
+
+
+  def onStart() {
+    val debug = PlayHelper.debug
+    val insertdata = Play.current.configuration.getBoolean("betterplay.insertdata").getOrElse(false)
+    val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
+    Logger.info("starting up "+debugString)
+    if(debug && insertdata){
+      InitialData.insert(debug)
+    }
+  }
 
 }
 
-object Application extends Application

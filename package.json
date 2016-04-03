@@ -1,0 +1,17 @@
+{
+  "name": "betterplay",
+  "version": "0.8",
+  "dependencies": {
+    "gulp": "~3.9.1",
+    "bower": "~1.7.7"
+  },
+  "devDependencies": {
+    "yo":  "~1.7.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "postinstall": "./postinstall.sh"
+  }
+}

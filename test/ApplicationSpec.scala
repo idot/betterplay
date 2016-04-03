@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 import scala.concurrent.Await
 import scala.concurrent.Future
 
-
+//TODO: add ApplicationSpec tests from play-gulp-standalone
 
 /**
  * Add your spec here.
@@ -17,7 +17,7 @@ import scala.concurrent.Future
  * For more information, consult the wiki.
  */
 @RunWith(classOf[JUnitRunner])
-class ApplicationSpec extends Specification with JsonMatchers{
+class ApplicationSpec extends Specification with JsonMatchers {
     val app = FakeApplication(
         additionalConfiguration = inMemoryDatabase(options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")) 
     )
