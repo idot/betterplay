@@ -2,6 +2,28 @@ package models
 
 import org.joda.time.DateTime
 
+trait BetterException extends RuntimeException {
+  
+}
+
+object BetterException {
+  
+  def apply(message: String): BetterException = new RuntimeException(message) with BetterException 
+
+  def apply(message: String, cause: Throwable = null): BetterException = new RuntimeException(message, cause) with BetterException 
+  
+  def unapply(exception: BetterException): (Option[String],Option[Throwable],Option[Seq[StackTraceElement]]) = {
+      val stack = if(exception.getStackTrace != null) Some(exception.getStackTrace.toSeq) else None
+      val message = if(exception.getMessage != null) Some(exception.getMessage) else None
+      val cause = if(exception.getCause != null) Some(exception.getCause) else None
+      (message, cause, stack)
+  }
+  
+}
+
+case class AccessViolationException(message: String) extends BetterException
+case class ItemNotFoundException(message: String) extends BetterException 
+case class ValidationException(message: String) extends BetterException
 
 object DomainHelper {
   import org.jasypt.util.password.StrongPasswordEncryptor

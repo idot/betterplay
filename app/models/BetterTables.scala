@@ -1,17 +1,15 @@
 package models
 
-
 import org.joda.time.DateTime
-import slick.jdbc.meta.MTable
+import play.api.db.slick.HasDatabaseConfigProvider
 
-import JodaHelper._
+//import slick.jdbc.meta.MTable
+import slick.driver.JdbcProfile
 import org.joda.time.Period
 
-object JodaHelper { //TODO: check timezone, might have to use calendar 
-  implicit val dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
-    { dt => new java.sql.Timestamp(dt.getMillis) },
-    { ts => new org.joda.time.DateTime(ts) })
-    
+
+object JodaHelper { //TODO: check timezone, might have to use calendar
+
   implicit object DateTimeOrdering extends Ordering[DateTime] { def compare(o1: DateTime, o2: DateTime) = o1.compareTo(o2)}
   
   def compareTimeHuman(firstTime: DateTime, lastTime: DateTime): String = {
@@ -26,53 +24,66 @@ object JodaHelper { //TODO: check timezone, might have to use calendar
   
 }
 
-object BetterTables {
+trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
+  import driver.api._
+
+  implicit val dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
+     { dt => new java.sql.Timestamp(dt.getMillis) },
+     { ts => new org.joda.time.DateTime(ts) }
+  )
+
   val users = TableQuery[Users]
   val teams = TableQuery[Teams]
   val players = TableQuery[Players]
   val levels = TableQuery[GameLevels]
   val games = TableQuery[Games]
   val bets = TableQuery[Bets]
-  val specialbetstore = TableQuery[SpecialBetsTs] 
+  val specialbetstore = TableQuery[SpecialBetsTs]
   val specialbetsuser = TableQuery[SpecialBetByUsers]
   val betlogs = TableQuery[BetLogs]
- 
-  def createTables()(implicit s: Session) {
-    users.ddl.create
-    teams.ddl.create
-    players.ddl.create
-    levels.ddl.create
-    games.ddl.create
-    bets.ddl.create
-    specialbetstore.ddl.create
-	specialbetsuser.ddl.create
-	betlogs.ddl.create
-	
+
+/*  val schema = users.schema ++
+               teams.schema ++
+               players.schema ++
+               levels.schema ++
+               games.schema ++
+               bets.schema ++
+               specialbetstore.schema ++
+               specialbetsuser.schema ++
+               betlogs.schema
+
+  def createTables(){
+     DBIO.seq(schema.create)
   }
   
-  def drop()(implicit s: Session){
-    val ddl = users.ddl ++ teams.ddl ++ players.ddl ++ levels.ddl ++ 
-	games.ddl ++ bets.ddl ++
-	specialbetstore.ddl ++ specialbetsuser.ddl ++ betlogs.ddl
-    //ddl.createStatements.foreach(println)
-    ddl.drop
+  def drop(){
+     DBIO.seq(schema.drop)
   }
 
-  def dropCreate()(implicit s: Session){
+  def dropCreate(){
       if(MTable.getTables("users").list().isEmpty) {
            createTables()
        }else{
            drop()
            createTables()
        }
+  }*/
+
+  class Teams(tag: Tag) extends Table[Team](tag, "teams") {
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    def name = column[String]("name")
+    def short3 = column[String]("short3")
+    def short2 = column[String]("short2")
+
+    def * = (id.?, name, short3, short2) <> (Team.tupled, Team.unapply _)
   }
-  
+
   class GameLevels(tag: Tag) extends Table[GameLevel](tag, "gamelevel") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name", O.NotNull)
-    def pointsExact = column[Int]("pointsexact", O.NotNull)
-    def pointsTendency = column[Int]("pointstendency", O.NotNull)
-    def level = column[Int]("level", O.NotNull)
+    def name = column[String]("name")
+    def pointsExact = column[Int]("pointsexact")
+    def pointsTendency = column[Int]("pointstendency")
+    def level = column[Int]("level")
 
     def * = (id.?, name, pointsExact, pointsTendency, level) <> (GameLevel.tupled, GameLevel.unapply)
 
@@ -80,19 +91,19 @@ object BetterTables {
 
   class Games(tag: Tag) extends Table[Game](tag, "games") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def goalsTeam1 = column[Int]("goalsteam1", O.NotNull)
-    def goalsTeam2 = column[Int]("goalsteam2", O.NotNull)
-    def isSet = column[Boolean]("isset", O.NotNull)
-    def team1Id = column[Long]("team1_id", O.NotNull)
-    def team2Id = column[Long]("team2_id", O.NotNull)
-    def levelId = column[Long]("level_id", O.NotNull)
-    def localStart = column[DateTime]("localstart", O.NotNull)
-    def localtz = column[String]("localtz", O.NotNull)
-    def serverStart = column[DateTime]("serverstart", O.NotNull)
-    def servertz = column[String]("servertz", O.NotNull)
-    def venue = column[String]("venue", O.NotNull)
-    def group = column[String]("group", O.NotNull)
-    def nr = column[Int]("nr", O.NotNull)
+    def goalsTeam1 = column[Int]("goalsteam1")
+    def goalsTeam2 = column[Int]("goalsteam2")
+    def isSet = column[Boolean]("isset")
+    def team1Id = column[Long]("team1_id")
+    def team2Id = column[Long]("team2_id")
+    def levelId = column[Long]("level_id")
+    def localStart = column[DateTime]("localstart")
+    def localtz = column[String]("localtz")
+    def serverStart = column[DateTime]("serverstart")
+    def servertz = column[String]("servertz")
+    def venue = column[String]("venue")
+    def group = column[String]("group")
+    def nr = column[Int]("nr")
 
     
     def team1 = foreignKey("GAME_TEAM1_FK", team1Id, teams)(_.id) 
@@ -107,48 +118,51 @@ object BetterTables {
   
   class SpecialBetsTs(tag: Tag) extends Table[SpecialBetT](tag, "specialbetsstore"){
      def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-     def name = column[String]("name", O.NotNull)
-     def description = column[String]("description", O.NotNull)
-     def points = column[Int]("points", O.NotNull)
-	 def closeDate = column[DateTime]("closedate", O.NotNull)
-	 def betGroup = column[String]("betgroup", O.NotNull)
-     def itemtype = column[String]("itemtype", O.NotNull)
-     def result = column[String]("result", O.NotNull) 
+     def name = column[String]("name")
+     def description = column[String]("description")
+     def points = column[Int]("points")
+	   def closeDate = column[DateTime]("closedate")
+	   def betGroup = column[String]("betgroup")
+     def itemtype = column[String]("itemtype")
+     def result = column[String]("result") 
      def * = (id.?, name, description, points, closeDate, betGroup, itemtype, result) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
   }
   
   
   class SpecialBetByUsers(tag: Tag) extends Table[SpecialBetByUser](tag, "specialbetbyusers"){
      def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-     def userId = column[Long]("userid", O.NotNull)
-     def spId = column[Long]("specialbetid", O.NotNull)
-     def prediction = column[String]("prediction", O.NotNull)
-     def points = column[Int]("points", O.NotNull)
+     def userId = column[Long]("userid")
+     def spId = column[Long]("specialbetid")
+     def prediction = column[String]("prediction")
+     def points = column[Int]("points")
     
      def * = (id.?, userId, spId, prediction, points) <> (SpecialBetByUser.tupled,SpecialBetByUser.unapply)     
     
+     def userfk = foreignKey("SPECIALBET_USER_FK", userId, users)(_.id) 
+     def spfk = foreignKey("SPECIALBET_SPECIALBETT_FK", spId, specialbetstore)(_.id) 
+     
   }
   
 
   class Users(tag: Tag) extends Table[User](tag, "users") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def username = column[String]("username", O.NotNull)
-    def firstname = column[String]("firstname", O.NotNull)
-    def lastname = column[String]("lastname", O.NotNull)
-    def email = column[String]("email", O.NotNull)
-    def passwordhash = column[String]("password", O.NotNull)
-    def isRegistrant = column[Boolean]("isregistrant", O.NotNull)
-    def isAdmin = column[Boolean]("isadmin", O.NotNull)
-    def hadInstructions = column[Boolean]("instructions", O.NotNull)
-    def canBet = column[Boolean]("canbet", O.NotNull)
-    def isRegistered = column[Boolean]("isregistered", O.NotNull)
-	def points = column[Int]("points", O.NotNull)
-    def iconurl = column[String]("iconurl", O.NotNull)
-    def icontype = column[String]("icontype", O.NotNull)
+    def username = column[String]("username")
+    def firstname = column[String]("firstname")
+    def lastname = column[String]("lastname")
+    def email = column[String]("email")
+    def passwordhash = column[String]("password")
+    def isRegistrant = column[Boolean]("isregistrant")
+    def isAdmin = column[Boolean]("isadmin")
+    def hadInstructions = column[Boolean]("instructions")
+    def canBet = column[Boolean]("canbet")
+    def isRegistered = column[Boolean]("isregistered")
+	  def points = column[Int]("points")
+    def iconurl = column[String]("iconurl")
+    def icontype = column[String]("icontype")
 	
-	def usernameidx = index("USER_USERNAME_INDEX", (username))
-    def registerby = column[Option[Long]]("registerby", O.Nullable)
-    def pointsSpecial = column[Int]("pointsspecial", O.NotNull)
+	  def usernameidx = index("USER_USERNAME_INDEX", (username))
+    def registerby = column[Option[Long]]("registerby")
+    def pointsSpecial = column[Int]("pointsspecial")
     
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id) 
     
@@ -158,12 +172,12 @@ object BetterTables {
 
   class Bets(tag: Tag) extends Table[Bet](tag, "bets") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def points = column[Int]("points", O.NotNull)
-    def goalsTeam1 = column[Int]("goalsteam1", O.NotNull)
-    def goalsTeam2 = column[Int]("goalsteam2", O.NotNull)
-    def isSet = column[Boolean]("isset", O.NotNull)
-    def gameId = column[Long]("game_id", O.NotNull)
-    def userId = column[Long]("user_id", O.NotNull)  
+    def points = column[Int]("points")
+    def goalsTeam1 = column[Int]("goalsteam1")
+    def goalsTeam2 = column[Int]("goalsteam2")
+    def isSet = column[Boolean]("isset")
+    def gameId = column[Long]("game_id")
+    def userId = column[Long]("user_id")  
     
     def game = foreignKey("BET_GAME_FK", gameId, games)(_.id)
     def user = foreignKey("BET_USER_FK", userId, users)(_.id)
@@ -175,13 +189,13 @@ object BetterTables {
 
   class Players(tag: Tag) extends Table[Player](tag, "players") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name", O.NotNull)
-    def role = column[String]("role", O.NotNull)
-	def club = column[String]("club", O.NotNull)
-    def teamId = column[Long]("team_id", O.NotNull)
+    def name = column[String]("name")
+    def role = column[String]("role")
+	  def club = column[String]("club")
+    def teamId = column[Long]("team_id")
        
-    def imageFormat = column[String]("format", O.NotNull)
-    def image = column[String]("image", O.NotNull)
+    def imageFormat = column[String]("format")
+    def image = column[String]("image")
      
     def foto = (imageFormat, image) <> (DBImage.tupled, DBImage.unapply)
     
@@ -190,23 +204,16 @@ object BetterTables {
 
   }
 
-  class Teams(tag: Tag) extends Table[Team](tag, "teams") {
-    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name", O.NotNull)
-    def short3 = column[String]("short3", O.NotNull)
-	def short2 = column[String]("short2", O.NotNull)
-	     
-    def * = (id.?, name, short3, short2) <> (Team.tupled, Team.unapply _)
-  }
+
 
 
   class UserTokens(tag: Tag) extends Table[UserToken](tag, "usertokens") {
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-	  def userId = column[Long]("user_id", O.NotNull)
-	  def token = column[String]("token", O.NotNull)
-	  def created = column[DateTime]("created", O.NotNull)
-	  def used = column[Option[DateTime]]("used", O.NotNull)
-	  def tokentype = column[String]("type", O.NotNull)
+	  def userId = column[Long]("user_id")
+	  def token = column[String]("token")
+	  def created = column[DateTime]("created")
+	  def used = column[Option[DateTime]]("used")
+	  def tokentype = column[String]("type")
 	  
 	  def user = foreignKey("TOKEN_USER_FK", userId, users)(_.id)
 	  
@@ -216,18 +223,18 @@ object BetterTables {
   //no constraints in id columns so its possible to see what went wrong
   class BetLogs(tag: Tag) extends Table[BetLog](tag, "betlogs") {
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-	  def userId = column[Long]("user_id", O.NotNull)
-	  def gameId = column[Long]("game_id", O.NotNull)
-	  def betId = column[Long]("bet_id", O.NotNull)
-      def t1old = column[Int]("t1old", O.NotNull)
-      def t1new = column[Int]("t1new", O.NotNull)
-      def t2old = column[Int]("t2old", O.NotNull)
-      def t2new = column[Int]("t2new", O.NotNull)
-	  def created = column[DateTime]("change", O.NotNull)
+	  def userId = column[Long]("user_id")
+	  def gameId = column[Long]("game_id")
+	  def betId = column[Long]("bet_id")
+    def t1old = column[Int]("t1old")
+    def t1new = column[Int]("t1new")
+    def t2old = column[Int]("t2old")
+    def t2new = column[Int]("t2new")
+	  def created = column[DateTime]("change")
 	  
 	  def * = (id.?, userId, gameId, betId, t1old, t1new, t2old, t2new, created) <> (BetLog.tupled, BetLog.unapply _)
   }
-  
+
 
   
 }

@@ -130,4 +130,3 @@ trait Users extends Controller with Security {
    
 }
 
-object Users extends Users

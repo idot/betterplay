@@ -144,7 +144,7 @@ object InitialData {
   	  }
   }
   
-  def updateChampion()(implicit s: Session){
+ /* def updateChampion()(implicit s: Session){
 	  BetterTables.specialbetsuser.filter(s => s.spId === 3l).map(_.prediction).update("Argentinia")  
   }
   
@@ -181,6 +181,6 @@ object InitialData {
     Logger.info("done inserting data in db")
   
   }
-
+*/
 
 }

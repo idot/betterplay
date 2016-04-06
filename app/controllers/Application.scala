@@ -26,7 +26,11 @@ import javax.inject.{Inject, Provider, Singleton}
 import play.api.mvc.{Action, Controller}
 import play.api.routing.{JavaScriptReverseRoute, JavaScriptReverseRouter, Router}
 import play.api.inject.ApplicationLifecycle
+import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.driver.JdbcProfile
+
+import scala.concurrent.Future
 
 object PlayHelper {
 
@@ -61,8 +65,8 @@ object FormToV {
  * actions that reveal sensitive information only fetch from db the user that is logged in by token 
  *
  **/
-trait Security { self: Controller =>
-
+trait Security extends HasDatabaseConfigProvider[JdbcProfile] { self: Controller =>
+  import driver.api._
 
   implicit val app: play.api.Application = play.api.Play.current
 
@@ -70,12 +74,12 @@ trait Security { self: Controller =>
   val AuthTokenCookieKey = "AUTH-TOKEN"
   val AuthTokenUrlKey = "auth"
 
-
+//  val dbConfig = dbConfigProvider.get[JdbcProfile]
+//  val db = dbConfig.db
 
   /** Checks that a token is either in the header ***/ 
-  def HasToken[A](p: BodyParser[A] = parse.anyContent)(f: String => Long => DBSessionRequest[A] => Result): Action[A] = {
-    import dbConfig.driver.api._
-    DBAction(p) { implicit request =>
+  def HasToken[A](p: BodyParser[A] = parse.anyContent)(f: String => Long => Request[A] => Future[Result]): Action[A] = {
+    Action.async(p) { implicit request =>
       val maybeToken = request.headers.get(AuthTokenHeader)
       maybeToken.flatMap{ token =>
         Cache.getAs[Long](token) map { userId =>
@@ -88,16 +92,15 @@ trait Security { self: Controller =>
   /**
   * action with the logged in user fresh from DB
   */
-  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => DBSessionRequest[A] => Result): Action[A] = {
+  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Result): Action[A] = {
 	  HasToken(p){ token => userId => implicit request =>
-		 implicit val session = request.dbSession
 	     BetterDb.userById(userId).map{ user =>
 	  	     f(userId)(user)(request)		   
 	     }.getOrElse( NotFound(Json.obj("error" -> s"could not find user $userId")))
 	 }
   }
   
-  def withAdmin[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => DBSessionRequest[A] => Result): Action[A] = {
+  def withAdmin[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Result): Action[A] = {
 	  withUser(p){ userId => user => implicit request =>
 		   if(user.isAdmin) f(userId)(user)(request) else Unauthorized(Json.obj("error" -> s"must be admin"))	   
 	  }
@@ -124,9 +127,7 @@ class Application(env: Environment,
     this(env, gulpAssets, lifecycle, Some(router.get))
 
 
-  val dbConfig = dbConfigProvider.get[JdbcProfile]
-  val db = dbConfig.db
-  import dbConfig.driver.api._
+//  dbConfig = dbConfigProvider.get[JdbcProfile]
 
   /**
    * Returns ui/src/index.html in dev/test mode and ui/dist/index.html in production mode
@@ -240,7 +241,7 @@ class Application(env: Environment,
   
  
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
-  def login = DBAction(parse.json) { implicit request =>
+  def login = Action.async(parse.json) { implicit request => //parse.json
      LoginForm.bind(request.body).fold(
       formErrors => BadRequest(formErrors.errorsAsJson),
       loginData => {
