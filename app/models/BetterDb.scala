@@ -22,8 +22,8 @@ case object SetResult extends GameUpdate
 case object ChangeDetails extends GameUpdate
 case object NewGame extends GameUpdate
 
-//case class UpdatePoints(session: Session)
 
+case class UpdatePoints()
 
 @Singleton()
 class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) extends BetterTables with HasDatabaseConfigProvider[JdbcProfile] {
@@ -31,20 +31,7 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
   import scala.concurrent.ExecutionContext.Implicits.global
 
   import driver.api._
-  // def withT[A,B](f: => String \/ B): String \/ B = {
-  //     s.withTransaction{
-	//	    try{
-	//		   f
-  //          } catch {
-  //          case e: Exception => {
-	//		  Logger.error(e.getMessage)
-  //            s.rollback()
- //             -\/(e.getMessage)
-  //          }
-  //        }
-//	   }
- //  }
-
+  
 
    def allTeams(): Future[Seq[Team]] = {
        db.run(teams.result)
@@ -69,6 +56,10 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          db.run(users.result)
      }
 
+     def allSpecialBetTemplates(): Future[Seq[SpecialBetT]] = {
+         db.run(specialbetstore.result)
+     }
+     
      def allUsersWithRank(): Future[Seq[(User,Int)]] = {
          val res = users.sortBy(u => (u.points + u.pointsSpecial).desc ).result.map{ sorted =>
             val points = sorted.map(_.totalPoints)
@@ -113,46 +104,44 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          val li = gtt.result.map{ list => list.map{ case(g,t1,t2,l) => GameWithTeams(g,t1,t2,l) }}
          db.run(li)
      }
-/* not clear if needed besides initialdata:
-     def insertOrUpdateLevelByNr(level: GameLevel, submittingUser: User): Future[GameLevel] = {
-         if(!submittingUser.isAdmin){
-            return Future.failed(AccessViolationException("only admin user can change levels"))
-         }
-         val l = levelByNr(level.level).map{ l =>
-             levels.filter(_.id === level.id).update(l)
-             l
-         }.getOrElse{
-            val levelId = (levels returning levels.map(_.id)) += level
-            level.copy(id=Some(levelId))
-         }
-         \/-(l)
-     }
-
-  
-     def levelByNr(levelNr: Int): Future[GameLevel] = {
-         levels.filter(_.level === levelNr).headOption.getOrElse{ ItemNotFoundException(s"level not found by nr: $levelNr") }
+     
+     /**
+      * 
+      * 
+      **/  
+     def insertLevel(level: GameLevel, submittingUser: User): Future[GameLevel] = {
+        if(submittingUser.isAdmin){
+           db.run((levels returning levels.map(_.id)) += level).map{ lid => level.copy(id=Some(lid))}
+         } else {
+           Future.failed(AccessViolationException("only admins can insert or update teams by name"))
+        } 
      }
 
 
-     def insertOrUpdateTeamByName(team: Team, submittingUser: User): Future[Team] = {
-         if(!submittingUser.isAdmin){
-            return Future.failed(AccessViolationException("only admin user can change teams"))
+     def insertTeam(team: Team, submittingUser: User): Future[Team] = {
+        if(submittingUser.isAdmin){
+           db.run((teams returning teams.map(_.id)) += team).map{ tid => team.copy(id=Some(tid))}
+         } else {
+           Future.failed(AccessViolationException("only admins can insert or update teams by name"))
+        }
+     }
+ 
+     def insertPlayer(player: Player, teamName: String, submittingUser: User): Future[Player] = {
+         if(submittingUser.isAdmin){
+           val ins = (for{
+              team <- teams.filter(t => t.name === teamName).result.head
+              playerWithTeamId = player.copy(teamId=team.id.get)
+              playerId <- (players returning players.map(_.id)) += playerWithTeamId
+           } yield {
+              playerWithTeamId.copy(id=Some(playerId))
+           }).transactionally
+           db.run(ins).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not team name $teamName")) }
+         } else {
+           Future.failed(AccessViolationException("only admins can insert or update teams by name"))
          }
-         val t = getTeamByName(team.name).map{ t =>
-            teams.filter(_.id === team.id).update(t)
-            t
-         }.getOrElse{
-            val teamId = (teams returning teams.map(_.id)) += team
-            team.copy(id=Some(teamId))
-         }
-         \/-(t)
      }
      
-     def getTeamByName(teamName: String): String \/ Team = {
-         teams.filter(_.name === teamName).firstOption.map{ \/-(_) }.getOrElse{ -\/(s"team not found by name: $teamName") }
-     }
-     */
-
+ 
      def getGameByNr(gameNr: Int): Future[GameWithTeams] = {
          val gtt = (for{
            (((g, t1), t2),l) <- joinGamesTeamsLevels() if g.nr === gameNr
@@ -224,30 +213,20 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       * todo: add updatingUser
       *
       */
-     /*
-     def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int, settingUser: User): Future[GameWithTeams] = {
-
-         val result = ( getTeamByName(team1Name).validation.toValidationNel |@| getTeamByName(team2Name).validation.toValidationNel |@|
-                        levelByNr(levelNr).validation.toValidationNel |@|
-                        isAdmin(settingUser).toValidationNel
-               ){
-             case (team1, team2, level, u) => (team1, team2, level, u)
-          }
-          result.fold(
-              err => Future.failed(ValidationException(err.list.mkString("\n"))),
-              succ => succ match {
-                case (t1@Team(Some(t1id),_,_,_), t2@Team(Some(t2id),_,_,_), l@GameLevel(Some(lid),_,_,_,_), _) => {
-                   val gameNr = if(game.nr == 0) db.run(games.map(_.nr).max).first.map(m => m+1).getOrElse(0) else game.nr
-                   val gameWithTeamsAndLevel = game.copy(team1id=t1id, team2id=t2id, levelId=lid, result=DomainHelper.gameResultInit, nr=gameNr)
-                   val gameId = (games returning games.map(_.id)) += gameWithTeamsAndLevel
-                   val dbgame = gameWithTeamsAndLevel.copy(id=Some(gameId))
-                   val gwt = GameWithTeams(dbgame, t1, t2, l)
-                   \/-(gwt)
-                }
-                case _ => -\/("problem with ids of team1, team2 or level")
-              }
-          )
-    }*/
+     def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int, submittingUser: User): Future[GameWithTeams] = {
+         Logger.debug(s"inserting new game $game $team1Name $team2Name $levelNr")
+         if(submittingUser.isAdmin){
+             val gttl = (for{
+                ((t1,t2),l) <- ((teams.filter(_.name === team1Name)).zip(teams.filter(_.name === team2Name)).zip(levels.filter(_.level === levelNr))).result.head
+                 gameNr <- games.map(_.nr).max.result
+                 gameWithTeamsAndLevel = game.copy(team1id=t1.id.get, team2id=t2.id.get, levelId=l.id.get, result=DomainHelper.gameResultInit, nr=if(game.nr == 0) gameNr.map(_ + 1).getOrElse(1) else game.nr)
+                 gameId <- (games returning games.map(_.id)) += gameWithTeamsAndLevel
+             }yield((gameWithTeamsAndLevel.copy(id=Some(gameId))), t1, t2, l)).transactionally
+             db.run(gttl).map{ case(g,t1,t2,l) => GameWithTeams(g, t1, t2, l) }
+        } else {
+           Future.failed(AccessViolationException("only admins can create bets for all users"))
+        }
+    }
 
      /**
       * TODO: test
@@ -430,6 +409,7 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          }
      }
 
+     /*
 
      /**
       * this should only be called immediately after game creation if there has been an error!
@@ -476,128 +456,126 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
               )
          }.getOrElse(-\/(s"could not find game in database $game"))
      }
-
+*/
+     
+      /**
+      * I need only to filter for games without bets, therfore the
+      * row hack with ? is not necessary, but if it is:
+      * http://stackoverflow.com/questions/14990365/slick-left-outer-join-fetching-whole-joined-row-as-option
+      *
+      * //was: Seq[Game]
+      */
+     def gamesWithoutBetsForUser(userId: Long): Query[BetterDb.this.Games,models.Game,Seq] = {
+         val allGamesWithBetsForUser = for{
+            (g,b) <- games.join(bets).on(_.id === _.gameId) if b.userId === userId
+         } yield (g.id)
+         val allGamesWithoutBetsForUser = games.filterNot(g => g.id in allGamesWithBetsForUser)
+         allGamesWithoutBetsForUser
+     }
+     
+   
      /**
       * one of 2 methods for creating users:
       * this one creates the user directly
       * sets up all bets including special bets
       * TODO: only isResitserging users have to check registeringUser!!
       *
-      *  the other one is token based, but I don't know if i manage to create this workflow:
-      *
+      *  the other one is token based, but I don't know if i manage to create this workflow: (Not done now!!!)
       *  user registers with e-mail, token is generated for his id
       *  user klicks link with token e-mail, opens web, => user signs on..
       *
       */
-     def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long]): String \/ User = {
-         withT{
-             val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser)
-             val userId = (users returning users.map(_.id)) += initUser
-             val userWithId = initUser.copy(id=Some(userId))
-             users.filter(_.id === userId).firstOption.map{ user =>
-          createSpecialBetsForUser(userWithId)
-                createBetsForGamesForUser(userWithId)
-             }
-         \/-(userWithId)
-      }
+     def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long]): Future[User] = {
+
+       //TODO: check if registeringUser is registeringUser!!
+       
+          val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser)
+          
+          val userQ = (for{
+             userId <- (users returning users.map(_.id)) += initUser
+             specialBets <- specialbetstore.result
+             // does not compile (would be interesting to get the spIds
+             // spIds <- (specialbetsuser returning specialbetsuser.map(_id)) ++= specialBets.map(s => SpecialBetByUser(None, userId, s.id.get, "", 0))
+             _ <- specialbetsuser ++= specialBets.map(s => SpecialBetByUser(None, userId, s.id.get, "", 0))
+             _ <- createBetsForGamesForUser(userId)
+          } yield userId).transactionally
+           
+          db.run(userQ).map(i => initUser.copy(id=Some(i)))
+          
      }
-
-     def updateUserPassword(userId: Long, passwordHash: String): String \/ User = {
-       withT{
-            users.filter(u => u.id === userId).firstOption.map{ user =>
-            val updatedUser = user.copy(passwordHash=passwordHash)
-          users.filter(u => u.id === userId).update(updatedUser)
-          \/-(updatedUser)
-        }.getOrElse(-\/(s"user not found $userId"))
-         }
+     
+      /**
+      * only simple bets no special bets!
+      */
+     def createBetsForGamesForUser(userId: Long): DBIOAction[Option[Int],slick.dbio.NoStream,slick.dbio.Effect.Read with slick.dbio.Effect.Write]  = {
+         Logger.debug(s"creating bets for games for user $userId")
+         val r = for{
+            games <- gamesWithoutBetsForUser(userId).result
+            b <- bets ++= games.map(g => Bet(None, 0, GameResult(0,0,false), g.id.get, userId))
+         } yield { b } 
+         r
      }
-
-     def updateUserDetails(userId: Long, firstName: String, lastName: String, email: String, icontype: String): String \/ User = {
-       withT{
-            users.filter(u => u.id === userId).firstOption.map{ user =>
-          val (u,t) = DomainHelper.gravatarUrl(email, icontype)
-            val updatedUser = user.copy(firstName=firstName, lastName=lastName, email=email, iconurl=u, icontype=t)
-          users.filter(u => u.id === userId).update(updatedUser)
-          \/-(updatedUser)
-        }.getOrElse(-\/(s"user not found $userId"))
-         }
-     }
-
-     def updateUserHadInstructions(user: User): String \/ String = {
-         withT{
-         val withInstructions = user.copy(hadInstructions = true)
-         users.filter(u => u.id === user.id).update(withInstructions)
-         \/-("first special bet! Excellent")
-       }
-     }
-
-  // not neccessary? using getUser(usernmae)
-  //   def usernameExists(username: String): Boolean = {
-  //       users.list.filter(u.username === username).headOption.map(b => true).getOrElse(false)
-  //   }
-
-     def createBetsForGamesForAllUsers(submittingUser: User): String \/ String = {
+     
+     /**
+      * only simple bets no special bets!
+      * 
+      * TODO: get userIds.map(u => createBetsForGamesForUser(u)) into the for loop
+      * 
+      */
+     def createBetsForGamesForAllUsers(submittingUser: User): Future[String] = {
+         Logger.debug(s"creating bets for games for all users")
          if(submittingUser.isAdmin){
-            users.list.foreach{ u =>
-               createBetsForGamesForUser(u)
-            }
-            \/-("created bets for all users")
+           val create = (for{
+             userIds <- users.map(_.id).result
+           } yield { userIds.map(u => createBetsForGamesForUser(u))  }).transactionally
+           db.run(create).map(r => "created bets for all users")
          }else{
-           -\/("only admin users can create bets")
+           Future.failed(AccessViolationException("only admins can create bets for all users"))
          }
      }
-
-     def createBetsForGamesForUser(user: User){
-         s.withTransaction { //this is something slick is misssing: nested transactions and joining open transactions
-            user.id.map{ uid =>
-              val gamesWithoutBets = gamesWithoutBetsForUser(user)
-              gamesWithoutBets.flatMap{ g => g.id }.foreach{ gid =>
-                 createBetForGameAndUser(gid, uid)
-              }
-            }
-         }
+  
+     def updateUserPassword(userId: Long, passwordHash: String): Future[User] = {
+           val upd = (for{
+             user <- users.filter(u => u.id === userId).result.head
+             updatedUser = user.copy(passwordHash=passwordHash)
+             _ <- users.update(updatedUser)
+           } yield( updatedUser )).transactionally
+           db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
      }
 
-     def createBetForGameAndUser(gameId: Long, userId: Long){
-         val bet = Bet(None, 0, GameResult(0,0,false), gameId, userId)
-         bets.insert(bet)
+     def updateUserDetails(userId: Long, firstName: String, lastName: String, email: String, icontype: String): Future[User] = {
+         val (u,t) = DomainHelper.gravatarUrl(email, icontype)
+         val upd = (for{
+             user <- users.filter(u => u.id === userId).result.head
+             updatedUser = user.copy(firstName=firstName, lastName=lastName, email=email, iconurl=u, icontype=t)
+             _ <- users.update(updatedUser)
+         } yield( updatedUser )).transactionally
+         db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+     }
+       
+     def updateUserHadInstructions(userId: Long): Future[User] = {
+         val upd = (for{
+             user <- users.filter(u => u.id === userId).result.head
+             updatedUser = user.copy(hadInstructions = true)
+             _ <- users.update(updatedUser)
+         } yield( updatedUser )).transactionally
+         db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
      }
 
-     /**
-      * I need only to filter for games without bets, therfore the
-      * row hack with ? is not necessary, but if it is:
-      * http://stackoverflow.com/questions/14990365/slick-left-outer-join-fetching-whole-joined-row-as-option
-      *
-      *
-      */
-     def gamesWithoutBetsForUser(user: User): Seq[Game] = {
-         val allGamesWithBetsForUser = for{
-           (g, b) <- games.join(bets).on(_.id === _.gameId) if b.userId === user.id
-         } yield (g.id)
 
-         val allGamesWithoutBetsForUser = for{
-           g <- games if g.id notIn allGamesWithBetsForUser
-         } yield g
-
-         //does not compile
-          //  val allGamesWithoutBetsForUser = games.filterNot(_.id inSet(allGamesWithBetsForUser) )
-
-         allGamesWithoutBetsForUser.list
-
-     }
-
-     /**
-      * if something was wrong with the game. we set the results for this game to isSet = false
-      * This does not delete the set result, but excludes them from accruing points for the user
-      *
-      */
-     def invalidateGame(game: Game, submittingUser: User): String \/ String = {
+    /**
+     * if something was wrong with the game. we set the results for this game to isSet = false
+     * This does not delete the set result, but excludes them from accruing points for the user
+     *
+     */
+     def invalidateGame(game: Game, submittingUser: User): Future[String] = {
          if(submittingUser.isAdmin){
-            s.withTransaction{
-               games.filter(_.id === game.id).map(_.isSet).update(false)
-               \/-(s"invalidated $game")
-            }
-         }else -\/(s"only admin user can invalidate games")
+             val r = games.filter(_.id === game.id).map(_.isSet).update(false)
+             Logger.debug("invalidating game $game")
+             db.run(r).map(i => "invalidated game $game count: $i")
+         } else {           
+            Future.failed(AccessViolationException(s"only admin user can invalidate games"))
+         }
      }
 
      /**
@@ -611,17 +589,19 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       * has return value for return result and free actor
       *
       **/
-     def calculatePoints(submittingUser: User): String \/ String = {
+     def calculateAndUpdatePoints(submittingUser: User): Future[String] = {
           if(submittingUser.isAdmin){
-        withT{
-                updateBetsWithPoints()
-                updateUsersPoints()
-                \/-("updated bets")
-        }
-          }else{
-            -\/("only admin can calculate points")
-          }
+             val r = (for{
+               _ <- updateBetsWithPoints()
+               _ <- updateUsersPoints()
+             } yield()).transactionally
+             db.run(r).map(r => "calculated all points for special bets and bets and updated users")
+         } else {           
+            Future.failed(AccessViolationException(s"only admin user can calculate points"))
+         }
      }
+        
+     
 
      /***
       * updates all bets which have a valid result with points depending on game results and level
@@ -630,77 +610,59 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       * the game is invalid
       *
       */
-     def updateBetsWithPoints(): String \/ String = {
-           val gamesLevelBets = for{
-                ((g,l),b) <- games.join(levels).on(_.levelId === _.id).join(bets).on(_._1.id === _.gameId) if b.isSet
+     def updateBetsWithPoints(): DBIOAction[Seq[slick.profile.FixedSqlAction[Int,slick.dbio.NoStream,slick.dbio.Effect.Write]],slick.dbio.NoStream,slick.dbio.Effect.Read] = { //((g,l),b)
+          Logger.info("updating bets with points") 
+          val glbUpdate = for{
+                glbs <- ((games.join(levels).on(_.levelId === _.id).join(bets.filter( b => b.isSet )).on(_._1.id === _.gameId))).result
              } yield {
-             (g,l,b)
-           }
-           gamesLevelBets.list.foreach{ case (g,l,b) =>
-                val points = PointsCalculator.calculatePoints(b, g, l)
-                val betWithPoints = b.copy(points=points)
-                bets.filter(_.id === betWithPoints.id).update(betWithPoints)
-           }
-      \/-("updated")
+               glbs.map{ case ((g,l),b) =>
+                   val points = PointsCalculator.calculatePoints(b, g, l)
+                   val betWithPoints = b.copy(points=points)
+                   bets.filter(_.id === betWithPoints.id).update(betWithPoints)
+             }
+         }  
+         glbUpdate    
      }
+     
+     /**
+      * calculates but and updates special points for user
+      * to be called from updateUserPoints
+      *
+      */
+     def calculateAndUpdateSpecialPointsForUser(user: User) = {
+         Logger.debug(s"calculating special points for user ${user.id}")
+         val up = (for{
+            s <- specialbetstore.join(specialbetsuser.filter(sp => sp.userId === user.id)).on( _.id === _.spId ).result   
+            updated = PointsCalculator.calculateSpecialBets(s).map{ case(t,b) => b }
+            sum = updated.map(_.points).sum
+         } yield {
+             updated.foreach{ b => specialbetsuser.filter(_.id === b.id).update(b) } //TODO: check on mailing list if this is actually executed transactionally!
+             users.filter(_.id === user.id).update(user.copy(pointsSpecialBet=sum))
+             sum
+         })
+         up
+     }
+     
 
      /***
       * updates the tally of the bet points in the user
       *
       */
-     def updateUsersPoints(): Boolean = {
-            users.list.foreach{ user =>
-                val points = for{
-                  b <- bets if(b.userId === user.id)
-                } yield {
-                  b.points
-                }
-                val p = points.list.sum
-                val specialPoints = calculateSpecialPointsForUser(user)
-                val userWithPoints = user.copy(points=p, pointsSpecialBet=specialPoints)
-                users.filter(_.id === userWithPoints.id).update(userWithPoints)
-            }
-              true
-     }
-
-
-
-     /**
-      * calculates but does not set special points for user
-      *
-      */
-     def calculateSpecialPointsForUser(user: User): Int = {
-         val tbets = getSpecialBetsForUser(user)
-       val updated = PointsCalculator.calculateSpecialBets(tbets)
-       val bets = updated.map{ case(t,b) => b }
-       val sum = bets.map(_.points).sum
-       bets.foreach{ b =>
-          specialbetsuser.filter(_.id === b.id).update(b)
+     def updateUsersPoints() = {
+         Logger.info("updating users with points")
+         val userUpdate = for{
+              suser <- users.join(bets).on(_.id === _.userId).result
+         } yield {
+           val r = suser.groupBy{ _._1 }.map{ case(user,ub) =>  
+                 val betSum = ub.map{ _._2.points}.sum 
+                 val userWithPoints = user.copy(points=betSum)
+                 calculateAndUpdateSpecialPointsForUser(user) //stores both betSum and calculates special points
+           }
+           r
          }
-       sum
+         userUpdate
      }
 
-     def insertPlayer(player: Player, teamName: String, submittingUser: User): String \/ Player = {
-         if(! submittingUser.isAdmin){
-           return -\/("must be admin to insert players")
-         }
-         getTeamByName(teamName).map{ team =>
-             val playerWithTeamId = player.copy(teamId=team.id.get)
-             players.insert(playerWithTeamId)
-             playerWithTeamId
-         }
-     }
-
-     def specialBetTemplates(): Seq[SpecialBetT] = {
-         specialbetstore.list
-     }
-
-     def createSpecialBetsForUser(user: User){
-         specialbetstore.list.foreach{ sp =>
-          val us = SpecialBetByUser(None, user.id.get, sp.id.get, "", 0)
-          specialbetsuser.insert(us)
-       }
-     }
 
      //the optimum would be a left outer join with an and within the on clause!, but this is too complicated becasue there is
      //no option[row].? as return type possible for slick yet
@@ -708,20 +670,27 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
      //
      //we generate for each user the correct bets when he signs in
      //http://stackoverflow.com/questions/20386593/slick-left-right-outer-joins-with-option
-     def getSpecialBetsForUser(user: User): Seq[(SpecialBetT,SpecialBetByUser)] = {
-       val tbs = for {
-         (t,b) <- specialbetstore.join(specialbetsuser).on( (temp,bet) => temp.id === bet.spId ) if b.userId === user.id
-       } yield (t,b)
-       tbs.list
-    }
+     def getSpecialBetsForUser(user: User): Future[Seq[(SpecialBetT,SpecialBetByUser)]] = {
+         val tbs = for {
+           s <- specialbetstore.join(specialbetsuser.filter(sp => sp.userId === user.id)).on( _.id === _.spId ).result
+           expectedCount = specialbetstore.length.result
+         } yield (s, expectedCount)
+         db.run(tbs).flatMap{ case(tbs,count) =>  
+             if(tbs.size == count){
+                Future{ tbs }
+             }else{
+               Future.failed(ItemNotFoundException(s"could not find all special bets for user ${user.id} with id $count")) 
+             }
+         }    
+     }
 
-      def specialBetsByTemplate(id: Long): String \/ (SpecialBetT,Seq[SpecialBetByUser]) = {
-      specialbetstore.filter(_.id === id).firstOption.map{ template =>
-          val sp = specialbetsuser.filter(s => s.spId === template.id).list
-          \/-((template,sp))
-      }.getOrElse( -\/(s"special bet $id not found"))
+
+    def specialBetsByTemplate(id: Long): Future[(SpecialBetT,Seq[SpecialBetByUser])] = {
+       val res = specialbetstore.filter(_.id === id).join(specialbetsuser).on(_.id === _.spId).result
+       db.run(res).map{ r => r.groupBy{ case(t, sp) => t }.mapValues{ v => v.unzip._2 }.head }
+            .recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find special bet template with id $id")) }
     }
-  */
+ 
    
 }
 
