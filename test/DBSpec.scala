@@ -3,66 +3,74 @@ package test
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
-import play.api.test.WithApplication
 import models._
 import org.joda.time.DateTime
 import org.specs2.matcher.ThrownMessages
 import scala.collection.mutable.ArrayBuffer
-
-
-
-class DBSpec extends Specification with ThrownMessages {
+import javax.inject.Inject
+import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
+import slick.driver.JdbcProfile
+import org.specs2.specification.ExecutionEnvironment
+import org.specs2.concurrent.ExecutionEnv
+ 
+class DBSpec @Inject() (betterDb: BetterDb, dbConfigProvider: DatabaseConfigProvider) extends Specification 
+           with ThrownMessages  
+           with HasDatabaseConfigProvider[JdbcProfile]
+           with ExecutionEnvironment { def is(implicit ee: ExecutionEnv) 
   
+  import driver.api._
+ 
   
   "DB" should {
     "be able to play a little game" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase(
       options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")   
       ))) {
       
+      
        
       val firstStart = new DateTime(2014, 3, 9, 10, 0)//y m d h min
       val changedStart = firstStart.minusMinutes(30)
-      
-      import BetterDb._
- 
-      def insertAdmin()(implicit s: Session){
-		  BetterTables.specialbetsuser.list.size === 0
+         
+      def specialBetsUserSize(should: Int) = ((db.run(betterDb.specialbetsuser.length.result)) must be=(should)).await
+          
+      def insertAdmin(){
+		      betterDb.specialbetsuser.result.length === 0
           BetterTables.users.list.size === 0
           val admin = insertUser(ObjectMother.adminUser, true, true, None).toOption.get
           BetterTables.users.list.size === 1
 		  BetterTables.specialbetsuser.list.size === 12
       }
 
-      def getAdmin()(implicit s: Session): User = {
+      def getAdmin(): User = {
           BetterTables.users.list.sortBy(_.id).head
       }
 
-      def insertTeams()(implicit s: Session){
+      def insertTeams(){
           val admin = getAdmin()
           ObjectMother.dummyTeams.map{t => insertOrUpdateTeamByName(t, admin) }.foreach{ r => r.isRight }
           BetterTables.teams.list.size === 6
       }
       
-      def insertLevels()(implicit s: Session){
+      def insertLevels(){
           val admin = getAdmin()
           ObjectMother.dummyLevels.map{ l => insertOrUpdateLevelByNr(l, admin) }
           BetterTables.levels.list.size === 3
       }
       
-      def insertPlayers()(implicit s: Session){
+      def insertPlayers(){
           val admin = getAdmin() 
           ObjectMother.dummyPlayers.map{ p => insertPlayer(p, "t1", admin) }
           BetterTables.players.list.size === 6
       }
       
-      def insertGames()(implicit s: Session){
+      def insertGames(){
           val admin = getAdmin()
           ObjectMother.dummyGames(firstStart).map{ case(g,t1,t2, l) => insertGame(g, t1, t2, l, admin) }.foreach{ r => r.isRight === true }
           BetterTables.games.list.size === 3
           BetterTables.bets.list.size === 0
       }
       
-      def insertUsers()(implicit s: Session){
+      def insertUsers(){
           val admin = getAdmin()
 		  BetterTables.specialbetsuser.list.size === 12
           BetterTables.bets.list.size === 0
@@ -92,7 +100,7 @@ class DBSpec extends Specification with ThrownMessages {
           }.toSet.size === 6
       }
       
-      def insertSpecialBetTemplates()(implicit s: Session){
+      def insertSpecialBetTemplates(){
 		  val specialT = ObjectMother.specialTemplates(SpecialBetType.team, firstStart)
 		  val specialP = ObjectMother.specialTemplates(SpecialBetType.player, firstStart)
 		  (specialT ++ specialP).foreach{ t => 
@@ -100,7 +108,7 @@ class DBSpec extends Specification with ThrownMessages {
 		  }
 	  }
 	  
-      def makeBets1()(implicit s: Session){
+      def makeBets1(){
          val users = BetterTables.users.list.sortBy(_.id)
          val gb1 = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
          gb1.size === 3
@@ -135,7 +143,7 @@ class DBSpec extends Specification with ThrownMessages {
          )
       }
       
-      def updateGames()(implicit s: Session){
+      def updateGames(){
           val admin = getAdmin()
           val p1 = BetterTables.players.list.head.id
           val users = BetterTables.users.list.sortBy(_.id)
@@ -233,7 +241,7 @@ class DBSpec extends Specification with ThrownMessages {
       
 
  
-      def newGames()(implicit s: Session){
+      def newGames(){
           val admin = getAdmin()
           val finalGameStart = firstStart.plusMinutes(100)
           val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart.minusHours(5), "local", finalGameStart, "server",  "stadium", "groupC", 4)
@@ -296,7 +304,7 @@ class DBSpec extends Specification with ThrownMessages {
         
       }
       
-      DB.withSession { implicit s: Session => 
+  /*    DB.withSession { implicit s: Session => 
         BetterTables.dropCreate()
 		    insertSpecialBetTemplates()
         insertAdmin()
@@ -308,17 +316,17 @@ class DBSpec extends Specification with ThrownMessages {
         makeBets1()
         updateGames()
         newGames()
-      }
+      }*/
     }
     
     
     
     
-    "select the correct testing db settings by default" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-      DB.withSession { implicit s: Session =>
-        s.conn.getMetaData.getURL must startWith("jdbc:h2:mem:play-test")
-      }
-    }
+ //   "select the correct testing db settings by default" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+ //     DB.withSession { implicit s: Session =>
+ //       s.conn.getMetaData.getURL must startWith("jdbc:h2:mem:play-test")
+  //    }
+  //  }
     
 
 //    "use the default db settings when no other possible options are available" in new WithApplication {

@@ -25,6 +25,8 @@ routesGenerator := InjectedRoutesGenerator
 
 fork in run := true
 
+scalacOptions in Test ++= Seq("-Yrangepos")
+
 libraryDependencies ++= Seq(
   jdbc,
   cache,
@@ -35,11 +37,13 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "3.1.1",
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
-  "org.specs2" %% "specs2" % "2.3.12" % "test",
-  "org.specs2" %% "specs2-matcher-extra" % "2.3.12" % "test",
-  "org.specs2" %% "specs2-scalacheck" % "2.3.12" % "test",
+  "org.specs2" %% "specs2-core" % "3.7.2" % "test",
+  "org.specs2" %% "specs2-matcher-extra" % "3.7.2" % "test",
+  "org.specs2" %% "specs2-scalacheck" % "3.7.2" % "test",
   "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0-RC1" % "test",
+  "org.scalactic" %% "scalactic" % "2.2.6", //for scalatest
+  "org.scalatest" %% "scalatest" % "2.2.6" % "test", //for scalatest
+  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0-RC1" % "test", //scalatest
   "com.h2database" % "h2" % "1.4.191",
   "org.postgresql" % "postgresql" % "9.2-1003-jdbc4",
   "org.scalaz" %% "scalaz-core" % "7.0.6",
@@ -52,5 +56,5 @@ libraryDependencies ++= Seq(
 //  "com.typesafe" %% "play-plugins-mailer" % "2.0.4"
 )
 
-
+libraryDependencies += specs2 % Test
 
