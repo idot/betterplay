@@ -74,32 +74,32 @@ object UserRow {
 }
 
 
-class StatsHelper()(implicit s: Session){
-	  //TODO: allUsersWithSpecialBets
-      val usersSpRank = BetterDb.usersWithSpecialBetsAndRank().sortBy(_._1.username)
-	  val gwts = BetterDb.allGamesWithTeams().sortBy(gwt => gwt.game.nr)
-      val allBetsForGamesPerUser = gwts.map{ gwt => 
-		  val bus = BetterDb.betsWitUsersForGame(gwt.game)
-	      bus.groupBy{ case(b,u) => u }.mapValues{ bs => bs.head }.toMap	 
-      }
-	  def betForUser(gameIndex: Int, user: User): Option[Bet] = allBetsForGamesPerUser(gameIndex).get(user).map(_._1)
-	  
-	  def createUserBets(user: User, sp: SpecialBets, rank: Int): UserBets = {
-	      val bets = gwts.zipWithIndex.map{ case(gwt,i) => betForUser(i, user) }
-	      UserBets(user, bets, rank, sp) 
-	  }
-	  
-	  def createUsersBets(): Seq[UserBets] = usersSpRank.map{ case(u,sp,r) => createUserBets(u, sp, r)}
-	   
-      def createUserRows(): Seq[UserRow] = {
-	      val bets = createUsersBets()
-          bets.map(b => UserRow(b, gwts))
-	  }
-	  
-	  def getGwts(): Seq[GameWithTeams] = gwts
-	  
-}
-
+//class StatsHelper(){
+//	  //TODO: allUsersWithSpecialBets
+//      val usersSpRank = BetterDb.usersWithSpecialBetsAndRank().sortBy(_._1.username)
+//	  val gwts = BetterDb.allGamesWithTeams().sortBy(gwt => gwt.game.nr)
+//      val allBetsForGamesPerUser = gwts.map{ gwt => 
+//		  val bus = BetterDb.betsWitUsersForGame(gwt.game)
+//	      bus.groupBy{ case(b,u) => u }.mapValues{ bs => bs.head }.toMap	 
+//      }
+//	  def betForUser(gameIndex: Int, user: User): Option[Bet] = allBetsForGamesPerUser(gameIndex).get(user).map(_._1)
+//	  
+//	  def createUserBets(user: User, sp: SpecialBets, rank: Int): UserBets = {
+//	      val bets = gwts.zipWithIndex.map{ case(gwt,i) => betForUser(i, user) }
+//	      UserBets(user, bets, rank, sp) 
+//	  }
+//	  
+//	  def createUsersBets(): Seq[UserBets] = usersSpRank.map{ case(u,sp,r) => createUserBets(u, sp, r)}
+//	   
+//      def createUserRows(): Seq[UserRow] = {
+//	      val bets = createUsersBets()
+//          bets.map(b => UserRow(b, gwts))
+//	  }
+//	  
+//	  def getGwts(): Seq[GameWithTeams] = gwts
+//	  
+//}
+//
 
 
 

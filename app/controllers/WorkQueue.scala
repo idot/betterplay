@@ -43,10 +43,10 @@ object WorkQueue extends SystemScoped {
 class WorkQueue extends Actor {
     val log = Logging(context.system, this)
     def receive = {
-       case UpdatePoints(session: Session) => {
-		   log.info("updating user points")
-		   BetterDb.updateBetsWithPoints()(session)
-		   log.info("done updating points")
+       case UpdatePoints() => {
+		     log.info("updating user points")
+	//	     betterDb.updateBetsWithPoints()
+		     log.info("done updating points")
 	   }
        case _ => log.info("received unknown message")
     }

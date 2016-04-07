@@ -8,7 +8,6 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsError
 import play.api.data._
 import play.api.data.Forms._
-import play.api.db.slick.DBAction
 import play.api.libs.concurrent.Akka
 
 import scalaz.{\/,-\/,\/-}
@@ -20,8 +19,11 @@ import FormToV._
 import org.joda.time.DateTime
 
 
-object Games extends Controller with Security {
-  
+import javax.inject.{Inject, Provider, Singleton}
+
+@Singleton
+class Games @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+  /*
   def all() = DBAction { implicit rs =>
       implicit val session = rs.dbSession
       val json = Json.toJson(BetterDb.allGamesWithTeams())  
@@ -78,5 +80,5 @@ object Games extends Controller with Security {
 	  )
   }
      
-
+*/
 }

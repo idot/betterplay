@@ -1,9 +1,9 @@
 package test
 
 import org.specs2.mutable._
-import play.api.db.slick.DB
 import play.api.test._
 import play.api.test.Helpers._
+import play.api.test.WithApplication
 import models._
 import org.joda.time.DateTime
 import org.specs2.matcher.ThrownMessages
@@ -298,7 +298,7 @@ class DBSpec extends Specification with ThrownMessages {
       
       DB.withSession { implicit s: Session => 
         BetterTables.dropCreate()
-		insertSpecialBetTemplates()
+		    insertSpecialBetTemplates()
         insertAdmin()
         insertTeams()
         insertLevels()

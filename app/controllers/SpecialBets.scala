@@ -4,14 +4,15 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
-import play.api.db.slick.DBAction
 import play.api.libs.json.JsObject
 import models._
 import models.JsonHelper._
 import play.api.libs.json.JsError
+import javax.inject.{Inject, Provider, Singleton}
 
-object SpecialBets extends Controller with Security {
-  
+@Singleton
+class SpecialBets @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+  /*
   def all() = DBAction { implicit rs =>
       Ok("") 
   }
@@ -51,5 +52,5 @@ object SpecialBets extends Controller with Security {
 	      }
 	  )
   }
-
+*/
 }

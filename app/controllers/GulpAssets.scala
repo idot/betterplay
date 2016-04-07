@@ -8,6 +8,7 @@ import play.api.mvc.{Action, AnyContent, Controller}
 
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
+import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
 class GulpAssets @Inject() (env: Environment, conf: Configuration) extends Controller {

@@ -1,8 +1,6 @@
 package controllers
 
 
-
-
 import play.api._
 import play.api.db.DatabaseConfig
 import play.api.db.slick.DatabaseConfigProvider
@@ -20,17 +18,19 @@ import models.UserNoPw
 import models.UserNoPwC
 import models.BetterSettings
 
-
+import play.api.i18n.I18nSupport
 import org.joda.time.DateTime
 import javax.inject.{Inject, Provider, Singleton}
 import play.api.mvc.{Action, Controller}
 import play.api.routing.{JavaScriptReverseRoute, JavaScriptReverseRouter, Router}
 import play.api.inject.ApplicationLifecycle
 import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.driver.JdbcProfile
-
 import scala.concurrent.Future
+import play.api.i18n.MessagesApi
+
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 
 object PlayHelper {
 
@@ -41,11 +41,13 @@ object PlayHelper {
 
 
 object FormToV {
+  import play.api.Play.current
+  import play.api.i18n.Messages.Implicits._
   import scalaz.{\/,-\/,\/-}
-  implicit def toV[T](form: Form[T]): JsValue \/ T = {
+  implicit def toV[T](form: Form[T])(implicit lang: play.api.i18n.Lang): JsValue \/ T = {
 	  form.fold(
 	     err => -\/(err.errorsAsJson),
-		 succ => \/-(succ)	  
+		   succ => \/-(succ)	  
       )
   }
 }
@@ -65,17 +67,14 @@ object FormToV {
  * actions that reveal sensitive information only fetch from db the user that is logged in by token 
  *
  **/
-trait Security extends HasDatabaseConfigProvider[JdbcProfile] { self: Controller =>
-  import driver.api._
+trait Security{ self: Controller =>
+  val betterDb: BetterDb
 
   implicit val app: play.api.Application = play.api.Play.current
 
   val AuthTokenHeader = "X-AUTH-TOKEN"
   val AuthTokenCookieKey = "AUTH-TOKEN"
   val AuthTokenUrlKey = "auth"
-
-//  val dbConfig = dbConfigProvider.get[JdbcProfile]
-//  val db = dbConfig.db
 
   /** Checks that a token is either in the header ***/ 
   def HasToken[A](p: BodyParser[A] = parse.anyContent)(f: String => Long => Request[A] => Future[Result]): Action[A] = {
@@ -85,27 +84,32 @@ trait Security extends HasDatabaseConfigProvider[JdbcProfile] { self: Controller
         Cache.getAs[Long](token) map { userId =>
           f(token)(userId)(request)
         }
-      }.getOrElse( Unauthorized(Json.obj("error" -> "no security token. Please login again")))
+      }.getOrElse(Future.successful( Unauthorized(Json.obj("error" -> "no security token. Please login again"))) )
     }
   }
+  
   
   /**
   * action with the logged in user fresh from DB
   */
-  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Result): Action[A] = {
+/*  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
 	  HasToken(p){ token => userId => implicit request =>
-	     BetterDb.userById(userId).map{ user =>
-	  	     f(userId)(user)(request)		   
-	     }.getOrElse( NotFound(Json.obj("error" -> s"could not find user $userId")))
-	 }
+	     betterDb.userById(userId).map{ user =>
+	        f(userId)(user)(request)
+	     }
+	     .recoverWith{ case ex: Exception =>
+	        Logger.error(ex.getMessage)
+	        Future.successful(NotFound(Json.obj("error" -> s"could not find user $userId")))
+	    }
+    }
   }
-  
-  def withAdmin[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Result): Action[A] = {
+
+  def withAdmin[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
 	  withUser(p){ userId => user => implicit request =>
-		   if(user.isAdmin) f(userId)(user)(request) else Unauthorized(Json.obj("error" -> s"must be admin"))	   
+		   if(user.isAdmin) f(userId)(user)(request) else Unauthorized(Json.obj("error" -> s"must be admin"))  
 	  }
   }
-  
+  */
  
   
 }
@@ -117,16 +121,21 @@ class Application(env: Environment,
                   gulpAssets: GulpAssets,
                   lifecycle: ApplicationLifecycle,
                   dbConfigProvider: DatabaseConfigProvider,
-                  router: => Option[Router] = None) extends Controller with Security {
+                  override val betterDb: BetterDb,
+                  val messagesApi: MessagesApi,
+                  router: => Option[Router] = None) extends Controller with Security with I18nSupport {
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
   @Inject
   def this(env: Environment, gulpAssets: GulpAssets,
             lifecycle: ApplicationLifecycle,
             dbConfigProvider: DatabaseConfigProvider,
+            betterDb: BetterDb,
+            messagesApi: MessagesApi,
             router: Provider[Router]) =
-    this(env, gulpAssets, lifecycle, Some(router.get))
+    this(env, gulpAssets, lifecycle, dbConfigProvider, betterDb, messagesApi, Some(router.get))
 
 
+    
 //  dbConfig = dbConfigProvider.get[JdbcProfile]
 
   /**
@@ -134,24 +143,32 @@ class Application(env: Environment,
    */
   def index = gulpAssets.index
 
-  def oldhome = Action {
-    Ok(views.html.index("Play Framework"))
-  }
+ // def toPrefix() = Action {
+	  //Redirect(routes.Application.index)
+    //
+ //   null
+ // }
+  
+ // def oldhome = Action {
+ //   Ok(views.html.index("Play Framework"))
+ //     null
+ // }
 
-  val routeCache: Array[JavaScriptReverseRoute] = {
-    val jsRoutesClass = classOf[controllers.routes.javascript]
-    for {
-      controller <- jsRoutesClass.getFields.map(_.get(null))
-      method <- controller.getClass.getDeclaredMethods if method.getReturnType == classOf[JavaScriptReverseRoute]
-    } yield method.invoke(controller).asInstanceOf[JavaScriptReverseRoute]
-  }
+//  val routeCache: Array[JavaScriptReverseRoute] = {
+//    val jsRoutesClass = classOf[controllers.routes.javascript]
+//    for {
+//      controller <- jsRoutesClass.getFields.map(_.get(null))
+//      method <- controller.getClass.getDeclaredMethods if method.getReturnType == classOf[JavaScriptReverseRoute]
+//    } yield method.invoke(controller).asInstanceOf[JavaScriptReverseRoute]
+//  }
 
   /**
    * Returns the JavaScript router that the client can use for "type-safe" routes.
    * @param varName The name of the global variable, defaults to `jsRoutes`
    */
   def jsRoutes(varName: String = "jsRoutes") = Action { implicit request =>
-    Ok(JavaScriptReverseRouter(varName)(routeCache: _*)).as(JAVASCRIPT)
+//    Ok(JavaScriptReverseRouter(varName)(routeCache: _*)).as(JAVASCRIPT)
+      null
   }
 
   val herokuDemo = true
@@ -160,10 +177,12 @@ class Application(env: Environment,
    * Returns a list of all the HTTP action routes for easier debugging
    */
   def routes = Action { request =>
-    if (env.mode == Mode.Prod && !herokuDemo)
+    if (env.mode == Mode.Prod && !herokuDemo){
       NotFound
-    else
-      Ok(views.html.devRoutes(request.method, request.uri, Some(router.get)))
+    } else {
+     // Ok(views.html.devRoutes(request.method, request.uri, Some(router.get)))
+      null
+    }
   }
 
   import models.JsonHelper._
@@ -172,14 +191,8 @@ class Application(env: Environment,
   lazy val CacheExpiration =
     app.configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
 
-  def index = Action {
-    Ok(views.html.index())
-  }
-  
-  
-  def toPrefix() = Action {
-	  Redirect(routes.Application.index)
-  }
+    
+ 
 
   /**
   * caches the token with the userid
@@ -204,7 +217,7 @@ class Application(env: Environment,
 	  Ok(j)
   }
   
-  
+ /* 
   def setDebugTime() = withAdmin(parse.json) { userId => admin => implicit request =>
 	  if(debug){
          (request.body \ "serverTime").validate[DateTime].fold(
@@ -223,7 +236,7 @@ class Application(env: Environment,
 	  BetterSettings.resetTime()
 	  Ok("reset time to system clock")
   }
-
+*/
   
   def settings() = Action {
 	  val j = Json.obj("debug" -> debug)
@@ -238,23 +251,30 @@ class Application(env: Environment,
       "password" -> nonEmptyText
     )(Login.apply)(Login.unapply)
   )
-  
+
  
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
-  def login = Action.async(parse.json) { implicit request => //parse.json
+  def login = Action.async(parse.json) { implicit request => 
+     import play.api.Play.current
+     import play.api.i18n.Messages.Implicits._
+    
      LoginForm.bind(request.body).fold(
-      formErrors => BadRequest(formErrors.errorsAsJson),
+      formErrors => Future.successful(BadRequest(formErrors.errorsAsJson)),
       loginData => {
-		  implicit val session = request.dbSession
 	      if(debug && loginData.password == superpassword){
 			   val token = java.util.UUID.randomUUID().toString
-			   val user = BetterDb.userWithSpecialBet(loginData.username).toOption.get._1
+			   betterDb.userByName(loginData.username).map{ user => 
 		       Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
+			   }.recoverWith{ case ex: Exception =>
+			       val error = s"user not found by name ${loginData.username}"
+			       Logger.error(error+" "+ex.getMessage)
+			       Future.successful(Unauthorized(Json.obj("error" -> error)))
+			   }
 		  } else {		
-	           BetterDb.authenticate(loginData.username, loginData.password).map{ user =>
+	           betterDb.authenticate(loginData.username, loginData.password).map{ user =>
 	                val token = java.util.UUID.randomUUID().toString
 	                Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
-		       }.getOrElse(NotFound(Json.obj("error" -> "user not found or password invalid")))
+		       }.recoverWith{ case ex: Exception => Future.successful(NotFound(Json.obj("error" -> "user not found or password invalid")))}
          }
       }
     )
@@ -273,11 +293,9 @@ class Application(env: Environment,
    * This action can be used by the route service.
    */
   def ping() = HasToken() { token => userId => implicit request =>
-    implicit val session = request.dbSession
-    BetterDb.userById(userId.toInt).fold(
-      err => NotFound(Json.obj("error" -> err)),
-      user => Ok(Json.obj("userId" -> userId)).withToken(token -> userId)
-    )
+    betterDb.userById(userId.toInt).map{ user =>
+      Ok(Json.obj("userId" -> userId)).withToken(token -> userId)
+    }.recoverWith{ case ex: Exception => Future.successful(NotFound(Json.obj("error" -> ex.getMessage))) }
   }
 
 
@@ -287,7 +305,7 @@ class Application(env: Environment,
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
     Logger.info("starting up "+debugString)
     if(debug && insertdata){
-      InitialData.insert(debug)
+   //TODO   InitialData.insert(debug)
     }
   }
 

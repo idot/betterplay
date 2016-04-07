@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Better WM2014</title>
+  <link rel="stylesheet" href="@routes.Assets.at("css/main.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("lib/angular-ui/angular-ui.min.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("lib/angularjs/angular-csp.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("lib/ng-table/ng-table.css")">
+  <link rel="stylesheet" href="@routes.Assets.at("lib/angularjs-toaster/toaster.css")">
+  <!--link rel="stylesheet" href="@routes.Assets.at("css/flags32.css")" does not work yet-->
+  <script data-main="@routes.Assets.at("js/main.js")" src="@routes.Assets.at("lib/requirejs/require.js")"></script>
+</head>
+<body class="container">
+
+  <nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">WM2014</a>
+    </div>
+     
+     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+	    <li ng-class="{active: $state.includes('users')}"><a ui-sref="users">users</a></li>
+		<li ng-class="{active: $state.includes('games')}"><a ui-sref="games">games</a></li>
+ 	    <li class="dropdown" ng-class="{active: $state.includes('statistics')}">
+ 	         <a href="#" class="dropdown-toggle" data-toggle="dropdown">statistics <b class="caret"></b></a>
+ 	             <ul class="dropdown-menu">
+				   <li><a ui-sref="statistics.plots">plots</a></li>
+ 	               <li><a ui-sref="statistics.excel">excel</a></li>
+				   <li class="nav-divider"></li>
+				   <li><a target="_blank" href="http://www.goldmansachs.com/our-thinking/outlook/world-cup-and-economics-2014-folder/world-cup-economics-report.pdf">goldman sachs</a></li>
+				   <li><a target="_blank" href="http://fivethirtyeight.com/interactives/world-cup/">538</a></li>
+				   <li><a target="_blank" href="http://www.bloomberg.com/visual-data/world-cup/#0,0,-1">bloomberg</a></li>
+	             </ul>
+ 	   </li>  	
+		<li ng-if="! isLoggedIn()" ng-class="{active: $state.includes('login')}"><a ui-sref="login">login</a></li>
+		<li ng-if="isLoggedIn()" ng-class="{active: $state.includes('user', { username: loggedInUser.username })}"><a ui-sref="user.userBets({ username: loggedInUser.username })" style="padding-top: 10px; padding-bottom: 10px;"><img ng-src="{{ loggedInUser && loggedInUser.iconurl+'&s=30'}}" alt="gravatar" width="30" height="30"/></a></li>
+		<li ng-if="isLoggedIn()"><a ui-sref="logout">logout</a></li>
+		<li ng-if="isAdmin()"><a ui-sref="admin.registerUser">register user</a></li>
+		<li ng-if="isAdmin()"><a ui-sref="admin.createGame">create game</a></li>
+		<li ng-if="isDebug()" ng-class="{active: $state.includes('settings')}"><a ui-sref="settings">settings</a></li>	
+	 </ul>
+	 <div class="navbar-right navbar-brand">server time: {{currentTime | date : DF }}</div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+  
+</nav>
+    
+	
+       <div ui-view></div><!-- for sref above --->
+
+    <toaster-container>  
+    </toaster-container>
+
+	
+    
+
+
+
+
+</body>
+</html>

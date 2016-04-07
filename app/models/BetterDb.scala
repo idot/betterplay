@@ -263,6 +263,11 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
           }
        }
      }
+     
+     def userByName(username: String): Future[User] = {
+         db.run(users.filter(_.username === username).result.head)
+             .recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with username $username")) }
+     }
 
 
      def userById(userId: Long):  Future[User] = {
@@ -353,11 +358,12 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       * I reload the bet to make sure its not tampered with gameid or userid
       *
       * The successfull return value is for the messageing functionality (log, ticker, facebook etc...)
-      *
+      * //TODO
       */
-     /* TODO!!!!!!
      def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams,Bet,Bet)] = {
-         betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, dbgame, dbuser) =>
+   //TODO
+       /*
+       betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, dbgame, dbuser) =>
                compareBet(dbuser.canBet, dbuser.id.getOrElse(-1), submittingUser.id.getOrElse(-1), dbBet.gameId, bet.gameId, dbgame.game.serverStart, currentTime, closingMinutesToGame).fold(
                     err => {
              withT{
@@ -378,8 +384,10 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
              }
                })
          }
+         */
+         null
      }
- */
+
 
      def allBetLogs(): Future[Seq[BetLog]] = {
          db.run(betlogs.result)

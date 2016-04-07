@@ -7,7 +7,6 @@ import play.api.libs.json.Json._
 import play.api.libs.json.JsObject
 import play.api.data._
 import play.api.data.Forms._
-import play.api.db.slick.DBAction
 
 import scalaz.{\/,-\/,\/-}
 
@@ -16,8 +15,11 @@ import models.JsonHelper._
 import FormToV._	
 import models.BetterSettings
 
-trait Users extends Controller with Security {
-  
+import javax.inject.{Inject, Provider, Singleton}
+
+@Singleton
+class Users @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+  /*
   def all() = DBAction { implicit rs =>
       implicit val session = rs.dbSession
       val usersRank = BetterDb.allUsersWithRank()
@@ -126,7 +128,7 @@ trait Users extends Controller with Security {
 	   )
    }
    
-   
+   */
    
 }
 
