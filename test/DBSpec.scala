@@ -10,200 +10,223 @@ import scala.collection.mutable.ArrayBuffer
 import javax.inject.Inject
 import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
 import slick.driver.JdbcProfile
-import org.specs2.specification.ExecutionEnvironment
 import org.specs2.concurrent.ExecutionEnv
- 
-class DBSpec @Inject() (betterDb: BetterDb, dbConfigProvider: DatabaseConfigProvider) extends Specification 
+import scala.concurrent.{Future,Await}
+import scala.concurrent.duration._
+import org.specs2.matcher.MatchResult
+
+class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfigProvider) extends Specification 
            with ThrownMessages  
            with HasDatabaseConfigProvider[JdbcProfile]
-           with ExecutionEnvironment { def is(implicit ee: ExecutionEnv) 
-  
-  import driver.api._
- 
-  
+           with org.specs2.specification.mutable.ExecutionEnvironment { def is(implicit ee: ExecutionEnv) = {
+     
+   import driver.api._
+
+          //testLength   
+   def tl[A,B,C[_]](q: Query[A,B,C], expected: Int) = {
+         val res = db.run(q.length.result)
+         res must be_==(expected).await
+   }
+   
+   def checkAndUpdateGameDetails[S,F](game: Game, user: User, currentTime: DateTime, gameDuration: Int, succ: PartialFunction[(Game, GameUpdate),MatchResult[S]], fail: PartialFunction[Throwable,MatchResult[F]]) = { 
+          val f = betterDb.updateGameDetails(game, user, currentTime, gameDuration)
+          f.onSuccess(succ)
+          f.onFailure(fail)     
+   }
+   
+   def checkAndUpdateGameResults[S,F](game: Game, user: User, currentTime: DateTime, gameDuration: Int,succ: PartialFunction[(Game, GameUpdate),MatchResult[S]], fail: PartialFunction[Throwable,MatchResult[F]]) = { 
+          val f = betterDb.updateGameResults(game, user, currentTime, gameDuration)
+          f.onSuccess(succ)
+          f.onFailure(fail)     
+   } 
+   
+   def checkAndUpdateSpecialBetForUser[S,F](specialBet: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User, succ: PartialFunction[String,MatchResult[S]], fail: PartialFunction[Throwable,MatchResult[F]]) = { 
+          val f = betterDb.updateSpecialBetForUser(specialBet, currentTime, closingMinutesToGame, submittingUser)
+          f.onSuccess(succ)
+          f.onFailure(fail)     
+   }
+   
   "DB" should {
     "be able to play a little game" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase(
-      options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")   
-      ))) {
+      options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")))) {
       
-      
+   
        
       val firstStart = new DateTime(2014, 3, 9, 10, 0)//y m d h min
       val changedStart = firstStart.minusMinutes(30)
-         
-      def specialBetsUserSize(should: Int) = ((db.run(betterDb.specialbetsuser.length.result)) must be=(should)).await
-          
+                
+
+
+    
       def insertAdmin(){
-		      betterDb.specialbetsuser.result.length === 0
-          BetterTables.users.list.size === 0
-          val admin = insertUser(ObjectMother.adminUser, true, true, None).toOption.get
-          BetterTables.users.list.size === 1
-		  BetterTables.specialbetsuser.list.size === 12
+		      tl( betterDb.specialbetsuser,0 )
+          tl( betterDb.users,0 )
+          val admin = betterDb.insertUser(ObjectMother.adminUser, true, true, None).toOption.get
+          tl( betterDb.users,1 )
+		      tl( betterDb.specialbetsuser,12 )
       }
 
       def getAdmin(): User = {
-          BetterTables.users.list.sortBy(_.id).head
+          Await.result(db.run(betterDb.users.sortBy { _.id }.result).map{ s => s.head }, 1 second)
       }
 
       def insertTeams(){
           val admin = getAdmin()
-          ObjectMother.dummyTeams.map{t => insertOrUpdateTeamByName(t, admin) }.foreach{ r => r.isRight }
-          BetterTables.teams.list.size === 6
+          ObjectMother.dummyTeams.map{t => betterDb.insertTeam(t, admin ) }
+          tl( betterDb.teams,6 )
       }
       
       def insertLevels(){
           val admin = getAdmin()
-          ObjectMother.dummyLevels.map{ l => insertOrUpdateLevelByNr(l, admin) }
-          BetterTables.levels.list.size === 3
+          ObjectMother.dummyLevels.map{ l => betterDb.insertLevel(l, admin) }
+          tl( betterDb.levels,3 )
       }
-      
+        
       def insertPlayers(){
           val admin = getAdmin() 
-          ObjectMother.dummyPlayers.map{ p => insertPlayer(p, "t1", admin) }
-          BetterTables.players.list.size === 6
+          ObjectMother.dummyPlayers.map{ p => betterDb.insertPlayer(p, "t1", admin) }
+          tl( betterDb.players,6 )
       }
-      
+
       def insertGames(){
           val admin = getAdmin()
-          ObjectMother.dummyGames(firstStart).map{ case(g,t1,t2, l) => insertGame(g, t1, t2, l, admin) }.foreach{ r => r.isRight === true }
-          BetterTables.games.list.size === 3
-          BetterTables.bets.list.size === 0
+          ObjectMother.dummyGames(firstStart).map{ case(g,t1,t2, l) => betterDb.insertGame(g, t1, t2, l, admin) }
+          tl( betterDb.games,3 )
+          tl( betterDb.bets,0 )
       }
-      
+    
       def insertUsers(){
           val admin = getAdmin()
-		  BetterTables.specialbetsuser.list.size === 12
-          BetterTables.bets.list.size === 0
-          createBetsForGamesForAllUsers(admin)
-          BetterTables.bets.list.size === 3
+		      tl( betterDb.specialbetsuser, 12)
+          tl( betterDb.bets,0 )
+          betterDb.createBetsForGamesForAllUsers(admin)
+          tl( betterDb.bets,3 )
           admin.hadInstructions === true
           admin.canBet === true
           val dbusers = new ArrayBuffer[User]()
-          ObjectMother.dummyUsers.map{u => insertUser(u, false, false, admin.id) }.foreach{ r =>
-            r.fold(
-              err => fail("inserting user"),
-              us => {
+          ObjectMother.dummyUsers.map{u => betterDb.insertUser(u, false, false, admin.id) }.map{ fu =>
+            fu.onSuccess{ case us => {
                  us.registeredBy === admin.id && us.isAdmin === false && us.points === 0 && us.canBet === true
-                 dbusers.append(us)
-              }
-            )
+                 dbusers.append(us) }
+            }
+            fu.onFailure{ case err => fail("inserting user") }
           }
-		  BetterTables.specialbetsuser.list.size === 12 * BetterTables.users.list.size
-          BetterTables.bets.list.size === (3 * 4)
-          createBetsForGamesForAllUsers(admin)
-          BetterTables.bets.list.size === (3 * 4)
-          val gamesBets = gamesWithBetForUser(dbusers(2))
-          gamesBets.flatMap{case(g, b) => 
-             g.level.level === 0
-             b.points === 0
-             Set(g.team1,g.team2)
-          }.toSet.size === 6
+		      tl( betterDb.specialbetsuser, 12 ) //? * BetterTables.users.list.size
+          tl( betterDb.bets, 3 * 4)
+          betterDb.createBetsForGamesForAllUsers(admin)
+          tl( betterDb.bets, 3 * 4)
+          betterDb.gamesWithBetForUser(dbusers(2)).map{ s => 
+            s.flatMap{ case(g, b) => 
+               g.level.level === 0
+               b.points === 0
+              Set(g.team1,g.team2)
+            }.toSet.size === 6
+          }
       }
-      
+    
       def insertSpecialBetTemplates(){
-		  val specialT = ObjectMother.specialTemplates(SpecialBetType.team, firstStart)
-		  val specialP = ObjectMother.specialTemplates(SpecialBetType.player, firstStart)
-		  (specialT ++ specialP).foreach{ t => 
-		  	   BetterDb.insertSpecialBetInStore(t)
-		  }
-	  }
-	  
+  		  val specialT = ObjectMother.specialTemplates(SpecialBetType.team, firstStart)
+  		  val specialP = ObjectMother.specialTemplates(SpecialBetType.player, firstStart)
+  		  (specialT ++ specialP).foreach{ t => 
+  		  	   betterDb.insertSpecialBetInStore(t)
+  		  }
+  	  }
+  	  
+  	
+	
       def makeBets1(){
-         val users = BetterTables.users.list.sortBy(_.id)
-         val gb1 = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
+         val users = Await.result(betterDb.allUsers, 1 seconds).sortBy(_.id)
+         val gb1 = Await.result(betterDb.gamesWithBetForUser(users(1)), 1 seconds).sortBy(_._1.game.id)
          gb1.size === 3
          val b1 = gb1(0)._2.copy(result=GameResult(1,2,false))
-         updateBetResult(b1, users(0), firstStart, 60).fold(
-            fail => {
-				BetterTables.betlogs.list.size === 1
-				BetterTables.betlogs.list.head === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, -1, 0, -1, firstStart)
-				fail === "user ids differ 2 1\ngame closed since 0 days, 1 hours, 0 minutes, 0 seconds"
-			},
-            succ => failure("should not be possible because of time and different user")  
-         )
-         updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60).fold(
-            fail => {
-				failure("should be possible") 
-			},
-            succ => succ match { case(g,b1,b2) =>
-			   BetterTables.betlogs.list.size === 2
-			   BetterTables.betlogs.list.sortBy(_.id).reverse.head === BetLog(Some(2l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61))
+         val upD = betterDb.updateBetResult(b1, users(0), firstStart, 60)
+         upD.onSuccess{ case(g,b1,b2) => failure("should not be possible because of time and different user") }
+         upD.onFailure{ case fail =>
+             tl( betterDb.betlogs,1 )
+             fail.getMessage === "user ids differ 2 1\ngame closed since 0 days, 1 hours, 0 minutes, 0 seconds"
+ 			       Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, -1, 0, -1, firstStart)
+         }
+         val upD2 = betterDb.updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60)
+         upD2.onFailure{ case e => "should be possible upD2" }
+         upD2.onSuccess{ case (g,b1,b2) =>
+           		 tl( betterDb.betlogs,2 )
+           		 val q = betterDb.betlogs.sortBy(_.id.desc).result.head
+			         Await.result(db.run(q), 1 seconds) === BetLog(Some(2l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61))
                b1.result === GameResult(0,0,false)
                b2.result === GameResult(1,2,true)
-            }
-         )
-         val gb2 = gamesWithBetForUser(users(2)).sortBy(_._1.game.id)
+         }
+         val gb2 = Await.result(betterDb.gamesWithBetForUser(users(2)), 1 second).sortBy(_._1.game.id)
          val b2 = gb2(0)._2.copy(result=GameResult(1,3,false)) 
-         updateBetResult(b2, users(2), firstStart.minusMinutes(61), 60).fold(
-            fail => failure("should be possible") ,
-            succ => succ match { case(g,b1,b2) =>
+         val upD3 = betterDb.updateBetResult(b2, users(2), firstStart.minusMinutes(61), 60)
+         upD3.onFailure{ case e => "should be possible upD3" }
+         upD3.onSuccess{ case (g,b1,b2) => 
                b1.result === GameResult(0,0,false)
                b2.result === GameResult(1,3,true)
-            }
-         )
+         }
       }
-      
+   
       def updateGames(){
           val admin = getAdmin()
-          val p1 = BetterTables.players.list.head.id
-          val users = BetterTables.users.list.sortBy(_.id)
-          val games = gamesWithBetForUser(users(1)).sortBy(_._1.game.id)
+          val p1 = Await.result(betterDb.allPlayers(), 1 second).head.id
+          val users = Await.result(betterDb.allUsers(), 1 second).sortBy(_.id)
+          val games = Await.result(betterDb.gamesWithBetForUser(users(1)), 1 second).sortBy(_._1.game.id)
           val gameWt = games(0)._1 
           val game1 = gameWt.game
           val t1 = gameWt.team1.id
-          updateGameDetails(game1, users(2), firstStart, 90).fold(
-             err => err === "must be admin to change game details",
-             succ => fail("should have refused")
-          )
-          updateGameDetails(game1, users(0), firstStart, 90).fold(
-             err => err === "game will start in 5x90 minutes no more changes! game closed since 0 days, 7 hours, 30 minutes, 0 seconds"  , 
-             succ => fail("should be too late for changes")
+          checkAndUpdateGameDetails(game1, users(2), firstStart, 90,
+              { case succ => fail("should have refused")},
+              { case err => err === "must be admin to change game details" }
           )
           
-          updateGameResults(game1, users(2), firstStart, 90).fold(
-             err => err === "must be admin to change game results",
-             succ => fail("should have refused")
-          )
-          updateGameResults(game1, users(0), firstStart, 90).fold(
-             err => err === "game is still not finished"  , 
-             succ => fail("should be too early for changes")
+          checkAndUpdateGameDetails(game1, users(0), firstStart, 90, 
+            { case succ => fail("should be too late for changes") }, 
+            { case err => err  === "game will start in 5x90 minutes no more changes! game closed since 0 days, 7 hours, 30 minutes, 0 seconds" }
+          )    
+            
+          checkAndUpdateGameResults(game1, users(2), firstStart, 90,
+           { case succ => fail("should have refused") },
+           { case err => err === "must be admin to change game results" }
           )
           
+          checkAndUpdateGameResults(game1, users(0), firstStart, 90,
+           { case succ => fail("should be too early for changes") },
+           { case err => err === "game is still not finished" }
+          )
           
-      
+        
+
           
           users(0).hadInstructions === true
           users(1).hadInstructions === false
 		  
-		  val usp = getSpecialBetsSPUForUser(users(2))
-		  val sps = usp.sortBy(_.specialbetId)
+    		  val usp = Await.result(betterDb.getSpecialBetsSPUForUser(users(2)), 1 seconds)
+    		  val sps = usp.sortBy(_.specialbetId)
 		  
-		  val sp3 = sps(3).copy(prediction="XY")
-		  updateSpecialBetForUser(sp3, firstStart, 90, users(2)).fold(
-             err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds",
-             succ => fail("wrong time")
+		      val sp3 = sps(3).copy(prediction="XY")
+		      checkAndUpdateSpecialBetForUser(sp3, firstStart, 90, users(2),
+		          { case succ => fail("wrong time") },
+              { case err => err === "game closed since 0 days, 1 hours, 30 minutes, 0 seconds" }
           )
-		  updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(3)).fold(
-              err => err === "user ids differ 4 3",
-              succ => fail("wrong user")
+		      checkAndUpdateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(3),
+		          { case  succ => fail("wrong user") },
+              { case err => err === "user ids differ 4 3" }
           )
-
-
-          updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(2)).fold(
-             err => err ===  fail("should work"),
-             succ => {
-				 succ.prediction === "XY"
+          checkAndUpdateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(2),
+              {case succ => {
+				          succ.prediction === "XY"
                  userWithSpecialBet(users(2).id.get).toOption.get._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
-             }           
+             }},
+             { case err => err ===  fail("should work") }
           ) 
-		  
+      }
+		  /*
 		  BetterTables.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY")
           
           startOfGames().get === firstStart
           
           //result changes are ignored
           val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=GameResult(2,2,true),venue="Nowhere",serverStart=changedStart,localStart=changedStart.minusHours(5))
-          updateGameDetails(changes, admin, firstStart.minusMinutes(90*5+1), 90).fold(
+          checkAndUpdateGameDetails(changes, admin, firstStart.minusMinutes(90*5+1), 90).fold(
              err => fail("early change possible1 "+err),
              succ => succ match{ case(g, u) =>
                 u === ChangeDetails
@@ -248,9 +271,9 @@ class DBSpec @Inject() (betterDb: BetterDb, dbConfigProvider: DatabaseConfigProv
           val teams = BetterTables.teams.list.sortBy(_.id)
           val level = BetterTables.levels.list.sortBy(_.level).reverse.head
           val gwt = insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin).toOption.get
-          BetterTables.bets.list.size === (3 * 4)           
+          tl( betterDb.bets, )(3 * 4)           
           createBetsForGamesForAllUsers(admin)
-          BetterTables.bets.list.size === (4 * 4)
+          tl( betterDb.bets, )(4 * 4)
           val betsForGame = betsWitUsersForGame(gwt.game).sortBy(_._2.id)
           //user 1 wins the final
           betsForGame.zipWithIndex.foreach{ case((b,u),i) =>
@@ -303,7 +326,7 @@ class DBSpec @Inject() (betterDb: BetterDb, dbConfigProvider: DatabaseConfigProv
   
         
       }
-      
+      */
   /*    DB.withSession { implicit s: Session => 
         BetterTables.dropCreate()
 		    insertSpecialBetTemplates()
@@ -316,9 +339,9 @@ class DBSpec @Inject() (betterDb: BetterDb, dbConfigProvider: DatabaseConfigProv
         makeBets1()
         updateGames()
         newGames()
-      }*/
+      }
     }
-    
+    */
     
     
     
@@ -338,6 +361,6 @@ class DBSpec @Inject() (betterDb: BetterDb, dbConfigProvider: DatabaseConfigProv
 //        s.conn.getMetaData.getURL must equalTo("jdbc:postgresql:better")
 //      }
 //    }
-  }
+  }}
 
-}
+}}

@@ -72,8 +72,8 @@ trait Security{ self: Controller =>
 
   implicit val app: play.api.Application = play.api.Play.current
 
-  val AuthTokenHeader = "X-AUTH-TOKEN"
-  val AuthTokenCookieKey = "AUTH-TOKEN"
+  val AuthTokenHeader = "X-AUTH-TOKEN"   //TODO: change to X-XSRF-TOKEN
+  val AuthTokenCookieKey = "AUTH-TOKEN"   //TODO: change to XSRF-TOKEN
   val AuthTokenUrlKey = "auth"
 
   /** Checks that a token is either in the header ***/ 
@@ -88,22 +88,50 @@ trait Security{ self: Controller =>
     }
   }
   
+  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
+    HasToken(p){ token => userId => implicit request =>
+   //    betterDb.userById(userId).map{ user =>
+          val user: User = null
+    //	    Future{ f(userId)(user)(request) }
+          f(userId)(user)(request)
+   //   }
+    }
+  }
+/*  
+  def withUserX[A](p: BodyParser[A] = parse.anyContent)(f: String => Long => User => Request[A] => Future[Result]): Action[A] = {
+    Action.async(p) { implicit request =>
+      val maybeToken = request.headers.get(AuthTokenHeader)
+      maybeToken.flatMap{ token =>
+        Cache.getAs[Long](token) map { userId =>
+          betterDb.userById(userId).map{ user =>
+            f(token)(userId)(user)(request)
+          }
+        }
+      }
+      //.getOrElse(Future.successful( Unauthorized(Json.obj("error" -> "no security token. Please login again"))) )
+    }
+  }
+*/  
   
   /**
   * action with the logged in user fresh from DB
   */
-/*  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
-	  HasToken(p){ token => userId => implicit request =>
-	     betterDb.userById(userId).map{ user =>
-	        f(userId)(user)(request)
-	     }
-	     .recoverWith{ case ex: Exception =>
-	        Logger.error(ex.getMessage)
-	        Future.successful(NotFound(Json.obj("error" -> s"could not find user $userId")))
-	    }
-    }
-  }
+//  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
+//      HasToken(p){ token => userId => implicit request =>
+//    	     betterDb.userById(userId).map{ user =>
+//    	        f(userId)(user)(request)
+//    	     }
+//      }
+//  }
+  	 //    .recoverWith{ case ex: Exception =>
+  	 //       Logger.error(ex.getMessage)
+  	 //       Future.successful(NotFound(Json.obj("error" -> s"could not find user $userId")))
+  	 //   }
+  //    }
+	//  }
+ // }
 
+  /*
   def withAdmin[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
 	  withUser(p){ userId => user => implicit request =>
 		   if(user.isAdmin) f(userId)(user)(request) else Unauthorized(Json.obj("error" -> s"must be admin"))  

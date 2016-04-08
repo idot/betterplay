@@ -60,6 +60,10 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          db.run(specialbetstore.result)
      }
      
+     def allPlayers(): Future[Seq[Player]] = {
+         db.run(players.result)
+     }
+     
      def allUsersWithRank(): Future[Seq[(User,Int)]] = {
          val res = users.sortBy(u => (u.points + u.pointsSpecial).desc ).result.map{ sorted =>
             val points = sorted.map(_.totalPoints)
@@ -417,6 +421,15 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          }
      }
 
+     def updateGameDetails(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
+        null
+        
+     }
+     
+    def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
+       null
+    }
+     
      /*
 
      /**
@@ -442,7 +455,7 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          null
      }
 
-     /**
+      /**
       *
       * from ui with correct foreign keys set by ui
       * contoller should initiate points calculation
