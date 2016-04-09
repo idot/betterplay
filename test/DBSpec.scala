@@ -46,6 +46,10 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
           f.onFailure(fail)     
    }
    
+   def checkTotalPoints(expected: Int) = {
+       Await.result(betterDb.allUsers(), 1 seconds).map(_.points).sum === expected
+   }
+   
   "DB" should {
     "be able to play a little game" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase(
       options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")))) {
@@ -213,83 +217,82 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
           )
           checkAndUpdateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(2),
               {case succ => {
-				          succ.prediction === "XY"
-                 userWithSpecialBet(users(2).id.get).toOption.get._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
+				          succ === "updated special bet with prediction XY"
+                  Await.result(betterDb.userWithSpecialBet(users(2).id.get), 1 second)._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
              }},
              { case err => err ===  fail("should work") }
           ) 
-      }
-		  /*
-		  BetterTables.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY")
+      
+		  
+		      db.run(betterDb.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY")) //TODO: whu this was done just above?
           
-          startOfGames().get === firstStart
+          Await.result(betterDb.startOfGames(), 1 seconds).get === firstStart
           
           //result changes are ignored
           val changes = game1.copy(team1id=game1.team2id,team2id=game1.team1id,result=GameResult(2,2,true),venue="Nowhere",serverStart=changedStart,localStart=changedStart.minusHours(5))
-          checkAndUpdateGameDetails(changes, admin, firstStart.minusMinutes(90*5+1), 90).fold(
-             err => fail("early change possible1 "+err),
-             succ => succ match{ case(g, u) =>
-                u === ChangeDetails
-                g.result === GameResult(0,0,false)
-                g.team1id === game1.team2id
-                g.team2id === game1.team1id
-                g.serverStart === changedStart
-                g.venue === "Nowhere"
-             }
+          checkAndUpdateGameDetails(changes, admin, firstStart.minusMinutes(90*5+1), 90,
+             { case succ => succ match{ case(g, u) =>
+                 u === ChangeDetails
+                 g.result === GameResult(0,0,false)
+                 g.team1id === game1.team2id
+                 g.team2id === game1.team1id
+                 g.serverStart === changedStart
+                 g.venue === "Nowhere"
+             }},
+             { case err => fail("early change possible1 "+err) }
           )
           
-          startOfGames().get === changedStart
+          Await.result(betterDb.startOfGames(), 1 seconds).get === changedStart
                   
           
-          calculatePoints(admin)
-          BetterTables.users.list.map(_.points).sum === 0
+          betterDb.calculateAndUpdatePoints(admin)
+          checkTotalPoints(0)
           
           //only result changes are taken over
           val gameWithResults = changes.copy(team1id=game1.team1id,team2id=game1.team2id,result=GameResult(1,3,false),venue="Everywhere",serverStart=firstStart,localStart=firstStart.minusHours(5))
-          updateGameResults(gameWithResults, admin, changedStart.plusMinutes(91), 90).fold(
-             err => fail("setting result possible now "+err),
-             succ => succ match{ case(g, u) =>
-                u === SetResult
-                g.result === GameResult(1,3,true)
-                g.team1id === game1.team2id
-                g.team2id === game1.team1id
-                g.serverStart === changedStart
-                g.venue === "Nowhere"
-             }
+          checkAndUpdateGameResults(gameWithResults, admin, changedStart.plusMinutes(91), 90,
+             { case  succ => succ match{ case(g, u) =>
+                  u === SetResult
+                  g.result === GameResult(1,3,true)
+                  g.team1id === game1.team2id
+                  g.team2id === game1.team1id
+                  g.serverStart === changedStart
+                  g.venue === "Nowhere"
+             }},
+             { case err => fail("setting result possible now "+err) }
           )
           
-          calculatePoints(admin)
-          BetterTables.users.list.map(_.points).sum === 4
+          betterDb.calculateAndUpdatePoints(admin)
+          checkTotalPoints(4)
       }
-      
+    
 
  
       def newGames(){
           val admin = getAdmin()
           val finalGameStart = firstStart.plusMinutes(100)
           val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart.minusHours(5), "local", finalGameStart, "server",  "stadium", "groupC", 4)
-          val teams = BetterTables.teams.list.sortBy(_.id)
-          val level = BetterTables.levels.list.sortBy(_.level).reverse.head
-          val gwt = insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin).toOption.get
-          tl( betterDb.bets, )(3 * 4)           
-          createBetsForGamesForAllUsers(admin)
-          tl( betterDb.bets, )(4 * 4)
-          val betsForGame = betsWitUsersForGame(gwt.game).sortBy(_._2.id)
+          val teams = Await.result(betterDb.allTeams(), 1 seconds).sortBy(_.id)
+          val level = Await.result(betterDb.allLevels, 1 seconds).sortBy(_.level).reverse.head
+          val gwt = Await.result(betterDb.insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin), 1 seconds).toOption.get
+          tl( betterDb.bets, 3 * 4)           
+          betterDb.createBetsForGamesForAllUsers(admin)
+          tl( betterDb.bets, 4 * 4)
+          val betsForGame = Await.result(betterDb.betsWitUsersForGame(gwt.game), 1 seconds).sortBy(_._2.id)
           //user 1 wins the final
           betsForGame.zipWithIndex.foreach{ case((b,u),i) =>
               val bWithR = b.copy(result=GameResult(3,i,false))
-              updateBetResult(bWithR, u, finalGameStart.minusMinutes(100), 60).fold(
-                fail => failure(s"should be able to update bet for final game $b $u $i $fail"),
-                succ => succ match { case(g,b1,b2) =>
+              val upD = betterDb.updateBetResult(bWithR, u, finalGameStart.minusMinutes(100), 60)
+              upD.onFailure{ case fail => failure(s"should be able to update bet for final game $b $u $i $fail") }
+              upD.onSuccess{ case succ =>
+                 succ match { case(g,b1,b2) =>
                    b1.result === GameResult(0,0,false)
                    b2.result === GameResult(3,i,true)
-                }
-              ) 
+              }}  
           }
           val gwr = gwt.game.copy(result=GameResult(3,1,false))  
-          updateGameResults(gwr, admin, finalGameStart.plusMinutes(91), 90).fold(
-             err => fail("setting result possible for final game"+err),
-             succ => succ match{ case(g, u) =>
+          checkAndUpdateGameResults(gwr, admin, finalGameStart.plusMinutes(91), 90, 
+              { case  succ => succ match{ case(g, u) =>
                 u === SetResult
                 g.result === GameResult(3,1,true)
                 g.team1id === gwt.team1.id.get
@@ -297,36 +300,39 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
                 g.serverStart === finalGameStart
                 g.venue === "stadium"
                 g.levelId === gwt.level.id.get
-             }
+             }},
+             { case err => fail(s"setting result possible for final game $err")}
           )
           
-          BetterTables.users.list.map(_.points).sum === 4  
-          calculatePoints(admin)
+          checkTotalPoints(4)
+          betterDb.calculateAndUpdatePoints(admin)
           val pointsBets =  4 + 12 + 5 + 5  //1xexact + 2x tendency          
           val pointsSpecial = 4 
-          BetterTables.users.list.map(_.points).sum === pointsBets 
-          val players = BetterTables.players.list.sortBy(_.id)
+          checkTotalPoints(pointsBets) 
+          val players = Await.result(betterDb.allPlayers, 1 seconds).sortBy(_.id)
 
-          
+   //TODO: calculate special bets also       
          
-      //    calculatePoints(admin)
-          BetterTables.users.list.map(_.points).sum === pointsBets
-          BetterTables.users.list.map(_.pointsSpecialBet).sum === pointsSpecial 
-          BetterTables.users.list.map(_.totalPoints).sum === pointsBets + pointsSpecial 
+          val usersNow = Await.result(betterDb.allUsers, 1 seconds).sortBy(_.id)
+          usersNow.map(_.points).sum === pointsBets
+          usersNow.map(_.pointsSpecialBet).sum === pointsSpecial 
+          usersNow.map(_.totalPoints).sum === pointsBets + pointsSpecial 
                  
-          val users = BetterTables.users.list.sortBy(_.id)
-          invalidateGame(gwt.game, users(2)).fold(
-             err => err === "only admin user can invalidate games",
-             succ => failure("should be possible only for admin user to invalidate bets")
-          )
-          
-          invalidateGame(gwt.game, admin).isRight === true
-          calculatePoints(admin)
-          BetterTables.users.list.map(_.points).sum === 4       
+
+          val inv1 = betterDb.invalidateGame(gwt.game, usersNow(2))
+          inv1.onFailure{ case err => err === "only admin user can invalidate games" }
+          inv1.onSuccess{ case succ => failure("should be possible only for admin user to invalidate bets") }
+      
+          val inv2 = betterDb.invalidateGame(gwt.game, admin)
+          inv2.onFailure{ case err => failure("admin should be able to invalidate games!") }
+          inv2.onSuccess{ case succ => succ === ("invalidated game $game count: 1") } //TODO: $game
+     
+          betterDb.calculateAndUpdatePoints(admin)
+          checkTotalPoints(4)       
   
         
       }
-      */
+     
   /*    DB.withSession { implicit s: Session => 
         BetterTables.dropCreate()
 		    insertSpecialBetTemplates()
