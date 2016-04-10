@@ -26,7 +26,7 @@ case object NewGame extends GameUpdate
 case class UpdatePoints()
 
 @Singleton()
-class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) extends BetterTables with HasDatabaseConfigProvider[JdbcProfile] {
+class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends BetterTables with HasDatabaseConfigProvider[JdbcProfile] {
   //TODO: check if this is efficient or different ExecutionContext necessary
   import scala.concurrent.ExecutionContext.Implicits.global
 

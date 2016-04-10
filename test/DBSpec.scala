@@ -14,13 +14,38 @@ import org.specs2.concurrent.ExecutionEnv
 import scala.concurrent.{Future,Await}
 import scala.concurrent.duration._
 import org.specs2.matcher.MatchResult
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.Configuration
+import play.api.inject.bind
+import play.api.Mode
 
-class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfigProvider) extends Specification 
+
+import models.ObjectMother
+
+
+class DBSpec extends Specification 
            with ThrownMessages  
-           with HasDatabaseConfigProvider[JdbcProfile]
            with org.specs2.specification.mutable.ExecutionEnvironment { def is(implicit ee: ExecutionEnv) = {
-     
-   import driver.api._
+   
+   val app = new GuiceApplicationBuilder().configure(
+            Configuration.from(
+                Map(
+                    "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
+                    "slick.dbs.default.db.driver" -> "org.h2.Driver",
+                    "slick.dbs.default.db.url" -> "jdbc:h2:mem:dbspec",
+                    "slick.dbs.default.db.user" -> "sa",
+                    "slick.dbs.default.db.password" -> ""
+                )
+            )
+        )
+        .in(Mode.Test)
+        .build()         
+             
+   val betterDb = app.injector.instanceOf[BetterDb]
+   val dbConfig = betterDb.dbConfigProvider.get[JdbcProfile]
+   val db = dbConfig.db
+   
+   import dbConfig.driver.api._
 
           //testLength   
    def tl[A,B,C[_]](q: Query[A,B,C], expected: Int) = {
@@ -50,12 +75,13 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
        Await.result(betterDb.allUsers(), 1 seconds).map(_.points).sum === expected
    }
    
-  "DB" should {
-    "be able to play a little game" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase(
-      options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")))) {
-      
+  
    
-       
+  "DB" should {
+    "be able to play a little game" in {
+  ///  "be able to play a little game" in new WithApplication(FakeApplication(additionalConfiguration = inMemoryDatabase(
+  //    options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")))) {
+      
       val firstStart = new DateTime(2014, 3, 9, 10, 0)//y m d h min
       val changedStart = firstStart.minusMinutes(30)
                 
@@ -344,7 +370,7 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
       makeBets1()
       updateGames()
       newGames()
-      
+      1 === 1
     }
 
     

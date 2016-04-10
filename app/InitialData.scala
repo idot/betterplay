@@ -21,7 +21,7 @@ object InitialData {
   import org.joda.time.DateTime
   
   val csv = new CSVParser()
-  
+ /* 
   val fifa2iso2 = {
 	  val lines = toLines("country-codes.csv").drop(1)
 	  //FIFA = 10
@@ -30,7 +30,7 @@ object InitialData {
 	     val items = csv.parseLine(line)
 	     (items(10).toLowerCase,items(2).toLowerCase)
 	 }
-	 lines.map(FIFA2ISO).toMap
+	  lines.map(FIFA2ISO).toMap
   }  
   
   def specialBets(): Seq[SpecialBetT] = {
@@ -54,6 +54,7 @@ object InitialData {
  	  (Player(None, items(0), items(1), items(3), -1, DBImage("","")), country)  
   }  
     
+ 
   def toLines(file: String): Seq[String] = {
      val is = Play.classloader.getResourceAsStream("data/"+file)
      val string = IOUtils.toString(is, "UTF-8")
@@ -143,7 +144,7 @@ object InitialData {
           names.map(n => uf(n, "","", "", n, true))		  		    
   	  }
   }
-  
+  */
  /* def updateChampion()(implicit s: Session){
 	  BetterTables.specialbetsuser.filter(s => s.spId === 3l).map(_.prediction).update("Argentinia")  
   }

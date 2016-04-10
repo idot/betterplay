@@ -140,23 +140,26 @@ trait Security{ self: Controller =>
 class Application(env: Environment,
                   gulpAssets: GulpAssets,
                   lifecycle: ApplicationLifecycle,
-                  dbConfigProvider: DatabaseConfigProvider,
-                  override val betterDb: BetterDb,
+             //     dbConfigProvider: DatabaseConfigProvider,
+             //     override val betterDb: BetterDb,
                   val messagesApi: MessagesApi,
-                  override val cache: CacheApi,
+                  val cache: CacheApi,
                   configuration: Configuration,
-                  router: => Option[Router] = None) extends Controller with Security with I18nSupport {
+                  router: => Option[Router] = None) extends Controller with I18nSupport {
+                   //extends Controller with Security with I18nSupport {
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
   @Inject
   def this(env: Environment, gulpAssets: GulpAssets,
             lifecycle: ApplicationLifecycle,
-            dbConfigProvider: DatabaseConfigProvider,
-            betterDb: BetterDb,
+        //    dbConfigProvider: DatabaseConfigProvider,
+       //     betterDb: BetterDb,
             messagesApi: MessagesApi,
             cache: CacheApi,
             configuration: Configuration,
             router: Provider[Router]) =
-    this(env, gulpAssets, lifecycle, dbConfigProvider, betterDb, messagesApi, cache, configuration, Some(router.get))
+    this(env, gulpAssets, lifecycle, 
+   //     dbConfigProvider, betterDb, 
+        messagesApi, cache, configuration, Some(router.get))
 
 
    val debug = configuration.getBoolean("betterplay.debug").getOrElse(false)  
@@ -217,7 +220,7 @@ class Application(env: Environment,
   
  
 
-    
+ /*   
  
 
   /**
@@ -235,7 +238,7 @@ class Application(env: Environment,
       result.discardingCookies(DiscardingCookie(name = AuthTokenCookieKey))
     }
   }
-  
+  */
   
   def time() = Action {
 	  val now = BetterSettings.now
@@ -278,7 +281,7 @@ class Application(env: Environment,
     )(Login.apply)(Login.unapply)
   )
 
- 
+ /*
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = Action.async(parse.json) { implicit request => 
      import play.api.i18n.Messages.Implicits._
@@ -332,6 +335,6 @@ class Application(env: Environment,
    //TODO   InitialData.insert(debug)
     }
   }
-
+*/
 }
 

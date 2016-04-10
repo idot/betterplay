@@ -27,7 +27,7 @@ object JodaHelper { //TODO: check timezone, might have to use calendar
 trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 
-  implicit val dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
+  implicit def dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
      { dt => new java.sql.Timestamp(dt.getMillis) },
      { ts => new org.joda.time.DateTime(ts) }
   )
@@ -42,7 +42,8 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   val specialbetsuser = TableQuery[SpecialBetByUsers]
   val betlogs = TableQuery[BetLogs]
 
-  val schema = users.schema ++
+  def schema() = { 
+               users.schema ++
                teams.schema ++
                players.schema ++
                levels.schema ++
@@ -50,14 +51,15 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
                bets.schema ++
                specialbetstore.schema ++
                specialbetsuser.schema ++
-               betlogs.schema
+               betlogs.schema 
+  }
 
   def createTables(){
-     DBIO.seq(schema.create)
+     db.run(DBIO.seq(schema.create))
   }
   
   def drop(){
-     DBIO.seq(schema.drop)
+     db.run(DBIO.seq(schema.drop))
   }
 
   def dropCreate(){

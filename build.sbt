@@ -33,7 +33,6 @@ libraryDependencies ++= Seq(
   ws,
   filters,
   "com.typesafe.play" %% "play-slick" % "2.0.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0",
   "com.typesafe.slick" %% "slick" % "3.1.1",
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
