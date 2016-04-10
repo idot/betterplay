@@ -3,7 +3,7 @@ package models
 import org.joda.time.DateTime
 import play.api.db.slick.HasDatabaseConfigProvider
 
-//import slick.jdbc.meta.MTable
+import slick.jdbc.meta.MTable
 import slick.driver.JdbcProfile
 import org.joda.time.Period
 
@@ -42,7 +42,7 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   val specialbetsuser = TableQuery[SpecialBetByUsers]
   val betlogs = TableQuery[BetLogs]
 
-/*  val schema = users.schema ++
+  val schema = users.schema ++
                teams.schema ++
                players.schema ++
                levels.schema ++
@@ -61,13 +61,17 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   }
 
   def dropCreate(){
-      if(MTable.getTables("users").list().isEmpty) {
-           createTables()
-       }else{
-           drop()
-           createTables()
-       }
-  }*/
+      import scala.concurrent.ExecutionContext.Implicits.global
+      
+      val f = db.run(MTable.getTables("users").head)
+      f.onFailure{ case f =>
+          createTables()
+      }
+      f.onSuccess{ case s =>
+          drop()
+          createTables()
+      }
+  }
 
   class Teams(tag: Tag) extends Table[Team](tag, "teams") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -149,6 +153,8 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def username = column[String]("username")
     def firstname = column[String]("firstname")
     def lastname = column[String]("lastname")
+    def institute = column[String]("institute")
+    def showName = column[Boolean]("showname")
     def email = column[String]("email")
     def passwordhash = column[String]("password")
     def isRegistrant = column[Boolean]("isregistrant")
@@ -166,7 +172,7 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id) 
     
-    def * = (id.?, username, firstname, lastname, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, isRegistered, points, pointsSpecial, iconurl, icontype, registerby) <> (User.tupled, User.unapply)
+    def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, isRegistered, points, pointsSpecial, iconurl, icontype, registerby) <> (User.tupled, User.unapply)
 
   }
 
@@ -231,8 +237,9 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def t2old = column[Int]("t2old")
     def t2new = column[Int]("t2new")
 	  def created = column[DateTime]("change")
+	  def comment = column[String]("comment")
 	  
-	  def * = (id.?, userId, gameId, betId, t1old, t1new, t2old, t2new, created) <> (BetLog.tupled, BetLog.unapply _)
+	  def * = (id.?, userId, gameId, betId, t1old, t1new, t2old, t2new, created, comment) <> (BetLog.tupled, BetLog.unapply _)
   }
 
 

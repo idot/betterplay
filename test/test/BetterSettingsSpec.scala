@@ -19,7 +19,7 @@ class BetterSettingsSpec extends Specification { def is =
 		val rand = new scala.util.Random()
 		val messageSize = rand.nextInt(10000)
 		val arr = new Array[Byte](messageSize)
-	    val message = rand.nextBytes(arr)
+	  val message = rand.nextBytes(arr)
 		val filename = BetterSettings.fileName(arr, secret)
 
 		BetterSettings.validate(arr, filename, secret).toOption.get === "valid file"

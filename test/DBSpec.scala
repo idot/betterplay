@@ -65,7 +65,7 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
       def insertAdmin(){
 		      tl( betterDb.specialbetsuser,0 )
           tl( betterDb.users,0 )
-          val admin = betterDb.insertUser(ObjectMother.adminUser, true, true, None).toOption.get
+          val admin = betterDb.insertUser(ObjectMother.adminUser, true, true, None, true).toOption.get
           tl( betterDb.users,1 )
 		      tl( betterDb.specialbetsuser,12 )
       }
@@ -108,7 +108,7 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
           admin.hadInstructions === true
           admin.canBet === true
           val dbusers = new ArrayBuffer[User]()
-          ObjectMother.dummyUsers.map{u => betterDb.insertUser(u, false, false, admin.id) }.map{ fu =>
+          ObjectMother.dummyUsers.map{u => betterDb.insertUser(u, false, false, admin.id, true) }.map{ fu =>
             fu.onSuccess{ case us => {
                  us.registeredBy === admin.id && us.isAdmin === false && us.points === 0 && us.canBet === true
                  dbusers.append(us) }
@@ -148,14 +148,14 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
          upD.onFailure{ case fail =>
              tl( betterDb.betlogs,1 )
              fail.getMessage === "user ids differ 2 1\ngame closed since 0 days, 1 hours, 0 minutes, 0 seconds"
- 			       Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, -1, 0, -1, firstStart)
+ 			       Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, -1, 0, -1, firstStart, "no comment")
          }
          val upD2 = betterDb.updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60)
          upD2.onFailure{ case e => "should be possible upD2" }
          upD2.onSuccess{ case (g,b1,b2) =>
            		 tl( betterDb.betlogs,2 )
            		 val q = betterDb.betlogs.sortBy(_.id.desc).result.head
-			         Await.result(db.run(q), 1 seconds) === BetLog(Some(2l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61))
+			         Await.result(db.run(q), 1 seconds) === BetLog(Some(2l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61), "no comment")
                b1.result === GameResult(0,0,false)
                b2.result === GameResult(1,2,true)
          }
@@ -224,7 +224,7 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
           ) 
       
 		  
-		      db.run(betterDb.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY")) //TODO: whu this was done just above?
+		   //   db.run(betterDb.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY")) //TODO: whu this was done just above?
           
           Await.result(betterDb.startOfGames(), 1 seconds).get === firstStart
           
@@ -333,21 +333,20 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
         
       }
      
-  /*    DB.withSession { implicit s: Session => 
-        BetterTables.dropCreate()
-		    insertSpecialBetTemplates()
-        insertAdmin()
-        insertTeams()
-        insertLevels()
-        insertGames()
-        insertUsers()
-        insertPlayers()
-        makeBets1()
-        updateGames()
-        newGames()
-      }
+      betterDb.dropCreate()
+		  insertSpecialBetTemplates()
+      insertAdmin()
+      insertTeams()
+      insertLevels()
+      insertGames()
+      insertUsers()
+      insertPlayers()
+      makeBets1()
+      updateGames()
+      newGames()
+      
     }
-    */
+
     
     
     
@@ -369,4 +368,4 @@ class DBSpec @Inject() (betterDb: BetterDb, val dbConfigProvider: DatabaseConfig
 //    }
   }}
 
-}}
+}

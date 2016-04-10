@@ -132,7 +132,7 @@ object InitialData {
       def uf(name: String, first: String, last: String, email: String, pw: String, admin: Boolean): User = {
           val encrypted = DomainHelper.encrypt(pw)
 		  val (u,t) = DomainHelper.randomGravatarUrl(email)
-          User(None, name, first, last, email, encrypted, admin, admin, admin, true, true, 0, 0, u, t, None)
+          User(None, name, first, last, "", true, email, encrypted, admin, admin, admin, true, true, 0, 0, u, t, None)
       }
 	  if(debug){
          val admin = uf("admin", "admin" ,"admin", "admin@admin.com", "admin", true)

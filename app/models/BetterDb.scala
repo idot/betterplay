@@ -188,7 +188,7 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
      def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
          validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
            v.fold(
-               err => Future.failed(ValidationException(err.list.mkString("\n"))),
+               err => Future.failed(ValidationException(err.list.toList.mkString("\n"))),
                succ => updateSPU(sp)
            )
          }
@@ -200,8 +200,8 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          val action = (specialbetsuser.filter(_.id === sp.id).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
              rowCount match {
                case 0 => DBIO.failed(new ItemNotFoundException(s"could not find specialbet with id ${sp.id}")) 
-               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special best with id ${sp.id}"))
                case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
+               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special best with id ${sp.id}"))
              }
          }).transactionally
          db.run(action)
@@ -350,7 +350,7 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
 
      def betWithGameWithTeamsAndUser(bet: Bet): Future[(Bet,GameWithTeams,User)] = {
          val bg = for{
-          (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id) if b.id === bet.id
+          (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id)
          } yield (g, t1, t2, l, b, u)
          val bwg = bg.result.head.map{ case(g,t1,t2,l,b,u) => (b, GameWithTeams(g,t1,t2,l),u) }
          db.run(bwg).recoverWith{ case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find bet in database $bet")) }
@@ -362,34 +362,29 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       * I reload the bet to make sure its not tampered with gameid or userid
       *
       * The successfull return value is for the messageing functionality (log, ticker, facebook etc...)
-      * //TODO
+      *
       */
      def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams,Bet,Bet)] = {
-   //TODO
-       /*
-       betWithGameWithTeamsAndUser(bet).flatMap{ case(dbBet, dbgame, dbuser) =>
-               compareBet(dbuser.canBet, dbuser.id.getOrElse(-1), submittingUser.id.getOrElse(-1), dbBet.gameId, bet.gameId, dbgame.game.serverStart, currentTime, closingMinutesToGame).fold(
-                    err => {
-             withT{
-                   val invalid = GameResult(-1,-1,true)
-                   val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, dbBet.copy(result=invalid), currentTime)
-                 betlogs.insert(log)
-                 -\/(err.list.mkString("\n"))
-             }
-            },
-                    succ => {
-              withT{
-                          val result = bet.result.copy(isSet=true)
-                          val updatedBet = dbBet.copy(result=result)
-                        bets.filter(_.id === updatedBet.id).update(updatedBet)
-                val log = DomainHelper.toBetLog(dbuser, dbgame.game, dbBet, updatedBet, currentTime)
-                betlogs.insert(log)
-                          \/-(dbgame, dbBet, updatedBet)
-             }
-               })
-         }
-         */
-         null
+          val invalid = GameResult(-1,-1,true)
+          val bg = (for{
+             (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id).result.head
+             updatedBet <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, closingMinutesToGame).fold(
+                       err => {
+                        val errors = err.list.toList.mkString("\n")
+                        val updatedBet = b.copy(result=invalid)
+                        val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, errors)
+                        betlogs += log
+                        DBIO.successful(updatedBet)
+                    }, succ => {
+                         val result = bet.result.copy(isSet=true)
+                         val updatedBet = b.copy(result=result)
+                         val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, "regular update")
+                         bets.filter(_.id === updatedBet.id).update(updatedBet)
+                         betlogs += log
+                         DBIO.successful(updatedBet)
+                    })
+          }yield{ (GameWithTeams(g,t1,t2,l), b, updatedBet) }).transactionally   
+          db.run(bg).recoverWith{ case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find bet in database $bet")) }
      }
 
 
@@ -421,38 +416,25 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
          }
      }
 
-     def updateGameDetails(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
-        null
-        
-     }
-     
-    def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
-       null
-    }
-     
-     /*
+
 
      /**
       * this should only be called immediately after game creation if there has been an error!
       * not good for users to have team changes!
       *
+      * //game open can not set points but can change teams and start time
       */
      def updateGameDetails(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
          if(! submittingUser.isAdmin){
            return Future.failed(AccessViolationException("only admin user can change levels"))
          }
-         games.filter(_.id === game.id).result.head.map{ dbGame =>
-            isGameOpen(dbGame.serverStart, currentTime: DateTime, gameDuration*5).fold(
-              err => -\/("game will start in 5x90 minutes no more changes! "+err),
-              succ =>  {//game open can not set points but can change teams and start time
-                       val gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id, localStart=game.localStart, localtz=game.localtz, serverStart=game.serverStart, servertz=game.servertz, venue=game.venue)
-                       games.filter(_.id === gameWithTeams.id).update(gameWithTeams)
-                       \/-(gameWithTeams, ChangeDetails)
-              }
-            )
-         }
-         //.getOrElse(-\/(s"could not find game in database $game"))
-         null
+         val gUp = (for{
+           dbGame <- games.filter(_.id === game.id).result.head 
+           _ <- isGameOpen(dbGame.serverStart, currentTime, gameDuration*5).fold(err => DBIO.failed(ValidationException("game will start in 5x90 minutes no more changes! "+err)), succ => DBIO.successful("IGNORE"))
+           gameWithTeams = dbGame.copy(team1id=game.team1id, team2id=game.team2id, localStart=game.localStart, localtz=game.localtz, serverStart=game.serverStart, servertz=game.servertz, venue=game.venue)
+           _ <- games.filter(_.id === gameWithTeams.id).update(gameWithTeams)
+         } yield { (gameWithTeams, ChangeDetails) } ).transactionally
+         db.run(gUp).recoverWith{ case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find game in database $game")) }
      }
 
       /**
@@ -461,24 +443,20 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       * contoller should initiate points calculation
       *
       */
-     def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): String \/ (Game,GameUpdate) = {
+     def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
          if(! submittingUser.isAdmin){
-           return -\/("must be admin to change game results")
+           return Future.failed(AccessViolationException("must be admin to change game results"))
          }
-         games.filter(_.id === game.id).firstOption.map{ dbGame =>
-              isGameOpen(dbGame.serverStart, currentTime: DateTime, -gameDuration).fold( //game is open until start + duration => points not settable yet
-                  err => {//game closed can set points but not change teams anymore
-                         val result = game.result.copy(isSet=true)
-                         val gameWithResult = dbGame.copy(result=result)
-                         games.filter(_.id === gameWithResult.id).update(gameWithResult)
-                         \/-(gameWithResult, SetResult)
-                  },
-                  succ => -\/("game is still not finished")
-              )
-         }.getOrElse(-\/(s"could not find game in database $game"))
-     }
-*/
-     
+         val result = game.result.copy(isSet=true)
+         val gUp = (for{
+           dbGame <- games.filter(_.id === game.id).result.head
+           _ <- isGameOpen(dbGame.serverStart, currentTime: DateTime, -gameDuration).fold(err => DBIO.successful("IGNORE"), succ => DBIO.failed(ValidationException(s"game $game is still not finished")))
+           gameWithResult = dbGame.copy(result=result) 
+           _ <- games.filter(_.id === gameWithResult.id).update(gameWithResult)
+         } yield { (gameWithResult, SetResult) }).transactionally
+         db.run(gUp).recoverWith{  case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find game in database $game")) }
+     }    
+      
       /**
       * I need only to filter for games without bets, therfore the
       * row hack with ? is not necessary, but if it is:
@@ -501,14 +479,18 @@ class BetterDb @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       * sets up all bets including special bets
       * TODO: only isResitserging users have to check registeringUser!!
       *
+      * canRegister: if registeringUser has registering 
+      * 
       *  the other one is token based, but I don't know if i manage to create this workflow: (Not done now!!!)
       *  user registers with e-mail, token is generated for his id
       *  user klicks link with token e-mail, opens web, => user signs on..
       *
+      * 
       */
-     def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long]): Future[User] = {
-
-       //TODO: check if registeringUser is registeringUser!!
+     def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long], canRegister: Boolean): Future[User] = {
+          if(! canRegister){
+           return Future.failed(AccessViolationException("must be registering user to be able to create users!"))
+          }
        
           val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser)
           

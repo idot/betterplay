@@ -56,16 +56,16 @@ object DomainHelper {
    */
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
 	  val (u,t) = randomGravatarUrl(user.email)
-      User(None, user.username, user.firstName, user.lastName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, true, 0, 0, u, t, registeringUser)
+      User(None, user.username, user.firstName, user.lastName, user.institute, user.showName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, true, 0, 0, u, t, registeringUser)
   }
 
-  def userFromUPE(username: String, password: String, email: String, registeringUser: Option[Long]): User = {
-	  val (u,t) = randomGravatarUrl(email)
-      User(None, username, "", "", email, encrypt(password), false, false, false, true, true, 0, 0, u, t, registeringUser)
+  def userFromUPE(username: String, password: String, firstName: String, lastName: String, email: String, registeringUser: Option[Long]): User = {
+	    val (u,t) = randomGravatarUrl(email)
+      User(None, username, firstName, lastName, "", false, email, encrypt(password), false, false, false, true, true, 0, 0, u, t, registeringUser)
   }
  
-  def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: DateTime): BetLog = {
-      BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time)
+  def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: DateTime, comment: String): BetLog = {
+      BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time, comment)
   }
  
 }
@@ -96,11 +96,11 @@ case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId:
 //unique: user/bet game/bet one bet for each user per game 
 }
 
-case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, betId: Long, t1old: Int, t1new: Int, t2old: Int, t2new: Int, time: DateTime){
+case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, betId: Long, t1old: Int, t1new: Int, t2old: Int, t2new: Int, time: DateTime, comment: String){
 	def toText(): String = {
 		val betchange = Seq(GameResult(t1old, t2old, true).display, "->",  GameResult(t1old, t2old, true).display).mkString(" ")
 		val format = org.joda.time.format.DateTimeFormat.fullDateTime() 
-	    Seq(id, userId, gameId, betId, betchange, format.print(time)).mkString("\t")
+	    Seq(id, userId, gameId, betId, betchange, format.print(time), comment).mkString("\t")
     } 
 }
 
@@ -109,15 +109,9 @@ case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, betId: Lo
 /***
  * hadinstructions === special bet was set
  */
-case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, email: String, passwordHash: String,
+case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, institute: String, showName: Boolean, email: String, passwordHash: String,
 	        isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, isRegistered: Boolean,
 			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long] ){
-//  
-//  	def password_=(in: String) = this.password_hash = encrypt(in)
-//	
-//	def authenticate(in: String): Boolean = new StrongPasswordEncryptor().checkPassword(in, password) 
-//
-//    private def encrypt(in: String): String = new StrongPasswordEncryptor().encryptPassword(in)
   
      def totalPoints(): Int = points + pointsSpecialBet
   
