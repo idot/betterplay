@@ -4,16 +4,16 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
-
+import play.api.cache.CacheApi
 import models._
 import models.JsonHelper._
 
 import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class Statistics @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+class Statistics @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, configuration: Configuration) extends Controller with Security {
 
-  val excelSecret = Play.current.configuration.getString("betterplay.excelSecret").getOrElse("BAD")  
+  val excelSecret = configuration.getString("betterplay.excelSecret").getOrElse("BAD")  
   /*  
   def excel() = DBAction { implicit rs =>
        implicit val session = rs.dbSession

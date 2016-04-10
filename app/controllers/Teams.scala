@@ -7,11 +7,11 @@ import play.api.libs.json.Json._
 import models._
 import models.JsonHelper._
 import play.api.libs.json.JsError
-
+import play.api.cache.CacheApi
 import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class Teams @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+class Teams @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
   /*
   def all() = DBAction { implicit rs =>
       implicit val session = rs.dbSession

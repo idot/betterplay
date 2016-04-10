@@ -170,7 +170,7 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def registerby = column[Option[Long]]("registerby")
     def pointsSpecial = column[Int]("pointsspecial")
     
-    def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id) 
+    def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id?) 
     
     def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, isRegistered, points, pointsSpecial, iconurl, icontype, registerby) <> (User.tupled, User.unapply)
 

@@ -9,6 +9,7 @@ import play.api.libs.json.JsError
 import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Akka
+import play.api.cache.CacheApi
 
 import scalaz.{\/,-\/,\/-}
 
@@ -22,7 +23,7 @@ import org.joda.time.DateTime
 import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class Games @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+class Games @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
   /*
   def all() = DBAction { implicit rs =>
       implicit val session = rs.dbSession

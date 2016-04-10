@@ -7,7 +7,7 @@ import play.api.libs.json.Json._
 import play.api.libs.json.JsObject
 import play.api.data._
 import play.api.data.Forms._
-
+import play.api.cache.CacheApi
 import scalaz.{\/,-\/,\/-}
 
 import models._
@@ -18,7 +18,7 @@ import models.BetterSettings
 import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class Users @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
   /*
   def all() = DBAction { implicit rs =>
       implicit val session = rs.dbSession

@@ -5,7 +5,7 @@ import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
 import play.api.libs.json.JsError
-
+import play.api.cache.CacheApi
 import play.api.libs.json.JsObject
 import play.api.data._
 import play.api.data.Forms._
@@ -21,7 +21,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class Bets @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+class Bets @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
   /*
     def update(id: Long) = withUser(parse.json){ userId => user => implicit request =>
   		request.body.validate[Bet].fold(

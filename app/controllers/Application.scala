@@ -5,7 +5,7 @@ import play.api._
 import play.api.db.DatabaseConfig
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.mvc._
-import play.api.cache.Cache
+import play.api.cache.CacheApi
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json._
@@ -28,23 +28,16 @@ import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import scala.concurrent.Future
 import play.api.i18n.MessagesApi
+import scala.concurrent.duration._
 
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 
-object PlayHelper {
-
-   val debug = Play.current.configuration.getBoolean("betterplay.debug").getOrElse(false)  
-   val superpassword = Play.current.configuration.getString("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
-     
-}
-
 
 object FormToV {
-  import play.api.Play.current
   import play.api.i18n.Messages.Implicits._
   import scalaz.{\/,-\/,\/-}
-  implicit def toV[T](form: Form[T])(implicit lang: play.api.i18n.Lang): JsValue \/ T = {
+  implicit def toV[T](form: Form[T])(implicit messages: play.api.i18n.Messages): JsValue \/ T = {
 	  form.fold(
 	     err => -\/(err.errorsAsJson),
 		   succ => \/-(succ)	  
@@ -69,9 +62,8 @@ object FormToV {
  **/
 trait Security{ self: Controller =>
   val betterDb: BetterDb
-
-  implicit val app: play.api.Application = play.api.Play.current
-
+  val cache: CacheApi
+ 
   val AuthTokenHeader = "X-AUTH-TOKEN"   //TODO: change to X-XSRF-TOKEN
   val AuthTokenCookieKey = "AUTH-TOKEN"   //TODO: change to XSRF-TOKEN
   val AuthTokenUrlKey = "auth"
@@ -81,7 +73,7 @@ trait Security{ self: Controller =>
     Action.async(p) { implicit request =>
       val maybeToken = request.headers.get(AuthTokenHeader)
       maybeToken.flatMap{ token =>
-        Cache.getAs[Long](token) map { userId =>
+        cache.get[Long](token) map { userId =>
           f(token)(userId)(request)
         }
       }.getOrElse(Future.successful( Unauthorized(Json.obj("error" -> "no security token. Please login again"))) )
@@ -151,6 +143,8 @@ class Application(env: Environment,
                   dbConfigProvider: DatabaseConfigProvider,
                   override val betterDb: BetterDb,
                   val messagesApi: MessagesApi,
+                  override val cache: CacheApi,
+                  configuration: Configuration,
                   router: => Option[Router] = None) extends Controller with Security with I18nSupport {
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
   @Inject
@@ -159,11 +153,16 @@ class Application(env: Environment,
             dbConfigProvider: DatabaseConfigProvider,
             betterDb: BetterDb,
             messagesApi: MessagesApi,
+            cache: CacheApi,
+            configuration: Configuration,
             router: Provider[Router]) =
-    this(env, gulpAssets, lifecycle, dbConfigProvider, betterDb, messagesApi, Some(router.get))
+    this(env, gulpAssets, lifecycle, dbConfigProvider, betterDb, messagesApi, cache, configuration, Some(router.get))
 
 
-    
+   val debug = configuration.getBoolean("betterplay.debug").getOrElse(false)  
+   val superpassword = configuration.getString("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
+   val cacheExpiration = configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
+   
 //  dbConfig = dbConfigProvider.get[JdbcProfile]
 
   /**
@@ -214,10 +213,9 @@ class Application(env: Environment,
   }
 
   import models.JsonHelper._
-  import PlayHelper._
+
   
-  lazy val CacheExpiration =
-    app.configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
+ 
 
     
  
@@ -228,12 +226,12 @@ class Application(env: Environment,
   */
   implicit class ResultWithToken(result: Result) {
     def withToken(token: (String, Long)): Result = {
-      Cache.set(token._1, token._2, CacheExpiration)
+      cache.set(token._1, token._2, cacheExpiration minutes)
       result.withCookies(Cookie(AuthTokenCookieKey, token._1, None, httpOnly = false))
     }
 
     def discardingToken(token: String): Result = {
-      Cache.remove(token)
+      cache.remove(token)
       result.discardingCookies(DiscardingCookie(name = AuthTokenCookieKey))
     }
   }
@@ -283,7 +281,6 @@ class Application(env: Environment,
  
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = Action.async(parse.json) { implicit request => 
-     import play.api.Play.current
      import play.api.i18n.Messages.Implicits._
     
      LoginForm.bind(request.body).fold(
@@ -328,8 +325,7 @@ class Application(env: Environment,
 
 
   def onStart() {
-    val debug = PlayHelper.debug
-    val insertdata = Play.current.configuration.getBoolean("betterplay.insertdata").getOrElse(false)
+    val insertdata = configuration.getBoolean("betterplay.insertdata").getOrElse(false)
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
     Logger.info("starting up "+debugString)
     if(debug && insertdata){

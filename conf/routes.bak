@@ -1,0 +1,75 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                                  controllers.Application.toPrefix()
+GET     /wm2014                            controllers.Application.index
+GET     /wm2014/                           controllers.Application.index
+GET     /wm2014/api/time                   controllers.Application.time()
+
+# in debug mode its possible to set times
+POST    /wm2014/api/time					controllers.Application.setDebugTime()
+POST    /wm2014/api/time/reset             controllers.Application.resetTime() 
+ 
+GET     /wm2014/api/teams                  controllers.Teams.all()
+#GET    /wm2014/api/team/:name             controllers.Teams.get(name: String)
+#POST    /wm2014/api/team/:name             controllers.Teams.insert(name: String)
+
+GET     /wm2014/api/players                 controllers.Players.all()
+#GET     /wm2014/api/player/id              controllers.Players.get(id: Long)
+
+GET     /wm2014/api/levels                  controllers.Levels.all()
+#GET     /wm2014/api/level/:nr               controllers.Levels.get(nr: Long)   #gets level by nr not id!
+#POST    /wm2014/api/level/:nr               controllers.Levels.post(nr: Long)  #creates new level by nr not id!
+
+GET     /wm2014/api/games                  controllers.Games.all()
+
+#Posts
+POST    /wm2014/api/game/results           controllers.Games.submitResult()               
+
+# gets game with all bets nr is game nr not game id!
+GET     /wm2014/api/game/:nr               controllers.Games.get(nr: Int)   
+#creates/updates game with all bets; creates bets if not there
+POST    /wm2014/api/game                   controllers.Games.createGame()  
+
+GET     /wm2014/api/users                  controllers.Users.all()           
+
+# fetches user + all of his bets 
+GET     /wm2014/api/user/:name             controllers.Users.get(name: String)
+GET     /wm2014/api/user/:username/specialBets  controllers.SpecialBets.specialBetsForUser(username: String)  
+
+# fetches logged in user with email
+GET     /wm2014/api/userWithEmail          controllers.Users.userWithEmail()
+
+#creates/updates user creates bets on first registration; does not update bets
+PUT    /wm2014/api/user/:name              controllers.Users.create(name: String) 
+POST   /wm2014/api/user/:name/details      controllers.Users.updateDetails(name: String) 
+POST   /wm2014/api/user/:name/password     controllers.Users.updatePassword(name: String) 
+POST   /wm2014/api/userhadinstructions     controllers.Users.updateUserHadInstructions()
+
+POST    /wm2014/api/createBetsForUsers      controllers.Users.createBetsForUsers()
+
+GET     /wm2014/api/bet/log                 controllers.Bets.log()   
+POST    /wm2014/api/bet/:id                 controllers.Bets.update(id: Long) 
+
+
+POST    /wm2014/api/specialBet               controllers.SpecialBets.updateSpecialBet()
+GET     /wm2014/api/specialBets/:id          controllers.SpecialBets.specialBetsByTemplate(id: Long)
+GET     /wm2014/api/statistics/excel         controllers.Statistics.excel()
+
+
+# Send (user,password) to receive token
+POST    /wm2014/login                      controllers.Application.login()
+# Invalidate token
+POST    /wm2014/logout                     controllers.Application.logout()
+
+# Check if token is valid and get user id
+GET    /wm2014/api/ping                    controllers.Application.ping()
+GET    /wm2014/api/settings				controllers.Application.settings()
+
+GET        /routes                     controllers.Application.routes
+GET        /jsroutes.js                controllers.Application.jsRoutes(varName ?= "jsRoutes")
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /wm2014/*file                  controllers.GulpAssets.at(file)

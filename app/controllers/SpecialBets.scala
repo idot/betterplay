@@ -9,9 +9,9 @@ import models._
 import models.JsonHelper._
 import play.api.libs.json.JsError
 import javax.inject.{Inject, Provider, Singleton}
-
+import play.api.cache.CacheApi
 @Singleton
-class SpecialBets @Inject()(override val betterDb: BetterDb) extends Controller with Security {
+class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
   /*
   def all() = DBAction { implicit rs =>
       Ok("") 
