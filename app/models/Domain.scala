@@ -4,11 +4,18 @@ import org.joda.time.DateTime
 
 trait BetterException extends RuntimeException {
   
+  override def getMessage(): String = super.getMessage()
+  
 }
 
 object BetterException {
   
-  def apply(message: String): BetterException = new RuntimeException(message) with BetterException 
+  def apply(message: String): BetterException = {
+      println("INIT " +message)
+      val x = new RuntimeException(message) with BetterException 
+      println("EXIT "+x.getMessage)
+      x
+  }
 
   def apply(message: String, cause: Throwable = null): BetterException = new RuntimeException(message, cause) with BetterException 
   
@@ -21,7 +28,9 @@ object BetterException {
   
 }
 
-case class AccessViolationException(message: String) extends BetterException
+case class AccessViolationException(message: String) extends BetterException {
+     
+}
 case class ItemNotFoundException(message: String) extends BetterException 
 case class ValidationException(message: String) extends BetterException
 

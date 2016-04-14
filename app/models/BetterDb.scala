@@ -7,6 +7,7 @@ import javax.inject.{Singleton, Inject}
 import org.joda.time.DateTime
 import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
 import slick.driver.JdbcProfile
+import slick.profile.FixedSqlAction
 
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
 import scalaz.syntax.apply._ 
@@ -173,25 +174,26 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      }
      
      def validSPU(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[ValidationNel[String,String]] = {
-         val startedF = startOfGames().map{ OstartTime =>
-             OstartTime.map{ startTime => isGameOpen(startTime, currentTime, closingMinutesToGame) }.getOrElse( Failure("no games yet") )
+         startOfGames().map{ OstartTime =>
+             val withStart = OstartTime.map{ startTime => isGameOpen(startTime, currentTime, closingMinutesToGame) }.getOrElse( Failure("no games yet") )
+             val ids = compareIds(submittingUser.id.getOrElse(-1), sp.userId, "user ids").toValidationNel
+             (withStart.toValidationNel |@| ids) {
+                case(time, ids) => Seq(time, ids).mkString("\n")  
+             }
          }
-         val ids = compareIds(submittingUser.id.getOrElse(-1), sp.userId, "user ids").toValidationNel
-         startedF.map{ s  => ( s.toValidationNel |@| ids ){
-             case(time, ids) => Seq(time, ids).mkString("\n")         
-         }}
      }
+     
+   
 
      /**
      * API
      */
      def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
-         validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
+        validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
            v.fold(
                err => Future.failed(ValidationException(err.list.toList.mkString("\n"))),
                succ => updateSPU(sp)
-           )
-         }
+           )}
      }
 
 
@@ -363,27 +365,29 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       * The successfull return value is for the messageing functionality (log, ticker, facebook etc...)
       *
+      * returns game with teams, oldBet, newBet, betlog, Seq[String] of errors
+      * 
       */
-     def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams,Bet,Bet)] = {
+     def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams,Bet,Bet,BetLog, Seq[String])] = {
           val invalid = GameResult(-1,-1,true)
           val bg = (for{
              (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id).result.head
-             updatedBet <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, closingMinutesToGame).fold(
+             (upl, log) <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, closingMinutesToGame).fold(
                        err => {
-                        val errors = err.list.toList.mkString("\n")
+                        val errors = err.list.toList.mkString(";")
                         val updatedBet = b.copy(result=invalid)
                         val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, errors)
-                        betlogs += log
-                        DBIO.successful(updatedBet)
+                        val upL = betlogs += log
+                        DBIO.successful((updatedBet, log, err.list.toList)).zip(upL)
                     }, succ => {
                          val result = bet.result.copy(isSet=true)
                          val updatedBet = b.copy(result=result)
                          val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, "regular update")
-                         bets.filter(_.id === updatedBet.id).update(updatedBet)
-                         betlogs += log
-                         DBIO.successful(updatedBet)
+                         val upB = bets.filter(_.id === updatedBet.id).update(updatedBet)
+                         val upL = betlogs += log
+                         DBIO.successful((updatedBet, log, Seq.empty[String])).zip(upL)
                     })
-          }yield{ (GameWithTeams(g,t1,t2,l), b, updatedBet) }).transactionally   
+          }yield{ (GameWithTeams(g,t1,t2,l), b, upl._1, upl._2, upl._3) }).transactionally   
           db.run(bg).recoverWith{ case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find bet in database $bet")) }
      }
 
@@ -497,12 +501,11 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
           val userQ = (for{
              userId <- (users returning users.map(_.id)) += initUser
              specialBets <- specialbetstore.result
-             // does not compile (would be interesting to get the spIds
-             // spIds <- (specialbetsuser returning specialbetsuser.map(_id)) ++= specialBets.map(s => SpecialBetByUser(None, userId, s.id.get, "", 0))
-             _ <- specialbetsuser ++= specialBets.map(s => SpecialBetByUser(None, userId, s.id.get, "", 0))
+             spIds <- (specialbetsuser returning specialbetsuser.map(_.id)) ++= specialBets.map(s => SpecialBetByUser(None, userId, s.id.get, "", 0))
              _ <- createBetsForGamesForUser(userId)
           } yield userId).transactionally
            
+      
           db.run(userQ).map(i => initUser.copy(id=Some(i)))
           
      }
@@ -510,14 +513,15 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       /**
       * only simple bets no special bets!
       */
-     def createBetsForGamesForUser(userId: Long): DBIOAction[Option[Int],slick.dbio.NoStream,slick.dbio.Effect.Read with slick.dbio.Effect.Write]  = {
+     def createBetsForGamesForUser(userId: Long) = {
          Logger.debug(s"creating bets for games for user $userId")
-         val r = for{
-            games <- gamesWithoutBetsForUser(userId).result
-            b <- bets ++= games.map(g => Bet(None, 0, GameResult(0,0,false), g.id.get, userId))
-         } yield { b } 
-         r
-     }
+         for{
+            gs <- gamesWithoutBetsForUser(userId).result
+            inserts <- (bets returning bets.map(_.id)) ++= gs.map( game => Bet(None, 0, GameResult(0,0,false), game.id.get, userId))
+         }yield(inserts)
+     }   
+
+
      
      /**
       * only simple bets no special bets!
@@ -530,7 +534,8 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          if(submittingUser.isAdmin){
            val create = (for{
              userIds <- users.map(_.id).result
-           } yield { userIds.map(u => createBetsForGamesForUser(u))  }).transactionally
+             _ = userIds.map(u => createBetsForGamesForUser(u))       
+           } yield()).transactionally
            db.run(create).map(r => "created bets for all users")
          }else{
            Future.failed(AccessViolationException("only admins can create bets for all users"))
@@ -570,6 +575,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      * if something was wrong with the game. we set the results for this game to isSet = false
      * This does not delete the set result, but excludes them from accruing points for the user
      *
+     * 
+     * TODO: recalculate points
+     * 
      */
      def invalidateGame(game: Game, submittingUser: User): Future[String] = {
          if(submittingUser.isAdmin){
@@ -604,7 +612,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          }
      }
         
-     
+     def gamesWithLevelsAndBetsSet() = {
+         ((games.join(levels).on(_.levelId === _.id).join(bets.filter( b => b.isSet )).on(_._1.id === _.gameId))).result
+     }
 
      /***
       * updates all bets which have a valid result with points depending on game results and level
@@ -613,17 +623,20 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * the game is invalid
       *
       */
-     def updateBetsWithPoints(): DBIOAction[Seq[slick.profile.FixedSqlAction[Int,slick.dbio.NoStream,slick.dbio.Effect.Write]],slick.dbio.NoStream,slick.dbio.Effect.Read] = { //((g,l),b)
+     def updateBetsWithPoints() = { 
           Logger.info("updating bets with points") 
           val glbUpdate = for{
-                glbs <- ((games.join(levels).on(_.levelId === _.id).join(bets.filter( b => b.isSet )).on(_._1.id === _.gameId))).result
-             } yield {
-               glbs.map{ case ((g,l),b) =>
-                   val points = PointsCalculator.calculatePoints(b, g, l)
-                   val betWithPoints = b.copy(points=points)
-                   bets.filter(_.id === betWithPoints.id).update(betWithPoints)
-             }
-         }  
+                  glbs <- gamesWithLevelsAndBetsSet()
+                   _ = glbs.map{ case((g,l),b) => 
+                       Logger.error("dddddddddddddddddddddddddddddddddd"+b)
+                       val points = PointsCalculator.calculatePoints(b, g, l)
+                       val betWithPoints = b.copy(points=points)
+                       bets.filter(_.id === betWithPoints.id).update(betWithPoints)
+                    }
+                } yield({
+      
+                })
+                
          glbUpdate    
      }
      
@@ -638,8 +651,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
             s <- specialbetstore.join(specialbetsuser.filter(sp => sp.userId === user.id)).on( _.id === _.spId ).result   
             updated = PointsCalculator.calculateSpecialBets(s).map{ case(t,b) => b }
             sum = updated.map(_.points).sum
+            updateActions <- updated.map{ b => specialbetsuser.filter(_.id === b.id).update(b) } 
          } yield {
-             updated.foreach{ b => specialbetsuser.filter(_.id === b.id).update(b) } //TODO: check on mailing list if this is actually executed transactionally!
+             
              users.filter(_.id === user.id).update(user.copy(pointsSpecialBet=sum))
              sum
          })
@@ -655,6 +669,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          Logger.info("updating users with points")
          val userUpdate = for{
               suser <- users.join(bets).on(_.id === _.userId).result
+              
+              
+              
          } yield {
            val r = suser.groupBy{ _._1 }.map{ case(user,ub) =>  
                  val betSum = ub.map{ _._2.points}.sum 

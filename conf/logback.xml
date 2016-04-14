@@ -33,6 +33,9 @@
   <logger name="com.avaje.ebeaninternal.server.lib.BackgroundThread" level="OFF" />
   <logger name="com.gargoylesoftware.htmlunit.javascript" level="OFF" />
 
+  <logger name="slick.jdbc.JdbcBackend.statement" level="INFO"/>
+  <logger name="h2database" level="ERROR"/> <!-- INFO is good for debugging -->
+
   <!--
     Commment out the next line or change the root log level from DEBUG to ERROR
     if you do not need logging to console each time static assets
