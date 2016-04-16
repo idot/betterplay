@@ -70,7 +70,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      }
      
      def allUsersWithRank(): Future[Seq[(User,Int)]] = {
-         val res = users.sortBy(u => (u.points + u.pointsSpecial).desc ).result.map{ sorted =>
+         val res = users.sortBy(u => ((u.points + u.pointsSpecial).desc, u.id.desc) ).result.map{ sorted =>
             val points = sorted.map(_.totalPoints)
             val ranks = PointsCalculator.pointsToRanks(points)
             sorted.zip(ranks)
@@ -213,9 +213,6 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          db.run(action)
      }
 
-     def getSpecialBetsSPUForUser(user: User): Future[Seq[SpecialBetByUser]] = {
-         db.run(specialbetsuser.filter(_.userId === user.id).result)
-     }
 
      /**
       * This is for text import  and creation of game game details | team1name | team2name | levelNr (| == tab)
@@ -239,40 +236,40 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
     }
 
      /**
-      * TODO: test
+      * API
       */
-     def userWithSpecialBet(userId: Long):  Future[(User, Seq[SpecialBetByUser])] = {
-         val us = for{
-           (u,s) <- users.join(specialbetsuser).on(_.id === _.userId) if u.id === userId
-         }yield (u,s)
-         db.run(us.result).flatMap{ ubs =>
-           if(ubs.size > 0){
-             val user = ubs(0)._1
-             val bets = ubs.map{ case(u,b) => b } //TODO:.sortBy(b => b,id)
-             Future{ (user, bets) }
-          }else{
-             Future.failed(ItemNotFoundException(s"could not find user with id $userId"))
-          }
-        }
+     def userWithSpecialBets(userId: Long):  Future[(User, Seq[(SpecialBetT,SpecialBetByUser)])] = {
+         userWithSpecialBetsF((u: Users) => u.id === userId, s"id $userId")
+     }
+     
+      /**
+      * API
+      */
+     def userWithSpecialBets(username: String): Future[(User, Seq[(SpecialBetT,SpecialBetByUser)])] = {
+         userWithSpecialBetsF((u: Users) => u.username === username, s"username $username")
      }
 
      /**
-      * TODO: test
+      * internal
       */
-     def userWithSpecialBet(username: String):  Future[(User, Seq[(SpecialBetT,SpecialBetByUser)])] = {
+     def userWithSpecialBetsF(filter: Users => Rep[Boolean], err: String):  Future[(User, Seq[(SpecialBetT,SpecialBetByUser)])] = {
          val us = for{
-           ((u,b),t) <- users.join(specialbetsuser).on(_.id === _.userId).join(specialbetstore).on(_._2.spId === _.id ) if u.username === username
+           ((u,b),t) <- users.join(specialbetsuser).on(_.id === _.userId).join(specialbetstore).on(_._2.spId === _.id ) if filter(u)
          }yield (u,b,t)
-       db.run(us.result).flatMap{ ubs =>
+         db.run(us.result).flatMap{ ubs =>
           if(ubs.size > 0){
              val user = ubs(0)._1
              val bets = ubs.map{ case(u,b,t) => (t,b)}.sortBy(_._1.id)
              Future{ (user, bets) }
           }else{
-             Future.failed(ItemNotFoundException(s"could not find user with username $username"))
+             Future.failed(ItemNotFoundException(s"could not find user with $err"))
           }
        }
      }
+     
+   //  def userWithSpecialBet(f: withFilter)
+     
+              
      
      def userByName(username: String): Future[User] = {
          db.run(users.filter(_.username === username).result.head)
@@ -295,14 +292,6 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          }
      }
 
-     /**
-      * The ids are declared as Option[Long]
-      * this creates problems in filter clauses for joins (i.e WHERE)
-      *
-      */
-     def opId(id: Option[Long]): Long = {
-         id.map(i => i).getOrElse(-1)
-     }
 
      /***
       * UI 1
@@ -350,17 +339,25 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
           db.run(games.sortBy(_.serverStart ).result).map{ games => games.headOption.map(_.serverStart) }
      }
 
-     def closingTimeSpecialBet(closingMinutesToGame: Int): Future[Option[DateTime]] = {
-         startOfGames.map{ s => s.map(_.minusMinutes(closingMinutesToGame)) }
-     }
+     /**
+      * 
+      * TODO: not needed anymore?
+      */
+     //def closingTimeSpecialBet(closingMinutesToGame: Int): Future[Option[DateTime]] = {
+     //    startOfGames.map{ s => s.map(_.minusMinutes(closingMinutesToGame)) }
+     //}
 
-     def betWithGameWithTeamsAndUser(bet: Bet): Future[(Bet,GameWithTeams,User)] = {
-         val bg = for{
-          (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id)
-         } yield (g, t1, t2, l, b, u)
-         val bwg = bg.result.head.map{ case(g,t1,t2,l,b,u) => (b, GameWithTeams(g,t1,t2,l),u) }
-         db.run(bwg).recoverWith{ case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find bet in database $bet")) }
-     }
+     /**
+      * 
+      * TODO: not needed anymore?
+      */
+    // def betWithGameWithTeamsAndUser(bet: Bet): Future[(Bet,GameWithTeams,User)] = {
+    //     val bg = for{
+     //     (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id)
+    //     } yield (g, t1, t2, l, b, u)
+    //     val bwg = bg.result.head.map{ case(g,t1,t2,l,b,u) => (b, GameWithTeams(g,t1,t2,l),u) }
+     //    db.run(bwg).recoverWith{ case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find bet in database $bet")) }
+    // }
 
      /**
       * current time should come from date time provider
@@ -413,12 +410,13 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          }
      }
 
-
-     def checkSpecial(cb: Boolean, userId: Long, betUserId: Long): ValidationNel[String,String] = {
-         (canBet(cb).toValidationNel |@| compareIds(userId, betUserId, "user ids").toValidationNel){
-           case(c,u) => Seq(c,u).mkString("\n")
-         }
-     }
+//THIS IS NOT USED ANYMORE?
+//TODO: check if it was used once
+//     def checkSpecial(cb: Boolean, userId: Long, betUserId: Long): ValidationNel[String,String] = {
+//         (canBet(cb).toValidationNel |@| compareIds(userId, betUserId, "user ids").toValidationNel){
+//           case(c,u) => Seq(c,u).mkString("\n")
+//         }
+//     }
 
 
 
@@ -685,27 +683,6 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
                    })
          } yield ()
          userUpdate
-     }
-
-
-     //the optimum would be a left outer join with an and within the on clause!, but this is too complicated becasue there is
-     //no option[row].? as return type possible for slick yet
-     //(t, b) <- specialbetstore.join(specialbetsuser).on( (temp,bet) => temp.id === bet.spId  && bet.userId === user.id
-     //
-     //we generate for each user the correct bets when he signs in
-     //http://stackoverflow.com/questions/20386593/slick-left-right-outer-joins-with-option
-     def getSpecialBetsForUser(user: User): Future[Seq[(SpecialBetT,SpecialBetByUser)]] = {
-         val tbs = for {
-           s <- specialbetstore.join(specialbetsuser.filter(sp => sp.userId === user.id)).on( _.id === _.spId ).result
-           expectedCount = specialbetstore.length.result
-         } yield (s, expectedCount)
-         db.run(tbs).flatMap{ case(tbs,count) =>  
-             if(tbs.size == count){
-                Future{ tbs }
-             }else{
-               Future.failed(ItemNotFoundException(s"could not find all special bets for user ${user.id} with id $count")) 
-             }
-         }    
      }
 
 

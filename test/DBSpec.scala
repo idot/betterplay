@@ -169,7 +169,24 @@ class DBSpec extends Specification
 
            AR(betterDb.updateUserHadInstructions(user.id.get, user))
            AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.hadInstructions === true
+       
+           AR(betterDb.updateUserPassword(user.id.get, "newhash" , user))
+           AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.passwordHash === "newhash"
            
+           val (u1, specialWithUserId) = AR(betterDb.userWithSpecialBets(user.id.get))
+           val allSpecialTemplates = AR(betterDb.allSpecialBetTemplates()).sortBy(_.id)
+           specialWithUserId.length === allSpecialTemplates.size
+           specialWithUserId.unzip._1.sortBy(_.id) === allSpecialTemplates
+           
+           val (u2, specialWithUserName) = AR(betterDb.userWithSpecialBets(user.username))
+           specialWithUserId === specialWithUserName
+           
+           
+           val (t,spBs) = AR(betterDb.specialBetsByTemplate(allSpecialTemplates(0).id.get))
+           t === allSpecialTemplates(0)
+           spBs.map(_.userId).sorted === AR(betterDb.allUsers).map(_.id.get).sorted
+           
+          
       }
     
       def insertSpecialBetTemplates(){
@@ -254,7 +271,8 @@ class DBSpec extends Specification
           users(0).hadInstructions === true
           users(2).hadInstructions === false
 		  
-    		  val usp = Await.result(betterDb.getSpecialBetsSPUForUser(users(2)), 1 seconds)
+    		  val (udb, specials) = Await.result(betterDb.userWithSpecialBets(users(2).id.get), 1 seconds)
+    		  val (t, usp) = specials.unzip
     		  val sps = usp.sortBy(_.specialbetId)
 		      val sp3 = sps(3).copy(prediction="XY")
 		      
@@ -266,9 +284,9 @@ class DBSpec extends Specification
           // "user ids differ 4 3
           
           Await.result(betterDb.updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(2)), 1 seconds)
-		      val uwsb = Await.result(betterDb.userWithSpecialBet(users(2).id.get), 1 second)
+		      val uwsb = Await.result(betterDb.userWithSpecialBets(users(2).id.get), 1 second)
 		      uwsb._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
-          uwsb._2.filter(sb => sb.id == sp3.id).head.prediction === "XY"        
+          uwsb._2.unzip._2.filter(sb => sb.id == sp3.id).head.prediction === "XY"        
 		  
           //now set the special bet result on specialbetstore
 		      db.run(betterDb.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY"))
@@ -377,7 +395,7 @@ class DBSpec extends Specification
           AR(betterDb.calculateAndUpdatePoints(admin))
           userPoints() === 4  
       
-          AR(betterDb.allUsersWithRank()).map{ case(u,r) => (u.id, r)} === Seq((3,1),(2,2),(4,3),(1,3))
+          AR(betterDb.allUsersWithRank()).map{ case(u,r) => (u.id.get, r)} === Seq((3,1),(2,2),(4,3),(1,3))
         
       }
    
