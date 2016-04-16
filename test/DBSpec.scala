@@ -157,6 +157,19 @@ class DBSpec extends Specification
                b.points === 0
                Set(g.team1,g.team2) }
            }.toSet.flatten.size === 6
+           
+           val user = AR(betterDb.allUsers()).filter(u => u.firstName == "f1").head
+           AR(betterDb.updateUserDetails(user.id.get, "joe", "smith",  "newmail", "retro", true, "newinst", admin))
+           val dbUser = AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head
+           dbUser.lastName === "smith"
+           dbUser.email === "newmail"
+           dbUser.icontype === "retro"
+           dbUser.institute === "newinst"
+           dbUser.hadInstructions === false
+
+           AR(betterDb.updateUserHadInstructions(user.id.get, user))
+           AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.hadInstructions === true
+           
       }
     
       def insertSpecialBetTemplates(){
@@ -173,12 +186,15 @@ class DBSpec extends Specification
          val users = AR(betterDb.allUsers).sortBy(_.id)
          val gb1 = AR(betterDb.gamesWithBetForUser(users(1))).sortBy(_._1.game.id)
          gb1.size === 3
+         val game = gb1(0)._1.game
          val b1 = gb1(0)._2.copy(result=GameResult(1,2,false))
                                                                          //current time
-         val c = betterDb.compareBet(false, 4, 3, 10, 11, firstStart, firstStart.minusMinutes(5), 10).fold(
+         betterDb.compareBet(false, 4, 3, 10, 11, firstStart, firstStart.minusMinutes(5), 10).fold(
              fail => fail.list.toList.mkString(";") === "user ids differ 4 3;game ids differ 10 11;game closed since 0 days, 0 hours, 5 minutes, 0 seconds;user has not paid, no dice",
              succ => fail("should be invalid")   
          )
+         
+         //update the result in the database and check the return values; this bet is submitted by the wrong user and too late!
          AR(db.run(betterDb.betlogs.size.result)) === 0
          val upD = AR(betterDb.updateBetResult(b1, users(0), firstStart, 60))
          AR(db.run(betterDb.betlogs.size.result)) === 1
@@ -188,6 +204,7 @@ class DBSpec extends Specification
          tl( betterDb.betlogs,1, "Bet1" )
          Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, -1, 0, -1, firstStart, "user ids differ 2 1;game closed since 0 days, 1 hours, 0 minutes, 0 seconds")
     
+         //update the result in the database and check the return values; this bet is submitted successfully; will be tendency points
          val upD2 = AR(betterDb.updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60))
          upD2._5 === Nil
        	 tl( betterDb.betlogs,2, "Bet2" )
@@ -195,16 +212,21 @@ class DBSpec extends Specification
 			   Await.result(db.run(q), 1 seconds) === BetLog(Some(2l), users(1).id.get, gb1(0)._1.game.id.get, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61), "regular update")
          upD2._2.result === GameResult(0,0,false)
          upD2._3.result === GameResult(1,2,true)
-
-         val gb2 = Await.result(betterDb.gamesWithBetForUser(users(2)), 1 second).sortBy(_._1.game.id)
-         val b2 = gb2(0)._2.copy(result=GameResult(1,3,false)) 
-         val upD3 = AR(betterDb.updateBetResult(b2, users(2), firstStart.minusMinutes(61), 60))
-         upD3._2.result === GameResult(0,0,false)
-         upD3._3.result === GameResult(1,3,true)
-       
+         //now check if the value in the database was really changed
+         val betFromDb1 = AR(betterDb.betsWitUsersForGame(game)).filter{ case(b,u) => u == users(1) }.map{ case(b,u) => b }.head
+         betFromDb1 === upD2._3
+ 
          
-                    
-   
+         //update the result for a different user; will be exact Points
+         val (bet2,u) = AR(betterDb.betsWitUsersForGame(game)).filter{ case(b,u) => u == users(2) }.head
+         val bet2u = bet2.copy(result=GameResult(1,3,false))
+         val upD3 = AR(betterDb.updateBetResult(bet2u, users(2), firstStart.minusMinutes(61), 60))
+         upD3._2.result === GameResult(0,0,false)
+         upD3._3.result === GameResult(1,3,true)   
+         val betFromDb2 = AR(betterDb.betsWitUsersForGame(game)).filter{ case(b,u) => u == users(2) }.map{ case(b,u) => b }.head
+         betFromDb2 === upD3._3
+
+         
       }
    
       def updateGames(){
@@ -230,7 +252,7 @@ class DBSpec extends Specification
           // "game is still not finished"          
                 
           users(0).hadInstructions === true
-          users(1).hadInstructions === false
+          users(2).hadInstructions === false
 		  
     		  val usp = Await.result(betterDb.getSpecialBetsSPUForUser(users(2)), 1 seconds)
     		  val sps = usp.sortBy(_.specialbetId)
@@ -248,7 +270,8 @@ class DBSpec extends Specification
 		      uwsb._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
           uwsb._2.filter(sb => sb.id == sp3.id).head.prediction === "XY"        
 		  
-		   //   db.run(betterDb.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY")) //TODO: whu this was done just above?
+          //now set the special bet result on specialbetstore
+		      db.run(betterDb.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY"))
           
           Await.result(betterDb.startOfGames(), 1 seconds).get === firstStart
           
@@ -263,11 +286,13 @@ class DBSpec extends Specification
           g.venue === "Nowhere"
 
           Await.result(betterDb.startOfGames(), 1 seconds).get === changedStart
-           
+          
+          //we check and there should not be any points because the result has not been set yet
           AR(betterDb.calculateAndUpdatePoints(admin))
           userPoints() === 0
           
           //only result changes are taken over
+          //update the game with the results
           val gameWithResults = changes.copy(team1id=game1.team1id,team2id=game1.team2id,result=GameResult(1,3,false),venue="Everywhere",serverStart=firstStart,localStart=firstStart.minusHours(5))
           val (g2,u2) = Await.result(betterDb.updateGameResults(gameWithResults, admin, changedStart.plusMinutes(91), 90), 1 seconds)
           u2 === SetResult
@@ -275,22 +300,14 @@ class DBSpec extends Specification
           g2.team1id === game1.team2id
           g2.team2id === game1.team1id
           g2.serverStart === changedStart
-          g2.venue === "Nowhere" 
-       
+          g2.venue === "Nowhere"          
           
-          
+          //now get the same game from the database and compare it with the return value from the 
           val gwrDB = Await.result(betterDb.getGameByNr(gameWithResults.nr), 1 seconds)
-          gwrDB.game.result ===  GameResult(1,3,true)
-          gwrDB.game.team1id === game1.team2id
-          gwrDB.game.team2id === game1.team1id
-          gwrDB.game.serverStart === changedStart
-          gwrDB.game.venue === "Nowhere"
+          gwrDB.game === g2
           
-          val setBets =  Await.result(db.run(betterDb.bets.result), 1 seconds)
-          setBets.map(_.result).toSet.head === GameResult(0,0,false)
           val gwbs = Await.result(db.run(betterDb.gamesWithLevelsAndBetsSet()), 1 seconds)
-          println(gwbs)
-          gwbs.size === 3
+          gwbs.size === 2
           
           betPoints() === 0 
           Await.result(db.run(betterDb.updateBetsWithPoints()), 1 seconds)
@@ -298,7 +315,8 @@ class DBSpec extends Specification
           AR(betterDb.calculateAndUpdatePoints(admin))
           betPoints() === 4 
           userPoints() === 4
-          
+        
+          AR(betterDb.usersWithSpecialBetsAndRank()).map{ case(u,sp,i) => (u.id.get,i) } === Seq((3,1),(2,2),(4,3),(1,3))
           
       }
     
@@ -311,35 +329,29 @@ class DBSpec extends Specification
           val teams = Await.result(betterDb.allTeams(), 1 seconds).sortBy(_.id)
           val level = Await.result(betterDb.allLevels, 1 seconds).sortBy(_.level).reverse.head
           val gwt = Await.result(betterDb.insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin), 1 seconds).toOption.get
+          val gameCount = AR(betterDb.allGamesWithTeams()).size
+          val userCount =  AR(betterDb.allUsers()).size
           tl( betterDb.bets, 3 * 4, "ng1")           
           AR(betterDb.createBetsForGamesForAllUsers(admin))
-          tl( betterDb.bets, 4 * 4, "ng2")
+          tl( betterDb.bets, gameCount * userCount, "ng2")
           val betsForGame = Await.result(betterDb.betsWitUsersForGame(gwt.game), 1 seconds).sortBy(_._2.id)
           //user 1 wins the final
           betsForGame.zipWithIndex.foreach{ case((b,u),i) =>
               val bWithR = b.copy(result=GameResult(3,i,false))
-              val upD = betterDb.updateBetResult(bWithR, u, finalGameStart.minusMinutes(100), 60)
-              upD.onFailure{ case fail => failure(s"should be able to update bet for final game $b $u $i $fail") }
-              upD.onSuccess{ case succ =>
-                 succ match { case(g,b1,b2,l, err) =>
-                   b1.result === GameResult(0,0,false)
-                   b2.result === GameResult(3,i,true)
-              }}  
-              AR(upD)
+              val (g,b1,b2,l, err) = AR(betterDb.updateBetResult(bWithR, u, finalGameStart.minusMinutes(100), 60))
+              b1.result === GameResult(0,0,false)
+              b2.result === GameResult(3,i,true)
           }
           val gwr = gwt.game.copy(result=GameResult(3,1,false))  
-//          AR(betterDb.updateGameResults(gwr, admin, finalGameStart.plusMinutes(91), 90, 
-//              { case  succ => succ match{ case(g, u) =>
-//                u === SetResult
-//                g.result === GameResult(3,1,true)
-//                g.team1id === gwt.team1.id.get
-//                g.team2id === gwt.team2.id.get
-//                g.serverStart === finalGameStart
-//                g.venue === "stadium"
-//                g.levelId === gwt.level.id.get
-//             }},
-//             { case err => fail(s"setting result possible for final game $err")}
-//          )
+          val (g,u) = AR(betterDb.updateGameResults(gwr, admin, finalGameStart.plusMinutes(91), 90))
+          u === SetResult
+          g.result === GameResult(3,1,true)
+          g.team1id === gwt.team1.id.get
+          g.team2id === gwt.team2.id.get
+          g.serverStart === finalGameStart
+          g.venue === "stadium"
+          g.levelId === gwt.level.id.get
+          //TODO: compare with db values
           
           userPoints() === 4
           AR(betterDb.calculateAndUpdatePoints(admin))
@@ -349,7 +361,7 @@ class DBSpec extends Specification
           userPoints() === pointsBets
           val players = Await.result(betterDb.allPlayers, 1 seconds).sortBy(_.id)
 
-   //TODO: calculate special bets also       
+     
          
           val usersNow = Await.result(betterDb.allUsers, 1 seconds).sortBy(_.id)
           usersNow.map(_.points).sum === pointsBets
@@ -357,19 +369,15 @@ class DBSpec extends Specification
           usersNow.map(_.totalPoints).sum === pointsBets + pointsSpecial 
                  
 
-          val inv1 = betterDb.invalidateGame(gwt.game, usersNow(2))
-          inv1.onFailure{ case err => err === "only admin user can invalidate games" }
-          inv1.onSuccess{ case succ => failure("should be possible only for admin user to invalidate bets") }
-          AR(inv1)
-          
-          val inv2 = betterDb.invalidateGame(gwt.game, admin)
-          inv2.onFailure{ case err => failure("admin should be able to invalidate games!") }
-          inv2.onSuccess{ case succ => succ === ("invalidated game $game count: 1") } //TODO: $game
-          AR(inv2)
+          betterDb.invalidateGame(gwt.game, usersNow(2)) must throwAn[AccessViolationException].await
+         
+          AR(betterDb.invalidateGame(gwt.game, admin)) === s"invalidated game ${gwt.game.id.get} count: 1"
+          AR(betterDb.getGameByNr(gwt.game.nr)).game.result.isSet === false
           
           AR(betterDb.calculateAndUpdatePoints(admin))
-          userPoints() === 4
+          userPoints() === 4  
       
+          AR(betterDb.allUsersWithRank()).map{ case(u,r) => (u.id, r)} === Seq((3,1),(2,2),(4,3),(1,3))
         
       }
    

@@ -65,6 +65,10 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          db.run(players.result)
      }
      
+     def allBetLogs(): Future[Seq[BetLog]] = {
+         db.run(betlogs.result)
+     }
+     
      def allUsersWithRank(): Future[Seq[(User,Int)]] = {
          val res = users.sortBy(u => (u.points + u.pointsSpecial).desc ).result.map{ sorted =>
             val points = sorted.map(_.totalPoints)
@@ -92,7 +96,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
                      val spU = ustt._2
                      (u, SpecialBets(spT.zip(spU)))
                    }
-                   val sorted = betsPerUser.toList.sortBy{ case(u,b) => u.totalPoints() }.reverse
+                   val sorted = betsPerUser.toList.sortBy{ case(u,b) => (u.totalPoints(),u.id) }.reverse
                    val points = sorted.map{ case(u,b) => u.totalPoints }
                    val ranks = PointsCalculator.pointsToRanks(points)
                    sorted.zip(ranks).map{ case((u,b),p) => (u,b,p) }
@@ -372,29 +376,25 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
           val invalid = GameResult(-1,-1,true)
           val bg = (for{
              (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id).result.head
-             (upl, log) <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, closingMinutesToGame).fold(
+             (upl, dbAction) <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, closingMinutesToGame).fold(
                        err => {
                         val errors = err.list.toList.mkString(";")
                         val updatedBet = b.copy(result=invalid)
                         val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, errors)
                         val upL = betlogs += log
-                        DBIO.successful((updatedBet, log, err.list.toList)).zip(upL)
+                        DBIO.successful((updatedBet, log, err.list.toList)).zip(DBIO.seq(upL))
                     }, succ => {
                          val result = bet.result.copy(isSet=true)
                          val updatedBet = b.copy(result=result)
                          val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, "regular update")
                          val upB = bets.filter(_.id === updatedBet.id).update(updatedBet)
                          val upL = betlogs += log
-                         DBIO.successful((updatedBet, log, Seq.empty[String])).zip(upL)
+                         DBIO.successful((updatedBet, log, Seq.empty[String])).zip(DBIO.seq(upL,upB))
                     })
           }yield{ (GameWithTeams(g,t1,t2,l), b, upl._1, upl._2, upl._3) }).transactionally   
           db.run(bg).recoverWith{ case ex: NoSuchElementException => Future.failed(new ItemNotFoundException(s"could not find bet in database $bet")) }
      }
 
-
-     def allBetLogs(): Future[Seq[BetLog]] = {
-         db.run(betlogs.result)
-     }
 
      def compareIds(original: Long, proposed: Long, idName: String): Validation[String,String] = {
          if(original == proposed) Success("valid id") else Failure(s"$idName differ $original $proposed")
@@ -534,7 +534,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          if(submittingUser.isAdmin){
            val create = (for{
              userIds <- users.map(_.id).result
-             _ = userIds.map(u => createBetsForGamesForUser(u))       
+             _ <- DBIO.sequence(userIds.map(u => createBetsForGamesForUser(u)))     
            } yield()).transactionally
            db.run(create).map(r => "created bets for all users")
          }else{
@@ -542,32 +542,48 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          }
      }
   
-     def updateUserPassword(userId: Long, passwordHash: String): Future[User] = {
-           val upd = (for{
-             user <- users.filter(u => u.id === userId).result.head
-             updatedUser = user.copy(passwordHash=passwordHash)
-             _ <- users.update(updatedUser)
-           } yield( updatedUser )).transactionally
-           db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+     def updateUserPassword(userId: Long, passwordHash: String, submittingUser: User): Future[User] = {
+           if(submittingUser.isAdmin || submittingUser.id.get == userId){
+             val upd = (for{
+               user <- users.filter(u => u.id === userId).result.head
+               updatedUser = user.copy(passwordHash=passwordHash)
+               _ <- users.filter(_.id === userId).update(updatedUser)
+             } yield( updatedUser )).transactionally
+             db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+          } else {           
+            Future.failed(AccessViolationException(s"only admin user or the user himself can update the password"))
+          }
      }
 
-     def updateUserDetails(userId: Long, firstName: String, lastName: String, email: String, icontype: String): Future[User] = {
-         val (u,t) = DomainHelper.gravatarUrl(email, icontype)
-         val upd = (for{
-             user <- users.filter(u => u.id === userId).result.head
-             updatedUser = user.copy(firstName=firstName, lastName=lastName, email=email, iconurl=u, icontype=t)
-             _ <- users.update(updatedUser)
-         } yield( updatedUser )).transactionally
-         db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+     /**
+      * only admins can now change firstname and lastname
+      */
+     def updateUserDetails(userId: Long, firstName: String, lastName: String, email: String, icontype: String, showName: Boolean, institute: String, submittingUser: User): Future[User] = {
+          if(submittingUser.isAdmin || submittingUser.id.get == userId){
+             val isAdmin = submittingUser.isAdmin
+             val (u,t) = DomainHelper.gravatarUrl(email, icontype)
+             val upd = (for{
+                 user <- users.filter(u => u.id === userId).result.head
+                 updatedUser = user.copy(firstName=if(isAdmin) firstName else user.firstName, lastName=if(isAdmin) lastName else user.lastName, email=email, showName=showName, institute=institute, iconurl=u, icontype=t)
+                 _ <- users.filter(_.id === userId).update(updatedUser)
+             } yield( updatedUser )).transactionally
+             db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+          } else {           
+            Future.failed(AccessViolationException(s"only admin user or the user himself can update the details"))
+          }
      }
        
-     def updateUserHadInstructions(userId: Long): Future[User] = {
-         val upd = (for{
-             user <- users.filter(u => u.id === userId).result.head
-             updatedUser = user.copy(hadInstructions = true)
-             _ <- users.update(updatedUser)
-         } yield( updatedUser )).transactionally
-         db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+     def updateUserHadInstructions(userId: Long, submittingUser: User): Future[User] = {
+         if(submittingUser.id.get == userId){
+           val upd = (for{
+               user <- users.filter(u => u.id === userId).result.head
+               updatedUser = user.copy(hadInstructions = true)
+               _ <- users.filter(_.id === userId).update(updatedUser)
+           } yield( updatedUser )).transactionally
+           db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+         }else{
+            Future.failed(AccessViolationException(s"only the user himself can update the password"))
+         }
      }
 
 
@@ -582,8 +598,8 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      def invalidateGame(game: Game, submittingUser: User): Future[String] = {
          if(submittingUser.isAdmin){
              val r = games.filter(_.id === game.id).map(_.isSet).update(false)
-             Logger.debug("invalidating game $game")
-             db.run(r).map(i => "invalidated game $game count: $i")
+             Logger.info("invalidating game $game")
+             db.run(r).map(i => s"invalidated game ${game.id.get} count: $i")
          } else {           
             Future.failed(AccessViolationException(s"only admin user can invalidate games"))
          }
@@ -627,17 +643,13 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
           Logger.info("updating bets with points") 
           val glbUpdate = for{
                   glbs <- gamesWithLevelsAndBetsSet()
-                   _ = glbs.map{ case((g,l),b) => 
-                       Logger.error("dddddddddddddddddddddddddddddddddd"+b)
+                   _ <- DBIO.sequence(glbs.map{ case((g,l),b) => 
                        val points = PointsCalculator.calculatePoints(b, g, l)
                        val betWithPoints = b.copy(points=points)
                        bets.filter(_.id === betWithPoints.id).update(betWithPoints)
-                    }
-                } yield({
-      
-                })
-                
-         glbUpdate    
+                    })
+          } yield()    
+          glbUpdate    
      }
      
      /**
@@ -647,16 +659,13 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       */
      def calculateAndUpdateSpecialPointsForUser(user: User) = {
          Logger.debug(s"calculating special points for user ${user.id}")
-         val up = (for{
+         val up = for{
             s <- specialbetstore.join(specialbetsuser.filter(sp => sp.userId === user.id)).on( _.id === _.spId ).result   
             updated = PointsCalculator.calculateSpecialBets(s).map{ case(t,b) => b }
             sum = updated.map(_.points).sum
-            updateActions <- updated.map{ b => specialbetsuser.filter(_.id === b.id).update(b) } 
-         } yield {
-             
-             users.filter(_.id === user.id).update(user.copy(pointsSpecialBet=sum))
-             sum
-         })
+            specialUpdate <- DBIO.sequence(updated.map{ b => specialbetsuser.filter(_.id === b.id).update(b) })
+            sumUpdate <- users.filter(_.id === user.id).update(user.copy(pointsSpecialBet=sum))
+         } yield()
          up
      }
      
@@ -669,17 +678,12 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          Logger.info("updating users with points")
          val userUpdate = for{
               suser <- users.join(bets).on(_.id === _.userId).result
-              
-              
-              
-         } yield {
-           val r = suser.groupBy{ _._1 }.map{ case(user,ub) =>  
-                 val betSum = ub.map{ _._2.points}.sum 
-                 val userWithPoints = user.copy(points=betSum)
-                 calculateAndUpdateSpecialPointsForUser(user) //stores both betSum and calculates special points
-           }
-           r
-         }
+              ups <- DBIO.sequence(suser.groupBy{ _._1 }.map{ case(user,ub) =>  
+                     val betSum = ub.map{ _._2.points}.sum 
+                     val userWithPoints = user.copy(points=betSum)
+                     calculateAndUpdateSpecialPointsForUser(userWithPoints) //stores both betSum and calculates special points
+                   })
+         } yield ()
          userUpdate
      }
 

@@ -57,3 +57,5 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += specs2 % Test
 
+coverageEnabled := true
+
