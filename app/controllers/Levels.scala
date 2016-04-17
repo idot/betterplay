@@ -11,17 +11,17 @@ import models.JsonHelper._
 
 import javax.inject.{Inject, Provider, Singleton}
 
+import scala.concurrent.Future
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 @Singleton
 class Levels @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
 
-  /*
-   def all() = DBAction { implicit rs =>
-      implicit val session = rs.dbSession
-      val json = Json.toJson(BetterDb.allLevels())  
-      Ok(json)
+  
+   def all() = withUser.async { request =>
+      betterDb.allLevels().map{ all => Ok(Json.toJson(all)) }
   }
-  */
+  
    
 
 }

@@ -292,6 +292,13 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          }
      }
 
+     /**
+      * 
+      * 
+      */
+     def betsForUser(user: User): Future[Seq[Bet]] = {
+        db.run(bets.filter(_.userId === user.id).result)
+     }
 
      /***
       * UI 1

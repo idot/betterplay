@@ -22,64 +22,56 @@ import org.joda.time.DateTime
 
 import javax.inject.{Inject, Provider, Singleton}
 
+import scala.concurrent.Future
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 @Singleton
 class Games @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
-  /*
-  def all() = DBAction { implicit rs =>
-      implicit val session = rs.dbSession
-      val json = Json.toJson(BetterDb.allGamesWithTeams())  
-      Ok(json)
+  
+  def all() = withUser.async { request =>
+      betterDb.allGamesWithTeams().map{ teams =>  
+         Ok(Json.toJson(teams)) 
+      }
   }
     
-  def get(gameNr: Int) = DBAction { implicit rs =>
-      implicit val session = rs.dbSession
-      BetterDb.getGameByNr(gameNr).fold(
-        err => NotFound(Json.obj("err" -> err)),
-        game => {
-	      val betsWithUsers = BetterDb.betsWitUsersForGame(game.game)
+  def get(gameNr: Int) = withUser.async { request =>
+       betterDb.getGameByNr(gameNr).flatMap{ game => 
+        betterDb.betsWitUsersForGame(game.game).map{ betsWithUsers =>
           val json = Json.obj("game" -> game, "betsUsers" -> betsWithUsers)
           Ok(json)
         }  
-      )
+      }
   }
 
  
-  def submitResult() = withAdmin(parse.json){ userid => admin => implicit request =>
+  def submitResult() = withAdmin.async(parse.json){ request =>
 	  request.body.validate[Game].fold(
-		err => BadRequest(Json.obj("error" -> JsError.toFlatJson(err))),
+		err => Future.successful(BadRequest(Json.obj("error" -> JsError.toFlatJson(err)))),
 	    game => {
-	       implicit val session = request.dbSession
-	       BetterDb.updateGameResults(game, admin, BetterSettings.now, BetterSettings.closingMinutesToGame).fold(
-		      err => UnprocessableEntity(Json.obj("error" -> err)),
-			  success => {
-				  BetterDb.calculatePoints(admin).fold(
-				     err => UnprocessableEntity(Json.obj("error" -> err)),
-					 succ => Ok(s"updated all points")	  
-				  )
-			  }
-		   )
-		}
-	  )
-  }
-  
+	       betterDb.updateGameResults(game, request.admin, BetterSettings.now, BetterSettings.closingMinutesToGame)
+	           .flatMap{ case(g,gu) => betterDb.calculateAndUpdatePoints(request.admin)
+	           .map{ succ => Ok("updated all points") }
+	       }}      
+  )}
+  //	      err => UnprocessableEntity(Json.obj("error" -> err)),
+
   
   case class CreatedGame(serverStart: DateTime, localStart: DateTime, team1: String, team2: String, level: Int)
   implicit val createdGameFormat = Json.format[CreatedGame] 
 	 
-  def createGame() = withAdmin(parse.json){ userid => admin => implicit request => 
+  def createGame() = withAdmin.async(parse.json){ request =>
       request.body.validate[CreatedGame].fold(
-		  err =>  BadRequest(Json.obj("error" -> JsError.toFlatJson(err))),
+		    err =>  Future.successful(BadRequest(Json.obj("error" -> JsError.toFlatJson(err)))),
 		  cg => {
-		       implicit val session = request.dbSession
-			   val game = Game(None, DomainHelper.gameResultInit, 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0)
-			   BetterDb.insertGame(game, cg.team1, cg.team2, cg.level, admin).toOption.flatMap{ gwt => 
-				  BetterDb.createBetsForGamesForAllUsers(admin).toOption.map{ succ =>
-					   Ok(Json.obj("gwt" -> gwt))
-			      }   
-			   }.getOrElse(UnprocessableEntity(Json.obj("error" -> "could not create game")))
-		  }
+		     val game = Game(None, DomainHelper.gameResultInit, 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0)
+			   betterDb.insertGame(game, cg.team1, cg.team2, cg.level, request.admin)
+			        .flatMap{ gwt => 
+				           betterDb.createBetsForGamesForAllUsers(request.admin)
+				             .map( succ => Ok(Json.obj("gwt" -> gwt)) )
+			       }   
+			}
 	  )
   }
      
-*/
+
 }
