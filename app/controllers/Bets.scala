@@ -22,25 +22,25 @@ import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
 class Bets @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
-  /*
-    def update(id: Long) = withUser(parse.json){ userId => user => implicit request =>
+  
+    def update(id: Long) = withUser.async(parse.json) { request =>
   		request.body.validate[Bet].fold(
-  			err => BadRequest(Json.obj("error" -> JsError.toFlatJson(err))),
+  			err => Future.successful(BadRequest(Json.obj("error" -> JsError.toFlatJson(err)))),
   			bet => {
    		    val now = BetterSettings.now
   				  val mtg = BetterSettings.closingMinutesToGame
-  				  betterDb.updateBetResult(bet, user, now, mtg).map{
-  				   succ => succ match {  case(game,betold,betnew) =>
+  				  betterDb.updateBetResult(bet, request.user, now, mtg).map{
+  				   succ => succ match {  case(game,betold,betnew, log, errs) =>
   					   //TODO: add broadcast succ is (game,betold, betnew)
   					   Ok(Json.obj("game" -> game, "betold" -> betold, "betnew" -> betnew))
   				   }}.recoverWith{ case ex: Exception => 
-  				      UnprocessableEntity(Json.obj("error" -> ex.getMessage))
+  				      Future.successful(UnprocessableEntity(Json.obj("error" -> ex.getMessage)))
   				   }
   			}
 		  )
     }	  	 
- */   
-    def log() = Action.async { implicit rs =>
+   
+    def log() = withUser.async { request =>
       betterDb.allBetLogs().map{ log =>
         val txt = log.map(_.toText).mkString("\n") 
         Ok(txt)

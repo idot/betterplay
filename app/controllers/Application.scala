@@ -46,6 +46,8 @@ object FormToV {
 }
 
 
+
+
 /***
  * security based on 
  * http://www.jamesward.com/2013/05/13/securing-single-page-apps-and-rest-services
@@ -60,6 +62,10 @@ object FormToV {
  * actions that reveal sensitive information only fetch from db the user that is logged in by token 
  *
  **/
+class TokenRequest[A](val token: String, val userId: Long, request: Request[A]) extends WrappedRequest[A](request)
+class UserRequest[A](val user: User, request: TokenRequest[A]) extends WrappedRequest[A](request)
+class AdminRequest[A](val admin: User, request: TokenRequest[A]) extends WrappedRequest[A](request)
+
 trait Security{ self: Controller =>
   val betterDb: BetterDb
   val cache: CacheApi
@@ -68,68 +74,34 @@ trait Security{ self: Controller =>
   val AuthTokenCookieKey = "AUTH-TOKEN"   //TODO: change to XSRF-TOKEN
   val AuthTokenUrlKey = "auth"
 
-  /** Checks that a token is either in the header ***/ 
-  def HasToken[A](p: BodyParser[A] = parse.anyContent)(f: String => Long => Request[A] => Future[Result]): Action[A] = {
-    Action.async(p) { implicit request =>
-      val maybeToken = request.headers.get(AuthTokenHeader)
-      maybeToken.flatMap{ token =>
-        cache.get[Long](token) map { userId =>
-          f(token)(userId)(request)
-        }
-      }.getOrElse(Future.successful( Unauthorized(Json.obj("error" -> "no security token. Please login again"))) )
-    }
-  }
   
-  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
-    HasToken(p){ token => userId => implicit request =>
-   //    betterDb.userById(userId).map{ user =>
-          val user: User = null
-    //	    Future{ f(userId)(user)(request) }
-          f(userId)(user)(request)
-   //   }
-    }
-  }
-/*  
-  def withUserX[A](p: BodyParser[A] = parse.anyContent)(f: String => Long => User => Request[A] => Future[Result]): Action[A] = {
-    Action.async(p) { implicit request =>
-      val maybeToken = request.headers.get(AuthTokenHeader)
-      maybeToken.flatMap{ token =>
-        Cache.getAs[Long](token) map { userId =>
-          betterDb.userById(userId).map{ user =>
-            f(token)(userId)(user)(request)
-          }
-        }
+  def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest]{
+      def refine[A](input: Request[A]) = Future.successful{
+          val maybeToken = input.headers.get(AuthTokenHeader)
+          maybeToken.flatMap{ token =>
+            cache.get[Long](token) map { userId => new TokenRequest(token, userId, input) }
+     }.toRight(NotFound)
+  }}
+   
+  def withUserA = new ActionRefiner[TokenRequest,UserRequest]{
+      def refine[A](input: TokenRequest[A]) = {
+         betterDb.userById(input.userId)
+            .map{ user => Right(new UserRequest(user, input)) }
+            .recoverWith{ case e => Future.successful(Left(NotFound(e.getMessage))) }
       }
-      //.getOrElse(Future.successful( Unauthorized(Json.obj("error" -> "no security token. Please login again"))) )
-    }
   }
-*/  
   
-  /**
-  * action with the logged in user fresh from DB
-  */
-//  def withUser[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
-//      HasToken(p){ token => userId => implicit request =>
-//    	     betterDb.userById(userId).map{ user =>
-//    	        f(userId)(user)(request)
-//    	     }
-//      }
-//  }
-  	 //    .recoverWith{ case ex: Exception =>
-  	 //       Logger.error(ex.getMessage)
-  	 //       Future.successful(NotFound(Json.obj("error" -> s"could not find user $userId")))
-  	 //   }
-  //    }
-	//  }
- // }
-
-  /*
-  def withAdmin[A](p: BodyParser[A] = parse.anyContent)(f: Long => User => Request[A] => Future[Result]): Action[A] = {
-	  withUser(p){ userId => user => implicit request =>
-		   if(user.isAdmin) f(userId)(user)(request) else Unauthorized(Json.obj("error" -> s"must be admin"))  
-	  }
+  def withAdminA = new ActionRefiner[TokenRequest,AdminRequest]{
+      def refine[A](input: TokenRequest[A]) = {
+         betterDb.userById(input.userId)
+            .map{ user => if(user.isAdmin) Right(new AdminRequest(user, input)) else Left(NotFound("you must be admin")) } //todo: unauthorized
+            .recoverWith{ case e => Future.successful(Left(NotFound(e.getMessage))) }
+      }
   }
-  */
+  
+  def withUser = { hasToken andThen withUserA }
+    
+  def withAdmin = { hasToken andThen withAdminA }
  
   
 }
@@ -140,34 +112,32 @@ trait Security{ self: Controller =>
 class Application(env: Environment,
                   gulpAssets: GulpAssets,
                   lifecycle: ApplicationLifecycle,
-             //     dbConfigProvider: DatabaseConfigProvider,
-             //     override val betterDb: BetterDb,
+                  dbConfigProvider: DatabaseConfigProvider,
+                  override val betterDb: BetterDb,
                   val messagesApi: MessagesApi,
                   val cache: CacheApi,
                   configuration: Configuration,
-                  router: => Option[Router] = None) extends Controller with I18nSupport {
-                   //extends Controller with Security with I18nSupport {
+                  router: => Option[Router] = None) extends Controller with Security with I18nSupport {
+
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
   @Inject
   def this(env: Environment, gulpAssets: GulpAssets,
             lifecycle: ApplicationLifecycle,
-        //    dbConfigProvider: DatabaseConfigProvider,
-       //     betterDb: BetterDb,
+            dbConfigProvider: DatabaseConfigProvider,
+            betterDb: BetterDb,
             messagesApi: MessagesApi,
             cache: CacheApi,
             configuration: Configuration,
             router: Provider[Router]) =
     this(env, gulpAssets, lifecycle, 
-   //     dbConfigProvider, betterDb, 
-        messagesApi, cache, configuration, Some(router.get))
+           dbConfigProvider, betterDb, 
+          messagesApi, cache, configuration, Some(router.get))
 
 
    val debug = configuration.getBoolean("betterplay.debug").getOrElse(false)  
    val superpassword = configuration.getString("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
    val cacheExpiration = configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
    
-//  dbConfig = dbConfigProvider.get[JdbcProfile]
-
   /**
    * Returns ui/src/index.html in dev/test mode and ui/dist/index.html in production mode
    */
@@ -220,7 +190,7 @@ class Application(env: Environment,
   
  
 
- /*   
+  
  
 
   /**
@@ -238,7 +208,7 @@ class Application(env: Environment,
       result.discardingCookies(DiscardingCookie(name = AuthTokenCookieKey))
     }
   }
-  */
+ 
   
   def time() = Action {
 	  val now = BetterSettings.now
@@ -281,7 +251,7 @@ class Application(env: Environment,
     )(Login.apply)(Login.unapply)
   )
 
- /*
+ 
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = Action.async(parse.json) { implicit request => 
      import play.api.i18n.Messages.Implicits._
@@ -320,10 +290,11 @@ class Application(env: Environment,
    * Also sets the cookie (useful in some edge cases).
    * This action can be used by the route service.
    */
-  def ping() = HasToken() { token => userId => implicit request =>
-    betterDb.userById(userId.toInt).map{ user =>
-      Ok(Json.obj("userId" -> userId)).withToken(token -> userId)
-    }.recoverWith{ case ex: Exception => Future.successful(NotFound(Json.obj("error" -> ex.getMessage))) }
+  def ping = hasToken.async { tokenRequest => 
+      val userId = tokenRequest.userId.toLong
+      betterDb.userById(userId).map{ user =>
+        Ok(Json.obj("userId" -> userId)).withToken(tokenRequest.token -> userId)
+    } .recoverWith{ case ex: Exception => Future.successful(NotFound(Json.obj("error" -> ex.getMessage))) }
   }
 
 
@@ -335,6 +306,6 @@ class Application(env: Environment,
    //TODO   InitialData.insert(debug)
     }
   }
-*/
+
 }
 
