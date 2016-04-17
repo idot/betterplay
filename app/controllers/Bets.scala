@@ -25,7 +25,7 @@ class Bets @Inject()(override val betterDb: BetterDb, override val cache: CacheA
   
     def update(id: Long) = withUser.async(parse.json) { request =>
   		request.body.validate[Bet].fold(
-  			err => Future.successful(BadRequest(Json.obj("error" -> JsError.toFlatJson(err)))),
+  			err => Future.successful(BadRequest(Json.obj("error" -> JsError.toJson(err)))),
   			bet => {
    		    val now = BetterSettings.now
   				  val mtg = BetterSettings.closingMinutesToGame

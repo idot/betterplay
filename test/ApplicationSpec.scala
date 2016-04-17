@@ -47,31 +47,31 @@ class ApplicationSpec extends Specification with JsonMatchers {
     "allow login for users, protect routes and allow logout" in new WithApplication(app=app){
        val up = JsObject(Seq("username" -> JsString("admin"), "password" -> JsString("admin")))
        
-       val unau = route(FakeRequest("POST", "/wm2014/api/createBetsForUsers")).get
+       val unau = route(app, FakeRequest("POST", "/wm2014/api/createBetsForUsers")).get
        status(unau) must equalTo(UNAUTHORIZED)
                
-       val res = route(FakeRequest(POST, "/wm2014/login").withJsonBody(up)).get      
+       val res = route(app, FakeRequest(POST, "/wm2014/login").withJsonBody(up)).get      
        val authToken = extractToken(res).get 
 	   
-       val wau = route(FakeRequest(method="POST", path="/wm2014/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val wau = route(app, FakeRequest(method="POST", path="/wm2014/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wau) must equalTo(OK)
 	   
 	   val upd = JsObject(Seq("firstName" -> JsString("xyfirst1"), "lastName" -> JsString("xylast1"), "email" -> JsString("abcd@abcd.com"), "icontype" -> JsString("super")))
-	   val details = route(FakeRequest(method="POST", path="/wm2014/api/user/irrelevant/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
+	   val details = route(app, FakeRequest(method="POST", path="/wm2014/api/user/irrelevant/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
 	   status(details) must equalTo(OK)
 	          
-	   val userf = route(FakeRequest(method="GET", path="/wm2014/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	
+	   val userf = route(app, FakeRequest(method="GET", path="/wm2014/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	
 	   val user = contentAsString(userf) 	  
 	   user must /("firstName" -> "xyfirst1")		  
 	   user must /("lastName" -> "xylast1")	
 	   user must /("email" -> "abcd@abcd.com")	
 	   user must /("icontype" -> "super")	
 			  
-       val out = route(FakeRequest(POST, "/wm2014/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val out = route(app, FakeRequest(POST, "/wm2014/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(out) must equalTo(SEE_OTHER)
        redirectLocation(out) must beSome.which(_ == "/")
        
-       val wou = route(FakeRequest(method="POST", path="/wm2014/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val wou = route(app, FakeRequest(method="POST", path="/wm2014/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wou) must equalTo(UNAUTHORIZED)      
     }
   

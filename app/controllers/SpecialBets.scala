@@ -33,7 +33,7 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
   //
   def updateSpecialBet() = withUser.async(parse.json) { request =>
 	  request.body.validate[SpecialBetByUser].fold(
-		  err => Future.successful(UnprocessableEntity(Json.obj("error" -> JsError.toFlatJson(err)))),
+		  err => Future.successful(UnprocessableEntity(Json.obj("error" -> JsError.toJson(err)))),
 		  succ => {
 		      val now = BetterSettings.now
 			    val mtg = BetterSettings.closingMinutesToGame	  

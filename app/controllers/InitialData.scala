@@ -1,13 +1,18 @@
+package controllers
+
 import play.api._
 import play.api.Play.current
 import play.api.Logger
 import play.api.db.slick._
-import slick.jdbc.meta.MTable
-
-import java.text.SimpleDateFormat
 import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
+import scala.concurrent.{Future,Await}
+import scala.concurrent.duration._
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import javax.inject.Singleton
+import org.joda.time.DateTime
+import play.api.Environment
 
 /**
  * DATA FROM:
@@ -16,12 +21,14 @@ import au.com.bytecode.opencsv.CSVParser
  * https://raw.githubusercontent.com/datasets/country-codes/master/data/country-codes.csv 
  * for conversion from FIFA to 2 letter country; of course data is sh*t ENG missing
  **/
-object InitialData {
+
+
+class InitialData(betterDb: BetterDb, environment: Environment) {
   import org.joda.time.format.DateTimeFormat
   import org.joda.time.DateTime
   
   val csv = new CSVParser()
- /* 
+  
   val fifa2iso2 = {
 	  val lines = toLines("country-codes.csv").drop(1)
 	  //FIFA = 10
@@ -56,7 +63,7 @@ object InitialData {
     
  
   def toLines(file: String): Seq[String] = {
-     val is = Play.classloader.getResourceAsStream("data/"+file)
+     val is = environment.classLoader.getResourceAsStream("data/"+file)
      val string = IOUtils.toString(is, "UTF-8")
      val li = string.split("\n").drop(1)
      is.close
@@ -144,44 +151,39 @@ object InitialData {
           names.map(n => uf(n, "","", "", n, true))		  		    
   	  }
   }
-  */
- /* def updateChampion()(implicit s: Session){
-	  BetterTables.specialbetsuser.filter(s => s.spId === 3l).map(_.prediction).update("Argentinia")  
-  }
+ 
+//  def updateChampion(){
+//	     betterDb.specialbetsuser.filter(s => s.spId === 3l).map(_.prediction).update("Argentinia")  
+ // }
   
-  def insert(debug: Boolean): Unit = { //again slick is missing nested transactions!
+  def insert(debug: Boolean): Unit = { 
     val ls = levels()
     val us = users(debug)
     val ps = players()
-	val sp = specialBets()
+	  val sp = specialBets()
     Logger.info("inserting data in db")
-    DB.withSession { implicit s: Session =>
-       if(MTable.getTables("users").list().isEmpty) {
-        Logger.info("creating tables")
-        BetterTables.createTables()
-       }else{
-         Logger.info("dropping tables")
-         BetterTables.drop()
-         BetterTables.createTables()
-       }
-       Logger.info("inserting data")
-	   sp.foreach{ t => BetterDb.insertSpecialBetInStore(t) }
-	   us.foreach{ u => BetterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) }   
-	   val admin = BetterTables.users.filter(u => u.isAdmin).sortBy(_.id).firstOption.get
-       val levels = ls.map(l => BetterDb.insertOrUpdateLevelByNr(l, admin)).map(_.toOption.get)
-       val level = levels(0)
-       val (teams, ttg) = teamsGames(level.id.get)
-       teams.map(t => BetterDb.insertOrUpdateTeamByName(t, admin))
-       ttg.map{ case(t1,t2,g) => BetterDb.insertGame(g, t1, t2, level.level, admin)}        
-       BetterDb.createBetsForGamesForAllUsers(admin)	   
-	   ps.foreach{ case(p,t) => BetterDb.insertPlayer(p, t, admin)}
-	   updateChampion()
-	   	   
-       Logger.info("inserted data")
-    }
+    betterDb.dropCreate()
+    
+    Logger.info("inserting data")
+    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1 seconds)
+    Logger.info("inserted special bets")
+    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1 seconds)
+    Logger.info("inserted users")
+    val admin = Await.result(betterDb.allUsers(), 1 seconds).sortBy(_.id).head
+    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1 seconds)  
+    val level = Await.result(betterDb.allLevels(), 1 second)(0)
+    val (teams, ttg) = teamsGames(level.id.get)
+    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 1 seconds)
+    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 1 seconds)
+    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 1 seconds)
+    Await.result(Future.sequence(ps.map{ case(p,t) => betterDb.insertPlayer(p, t, admin) }), 1 seconds)
+	   
+	  
+    //TODO: updateChampion()
+
     Logger.info("done inserting data in db")
   
   }
-*/
+
 
 }

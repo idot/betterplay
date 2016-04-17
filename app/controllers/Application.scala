@@ -144,54 +144,38 @@ class Application(env: Environment,
   def index = gulpAssets.index
 
  // def toPrefix() = Action {
-	  //Redirect(routes.Application.index)
-    //
- //   null
+ //	  Redirect(routes.Application.index)
  // }
   
- // def oldhome = Action {
- //   Ok(views.html.index("Play Framework"))
- //     null
- // }
 
-//  val routeCache: Array[JavaScriptReverseRoute] = {
-//    val jsRoutesClass = classOf[controllers.routes.javascript]
-//    for {
-//      controller <- jsRoutesClass.getFields.map(_.get(null))
-//      method <- controller.getClass.getDeclaredMethods if method.getReturnType == classOf[JavaScriptReverseRoute]
-//    } yield method.invoke(controller).asInstanceOf[JavaScriptReverseRoute]
-//  }
+  val routeCache: Array[JavaScriptReverseRoute] = {
+    val jsRoutesClass = classOf[controllers.routes.javascript]
+    for {
+      controller <- jsRoutesClass.getFields.map(_.get(null))
+      method <- controller.getClass.getDeclaredMethods if method.getReturnType == classOf[JavaScriptReverseRoute]
+    } yield method.invoke(controller).asInstanceOf[JavaScriptReverseRoute]
+  }
 
   /**
    * Returns the JavaScript router that the client can use for "type-safe" routes.
    * @param varName The name of the global variable, defaults to `jsRoutes`
    */
   def jsRoutes(varName: String = "jsRoutes") = Action { implicit request =>
-//    Ok(JavaScriptReverseRouter(varName)(routeCache: _*)).as(JAVASCRIPT)
-      null
+     Ok(JavaScriptReverseRouter(varName)(routeCache: _*)).as(JAVASCRIPT)
   }
-
-  val herokuDemo = true
 
   /**
    * Returns a list of all the HTTP action routes for easier debugging
    */
   def routes = Action { request =>
-    if (env.mode == Mode.Prod && !herokuDemo){
+    if(env.mode == Mode.Prod){
       NotFound
     } else {
-     // Ok(views.html.devRoutes(request.method, request.uri, Some(router.get)))
-      null
+      Ok(views.html.devRoutes(request.method, request.uri, Some(router.get)))
     }
   }
 
   import models.JsonHelper._
-
-  
- 
-
-  
- 
 
   /**
   * caches the token with the userid
@@ -209,33 +193,31 @@ class Application(env: Environment,
     }
   }
  
-  
   def time() = Action {
 	  val now = BetterSettings.now
 	  val j = Json.obj("serverTime" -> now)
 	  Ok(j)
   }
   
- /* 
-  def setDebugTime() = withAdmin(parse.json) { userId => admin => implicit request =>
+
+  def setDebugTime() = withAdmin(parse.json) { request =>
 	  if(debug){
          (request.body \ "serverTime").validate[DateTime].fold(
 		   err => BadRequest(Json.obj("error" -> "could not parse json")),
 		   succ => {
 			    BetterSettings.setDebugTime(succ)	
-				Ok("set time to debug")
-		   } 
-		 )
-      }else{
+				  Ok("set time to debug")
+		   })
+		}else{
 	     Unauthorized(Json.obj("error" -> "setting of time only in debug modus! No cheating!!!"))
 	  }
   }
   
-  def resetTime() = withAdmin(parse.json) { userId => admin => implicit request =>
+  def resetTime() = withAdmin(parse.json) { request =>
 	  BetterSettings.resetTime()
 	  Ok("reset time to system clock")
   }
-*/
+
   
   def settings() = Action {
 	  val j = Json.obj("debug" -> debug)
@@ -303,7 +285,7 @@ class Application(env: Environment,
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
     Logger.info("starting up "+debugString)
     if(debug && insertdata){
-   //TODO   InitialData.insert(debug)
+      new InitialData(betterDb, env).insert(debug)
     }
   }
 
