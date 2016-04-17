@@ -8,6 +8,13 @@ import play.api.libs.json._
 import scala.concurrent.duration._
 import scala.concurrent.Await
 import scala.concurrent.Future
+import scala.concurrent.duration._
+import org.specs2.matcher.MatchResult
+import org.specs2.matcher.Matcher
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.Configuration
+import play.api.inject.bind
+import play.api.Mode
 
 //TODO: add ApplicationSpec tests from play-gulp-standalone
 
@@ -18,9 +25,22 @@ import scala.concurrent.Future
  */
 @RunWith(classOf[JUnitRunner])
 class ApplicationSpec extends Specification with JsonMatchers {
-    val app = FakeApplication(
-        additionalConfiguration = inMemoryDatabase(options=Map("DATABASE_TO_UPPER" -> "false", "DB_CLOSE_DELAY" -> "-1")) 
-    )
+    val app = new GuiceApplicationBuilder().configure(
+            Configuration.from(
+                Map(
+                    "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
+                    "slick.dbs.default.db.driver" -> "org.h2.Driver",
+                    "slick.dbs.default.db.url" -> "jdbc:h2:mem:appspec;TRACE_LEVEL_FILE=4", //TRACE_LEVEL 4 = enable SLF4J
+                    "slick.dbs.default.db.user" -> "sa",
+                    "slick.dbs.default.db.password" -> "",
+                    "play.cache.defaultCache" -> "appspeccache" //prevents error for multiple app 
+                )
+            )
+        )
+        .in(Mode.Test)
+        .build()         
+    
+    
     def extractToken(result: Future[play.api.mvc.Result]): Option[String] = {
        (Json.parse(contentAsString((result))) \ "AUTH-TOKEN").asOpt[String]
     }  

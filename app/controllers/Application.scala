@@ -143,9 +143,10 @@ class Application(env: Environment,
    */
   def index = gulpAssets.index
 
- // def toPrefix() = Action {
- //	  Redirect(routes.Application.index)
- // }
+  def toPrefix() = Action {
+ 	  //Redirect(routes.Application.index)
+    Ok("TODO: redirect")
+  }
   
 
   val routeCache: Array[JavaScriptReverseRoute] = {
@@ -279,7 +280,8 @@ class Application(env: Environment,
     } .recoverWith{ case ex: Exception => Future.successful(NotFound(Json.obj("error" -> ex.getMessage))) }
   }
 
-
+  onStart()
+  
   def onStart() {
     val insertdata = configuration.getBoolean("betterplay.insertdata").getOrElse(false)
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }

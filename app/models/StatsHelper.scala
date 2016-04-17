@@ -82,9 +82,10 @@ class StatsHelper(betterDb: BetterDb){
          usersSpRankUnsorted <- betterDb.usersWithSpecialBetsAndRank()
          gwtsUnsorted <- betterDb.allGamesWithTeams()
          allBetsPerUserSeq <- Future.sequence(usersSpRankUnsorted.map{ case(u,sp,r) => betterDb.betsForUser(u) })
-       } yield(usersSpRankUnsorted, gwtsUnsorted, allBetsPerUserSeq)
+         templates <- betterDb.allSpecialBetTemplates()
+       } yield(usersSpRankUnsorted, gwtsUnsorted, allBetsPerUserSeq, templates)
      
-      val (usersSpRankUnsorted, gwtsUnsorted, allBetsPerUserSeq) = Await.result(q, 5 seconds)
+      val (usersSpRankUnsorted, gwtsUnsorted, allBetsPerUserSeq, templates) = Await.result(q, 5 seconds)
     
       val gwts = gwtsUnsorted.sortBy(_.game.nr)
       val usersSpRank = usersSpRankUnsorted.sortBy(_._1.username)
@@ -101,6 +102,7 @@ class StatsHelper(betterDb: BetterDb){
           map
       }
    
+      def specialBetsTemplates(): Seq[SpecialBetT] = templates.sortBy(_.id)
 	    
 	    def createUserBets(user: User, sp: SpecialBets, rank: Int): UserBets = {
 	        val bets = gwts.zipWithIndex.map{ case(gwt,i) => allBetsMap.get(user.id.get, gwt.game.id.get) }
