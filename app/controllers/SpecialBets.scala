@@ -24,9 +24,11 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
   }
    
   def specialBetsForUser(username: String) = withUser.async { request => 
-	 	 betterDb.userWithSpecialBets(username).map{  case(u, tb) =>
-         Ok(Json.obj("user" -> UserNoPwC(u), "templateBets" -> tb)) 
-		 }
+      betterException{
+	     	betterDb.userWithSpecialBets(username).map{  case(u, tb) =>
+           Ok(Json.obj("user" -> UserNoPwC(u), "templateBets" -> tb)) 
+		   }
+     }
   }
   
   //nicer would be post to id resource. But I have all in the body
@@ -37,17 +39,21 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
 		  succ => {
 		      val now = BetterSettings.now
 			    val mtg = BetterSettings.closingMinutesToGame	  
-			    betterDb.updateSpecialBetForUser(succ, now, mtg, request.user)
-			      .map{ s => Ok(Json.toJson(s)) }
+			    betterException{
+			      betterDb.updateSpecialBetForUser(succ, now, mtg, request.user)
+			         .map{ s => Ok(Json.toJson(s)) }
+		      }
 		  }
 	  )
   }
   
   def specialBetsByTemplate(templateId: Long) = withUser.async(parse.json) { request =>
-      betterDb.specialBetsByTemplate(templateId)
-        .map{ case(t,bs) =>
-			    Ok(Json.obj("template" -> t, "bets" -> bs))
+      betterException{
+        betterDb.specialBetsByTemplate(templateId)
+           .map{ case(t,bs) =>
+			       Ok(Json.obj("template" -> t, "bets" -> bs))
         }
+      }
      
   }
 

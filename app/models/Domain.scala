@@ -2,24 +2,15 @@ package models
 
 import org.joda.time.DateTime
 
-trait BetterException extends RuntimeException {
-  
-  override def getMessage(): String = super.getMessage()
-  
-}
+trait BetterException 
 
 object BetterException {
   
-  def apply(message: String): BetterException = {
-      println("INIT " +message)
-      val x = new RuntimeException(message) with BetterException 
-      println("EXIT "+x.getMessage)
-      x
-  }
+  def apply(message: String): BetterException =  new RuntimeException(message) with BetterException 
 
   def apply(message: String, cause: Throwable = null): BetterException = new RuntimeException(message, cause) with BetterException 
   
-  def unapply(exception: BetterException): (Option[String],Option[Throwable],Option[Seq[StackTraceElement]]) = {
+  def unapply(exception: BetterException with RuntimeException): (Option[String],Option[Throwable],Option[Seq[StackTraceElement]]) = {
       val stack = if(exception.getStackTrace != null) Some(exception.getStackTrace.toSeq) else None
       val message = if(exception.getMessage != null) Some(exception.getMessage) else None
       val cause = if(exception.getCause != null) Some(exception.getCause) else None
@@ -28,11 +19,9 @@ object BetterException {
   
 }
 
-case class AccessViolationException(message: String) extends BetterException {
-     
-}
-case class ItemNotFoundException(message: String) extends BetterException 
-case class ValidationException(message: String) extends BetterException
+case class AccessViolationException(val message: String) extends RuntimeException(message) with BetterException
+case class ItemNotFoundException(message: String) extends RuntimeException(message) with BetterException
+case class ValidationException(message: String) extends RuntimeException(message) with BetterException
 
 object DomainHelper {
   import org.jasypt.util.password.StrongPasswordEncryptor

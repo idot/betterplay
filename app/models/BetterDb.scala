@@ -435,7 +435,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       */
      def updateGameDetails(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
          if(! submittingUser.isAdmin){
-           return Future.failed(AccessViolationException("only admin user can change levels"))
+           return Future.failed(AccessViolationException("only admin user can change game details"))
          }
          val gUp = (for{
            dbGame <- games.filter(_.id === game.id).result.head 

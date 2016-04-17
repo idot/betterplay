@@ -34,6 +34,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
  
   
   def get(username: String) = withUser.async { request =>
+     betterException{
       betterDb.userWithSpecialBets(username)
          .flatMap{ case(user, sp) =>
           betterDb.gamesWithBetForUser(user)
@@ -41,7 +42,8 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
               val json = Json.obj("user" -> UserNoPwC(user), "specialBets" -> sp, "gameBets" -> gamesWithBets)
               Ok(json)
           }
-      }          
+      }        
+     }
   }
      
   def userWithEmail() = withUser.async { request =>
@@ -70,10 +72,11 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        FormUserCreate.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),   //JsError.toFlatJson(err)))),
            succ =>  {
+             betterException{
              val created = DomainHelper.userFromUPE(succ.username, succ.password, succ.firstname, succ.lastname, succ.email, request.admin.id)
              betterDb.insertUser(created, false, false, Some(request.admin)).map{ r =>
 			         Ok(s"created bets for user $username")
-			       }
+			       }}
 		   })
    }
    
@@ -94,11 +97,12 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        FormUserUpdateDetails.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),
            succ => {
+             betterException{
              betterDb.updateUserDetails(request.user.id.get, succ.firstName, succ.lastName, succ.email, succ.icontype, succ.showname, succ.institute, request.user)
                .map{ u =>
                  Ok("updated user details")     
                }
-           }
+           }}
        )
    }
    
@@ -108,10 +112,12 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
         (request.body \ "password").validate[String].fold(
 	        err => Future.successful(UnprocessableEntity(Json.obj("error" -> "Password not found"))),
 		     succ => {
+		          betterException{
  		           val encryptedPassword = DomainHelper.encrypt(succ)
  			         betterDb.updateUserPassword(request.user.id.get, encryptedPassword, request.user).map{ r =>
  		             Ok("updated user password")      
  		           }
+		          }
 		    }
 	   )}
    
@@ -121,15 +127,16 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
    * 
    */
    def createBetsForUsers() = withAdmin.async{ request =>
+      betterException{
 	    betterDb.createBetsForGamesForAllUsers(request.admin)
 	      .map{ succ =>  Ok("created bets for users") }
-   }
+   }}
 
    def updateUserHadInstructions() = withUser.async { request =>
+       betterException{
        betterDb.updateUserHadInstructions(request.user.id.get, request.user)
          .map{ succ => Ok("user knows instructions")
-         
-       }
+       }}
    }
    
   

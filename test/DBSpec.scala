@@ -256,11 +256,11 @@ class DBSpec extends Specification
           val t1 = gameWt.team1.id
           
           
-          betterDb.updateGameDetails(game1, users(2), firstStart, 90) must throwAn[AccessViolationException].await
-          //?
-             
-          betterDb.updateGameDetails(game1, users(0), firstStart, 90) must throwAn[ValidationException].await
-         // "game will start in 5x90 minutes no more changes! game closed since 0 days, 7 hours, 30 minutes, 0 seconds" 
+          betterDb.updateGameDetails(game1, users(2), firstStart, 90) must throwAn[AccessViolationException]("only admin user can change game details").await
+          
+          val errDet1 = "game will start in 5x90 minutes no more changes! game closed since 0 days, 7 hours, 30 minutes, 0 seconds"
+          betterDb.updateGameDetails(game1, users(0), firstStart, 90) must throwAn[ValidationException](errDet1).await
+          
                           
           betterDb.updateGameResults(game1, users(2), firstStart, 90) must throwAn[AccessViolationException].await
           // "must be admin to change game results"           

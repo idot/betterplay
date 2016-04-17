@@ -32,6 +32,7 @@ import scala.concurrent.duration._
 
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
+import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 
 
 object FormToV {
@@ -80,22 +81,22 @@ trait Security{ self: Controller =>
           val maybeToken = input.headers.get(AuthTokenHeader)
           maybeToken.flatMap{ token =>
             cache.get[Long](token) map { userId => new TokenRequest(token, userId, input) }
-     }.toRight(NotFound)
+     }.toRight(Unauthorized)
   }}
    
   def withUserA = new ActionRefiner[TokenRequest,UserRequest]{
       def refine[A](input: TokenRequest[A]) = {
          betterDb.userById(input.userId)
             .map{ user => Right(new UserRequest(user, input)) }
-            .recoverWith{ case e => Future.successful(Left(NotFound(e.getMessage))) }
+            .recoverWith{ case e: AccessViolationException => Future.successful(Left(Unauthorized(e.getMessage))) }
       }
   }
   
   def withAdminA = new ActionRefiner[TokenRequest,AdminRequest]{
       def refine[A](input: TokenRequest[A]) = {
          betterDb.userById(input.userId)
-            .map{ user => if(user.isAdmin) Right(new AdminRequest(user, input)) else Left(NotFound("you must be admin")) } //todo: unauthorized
-            .recoverWith{ case e => Future.successful(Left(NotFound(e.getMessage))) }
+            .map{ user => if(user.isAdmin) Right(new AdminRequest(user, input)) else Left(Unauthorized("you must be admin")) } //todo: unauthorized
+            .recoverWith{ case e: AccessViolationException => Future.successful(Left(Unauthorized(e.getMessage))) }
       }
   }
   
@@ -103,6 +104,14 @@ trait Security{ self: Controller =>
     
   def withAdmin = { hasToken andThen withAdminA }
  
+  def betterException(future: Future[Result]): Future[Result] = {
+      future.recoverWith{
+        case e: AccessViolationException => Future.successful(Unauthorized(e.getMessage))
+        case e: ItemNotFoundException => Future.successful(NotFound(e.getMessage))
+        case e: ValidationException => Future.successful(NotAcceptable(e.getMessage))
+      }
+  }
+  
   
 }
 

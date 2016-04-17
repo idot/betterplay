@@ -33,7 +33,8 @@ class ApplicationSpec extends Specification with JsonMatchers {
                     "slick.dbs.default.db.url" -> "jdbc:h2:mem:appspec;TRACE_LEVEL_FILE=4", //TRACE_LEVEL 4 = enable SLF4J
                     "slick.dbs.default.db.user" -> "sa",
                     "slick.dbs.default.db.password" -> "",
-                    "play.cache.defaultCache" -> "appspeccache" //prevents error for multiple app 
+                    "play.cache.defaultCache" -> "appspeccache", //prevents error for multiple app 
+                    "betterplay.insertdata" -> "true"
                 )
             )
         )

@@ -29,13 +29,13 @@ class Bets @Inject()(override val betterDb: BetterDb, override val cache: CacheA
   			bet => {
    		    val now = BetterSettings.now
   				  val mtg = BetterSettings.closingMinutesToGame
-  				  betterDb.updateBetResult(bet, request.user, now, mtg).map{
-  				   succ => succ match {  case(game,betold,betnew, log, errs) =>
+  				  betterException{
+  				   betterDb.updateBetResult(bet, request.user, now, mtg).map{
+  				     succ => succ match {  case(game,betold,betnew, log, errs) =>
   					   //TODO: add broadcast succ is (game,betold, betnew)
-  					   Ok(Json.obj("game" -> game, "betold" -> betold, "betnew" -> betnew))
-  				   }}.recoverWith{ case ex: Exception => 
-  				      Future.successful(UnprocessableEntity(Json.obj("error" -> ex.getMessage)))
+  					    Ok(Json.obj("game" -> game, "betold" -> betold, "betnew" -> betnew))
   				   }
+  				 }}
   			}
 		  )
     }	  	 
