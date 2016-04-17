@@ -494,14 +494,14 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *  user registers with e-mail, token is generated for his id
       *  user klicks link with token e-mail, opens web, => user signs on..
       *
-      * 
+      *  
       */
-     def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[Long], canRegister: Boolean): Future[User] = {
-          if(! canRegister){
-           return Future.failed(AccessViolationException("must be registering user to be able to create users!"))
+     def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[User]): Future[User] = {
+          if( registeringUser.map(r => ! r.isAdmin).getOrElse(false) ){ //if none => the data comes from text file import, no users yet!!!
+             return Future.failed(AccessViolationException("must be admin user to be able to create users!"))
           }
        
-          val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser)
+          val initUser = DomainHelper.userInit(taintedUser, isAdmin, isRegistering, registeringUser.flatMap(_.id))
           
           val userQ = (for{
              userId <- (users returning users.map(_.id)) += initUser

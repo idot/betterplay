@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsError
 import play.api.data._
 import play.api.data.Forms._
 import play.api.cache.CacheApi
@@ -17,118 +18,121 @@ import models.BetterSettings
 
 import javax.inject.{Inject, Provider, Singleton}
 
+
+import scala.concurrent.Future
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 @Singleton
 class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
-  /*
-  def all() = DBAction { implicit rs =>
-      implicit val session = rs.dbSession
-      val usersRank = BetterDb.allUsersWithRank()
-      val json =  Json.toJson(usersRank.map{ case(u, r) => UserNoPwC(u, r)})
-      Ok(json)
-  } 
+ 
+  def all() = withUser.async { request =>
+      betterDb.allUsersWithRank().map{ all => 
+        val allNoPw = all.map{ case(u,r) => UserNoPwC(u, r) }
+        Ok(Json.toJson(allNoPw )) 
+      }
+  }
+ 
   
-  def get(username: String) = DBAction { implicit rs =>
-      implicit val session = rs.dbSession
-      BetterDb.userWithSpecialBet(username).fold(
-        err => NotFound(Json.obj("error" -> err)),
-        succ => succ match { case(user, sp) =>
-          val gamesWithBets = BetterDb.gamesWithBetForUser(user)
-          val json = Json.obj("user" -> UserNoPwC(user), "specialBets" -> sp, "gameBets" -> gamesWithBets)
-          Ok(json)
-        }  
-      )
+  def get(username: String) = withUser.async { request =>
+      betterDb.userWithSpecialBets(username)
+         .flatMap{ case(user, sp) =>
+          betterDb.gamesWithBetForUser(user)
+            .map{ gamesWithBets =>
+              val json = Json.obj("user" -> UserNoPwC(user), "specialBets" -> sp, "gameBets" -> gamesWithBets)
+              Ok(json)
+          }
+      }          
   }
      
-  def userWithEmail() = withUser(){ userId => user => implicit request =>
-	  val nop = UserNoPwC(user)
-      val jnop = Json.toJson(nop)  
+  def userWithEmail() = withUser.async { request =>
+	  val nop = UserNoPwC(request.user)
+    val jnop = Json.toJson(nop)  
 
-	  val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> user.email ))
-      Ok(jnope)	  
+	  val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> request.user.email ))
+    Future.successful(Ok(jnope))  
   }	  	 
 	  
   /** 
   *
   **/
-  case class UserCreate(username: String, password: String, email: String)
+  case class UserCreate(username: String, password: String, firstname: String, lastname: String, email: String)
     val FormUserCreate = Form(
        mapping(
           "username" -> nonEmptyText(3,20),
           "password" -> nonEmptyText(6),
-		  "email" -> email
+          "firstname" -> nonEmptyText(3,50),
+          "lastname" -> nonEmptyText(3,50),
+		      "email" -> email
        )(UserCreate.apply)(UserCreate.unapply)
    )
   
-   def create(username: String) = withUser(parse.json){ userId => user => implicit request =>
-       implicit val session = request.dbSession
-       FormUserCreate.bind(request.body).map{ sub => 
-             if(user.isAdmin){
-			      val created = DomainHelper.userFromUPE(sub.username, sub.password, sub.email, user.id)
-			      BetterDb.insertUser(created, false, false, user.id)		   
-		     } else -\/("must be admin")
-	   }.fold(
-          err => Forbidden(Json.obj("error" -> err)),
-          succ => Ok("created bets for users")      
-       )
+   def create(username: String) = withAdmin.async(parse.json) { request =>
+       FormUserCreate.bind(request.body).fold(
+           err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),   //JsError.toFlatJson(err)))),
+           succ =>  {
+             val created = DomainHelper.userFromUPE(succ.username, succ.password, succ.firstname, succ.lastname, succ.email, request.admin.id)
+             betterDb.insertUser(created, false, false, Some(request.admin)).map{ r =>
+			         Ok(s"created bets for user $username")
+			       }
+		   })
    }
    
    
-   case class UserUpdateDetails(firstName: String, lastName: String, email: String, icontype: String)
+   case class UserUpdateDetails(firstName: String, lastName: String, email: String, showname: Boolean, institute: String, icontype: String)
    val FormUserUpdateDetails = Form(
       mapping(
          "firstName" -> text,
          "lastName" -> text,
-	     "email" -> email,
-		 "icontype" -> text
+	       "email" -> email,
+	       "showname" -> boolean,
+	       "institute" -> text,
+		     "icontype" -> text
       )(UserUpdateDetails.apply)(UserUpdateDetails.unapply)
    )
    
-   def updateDetails(username: String) = withUser(parse.json){ userId => user => implicit request =>
-       implicit val session = request.dbSession
-       FormUserUpdateDetails.bind(request.body).map{ sub => 
-			   BetterDb.updateUserDetails(userId, sub.firstName, sub.lastName, sub.email, sub.icontype)		   
-	   }.fold(
-          err => Forbidden(Json.obj("error" -> err)),
-          succ => Ok("updated user details")      
+   def updateDetails(username: String) = withUser.async(parse.json){ request =>
+       FormUserUpdateDetails.bind(request.body).fold(
+           err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),
+           succ => {
+             betterDb.updateUserDetails(request.user.id.get, succ.firstName, succ.lastName, succ.email, succ.icontype, succ.showname, succ.institute, request.user)
+               .map{ u =>
+                 Ok("updated user details")     
+               }
+           }
        )
    }
    
-   def updatePassword(username: String) = withUser(parse.json){ userId => user => implicit request =>
-       implicit val session = request.dbSession
-       (request.body \ "password").validate[String].fold(
-	      err => -\/("password not found"),
-		  succ => {
- 		      val encryptedPassword = DomainHelper.encrypt(succ)
- 			  BetterDb.updateUserPassword(userId, encryptedPassword)		   	 
-		  }
-	   ).fold(
-          err => Forbidden(Json.obj("error" -> err)),
-          succ => Ok("updated user password")      
-       )
-   }
+   
+   
+   def updatePassword(username: String) = withUser.async(parse.json){ request =>
+        (request.body \ "password").validate[String].fold(
+	        err => Future.successful(UnprocessableEntity(Json.obj("error" -> "Password not found"))),
+		     succ => {
+ 		           val encryptedPassword = DomainHelper.encrypt(succ)
+ 			         betterDb.updateUserPassword(request.user.id.get, encryptedPassword, request.user).map{ r =>
+ 		             Ok("updated user password")      
+ 		           }
+		    }
+	   )}
    
   
   /**
    * todo: should delegate to actor so that only one is active
    * 
    */
-   def createBetsForUsers() = withAdmin(){ userId => admin => implicit request =>
-       implicit val session = request.dbSession
-	   BetterDb.createBetsForGamesForAllUsers(admin).fold(
-		   err => Forbidden(Json.obj("error" -> err)),
-		   succ => Ok("created bets for users")
-	   ) 
+   def createBetsForUsers() = withAdmin.async{ request =>
+	    betterDb.createBetsForGamesForAllUsers(request.admin)
+	      .map{ succ =>  Ok("created bets for users") }
    }
 
-   def updateUserHadInstructions() = withUser(){ userId => user => implicit request =>
-	   implicit val session = request.dbSession
-       BetterDb.updateUserHadInstructions(user).fold(
-           err => UnprocessableEntity(Json.obj("error" -> err)),
-		   succ => Ok(succ)	   
-	   )
+   def updateUserHadInstructions() = withUser.async { request =>
+       betterDb.updateUserHadInstructions(request.user.id.get, request.user)
+         .map{ succ => Ok("user knows instructions")
+         
+       }
    }
    
-   */
+  
    
 }
 

@@ -93,7 +93,7 @@ class DBSpec extends Specification
       def insertAdmin(){
 		      tl( betterDb.specialbetsuser,0, "A1" )
           tl( betterDb.users,0, "A2"  )
-          AR(betterDb.insertUser(ObjectMother.adminUser, true, true, None, true))
+          AR(betterDb.insertUser(ObjectMother.adminUser, true, true, None))
           tl( betterDb.users,1 , "A3")
 		      tl( betterDb.specialbetsuser,12, "A4" )
 		      //no games yet, so no normal bets!!!
@@ -144,7 +144,7 @@ class DBSpec extends Specification
           admin.hadInstructions === true
           admin.canBet === true
           ObjectMother.dummyUsers.map{u => 
-                 val us = AR(betterDb.insertUser(u, false, false, admin.id, true))
+                 val us = AR(betterDb.insertUser(u, false, false, Some(admin)))
                  us.registeredBy === admin.id && us.isAdmin === false && us.points === 0 && us.canBet === true
           }
 		      tl( betterDb.specialbetsuser, 4 * 12, "U4" ) 
