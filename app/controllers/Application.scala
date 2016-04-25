@@ -157,6 +157,10 @@ class Application(env: Environment,
     Ok("TODO: redirect")
   }
   
+  def oldhome = Action {
+    Ok(views.html.index("Play Framework"))
+  }
+
 
   val routeCache: Array[JavaScriptReverseRoute] = {
     val jsRoutesClass = classOf[controllers.routes.javascript]

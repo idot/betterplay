@@ -34,8 +34,9 @@ class GulpAssets @Inject() (env: Environment, conf: Configuration) extends Contr
     case Some(dirs) => dirs.map(env.getFile).toList
     // If "gulp.devDirs" is not specified in conf/application.conf
     case _ => List(
-      env.getFile("ui/dist"),
+			  env.getFile("ui/dist"),
       env.getFile("ui/src"),
+
       env.getFile("ui"),
       env.getFile("public")
     )

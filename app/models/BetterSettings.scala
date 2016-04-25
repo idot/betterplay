@@ -30,7 +30,7 @@ object BetterSettings {
 	 */
 	def now(): DateTime = {
 		if(debug){
-			debugTime
+			  debugTime
 		}else{
 		    new DateTime()
 	    }

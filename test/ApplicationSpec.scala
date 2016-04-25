@@ -77,16 +77,16 @@ class ApplicationSpec extends Specification with JsonMatchers {
        val wau = route(app, FakeRequest(method="POST", path="/wm2014/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wau) must equalTo(OK)
 	   
-	   val upd = JsObject(Seq("firstName" -> JsString("xyfirst1"), "lastName" -> JsString("xylast1"), "email" -> JsString("abcd@abcd.com"), "icontype" -> JsString("super")))
-	   val details = route(app, FakeRequest(method="POST", path="/wm2014/api/user/irrelevant/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
-	   status(details) must equalTo(OK)
+	     val upd = JsObject(Seq("firstName" -> JsString("xyfirst1"), "lastName" -> JsString("xylast1"), "email" -> JsString("abcd@abcd.com"), "icontype" -> JsString("super")))
+	     val details = route(app, FakeRequest(method="POST", path="/wm2014/api/user/irrelevant/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
+	     status(details) must equalTo(OK)
 	          
-	   val userf = route(app, FakeRequest(method="GET", path="/wm2014/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	
-	   val user = contentAsString(userf) 	  
-	   user must /("firstName" -> "xyfirst1")		  
-	   user must /("lastName" -> "xylast1")	
-	   user must /("email" -> "abcd@abcd.com")	
-	   user must /("icontype" -> "super")	
+	     val userf = route(app, FakeRequest(method="GET", path="/wm2014/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	
+	     val user = contentAsString(userf) 	  
+	     user must /("firstName" -> "xyfirst1")		  
+	     user must /("lastName" -> "xylast1")	
+	     user must /("email" -> "abcd@abcd.com")	
+	     user must /("icontype" -> "super")	
 			  
        val out = route(app, FakeRequest(POST, "/wm2014/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(out) must equalTo(SEE_OTHER)
