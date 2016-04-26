@@ -4,24 +4,7 @@
         angular
             .module('ui')
             .value('version', '0.1')
-            .factory('selectFilter', function($q) {
-                return {
-                    from: function(items) {
-                        return function() {
-                            var arr = _.map(items, function(i) {
-                                return {
-                                    id: i,
-                                    title: i
-                                };
-                            });
-                            var deferred = $q.defer();
-                            deferred.resolve(arr);
-                            return deferred;
-                        };
-                    }
-                };
-            })
-            .factory('specialBetService', function($state, Restangular, toaster) {
+            .factory('specialBetService', function($state, Restangular, toaster, _) {
                 return {
                     getSpecialBet: function(betId, username) {
                         return Restangular.one('wm2014/api/user', username).one('specialBets').get().then(
@@ -51,7 +34,7 @@
                                             toaster.pop('success', "Congratulations " + user.username + "!", "You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.");
                                         }
                                     );
-                                };
+                                }
                                 $state.transitionTo("user.specialBets", {
                                     username: user.username
                                 });
@@ -59,7 +42,7 @@
                     }
                 };
             })
-            .factory('specialBetStats', function(Restangular) {
+            .factory('specialBetStats', function(Restangular, _ ) {
                 return {
                     getStats: function(templateId) {
                         return Restangular.one('wm2014/api/specialBets', templateId).get().then(
@@ -86,8 +69,8 @@
                     }
                 };
             })
-            .service('betterSettings', function(Restangular, $timeout, toaster) {
-                    var settings = {};
+            .service('betterSettings', function(Restangular, $timeout, toaster, moment, userService) {
+                   var vm = this;
                     var startupTime = new Date();
                     var currentTime = new Date();
 
@@ -106,7 +89,7 @@
                     //reload clock from server 
                     var RESETTIMEDIFF = 5 * 60 * 1000; //in ms
 
-                    this.timeLeft = function(serverStart) {
+                    vm.timeLeft = function(serverStart) {
                         //boolean true add in/ago
                         //negative values = ago
                         //positive values = in
@@ -115,40 +98,40 @@
                         return s;
                     };
 
-                    this.betClosed = function(serverStart) {
+                    vm.betClosed = function(serverStart) {
                         var diff = (serverStart - MSTOCLOSING) - currentTime;
                         return diff < 0;
                     };
 
-                    this.canBet = function(serverStart, bet) {
+                    vm.canBet = function(serverStart, bet) {
                         var diff = (serverStart - MSTOCLOSING) - currentTime;
-                        var owner = isOwner(bet.userId);
+                        var owner = userService.isOwner(bet.userId);
                         return diff > 0 && owner;
                     };
 
-                    this.onTimeout = function() {
-                        mytimeout = $timeout(onTimeout, UPDATEINTERVAL);
+                    vm.onTimeout = function() {
+                        vm.mytimeout = $timeout(vm.onTimeout, UPDATEINTERVAL);
                         currentTime = new Date(new Date(currentTime).getTime() + UPDATEINTERVAL);
                         var timerunning = currentTime.getTime() - startupTime.getTime();
                         if (timerunning > RESETTIMEDIFF && TIMEFROMSERVER) {
-                            updateTimeFromServer();
+                            vm.updateTimeFromServer();
                         }
                     };
 
-                    this.updateSettings = function() {
+                    vm.updateSettings = function() {
                         Restangular.one('wm2014/api/settings').get().then(function(settings) {
-                            this.settings = settings;
+                            vm.settings = settings;
                         })
                     };
 
-                    this.updateTimeFromServer = function() {
+                    vm.updateTimeFromServer = function() {
                         Restangular.one('wm2014/api/time').get().then(function(currentTime) {
-                            this.startupTime = new Date(currentTime.serverTime);
-                            this.currentTime = this.startupTime;
+                            vm.startupTime = new Date(currentTime.serverTime);
+                            vm.currentTime = vm.startupTime;
                         })
                     };
 
-                    this.updateDate = function(date) {
+                    vm.updateDate = function(date) {
                         TIMEFROMSERVER = false;
                         var nm = moment(date);
                         var om = moment(currentTime);
@@ -156,10 +139,10 @@
                         nm.minutes(om.minutes());
                         nm.seconds(om.seconds());
                         currentTime = nm.toDate();
-                        updateTimeOnServer(currentTime);
+                        vm.updateTimeOnServer(currentTime);
                     };
 
-                    this.updateTime = function(time) {
+                    vm.updateTime = function(time) {
                         TIMEFROMSERVER = false;
                         var nm = moment(time);
                         var om = moment(currentTime);
@@ -169,7 +152,7 @@
                         vm.updateTimeOnServer(currentTime);
                     };
 
-                    this.updateTimeOnServer = function(time) { //TODO fetch time from server after update, then update current time!
+                    vm.updateTimeOnServer = function(time) { //TODO fetch time from server after update, then update current time!
                         Restangular.all('em2016/api/time').customPOST({
                             serverTime: time.getTime()
                         }).then(
@@ -179,20 +162,20 @@
                     };
 
 
-                    this.resetTime = function() {
+                    vm.resetTime = function() {
                         Restangular.all('em2016/api/time/reset').customPOST().then(
                             function(success) {
-                                $rootScope.TIMEFROMSERVER = true;
-                                $rootScope.updateTimeFromServer()
+                                vm.TIMEFROMSERVER = true;
+                                vm.updateTimeFromServer()
                                 toaster.pop('success', "reset time", success);
                             })
                     };
 
-                    updateTimeFromServer()
-                    var mytimeout = $timeout(onTimeout, UPDATEINTERVAL);
-                }
+                    vm.updateTimeFromServer()
+                    $timeout(vm.onTimeout, UPDATEINTERVAL);
+                })
 
-            })
+        
     .service('userService', function(Restangular, $cookies, $state) {
         var vm = this;
 
@@ -206,24 +189,30 @@
         vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
             Restangular.all("em2016/login").post(credentials).then(
                 function(auth) {
-                    updateLogin(auth.user, auth["AUTH-TOKEN"]);
+                    vm.updateLogin(auth.user, auth["AUTH-TOKEN"]);
                     if (auth.user.hadInstructions) {
                         $state.transitionTo("user.userBets", {
-                            username: $scope.username
+                            username: vm.username
                         });
                     } else {
                         $state.transitionTo("user.specialBets", {
-                            username: $scope.username
+                            username: vm.username
                         });
                     }
                 }
             );
         };
 
-
+        vm.isOwner = function(id){
+             if (typeof loggedInUser === "undefined" || typeof loggedInUser.id === "undefined") {
+                return false;
+             } else {
+                return id == loggedInUser.id;
+             } 
+        }
 
         vm.logout = function() {
-            var loggedInUser = NOUSER;
+            vm.loggedInUser = NOUSER;
             authtoken = "";
             $cookies.remove("AUTH-TOKEN");
             Restangular.setDefaultHeaders();
@@ -247,7 +236,7 @@
                     });
                 }
             } else {
-                logout();
+               vm.logout();
             }
         };
 
@@ -285,7 +274,7 @@
             }
         };
 
-        reauthenticate();
+        vm.reauthenticate();
 
     });
 
