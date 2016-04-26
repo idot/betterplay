@@ -1,0 +1,46 @@
+<div layout="vertical" layout-fill>
+
+  <md-content>
+    <header>
+      <acme-navbar creation-date="main.creationDate"></acme-navbar>
+    </header>
+
+  
+
+    <section class="jumbotron">
+      <h1>AAAAAAa</h1>
+      <p class="lead">
+        <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
+        Always a pleasure scaffolding your apps.
+      </p>
+      <md-button class="md-raised animated infinite" ng-class="main.classAnimation" ng-click="main.showToastr()">Splendid Toastr</md-button>
+      <p>
+        With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
+      </p>
+    </section>
+
+    <div class="techs" layout-align="center" ng-controller="UsersController as vm">
+     <div>
+	 <dtable options="vm.dtoptions" rows="vm.allUsers" class="material dt">
+	   <column name="Name"></column>
+	   <column name="Gender">
+	     <strong>{{$row.username}}</strong>: {{$cell}}
+	   </column>
+	 </dtable>
+		
+	     <table ng-controller="UsersController as vm">
+			 <tr ng-repeat="u in vm.allUsers">
+			    <td>{{ u.lastName }}</td>
+			    <td>{{ u.isAdmin }}</td>
+			  </tr>
+			 
+			 
+         </table>
+     </div>
+    </div>
+	
+	
+	 
+  </md-content>
+
+</div>
