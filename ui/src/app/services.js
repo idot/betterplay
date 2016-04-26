@@ -147,46 +147,46 @@
                             this.currentTime = this.startupTime;
                         })
                     };
-					
-					this.updateDate = function(date) {
-					     TIMEFROMSERVER = false;
-					     var nm = moment(date);
-					     var om = moment(currentTime);
-					     nm.hours(om.hours());
-					     nm.minutes(om.minutes());
-					     nm.seconds(om.seconds());
-					     currentTime = nm.toDate();
-					     updateTimeOnServer(currentTime);
-					};
-					
-					this.updateTime = function(time) {
-                         TIMEFROMSERVER = false;
-                         var nm = moment(time);
-                         var om = moment(currentTime);
-                         om.hours(nm.hours());
-                         om.minutes(nm.minutes());
-                         currentTime = om.toDate();
-                         vm.updateTimeOnServer(currentTime);
+
+                    this.updateDate = function(date) {
+                        TIMEFROMSERVER = false;
+                        var nm = moment(date);
+                        var om = moment(currentTime);
+                        nm.hours(om.hours());
+                        nm.minutes(om.minutes());
+                        nm.seconds(om.seconds());
+                        currentTime = nm.toDate();
+                        updateTimeOnServer(currentTime);
                     };
-					
-			        this.updateTimeOnServer = function(time) { //TODO fetch time from server after update, then update current time!
-			            Restangular.all('em2016/api/time').customPOST({
-			                serverTime: time.getTime()
-			            }).then(
-			                function(success) {
-			                    toaster.pop('success', "changed time", success);
-			            })
-			        };
-					
-					
-					this.resetTime = function(){
-			            Restangular.all('em2016/api/time/reset').customPOST().then(
-			                function(success) {
-			                    $rootScope.TIMEFROMSERVER = true;
-			                    $rootScope.updateTimeFromServer()
-			                    toaster.pop('success', "reset time", success);
-			            })
-					};
+
+                    this.updateTime = function(time) {
+                        TIMEFROMSERVER = false;
+                        var nm = moment(time);
+                        var om = moment(currentTime);
+                        om.hours(nm.hours());
+                        om.minutes(nm.minutes());
+                        currentTime = om.toDate();
+                        vm.updateTimeOnServer(currentTime);
+                    };
+
+                    this.updateTimeOnServer = function(time) { //TODO fetch time from server after update, then update current time!
+                        Restangular.all('em2016/api/time').customPOST({
+                            serverTime: time.getTime()
+                        }).then(
+                            function(success) {
+                                toaster.pop('success', "changed time", success);
+                            })
+                    };
+
+
+                    this.resetTime = function() {
+                        Restangular.all('em2016/api/time/reset').customPOST().then(
+                            function(success) {
+                                $rootScope.TIMEFROMSERVER = true;
+                                $rootScope.updateTimeFromServer()
+                                toaster.pop('success', "reset time", success);
+                            })
+                    };
 
                     updateTimeFromServer()
                     var mytimeout = $timeout(onTimeout, UPDATEINTERVAL);
@@ -195,30 +195,30 @@
             })
     .service('userService', function(Restangular, $cookies, $state) {
         var vm = this;
-        
+
         var NOUSER = {
             id: -1,
             username: ""
         };
         var loggedInUser = NOUSER;
         var authtoken = "";
-        
-		vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
-		     Restangular.all("em2016/login").post(credentials).then(
-		        function(auth) {
-		           updateLogin(auth.user, auth["AUTH-TOKEN"]);
-		           if (auth.user.hadInstructions) {
-		                 $state.transitionTo("user.userBets", {
-		                            username: $scope.username
-		                        });
-		                    } else {
-		                        $state.transitionTo("user.specialBets", {
-		                            username: $scope.username
-		                   });
+
+        vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
+            Restangular.all("em2016/login").post(credentials).then(
+                function(auth) {
+                    updateLogin(auth.user, auth["AUTH-TOKEN"]);
+                    if (auth.user.hadInstructions) {
+                        $state.transitionTo("user.userBets", {
+                            username: $scope.username
+                        });
+                    } else {
+                        $state.transitionTo("user.specialBets", {
+                            username: $scope.username
+                        });
                     }
-		        }
-		    );
-		};
+                }
+            );
+        };
 
 
 
@@ -277,12 +277,12 @@
             return typeof authtoken !== "undefined" && authtoken != "";
         };
 
-        vm.userHadInstructions = function(){
-             if (typeof loggedInUser === "undefined" || typeof loggedInUser.hadInstructions === "undefined") {
-                 return false;
-             } else {
-                 return loggedInUser.hadInstructions;
-             }
+        vm.userHadInstructions = function() {
+            if (typeof loggedInUser === "undefined" || typeof loggedInUser.hadInstructions === "undefined") {
+                return false;
+            } else {
+                return loggedInUser.hadInstructions;
+            }
         };
 
         reauthenticate();

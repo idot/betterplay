@@ -21,7 +21,7 @@
         .controller('ExcelController', ExcelController);
 
     /** @ngInject */
-    function UsersController($log,  $filter, Restangular) {
+    function UsersController($log, $filter, Restangular) {
         var vm = this;
 
         vm.allUsers = [];
@@ -63,7 +63,7 @@
     }
 
 
-    function GamesController($log,   $filter, Restangular, $stateParams, _, betterSettings) {
+    function GamesController($log, $filter, Restangular, $stateParams, _, betterSettings) {
         var vm = this;
 
         vm.allGames = [];
@@ -109,7 +109,7 @@
 
     }
 
-    function UserController($log,   $filter, Restangular, $stateParams, toaster, _ , betterSettings) {
+    function UserController($log, $filter, Restangular, $stateParams, toaster, _, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = [];
@@ -158,15 +158,15 @@
                 return "-:-"
             }
         }
-		
-		activate();
-		
+
+        activate();
+
         function activate() {
             getUser();
         }
     }
 
-    function GameController($log,  $filter, Restangular, $stateParams, _ ) {
+    function GameController($log, $filter, Restangular, $stateParams, _) {
         var vm = this;
         vm.stateParams = $stateParams;
 
@@ -204,12 +204,12 @@
         vm.setFormat = function() {
             betterSettings.DF = vm.DF;
         };
-		
+
         vm.setUpdateinterval = function() {
             betterSettings.UPDATEINTERVAL = vm.updateInterval;
         };
 
-        vm.updateTime = function(){
+        vm.updateTime = function() {
             betterSettings.updateTime(vm.time);
         };
 
@@ -237,7 +237,7 @@
     }
 
 
-    function RegisterUserController($log,   $stateParams, Restangular, $state, toaster, _ ) {
+    function RegisterUserController($log, $stateParams, Restangular, $state, toaster, _) {
         var vm = this;
         vm.stateParams = $stateParams;
 
@@ -252,13 +252,13 @@
             vm.password2 = "";
             vm.email = "";
         };
-        
+
         vm.getUsers = function() {
-           queryUsers.getList().then(function(users) {
+            queryUsers.getList().then(function(users) {
                 vm.allUsers = _.map(users, function(u) {
                     return u.username
                 });
-           });
+            });
         }
 
         vm.uniqueUsername = function(username) {
@@ -276,9 +276,9 @@
                 'email': vm.email
             };
             Restangular.all('em2016/api/user/' + vm.username).customPUT(pu).then(
-				function(success){
-                   toaster.pop('success', "registered " + vm.username); //TODO: email
-                   vm.setFields();
+                function(success) {
+                    toaster.pop('success', "registered " + vm.username); //TODO: email
+                    vm.setFields();
                 }
             );
         };
@@ -287,8 +287,8 @@
             vm.setFields();
             vm.getUsers();
         }
-		
-		activate();
+
+        activate();
     }
 
 
@@ -348,7 +348,7 @@
         }
     }
 
-    function BetController(  Restangular, toaster, betterSettings) {
+    function BetController(Restangular, toaster, betterSettings) {
         var vm = this;
         vm.disabled = false;
 
@@ -390,7 +390,7 @@
         }
     }
 
-    function UserSpecialBetsController($log,   $filter, $stateParams, Restangular, $state, toaster, betterSettings) { 
+    function UserSpecialBetsController($log, $filter, $stateParams, Restangular, $state, toaster, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = {};
@@ -402,7 +402,7 @@
                 function(success) {
                     vm.user = success.user;
                     vm.templateBets = success.templateBets;
-                    if (betterSettings.isOwner(vm.user.id) && ! betterSettings.user.hadInstructions) {
+                    if (betterSettings.isOwner(vm.user.id) && !betterSettings.user.hadInstructions) {
                         vm.noInstructions = true;
                         toaster.pop('info', "Welcome " + success.user.username + "!", "Please place special bets until start of the game.\n Have fun!")
                     } else {
@@ -430,21 +430,21 @@
                     toaster.pop('error', "someting is wrong!", "could not decide if its bet for player or team. Please inform somebody by email");
             }
         };
-		
-		activate();
-		
-		function activate(){
-			getUserBets();
-		}
+
+        activate();
+
+        function activate() {
+            getUserBets();
+        }
     }
 
 
-    function EditUserSpecialPlayerController($log,   $filter, $stateParams, Restangular, $state, toaster, _ , specialBetService) {
+    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toaster, _, specialBetService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
-		vm.user = {};
-		vm.tb = {};
+        vm.user = {};
+        vm.tb = {};
 
         specialBetService.getSpecialBet(vm.betId, vm.stateParams.username).then(function(success) {
             vm.user = success.user;
@@ -468,12 +468,12 @@
     }
 
 
-    function EditUserSpecialTeamController($log,   $filter, $stateParams, Restangular, $state, toaster, specialBetService) {
+    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toaster, specialBetService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
         vm.user = {};
-		vm.tb = {};
+        vm.tb = {};
 
         specialBetService.getSpecialBet(vm.betId, vm.stateParams.username).then(function(success) {
             vm.user = success.user;
@@ -492,7 +492,7 @@
     }
 
 
-    function CreateGameController($log,   $filter, $stateParams, Restangular, $state, toaster, moment) {
+    function CreateGameController($log, $filter, $stateParams, Restangular, $state, toaster, moment) {
         var vm = this;
         vm.stateParams = $stateParams;
 
@@ -570,7 +570,7 @@
     }
 
 
-    function PlotSpecialBetsController( $stateParams, $state, specialBetStats, tid) {
+    function PlotSpecialBetsController($stateParams, $state, specialBetStats, tid) {
         var vm = this;
 
         //  $scope.stateParams = $stateParams; not applicable within a nested view
@@ -588,7 +588,7 @@
     }
 
 
-    function ExcelController( $stateParams, $state, Restangular, $http, $document) {
+    function ExcelController($stateParams, $state, Restangular, $http, $document) {
         var vm = this;
 
         vm.filename = ""
@@ -596,7 +596,7 @@
         vm.upload = function() {
             fd = $document.getElementById('file').files[0],
                 r = new FileReader();
-                r.onloadend = function(e) {
+            r.onloadend = function(e) {
                 var data = e.target.result;
                 var blob = new Blob([data.content], {
                     type: 'application/xls',
