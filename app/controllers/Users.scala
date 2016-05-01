@@ -25,15 +25,15 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 @Singleton
 class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
              // withUser.async
-  def all() = Action.async { request =>
-      //betterDb.allUsersWithRank().map{ all => 
-      //  val allNoPw = all.map{ case(u,r) => UserNoPwC(u, r) }
-      //  Ok(Json.toJson(allNoPw )) 
-     // }
-       Future{ 
-            val users = dummyUsers().zipWithIndex.map{ case(u,r) => UserNoPwC(u, r) }
-            Ok(Json.toJson(users))
-       }
+  def all() = withUser.async { request =>
+      betterDb.allUsersWithRank().map{ all => 
+        val allNoPw = all.map{ case(u,r) => UserNoPwC(u, r) }
+        Ok(Json.toJson(allNoPw )) 
+     }
+     //  Future{ 
+      //      val users = dummyUsers().zipWithIndex.map{ case(u,r) => UserNoPwC(u, r) }
+     //       Ok(Json.toJson(users))
+     //  }
   }
  
   

@@ -1,4 +1,5 @@
-import PlayGulp._
+import PlayGulpPlugin._
+import PlayGulpKeys._
 
 name := """betterplay"""
 
@@ -6,9 +7,11 @@ version := "0.8-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 
+
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
-  .settings(playGulpSettings)
+
 
 
 resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
@@ -59,3 +62,4 @@ libraryDependencies += specs2 % Test
 
 coverageEnabled := false
 
+PlayGulpPlugin.playGulpSettings ++ PlayGulpPlugin.withTemplates

@@ -34,6 +34,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 
+import com.github.mmizutani.playgulp.GulpAssets
 
 object FormToV {
   import play.api.i18n.Messages.Implicits._
@@ -150,7 +151,9 @@ class Application(env: Environment,
   /**
    * Returns ui/src/index.html in dev/test mode and ui/dist/index.html in production mode
    */
-  def index = gulpAssets.index
+  //def index = gulpAssets.index
+
+  def index = gulpAssets.redirectRoot("/ui/")
 
   def toPrefix() = Action {
  	  //Redirect(routes.Application.index)

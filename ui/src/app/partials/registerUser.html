@@ -1,0 +1,38 @@
+
+
+<form class="form col-xs-5" name="registerForm" role="form">	
+    <div class="form-group">
+      <label for="username">username, only[a-zA-Z_@.]. The username can not be changed!</label>
+      <input id="username" name="username" type="text" class="form-control" ng-model="username" 
+	  required ng-minlength="3" ng-maxlength="20" ng-pattern="/^[0-9a-zA-Z_\.]+$/" ui-validate="{uniqueness : 'uniqueUsername($value)' }"/>
+	  <span class="help-block" ng-show="registerForm.username.$error.required">required</span>
+	  <span class="help-block" ng-show="registerForm.username.$error.uniqueness">username exists</span>
+	  <span class="help-block" ng-show="registerForm.username.$error.pattern">use only a-zA-Z_@.</span>
+	  <span class="help-block" ng-show="registerForm.username.$error.minlength">length at least 3</span>
+	  <span class="help-block" ng-show="registerForm.username.$error.maxlength">length smaller 21</span>
+    </div>
+	<div class="form-group">
+	  <label for="password1">password</label>
+	  <input id="password1" name="password1"  type="password" class="form-control" ng-model="password1" 
+	  required ng-minlength="6" />
+	  <span class="help-block" ng-show="registerForm.password1.$error.required">required</span>
+	  <span class="help-block" ng-show="registerForm.password1.$error.identical">passwords don't match</span>
+	  <span class="help-block" ng-show="registerForm.password1.$error.minlength">length at least 6</span>
+	</div>
+	<div class="form-group">
+	  <label for="password">password</label>
+	  <input id="password2" name="password2" type="password" class="form-control" ng-model="password2" required ui-validate="{identical: '$value == password1' }" ui-validate-watch=" 'password1' "/>
+	  <span class="help-block" ng-show="registerForm.password2.$error.required">required</span>
+	  <span class="help-block" ng-show="registerForm.password2.$error.identical">passwords don't match</span>
+	</div>
+	<div class="form-group">
+	  <label for="email">email</label>
+	  <input id="email" name="email" type="email" class="form-control" ng-model="email"	
+	  required />
+	  <span class="help-block" ng-show="registerForm.email.$error.required">Please add a valid e-mail address so we can notify you of problems. The e-mail will not be visible to other users.</span>
+	</div>
+	<div class="form-group">	
+       <button type="submit" class="btn btn-primary pull-right" ng-click="signon()" value="Submit" title="Submit" ng-disabled="!registerForm.$valid">Submit</button>
+	</div>
+<form>
+

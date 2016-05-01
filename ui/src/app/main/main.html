@@ -5,10 +5,8 @@
       <acme-navbar creation-date="main.creationDate"></acme-navbar>
     </header>
 
-  
-
     <section class="jumbotron">
-      <h1>AAAAAAa</h1>
+      <h1>'Allo, 'Allo!</h1>
       <p class="lead">
         <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
         Always a pleasure scaffolding your apps.
@@ -19,28 +17,18 @@
       </p>
     </section>
 
-    <div class="techs" layout-align="center" ng-controller="UsersController as vm">
-     <div>
-	 <dtable options="vm.dtoptions" rows="vm.allUsers" class="material dt">
-	   <column name="Name"></column>
-	   <column name="Gender">
-	     <strong>{{$row.username}}</strong>: {{$cell}}
-	   </column>
-	 </dtable>
-		
-	     <table ng-controller="UsersController as vm">
-			 <tr ng-repeat="u in vm.allUsers">
-			    <td>{{ u.lastName }}</td>
-			    <td>{{ u.isAdmin }}</td>
-			  </tr>
-			 
-			 
-         </table>
-     </div>
+    <div class="techs" layout-align="center">
+      <md-card ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
+        <md-card-content>
+          <img class="pull-right" ng-src="assets/images/{{ awesomeThing.logo }}" alt="{{ awesomeThing.title }}">
+          <h3 class="md-title">{{ awesomeThing.title }}</h3>
+          <p>{{ awesomeThing.description }}</p>
+        </md-card-content>
+        <div class="md-action-buttons">
+          <md-button ng-href="{{ awesomeThing.url }}">Website</md-button>
+        </div>
+      </md-card>
     </div>
-	
-	
-	 
   </md-content>
 
 </div>

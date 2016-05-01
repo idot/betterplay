@@ -4,7 +4,6 @@
     angular
         .module('ui')
         .controller('UsersController', UsersController)
-        .controller('UsersController', UsersController)
         .controller('GamesController', GamesController)
         .controller('UserController', UserController)
         .controller('GameController', GameController)
@@ -21,7 +20,7 @@
         .controller('ExcelController', ExcelController);
 
     /** @ngInject */
-    function UsersController($log, $filter, Restangular) {
+    function UsersController($log, $filter, restangular) {
         var vm = this;
 
         vm.allUsers = [];
@@ -108,7 +107,7 @@
         }
 
     }
-
+    /** @ngInject */
     function UserController($log, $filter, Restangular, $stateParams, toaster, _, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
@@ -219,7 +218,7 @@
 
     }
 
-
+    /** @ngInject */
     function LoginController($log, $stateParams, Restangular, $state, userService) {
         var vm = this;
         vm.stateParams = $stateParams;

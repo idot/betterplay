@@ -7,19 +7,32 @@
 
     /** @ngInject */
     function routerConfig($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise("/users");
-
+        $urlRouterProvider.otherwise("/"); 
+   
+        
         $stateProvider
-            .state('users', {
+        .state('home', {
+            url: "/",
+            templateUrl: 'app/main/main.html',
+            controller: 'MainController',
+            controllerAs: 'main'
+        }) 
+        .state('login', {
+            url: "/login",
+            templateUrl: 'app/partials/login.html',            
+            controller: 'LoginController',
+            controllerAs: 'vm'
+        })
+        .state('users', {
                 url: "/users",
-                templateUrl: 'partials/users.html',
-                controller: 'UsersCtrl',
+                templateUrl: 'app/partials/users.html',
+                controller: 'XController',
                 controllerAs: 'vm'
             })
             .state('games', {
                 url: "/games",
-                templateUrl: 'partials/games.html',
-                controller: 'GamesCtrl',
+                templateUrl: 'app/partials/games.html',
+                controller: 'GamesController',
                 controllerAs: 'vm'
             })
             .state('user', {
@@ -29,32 +42,32 @@
             })
             .state('user.userBets', {
                 url: "/:username/bets",
-                templateUrl: 'partials/userBets.html',
-                controller: 'UserCtrl',
+                templateUrl: 'app/partials/userBets.html',
+                controller: 'UserController',
                 controllerAs: 'vm'
             })
             .state('user.userEdit', {
                 url: "/:username/edit",
-                templateUrl: 'partials/userEdit.html',
-                controller: 'EditUserCtrl',
+                templateUrl: 'app/partials/userEdit.html',
+                controller: 'EditUserController',
                 controllerAs: 'vm'
             })
             .state('user.specialBets', {
                 url: "/:username/special",
-                templateUrl: 'partials/userSpecialBets.html',
-                controller: 'UserSpecialBetsCtrl',
+                templateUrl: 'app/partials/userSpecialBets.html',
+                controller: 'UserSpecialBetsController',
                 controllerAs: 'vm'
             })
             .state('user.specialBetsspecialPlayers', {
                 url: "/:username/special/player/:id",
-                templateUrl: 'partials/userSpecialBetPlayer.html',
-                controller: 'EditUserSpecialPlayerCtrl',
+                templateUrl: 'app/partials/userSpecialBetPlayer.html',
+                controller: 'EditUserSpecialPlayerController',
                 controllerAs: 'vm'
             })
             .state('user.specialBetsspecialTeams', {
                 url: "/:username/special/team/:id",
-                templateUrl: 'partials/userSpecialBetTeam.html',
-                controller: 'EditUserSpecialTeamCtrl',
+                templateUrl: 'app/partials/userSpecialBetTeam.html',
+                controller: 'EditUserSpecialTeamController',
                 controllerAs: 'vm'
             })
             .state('game', {
@@ -64,32 +77,26 @@
             })
             .state('game.gameBets', {
                 url: "/:gamenr/bets",
-                templateUrl: 'partials/gameBets.html',
-                controller: 'GameCtrl',
+                templateUrl: 'app/partials/gameBets.html',
+                controller: 'GameController',
                 controllerAs: 'vm'
             })
             .state('game.gameEdit', {
                 url: "/:gamenr/edit",
-                templateUrl: 'partials/gameEdit.html',
-                controller: 'EditGameCtrl',
+                templateUrl: 'app/partials/gameEdit.html',
+                controller: 'EditGameController',
                 controllerAs: 'vm'
             })
             .state('game.gameCreate', {
                 url: "/create",
-                templateUrl: 'partials/gameCreate.html',
-                controller: 'CreateGameCtrl',
+                templateUrl: 'app/partials/gameCreate.html',
+                controller: 'CreateGameController',
                 controllerAs: 'vm'
             })
             .state('settings', {
                 url: "/settings",
-                templateUrl: 'partials/settings.html',
-                controller: 'SettingsCtrl',
-                controllerAs: 'vm'
-            })
-            .state('login', {
-                url: "/login",
-                templateUrl: 'partials/login.html',
-                controller: 'LoginCtrl',
+                templateUrl: 'app/partials/settings.html',
+                controller: 'SettingsController',
                 controllerAs: 'vm'
             })
             .state('logout', {
@@ -106,14 +113,14 @@
             })
             .state('admin.createGame', {
                 url: "/createGame",
-                templateUrl: 'partials/gameCreate.html',
-                controller: 'CreateGameCtrl',
+                templateUrl: 'app/partials/gameCreate.html',
+                controller: 'CreateGameController',
                 controllerAs: 'vm'
             })
             .state('admin.registerUser', {
                 url: "/registerUser",
-                templateUrl: 'partials/registerUser.html',
-                controller: 'RegisterUserCtrl',
+                templateUrl: 'app/partials/registerUser.html',
+                controller: 'RegisterUserController',
                 controllerAs: 'vm'
             })
             .state('statistics', {
@@ -123,17 +130,17 @@
             })
             .state('statistics.excel', {
                 url: "/excel",
-                templateUrl: 'partials/excel.html'
+                templateUrl: 'app/partials/excel.html'
             })
             .state('statistics.plots', {
                 url: "/plots",
                 views: {
                     '': {
-                        templateUrl: 'partials/specialPlots.html'
+                        templateUrl: 'app/partials/specialPlots.html'
                     },
                     'mvp@statistics.plots': {
-                        templateUrl: 'partials/plot.html',
-                        controller: 'PlotSpecialBetsCtrl',
+                        templateUrl: 'app/partials/plot.html',
+                        controller: 'PlotSpecialBetsController',
                         controllerAs: 'vm',
                         resolve: {
                             tid: function() {
@@ -144,8 +151,8 @@
                         }
                     },
                     'svp@statistics.plots': {
-                        templateUrl: 'partials/plot.html',
-                        controller: 'PlotSpecialBetsCtrl',
+                        templateUrl: 'app/partials/plot.html',
+                        controller: 'PlotSpecialBetsController',
                         controllerAs: 'vm',
                         resolve: {
                             tid: function() {
@@ -156,8 +163,8 @@
                         }
                     },
                     'champion@statistics.plots': {
-                        templateUrl: 'partials/plot.html',
-                        controller: 'PlotSpecialBetsCtrl',
+                        templateUrl: 'app/partials/plot.html',
+                        controller: 'PlotSpecialBetsController',
                         controllerAs: 'vm',
                         resolve: {
                             tid: function() {
@@ -172,3 +179,5 @@
     }
 
 })();
+        
+    

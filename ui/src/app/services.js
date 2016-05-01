@@ -7,7 +7,7 @@
             .factory('specialBetService', function($state, Restangular, toaster, _) {
                 return {
                     getSpecialBet: function(betId, username) {
-                        return Restangular.one('wm2014/api/user', username).one('specialBets').get().then(
+                        return Restangular.one('em2016/api/user', username).one('specialBets').get().then(
                             function(success) {
                                 var user = success.user;
                                 var tb = _.filter(success.templateBets, function(b) {
@@ -26,10 +26,10 @@
                             return t.selected;
                         })[0];
                         bet.prediction = selected.name;
-                        Restangular.all('wm2014/api/specialBet').customPOST(bet).then(
+                        Restangular.all('em2016/api/specialBet').customPOST(bet).then(
                             function(success) {
                                 if (!user.hadInstructions) {
-                                    Restangular.all('wm2014/api/userhadinstructions').customPOST().then(
+                                    Restangular.all('em2016/api/userhadinstructions').customPOST().then(
                                         function(success) {
                                             toaster.pop('success', "Congratulations " + user.username + "!", "You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.");
                                         }
@@ -45,7 +45,7 @@
             .factory('specialBetStats', function(Restangular, _ ) {
                 return {
                     getStats: function(templateId) {
-                        return Restangular.one('wm2014/api/specialBets', templateId).get().then(
+                        return Restangular.one('em2016/api/specialBets', templateId).get().then(
                             function(success) {
                                 var template = success.template;
                                 var grouped = _.groupBy(success.bets, function(b) {
@@ -119,13 +119,13 @@
                     };
 
                     vm.updateSettings = function() {
-                        Restangular.one('wm2014/api/settings').get().then(function(settings) {
+                        Restangular.one('em2016/api/settings').get().then(function(settings) {
                             vm.settings = settings;
                         })
                     };
 
                     vm.updateTimeFromServer = function() {
-                        Restangular.one('wm2014/api/time').get().then(function(currentTime) {
+                        Restangular.one('em2016/api/time').get().then(function(currentTime) {
                             vm.startupTime = new Date(currentTime.serverTime);
                             vm.currentTime = vm.startupTime;
                         })
@@ -186,10 +186,10 @@
         var loggedInUser = NOUSER;
         var authtoken = "";
 
-        vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
-            Restangular.all("em2016/login").post(credentials).then(
+        function login(credentials) { //TODO move state back to controller by returning callback/future
+            Restangular.all("em2016/api/login").post(credentials).then(
                 function(auth) {
-                    vm.updateLogin(auth.user, auth["AUTH-TOKEN"]);
+                   vm.updateLogin(auth.user, auth["AUTH-TOKEN"]);
                     if (auth.user.hadInstructions) {
                         $state.transitionTo("user.userBets", {
                             username: vm.username
@@ -231,7 +231,7 @@
                     Restangular.setDefaultHeaders({
                         'X-AUTH-TOKEN': auth
                     });
-                    Restangular.one('wm2014/api/userWithEmail').get().then(function(userWithEmail) {
+                    Restangular.one('em2016/api/userWithEmail').get().then(function(userWithEmail) {
                         loggedInUser = userWithEmail;
                     });
                 }
@@ -244,7 +244,7 @@
          * update user calls this function without auth
          * 
          **/
-        vm.updateLogin = function(user, auth) {
+        function upateLogin(user, auth) {
             loggedInUser = user;
             if (typeof auth !== "undefined") {
                 authtoken = auth;

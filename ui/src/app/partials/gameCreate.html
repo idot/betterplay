@@ -1,0 +1,52 @@
+<form class="form col-xs-3" role="form">
+    <div class="form-group">
+      <label for="team1">team1</label>
+      <select id="team1" type="text" ng-model="team1" class="form-control" ng-options="team.name for team in teams"></select>
+    </div>
+    <div class="form-group">
+     <label for="team2">team2</label>
+     <select id="team2" type="text" ng-model="team2" class="form-control" ng-options="team.name for team in teams"></select>
+    </div>
+    <div class="form-group">
+     <label for="level">level</label>
+     <select id="level" type="text" ng-model="level" class="form-control" ng-options="level.name for level in levels"></select>
+    </div>
+
+    <div class="form-group">
+	      <label for="dateselect">serverdate</label>	
+	      <p id="dateselect" class="input-group">
+	      <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="server.date" is-open="servero"/>
+	      <span class="input-group-btn">
+	             <button type="button" class="btn btn-default" ng-click="opens($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+	      </span>
+	      </p>
+	</div>
+	<div class="form-group">
+	      <label for="timeselect">servertime</label>	
+	      <p id="timeselect" class="input-group">
+		    <timepicker ng-model="server.time" hour-step="1" minute-step="15" show-meridian="false"></timepicker>
+	      </p>
+	</div>
+    <div class="form-group">
+	      <label for="ldateselect">localdate</label>	
+	      <p id="ldateselect" class="input-group">
+	      <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="local.date" is-open="localo"/>
+	      <span class="input-group-btn">
+	             <button type="button" class="btn btn-default" ng-click="openl($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+	      </span>
+	      </p>
+	</div>
+	<div class="form-group">
+	      <label for="ltimeselect">localtime</label>	
+	      <p id="ltimeselect" class="input-group">
+		    <timepicker ng-model="local.time" hour-step="1" minute-step="15" show-meridian="false"></timepicker>
+	      </p>
+	</div>
+	
+	
+	<div class="form-group">
+             <span class="input-group-btn">
+                  <button type="button" class="btn btn-submit" ng-click="submit()" ng-disabled="disabled">Submit</button>
+             </span>
+	</div>
+</form>

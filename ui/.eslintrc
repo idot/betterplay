@@ -1,6 +1,6 @@
 {
   "extends": "eslint:recommended",
-  "plugins": ["angular", "disable"],
+  "plugins": ["angular"],
   "env": {
     "browser": true,
     "jasmine": true

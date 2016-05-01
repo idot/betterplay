@@ -1,0 +1,56 @@
+<form name="specialBetsForm" class="form col-xs-5" role="form">
+   <h2>special bets {{user.username}} <img ng-src="{{user && user.iconurl+'&s=50'}}" alt="gravatar" height="50" width="50"/>
+   </h2>
+   <h3 ng-if="noInstructions">you can change these <em>only until</em> start of the games (~ -2 hours)</h3>
+   <table class="table">
+	   <thead>
+	   <tr>
+	    <th>
+			name
+	   </th>
+	   <th>
+	       reward
+	   </th>
+	   <th>
+		   description
+	   </th>
+	   <th>
+		   result
+	   </th>
+       <th>
+		   prediction
+	   </th>
+	   <th>
+		   points
+	   </th>
+	 </tr>
+	  </thead>
+      <tbody>	  
+	    <tr ng-repeat="bet in templateBets">
+			<td>
+                 {{bet.template.name}}
+            </td>
+			<td>
+				<span class="badge">{{bet.template.points}}</span>
+			</td>
+			<td>
+				 {{bet.template.description}}
+			</td>
+			<td>
+				 {{bet.template.result}}
+			</td>
+			<td>
+				 {{bet.bet.prediction}}
+			</td>
+			<td>
+                 <span class="badge">{{bet.bet.points}}</span>
+			</td>
+			<td ng-if="$root.canBet(bet.template.closeDate, $root.currentTime, bet.bet)">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="change(bet)"><i class="fa fa-plus-square fa-lg"></i></button>
+                </span>
+			</td>
+		</tr>
+	</tbody>
+   </table>
+</form>  

@@ -8,7 +8,6 @@
 
 var gulp = require('gulp');
 var wrench = require('wrench');
-var prettify = require('gulp-jsbeautifier');
 
 /**
  *  This will load all js or coffee files in the gulp directory
@@ -28,12 +27,3 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
-
-
-gulp.task('prettify', function() {
-  gulp.src(['./*.css', './*.html', './*.js'])
-    .pipe(prettify())
-    .pipe(gulp.dest('./dist'));
-});
-
-
