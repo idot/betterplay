@@ -87,8 +87,24 @@ section.jumbotron {
       float: right;
       width: 100px;
     }
-  }
+  } 
+ 
 }
+
+.badge{
+    display: inline-block;
+    min-width: 10px;
+    font-size: 12px;
+    //line-height: 1;
+    white-space: nowrap;
+    //vertical-align: middle;
+    border-radius: 10px;   
+}
+
+.bg-points {
+     background-color: red;
+}
+
 
 /**
  *  Do not remove the comment below. It's the markers used by gulp-inject to inject

@@ -1,15 +1,31 @@
-<h1>hey</h1>
-<form class="form col-xs-3" name="loginForm" role="form">
-   <div class="form-group">
-      <label for="username">username</label>
-      <input type="text" name="username" id="username" data-ng-model="username" class="form-control" required autofocus placeholder="username"/> 
-    </div>
-    <div class="form-group">
-       <label for="password">password</label>
-       <input type="password" data-ng-model="password" class="form-control" id="password" name="password" placeholder="password" required/>
-	   <span class="help-block" ng-show="loginForm.password.$error.required">required</span>
-     </div>
-	<div class="form-group">
-	   <button title="Submit" type="submit" class="btn btn-primary pull-right" ng-click="login()" ng-disabled="!loginForm.$valid">Submit</button>
-    </div>
-</form>
+
+<div layout="column" ng-cloak class="md-inline-form">
+   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+      <form name="loginForm">
+        <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
+            <div flex-gt-sm="80">
+               <md-input-container class="md-block" flex-gt-sm>
+                        <label for="username">username</label>
+                        <input type="text" name="username" ng-model="vm.username" required autofocus md-placeholder="username"/>
+                        <div ng-messages="loginForm.username.$error">
+                                  <div ng-message="required">required</div>
+                         </div>
+                </md-input-container>
+               <md-input-container class="md-block" flex-gt-sm>
+                       <label for="password">password</label>
+                       <input type="password" name="username" ng-model="vm.password" required md-placeholder="password"/>
+                       <div ng-messages="loginForm.password.$error">
+                                 <div ng-message="required">required</div>
+                        </div>
+                </md-input-container>
+                <md-input-container layout-align="center">
+                	<div layout="row" layout-sm="column" layout-margin>
+                            <md-button title="Login" ng-click="vm.login()" ng-disabled="!loginForm.$valid" class="md-raised" flex="50" flex-sm="100">Login</md-button>
+                        </div>
+                </md-input-container>        
+            </div>
+        </div>    
+      </form>
+  </md-content>
+</div>
+

@@ -98,10 +98,10 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
       val (localStart, serverStart) = parseDate(items(0), venue)
       val pos = items(1).toInt
       val group = items(2)
-	  val s3_1 = items(3)
-	  val s3_2 = items(6)
-	  val s2_1 = fifa2iso2.get(s3_1.toLowerCase).getOrElse("XX")
-	  val s2_2 = fifa2iso2.get(s3_2.toLowerCase).getOrElse("XX")
+	    val s3_1 = items(3)
+	    val s3_2 = items(6)
+	    val s2_1 = fifa2iso2.get(s3_1.toLowerCase).getOrElse("XX")
+	    val s2_2 = fifa2iso2.get(s3_2.toLowerCase).getOrElse("XX")
       val t1 = Team(None, items(4), s3_1, s2_1)
       val t2 = Team(None, items(7), s3_2, s2_2)
       val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos)
@@ -121,7 +121,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
   //group   3       1       0
   def parseLevel(line: String): GameLevel = {
       val items = line.split("\t")
-      GameLevel(None, items(0), items(1).toInt, items(2).toInt, items(3).toInt)
+      GameLevel(None, items(0), items(1).toInt, items(2).toInt, items(3).toInt, 30)
   }
   
   def levels(): Seq[GameLevel] = {
@@ -160,11 +160,11 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
     val ls = levels()
     val us = users(debug)
     val ps = players()
-	  val sp = specialBets()
-    Logger.info("inserting data in db")
+    val sp = specialBets()
+
     betterDb.dropCreate()
-    
-    Logger.info("inserting data")
+
+    Logger.info("inserting data in db")
     Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1 seconds)
     Logger.info("inserted special bets")
     Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1 seconds)

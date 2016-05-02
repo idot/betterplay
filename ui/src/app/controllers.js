@@ -11,7 +11,6 @@
         .controller('LoginController', LoginController)
         .controller('RegisterUserController', RegisterUserController)
         .controller('EditUserController', EditUserController)
-        .controller('BetController', BetController)
         .controller('UserSpecialBetsController', UserSpecialBetsController)
         .controller('EditUserSpecialPlayerController', EditUserSpecialPlayerController)
         .controller('EditUserSpecialTeamController', EditUserSpecialTeamController)
@@ -61,7 +60,7 @@
 
     }
 
-
+     /** @ngInject */
     function GamesController($log, $filter, Restangular, $stateParams, _, betterSettings) {
         var vm = this;
 
@@ -108,7 +107,7 @@
 
     }
     /** @ngInject */
-    function UserController($log, $filter, Restangular, $stateParams, toaster, _, betterSettings) {
+    function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = [];
@@ -164,7 +163,8 @@
             getUser();
         }
     }
-
+    
+     /** @ngInject */
     function GameController($log, $filter, Restangular, $stateParams, _) {
         var vm = this;
         vm.stateParams = $stateParams;
@@ -189,8 +189,8 @@
         }
     }
 
-
-    function SettingsController($log, $stateParams, Restangular, toaster, moment, betterSettings) {
+     /** @ngInject */
+    function SettingsController($log, $stateParams, Restangular, toastr, moment, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
 
@@ -227,6 +227,7 @@
         vm.password = "";
 
         vm.login = function() {
+            $log.debug("login: "+vm.username+" *******");
             var credentials = {
                 'username': vm.username,
                 'password': vm.password
@@ -235,8 +236,8 @@
         };
     }
 
-
-    function RegisterUserController($log, $stateParams, Restangular, $state, toaster, _) {
+     /** @ngInject */
+    function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _) {
         var vm = this;
         vm.stateParams = $stateParams;
 
@@ -276,7 +277,7 @@
             };
             Restangular.all('em2016/api/user/' + vm.username).customPUT(pu).then(
                 function(success) {
-                    toaster.pop('success', "registered " + vm.username); //TODO: email
+                    toastr.pop('success', "registered " + vm.username); //TODO: email
                     vm.setFields();
                 }
             );
@@ -290,8 +291,8 @@
         activate();
     }
 
-
-    function EditUserController($log, $stateParams, Restangular, $state, toaster, userService) {
+     /** @ngInject */
+    function EditUserController($log, $stateParams, Restangular, $state, toastr, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.formUser = {};
@@ -316,7 +317,7 @@
             };
             Restangular.all('em2016/api/user/' + vm.formUser.username + '/password').customPOST(pu).then(
                 function(success) {
-                    toaster.pop('success', "changed password");
+                    toastr.pop('success', "changed password");
                     vm.pass.word1 = "";
                     vm.pass.word2 = "";
                 }
@@ -334,7 +335,7 @@
             };
             Restangular.all('em2016/api/user/' + vm.formUser.username + '/details').customPOST(u).then(
                 function(success) {
-                    toaster.pop('success', "updated user details");
+                    toastr.pop('success', "updated user details");
                     vm.refreshUser();
                 }
             );
@@ -346,50 +347,11 @@
             vm.refreshUser();
         }
     }
+    
+   
 
-    function BetController(Restangular, toaster, betterSettings) {
-        var vm = this;
-        vm.disabled = false;
-
-        vm.saveBet = function(bet) {
-            vm.disabled = true;
-            Restangular.all('em2016/api/bet/' + bet.id).customPOST(bet).then(
-                function(success) {
-                    var game = success.game;
-                    var betold = success.betold;
-                    var betnew = success.betnew;
-                    var show = game.game.nr + ": " + vm.prettyBet(betold) + " -> " + vm.prettyBet(betnew)
-                    toaster.pop('success', "updated bet ", show);
-                    bet['marked'] = false;
-                    vm.disabled = false;
-                }
-            );
-        };
-
-        vm.markBet = function(bet) {
-            bet['marked'] = true;
-        };
-
-        vm.withTime = betterSettings.currentTime;
-
-        vm.saveButton = function(bet) {
-            if (typeof bet.marked === "undefined" || bet.marked == false) {
-                return "btn btn-default btn-xs";
-            } else {
-                return "btn btn-warning btn-xs";
-            }
-        };
-
-        vm.prettyBet = function(bet) {
-            if (bet.result.isSet) {
-                return bet.result.goalsTeam1 + ":" + bet.result.goalsTeam2;
-            } else {
-                return "-:-"
-            }
-        }
-    }
-
-    function UserSpecialBetsController($log, $filter, $stateParams, Restangular, $state, toaster, betterSettings) {
+    /** @ngInject */
+    function UserSpecialBetsController($log, $filter, $stateParams, Restangular, $state, toastr, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = {};
@@ -403,7 +365,7 @@
                     vm.templateBets = success.templateBets;
                     if (betterSettings.isOwner(vm.user.id) && !betterSettings.user.hadInstructions) {
                         vm.noInstructions = true;
-                        toaster.pop('info', "Welcome " + success.user.username + "!", "Please place special bets until start of the game.\n Have fun!")
+                        toastr.pop('info', "Welcome " + success.user.username + "!", "Please place special bets until start of the game.\n Have fun!")
                     } else {
                         vm.noInstructions = false;
                     }
@@ -426,7 +388,7 @@
                     });
                     break;
                 default:
-                    toaster.pop('error', "someting is wrong!", "could not decide if its bet for player or team. Please inform somebody by email");
+                    toastr.pop('error', "someting is wrong!", "could not decide if its bet for player or team. Please inform somebody by email");
             }
         };
 
@@ -437,8 +399,8 @@
         }
     }
 
-
-    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toaster, _, specialBetService) {
+     /** @ngInject */
+    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toastr, _, specialBetService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
@@ -467,7 +429,8 @@
     }
 
 
-    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toaster, specialBetService) {
+     /** @ngInject */
+    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
@@ -490,8 +453,8 @@
         };
     }
 
-
-    function CreateGameController($log, $filter, $stateParams, Restangular, $state, toaster, moment) {
+     /** @ngInject */
+    function CreateGameController($log, $filter, $stateParams, Restangular, $state, toastr, moment) {
         var vm = this;
         vm.stateParams = $stateParams;
 
@@ -561,14 +524,14 @@
             };
             Restangular.all('em2016/api/game').customPOST(createdGame).then(
                 function(success) {
-                    toaster.pop('success', "created game", success);
+                    toastr.pop('success', "created game", success);
                     vm.disabled = false;
                 }
             );
         };
     }
 
-
+     /** @ngInject */
     function PlotSpecialBetsController($stateParams, $state, specialBetStats, tid) {
         var vm = this;
 
@@ -586,7 +549,7 @@
 
     }
 
-
+     /** @ngInject */
     function ExcelController($stateParams, $state, Restangular, $http, $document) {
         var vm = this;
 

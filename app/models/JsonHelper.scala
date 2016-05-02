@@ -79,7 +79,7 @@ object JsonHelper {
    implicit val resultFormat = Json.format[GameResult] 
 
    implicit val gameFormat = Json.format[Game]
-   implicit val betFormat = Json.format[Bet]
+   implicit val betFormat = Json.format[ViewableBet]
 
    implicit val specialBetByUserFormat = Json.format[SpecialBetByUser]
    implicit val specialBetTFormat = Json.format[SpecialBetT]
@@ -100,14 +100,14 @@ object JsonHelper {
 	   }
    }
    
-   implicit val gamesBetsWrite = new Writes[(GameWithTeams,Bet)]{
-     def writes(gb: (GameWithTeams,Bet)): JsValue = {
+   implicit val gamesBetsWrite = new Writes[(GameWithTeams,ViewableBet)]{
+     def writes(gb: (GameWithTeams,ViewableBet)): JsValue = {
         Json.obj("game" -> gb._1, "bet" -> gb._2)       
      }
    }
    
-   implicit val betUserWrite = new Writes[(Bet,User)]{
-	   def writes(bu: (Bet,User)): JsValue = {
+   implicit val betUserWrite = new Writes[(ViewableBet,User)]{
+	   def writes(bu: (ViewableBet,User)): JsValue = {
 		   Json.obj("bet" -> bu._1, "user" -> UserNoPwC(bu._2) )
 	   }
    }

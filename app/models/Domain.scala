@@ -63,9 +63,19 @@ object DomainHelper {
   }
  
   def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: DateTime, comment: String): BetLog = {
-      BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time, comment)
+      BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), game.serverStart, betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time, comment)
   }
  
+  def viewableTime(gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): Boolean = {
+       val viewOpen = gameStart.minusMinutes(viewTimeToStart)
+       val open = currentTime.isAfter(viewOpen)
+       open
+  }
+  
+  def viewable(viewingUserId: Long, betUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): Boolean = {
+       viewingUserId == betUserId && viewableTime(gameStart, currentTime, viewTimeToStart)
+  }
+  
 }
 
 //embedaable
@@ -92,14 +102,39 @@ case class Player(id: Option[Long] = None, name: String, role: String, club: Str
 
 case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId: Long, userId: Long){ 
 //unique: user/bet game/bet one bet for each user per game 
+  
+  def viewableBet(viewingUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): ViewableBet = {
+      if(DomainHelper.viewable(viewingUserId, userId, gameStart, currentTime, viewTimeToStart)){
+        ViewableBet(id, points, Some(result), gameId, userId)
+      }else{
+        ViewableBet(id, points, None, gameId, userId)
+     }    
+  }
+  
+  
+  
 }
 
-case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, betId: Long, t1old: Int, t1new: Int, t2old: Int, t2new: Int, time: DateTime, comment: String){
-	def toText(): String = {
-		val betchange = Seq(GameResult(t1old, t2old, true).display, "->",  GameResult(t1old, t2old, true).display).mkString(" ")
-		val format = org.joda.time.format.DateTimeFormat.fullDateTime() 
-	    Seq(id, userId, gameId, betId, betchange, format.print(time), comment).mkString("\t")
-    } 
+case class ViewableBet(id: Option[Long] = None, points: Int, result: Option[GameResult], gameId: Long, userId: Long){
+    
+     def toBet(): Bet = {
+         Bet(id, points, result.getOrElse(DomainHelper.gameResultInit()), gameId, userId)  
+     }
+     
+}
+
+case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, gameStart: DateTime, betId: Long, t1old: Int, t1new: Int, t2old: Int, t2new: Int, time: DateTime, comment: String){
+
+	def toText(viewingUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): String = {
+	    val betchange = if(DomainHelper.viewable(viewingUserId, userId, gameStart, currentTime, viewTimeToStart)){
+          Seq(GameResult(t1old, t2old, true).display, "->",  GameResult(t1old, t2old, true).display).mkString(" ")
+      }else{
+          Seq(GameResult(t1old, t2old, false).display, "->",  GameResult(t1old, t2old, false).display).mkString(" ")
+     }    
+	   val format = org.joda.time.format.DateTimeFormat.fullDateTime() 
+	   Seq(id, userId, gameId, betId, betchange, format.print(time), comment).mkString("\t")
+	}
+	
 }
 
 
@@ -151,7 +186,7 @@ case class SpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]){
 
 }
 
-case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int)//name: groups, quarter final, semi final, final
+case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int, viewMinutesToGame: Int)//name: groups, quarter final, semi final, final
 
 /**
  * startLocal: start in local timezone 

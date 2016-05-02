@@ -4,10 +4,11 @@ import scala.concurrent.{Future,Await}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import scala.concurrent.duration._
 import collection.mutable.HashMap
+import org.joda.time.DateTime
 
 case class SpecialBet(betType: String, prediction: String)
 
-case class UserBets(user: User, bets: Seq[Option[Bet]], rank: Int, specialBets: SpecialBets)
+case class UserBets(user: User, bets: Seq[Option[ViewableBet]], rank: Int, specialBets: SpecialBets)
 
 case class Row(size: Int){
 	
@@ -47,8 +48,8 @@ object UserRow {
 		var cPoints = 0
 		bets.zipWithIndex.map{ case (beto, index) =>
 			val gwt = gwts(index)
-			val bet = beto.get //we know that each game/user has a bet, if not please explode
-			if(bet.result.isSet){
+			val bet = beto.get //we know that each game/user has a bet, if not explode //TODO: FIXME don't explode
+			if(bet.result.map(_.isSet).getOrElse(false)){
 				var points = bet.points
 				cPoints += points
 				if(gwt.game.result.isSet){
@@ -66,17 +67,17 @@ object UserRow {
 				resultFirstTeam.set(noBetString, index)
 				resultSecondTeam.set(noBetString, index)
 			}
-			games.set(bet.result.display, index)
-			cumulatedPoints.set(cPoints.toString, index)	
-			firstGoals.set(bet.result.goalsTeam1.toString, index)
-			secondGoals.set(bet.result.goalsTeam2.toString, index)
+			games.set(bet.result.map(_.display).getOrElse("NV"), index)
+      cumulatedPoints.set(cPoints.toString, index)	
+      firstGoals.set(bet.result.map(_.goalsTeam1.toString).getOrElse("NV"), index)
+      secondGoals.set(bet.result.map(_.goalsTeam2.toString).getOrElse("NV"), index)
 		}
 		new UserRow(user, games, pointsPerGame, cumulatedPoints, firstGoals, secondGoals, resultFirstTeam, resultSecondTeam, userBets.rank, userBets.specialBets)
 	}
 }
 
 
-class StatsHelper(betterDb: BetterDb){
+class StatsHelper(betterDb: BetterDb, currentTime: DateTime, viewingUserId: Long){
      
       val q = for{
          usersSpRankUnsorted <- betterDb.usersWithSpecialBetsAndRank()
@@ -91,12 +92,13 @@ class StatsHelper(betterDb: BetterDb){
       val usersSpRank = usersSpRankUnsorted.sortBy(_._1.username)
       val allBetsMap = createBetsMap(allBetsPerUserSeq)
       
-	    def createBetsMap(allBetsPerUserSeq: Seq[Seq[Bet]]): HashMap[(Long,Long),Bet] = {
+      def createBetsMap(allBetsPerUserSeq: Seq[Seq[Bet]]): HashMap[(Long,Long),Bet] = {
           val map = new HashMap[(Long,Long),Bet]()
           for{
             sbets <- allBetsPerUserSeq
             bet <- sbets
           } {
+             val vbet =   
              map.update((bet.userId, bet.gameId), bet)
           }
           map
@@ -105,18 +107,21 @@ class StatsHelper(betterDb: BetterDb){
       def specialBetsTemplates(): Seq[SpecialBetT] = templates.sortBy(_.id)
 	    
 	    def createUserBets(user: User, sp: SpecialBets, rank: Int): UserBets = {
-	        val bets = gwts.zipWithIndex.map{ case(gwt,i) => allBetsMap.get(user.id.get, gwt.game.id.get) }
+	        val bets = gwts.zipWithIndex.map{ case(gwt,i) => 
+	          val bet = allBetsMap.get(user.id.get, gwt.game.id.get) 
+	          bet.map(b => b.viewableBet(viewingUserId, gwt.game.serverStart, currentTime, gwt.level.viewMinutesToGame))
+	        }
 	        UserBets(user, bets, rank, sp) 
 	    }
 	  
-	    def createUsersBets(): Seq[UserBets] = usersSpRank.map{ case(u,sp,r) => createUserBets(u, sp, r)}
+      def createUsersBets(): Seq[UserBets] = usersSpRank.map{ case(u,sp,r) => createUserBets(u, sp, r)}
 	     
       def createUserRows(): Seq[UserRow] = {
-  	      val bets = createUsersBets()
+  	  val bets = createUsersBets()
           bets.map(b => UserRow(b, gwts))
-  	  }
+      }
 	  
-  	  def getGwts(): Seq[GameWithTeams] = gwts
+       def getGwts(): Seq[GameWithTeams] = gwts
 	  
 }
 

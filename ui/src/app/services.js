@@ -4,7 +4,7 @@
         angular
             .module('ui')
             .value('version', '0.1')
-            .factory('specialBetService', function($state, Restangular, toaster, _) {
+            .factory('specialBetService', function($state, Restangular, toastr, _) {
                 return {
                     getSpecialBet: function(betId, username) {
                         return Restangular.one('em2016/api/user', username).one('specialBets').get().then(
@@ -31,7 +31,7 @@
                                 if (!user.hadInstructions) {
                                     Restangular.all('em2016/api/userhadinstructions').customPOST().then(
                                         function(success) {
-                                            toaster.pop('success', "Congratulations " + user.username + "!", "You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.");
+                                            toastr.pop('success', "Congratulations " + user.username + "!", "You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.");
                                         }
                                     );
                                 }
@@ -69,7 +69,7 @@
                     }
                 };
             })
-            .service('betterSettings', function(Restangular, $timeout, toaster, moment, userService) {
+            .service('betterSettings', function(Restangular, $timeout, toastr, moment, userService) {
                    var vm = this;
                     var startupTime = new Date();
                     var currentTime = new Date();
@@ -157,7 +157,7 @@
                             serverTime: time.getTime()
                         }).then(
                             function(success) {
-                                toaster.pop('success', "changed time", success);
+                                toastr.pop('success', "changed time", success);
                             })
                     };
 
@@ -167,7 +167,7 @@
                             function(success) {
                                 vm.TIMEFROMSERVER = true;
                                 vm.updateTimeFromServer()
-                                toaster.pop('success', "reset time", success);
+                                toastr.pop('success', "reset time", success);
                             })
                     };
 
@@ -186,17 +186,17 @@
         var loggedInUser = NOUSER;
         var authtoken = "";
 
-        function login(credentials) { //TODO move state back to controller by returning callback/future
+        vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
             Restangular.all("em2016/api/login").post(credentials).then(
                 function(auth) {
                    vm.updateLogin(auth.user, auth["AUTH-TOKEN"]);
                     if (auth.user.hadInstructions) {
                         $state.transitionTo("user.userBets", {
-                            username: vm.username
+                            username: loggedInUser.username
                         });
                     } else {
                         $state.transitionTo("user.specialBets", {
-                            username: vm.username
+                            username: loggedInUser.username
                         });
                     }
                 }
@@ -212,7 +212,7 @@
         }
 
         vm.logout = function() {
-            vm.loggedInUser = NOUSER;
+            loggedInUser = NOUSER;
             authtoken = "";
             $cookies.remove("AUTH-TOKEN");
             Restangular.setDefaultHeaders();
@@ -244,7 +244,7 @@
          * update user calls this function without auth
          * 
          **/
-        function upateLogin(user, auth) {
+        vm.updateLogin = function(user, auth) {
             loggedInUser = user;
             if (typeof auth !== "undefined") {
                 authtoken = auth;
@@ -255,15 +255,15 @@
         };
 
         vm.isAdmin = function() {
-            if (typeof loggedInUser === "undefined" || typeof loggedInUser.isAdmin === "undefined") {
+            if (typeof loggedInUser === "undefined" || typeof  loggedInUser.isAdmin === "undefined") {
                 return false;
             } else {
-                return loggedInUser.isAdmin;
+                return  loggedInUser.isAdmin;
             }
         };
 
         vm.isLoggedIn = function() {
-            return typeof authtoken !== "undefined" && authtoken != "";
+            return typeof  authtoken !== "undefined" && authtoken != "";
         };
 
         vm.userHadInstructions = function() {

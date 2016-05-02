@@ -49,7 +49,12 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
          .flatMap{ case(user, sp) =>
           betterDb.gamesWithBetForUser(user)
             .map{ gamesWithBets =>
-              val json = Json.obj("user" -> UserNoPwC(user), "specialBets" -> sp, "gameBets" -> gamesWithBets)
+              val now = BetterSettings.now
+              val gamesWithVBets = gamesWithBets.map{ case(g, b) => 
+                val vtg = g.level.viewMinutesToGame
+                (g, b.viewableBet(request.request.userId, g.game.serverStart, now, vtg)) 
+              }
+              val json = Json.obj("user" -> UserNoPwC(user), "specialBets" -> sp, "gameBets" -> gamesWithVBets)
               Ok(json)
           }
       }        

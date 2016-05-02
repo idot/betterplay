@@ -16,7 +16,7 @@ class Statistics @Inject()(override val betterDb: BetterDb, override val cache: 
   val excelSecret = configuration.getString("betterplay.excelSecret").getOrElse("BAD")  
    
   def excel() = withUser { request =>
-	   val helper = new StatsHelper(betterDb)  
+	   val helper = new StatsHelper(betterDb, BetterSettings.now(), request.request.userId)  
 	   val templates = helper.specialBetsTemplates()
 	   val gwts = helper.getGwts()
      val excelD = new ExcelData(helper.createUserRows, gwts, templates)

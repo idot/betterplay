@@ -79,7 +79,6 @@ object BetterSettings {
 	}
 	
 	def closingMinutesToGame = 60	
-		
-
+ 
 }
 

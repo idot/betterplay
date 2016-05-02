@@ -20,9 +20,9 @@ object ObjectMother {
   
   val dummyLevels: Seq[GameLevel] = {
       Seq(
-        GameLevel(None, "group", 3, 1, 0),   
-        GameLevel(None, "semi", 6, 3, 1),
-        GameLevel(None, "final", 12, 5, 2)
+        GameLevel(None, "group", 3, 1, 0, 30),   
+        GameLevel(None, "semi", 6, 3, 1, 30),
+        GameLevel(None, "final", 12, 5, 2, 30)
       )
   }
   

@@ -376,7 +376,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * returns game with teams, oldBet, newBet, betlog, Seq[String] of errors
       * 
       */
-     def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams,Bet,Bet,BetLog, Seq[String])] = {
+     def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
           val invalid = GameResult(-1,-1,true)
           val bg = (for{
              (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id).result.head

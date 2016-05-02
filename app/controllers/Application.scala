@@ -65,8 +65,8 @@ object FormToV {
  *
  **/
 class TokenRequest[A](val token: String, val userId: Long, request: Request[A]) extends WrappedRequest[A](request)
-class UserRequest[A](val user: User, request: TokenRequest[A]) extends WrappedRequest[A](request)
-class AdminRequest[A](val admin: User, request: TokenRequest[A]) extends WrappedRequest[A](request)
+class UserRequest[A](val user: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
+class AdminRequest[A](val admin: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
 
 trait Security{ self: Controller =>
   val betterDb: BetterDb

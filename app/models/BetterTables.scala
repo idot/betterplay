@@ -6,7 +6,10 @@ import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.meta.MTable
 import slick.driver.JdbcProfile
 import org.joda.time.Period
-
+import scala.concurrent.Await
+import scala.concurrent.duration._
+import scala.util.{Try,Success,Failure}
+import play.api.Logger
 
 object JodaHelper { //TODO: check timezone, might have to use calendar
 
@@ -55,25 +58,48 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   }
 
   def createTables(){
-     db.run(DBIO.seq(schema.create))
+     Logger.info("creating tables") 
+     Await.result(db.run(DBIO.seq(schema.create)), 1 second)
   }
   
   def drop(){
-     db.run(DBIO.seq(schema.drop))
+     Logger.info("dropping tables") 
+     Await.result(db.run(DBIO.seq(schema.drop)), 1 second)
   }
 
   def dropCreate(){
       import scala.concurrent.ExecutionContext.Implicits.global
       
-      val f = db.run(MTable.getTables("users").head)
-      f.onFailure{ case f =>
-          createTables()
-      }
-      f.onSuccess{ case s =>
+      Logger.info("starting to drop or create tables") 
+
+      val f = db.run(MTable.getTables(namePattern = "users").headOption)
+      val r = Await.result(f, 1 seconds)
+      r match {
+        case Some(t) => {
           drop()
           createTables()
+        }
+        case None => {
+          createTables()
+        }
       }
+  /**    f.onComplete{
+            case Try(Some(_)) => {
+                case Some(r) => { 
+                                              drop()
+                                              createTables()
+                                            }
+                case None => createTables()       
+            }
+            case Failure(t) => {
+                Logger.error(t.getMessage)
+                createTables()
+            }
+     }
+      
+     */
   }
+  
 
   class Teams(tag: Tag) extends Table[Team](tag, "teams") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -90,8 +116,9 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def pointsExact = column[Int]("pointsexact")
     def pointsTendency = column[Int]("pointstendency")
     def level = column[Int]("level")
-
-    def * = (id.?, name, pointsExact, pointsTendency, level) <> (GameLevel.tupled, GameLevel.unapply)
+    def viewMinutesToGame = column[Int]("viewtoGame")
+    
+    def * = (id.?, name, pointsExact, pointsTendency, level, viewMinutesToGame) <> (GameLevel.tupled, GameLevel.unapply)
 
   }
 
@@ -233,6 +260,7 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 	  def userId = column[Long]("user_id")
 	  def gameId = column[Long]("game_id")
+	  def gameStart = column[DateTime]("gameStart")
 	  def betId = column[Long]("bet_id")
     def t1old = column[Int]("t1old")
     def t1new = column[Int]("t1new")
@@ -241,7 +269,7 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
 	  def created = column[DateTime]("change")
 	  def comment = column[String]("comment")
 	  
-	  def * = (id.?, userId, gameId, betId, t1old, t1new, t2old, t2new, created, comment) <> (BetLog.tupled, BetLog.unapply _)
+	  def * = (id.?, userId, gameId, gameStart, betId, t1old, t1new, t2old, t2new, created, comment) <> (BetLog.tupled, BetLog.unapply _)
   }
 
 
