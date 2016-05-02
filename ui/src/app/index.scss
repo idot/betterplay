@@ -94,11 +94,12 @@ section.jumbotron {
 .badge{
     display: inline-block;
     min-width: 10px;
-    font-size: 12px;
-    //line-height: 1;
+    font-size: 11px;
+    line-height: 1;
     white-space: nowrap;
-    //vertical-align: middle;
-    border-radius: 10px;   
+    vertical-align: middle;
+    border-radius: 10px;  
+    padding: 3px; 
 }
 
 .bg-points {

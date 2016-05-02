@@ -1,22 +1,22 @@
 <div layout="column" style="height:600px" ng-cloak>
- <md-toolbar md-scroll-shrink ng-if="true" ng-controller="UserController as vm">
+ <md-toolbar md-scroll-shrink ng-if="true">
    <md-list>
         <md-list-item class="md-3-line">
+        <span class="flag-icon flag-icon-gr flag-icon-squared"></span>
          <img ng-src="{{vm.user && vm.user.iconurl+'&s=80'}}" alt="{{vm.user.username}}" class="md-avatar"/>
-         <div>{{vm.user.username}}</div><b class="badge bg-points">10</b>
+         <div>{{vm.user.username}} <span class="badge bg-points">{{vm.user.totalPoints}}</span></div>
+         <md-button type="submit" ng-click="$state.transitionTo('user.specialBets', {'username': user.username})" value="Submit" title="Special Bets">Special Bets</button>
+         <ui-flag iso="gr"/>
        </md-list-item>
   </md-list>
 </md-toolbar>
 <md-content flex>
     <md-list>
-      <md-list-item class="md-3-line" ng-repeat="item in todos">
-        <img ng-src="{{item.face}}" alt="{{item.who}}" class="md-avatar">
+      <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
         <div class="md-list-item-text">
-          <h3>{{item.what}}</h3>
-          <h4>{{item.who}}</h4>
-          <p>
-            {{item.notes}}
-          </p>
+          <a ui-sref="game.gameBets({ gamenr: gameBet.game.game.nr })">
+            <better-flag iso=gameBet.game.team1.short2></better-flag>    {{gameBet.game.team1.name}} : {{gameBet.game.team2.name}}   <better-flag iso=gameBet.game.team2.short2></better-flag>
+          </a>
         </div>
         <md-divider inset></md-divider>
       </md-list-item>

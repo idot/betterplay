@@ -3,19 +3,19 @@
 
   angular
     .module('ui')
-    .directive('flag', flag);
+    .directive('betterFlag', betterFlag);
 
   /** @ngInject */
-  function flag() { //<span class="flag-icon flag-icon-gr flag-icon-squared"></span>
+  function betterFlag() { //<span class="flag-icon flag-icon-gr flag-icon-squared"></span>
       return {
-  	     replace: true,
+                 replace: true,
 		 restrict: 'E',
-	         link: function(scope, element, attrs) {//"attrs.iso"
-    	              var flag = '<span class="flag-icon flag-icon-'+attrs.iso+'flag-icon-squared "></span>';
-   	              element.append(flag);
-                 }
+                 scope:  {
+                     iso: '='
+                 },
+                 template: "<span class='flag-icon flag-icon-{{iso}} flag-icon-squared'></span>" 
              }
-     };	  
+     }	  
       
 
 })();
