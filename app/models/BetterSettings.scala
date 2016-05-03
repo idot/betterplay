@@ -5,6 +5,8 @@ import org.jasypt.salt.SaltGenerator
 import org.joda.time.format.DateTimeFormat
 import  org.jasypt.digest.StandardByteDigester
 import scalaz.{\/,-\/,\/-}
+import play.api.Logger
+
 
 object BetterSettings {
     
@@ -13,14 +15,17 @@ object BetterSettings {
 	var debug = false
 	
 	val formatter = DateTimeFormat.forPattern("yyyyMMddHHmm")
-	
+	val logformatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm")
+    
 	def setDebugTime(time: DateTime){
+                Logger.info(s"set time to: ${logformatter.print(time)}")
 		debugTime = time
 		debug = true	
 	}
 	
 	def resetTime(){
-	    debug = false
+             Logger.info(s"debug time off")
+	     debug = false
 	}
 	
 	/**
@@ -30,7 +35,7 @@ object BetterSettings {
 	 */
 	def now(): DateTime = {
 		if(debug){
-			  debugTime
+		   debugTime
 		}else{
 		    new DateTime()
 	    }

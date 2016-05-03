@@ -26,7 +26,7 @@
         .state('users', {
                 url: "/users",
                 templateUrl: 'app/partials/users.html',
-                controller: 'XController',
+                controller: 'UsersController',
                 controllerAs: 'vm'
             })
             .state('games', {

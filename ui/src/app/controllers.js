@@ -19,9 +19,9 @@
         .controller('ExcelController', ExcelController);
 
     /** @ngInject */
-    function UsersController($log, $filter, restangular) {
+    function UsersController($log, $filter, Restangular, betterSettings) {
         var vm = this;
-
+        vm.DF = betterSettings.DF;
         vm.allUsers = [];
         vm.dtoptions = {
             scrollbarV: false
@@ -63,7 +63,7 @@
      /** @ngInject */
     function GamesController($log, $filter, Restangular, $stateParams, _, betterSettings) {
         var vm = this;
-
+        vm.DF = betterSettings.DF;
         vm.allGames = [];
 
 
@@ -113,8 +113,10 @@
         vm.user = [];
         vm.special = [];
         vm.gameBets = [];
-
-
+        vm.DF = betterSettings.DF;
+        vm.timeLeft = betterSettings.timeLeft;
+        vm.getTime = betterSettings.getTime;
+       
         var queryUser = Restangular.one('em2016/api/user', vm.stateParams.username);
 
         vm.openFilter = ['open', 'closed'];
@@ -351,21 +353,22 @@
    
 
     /** @ngInject */
-    function UserSpecialBetsController($log, $filter, $stateParams, Restangular, $state, toastr, betterSettings) {
+    function UserSpecialBetsController($log, $filter, $stateParams, Restangular, $state, toastr, betterSettings, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = {};
         vm.templateBets = {};
         vm.noInstructions = true;
+        vm.DF = betterSettings.DF;
 
         function getUserBets() {
             Restangular.one('em2016/api/user', vm.stateParams.username).one('specialBets').get().then(
                 function(success) {
                     vm.user = success.user;
                     vm.templateBets = success.templateBets;
-                    if (betterSettings.isOwner(vm.user.id) && !betterSettings.user.hadInstructions) {
+                    if (userService.isOwner(vm.user.id) && ! userService.userHadInstructions()) {
                         vm.noInstructions = true;
-                        toastr.pop('info', "Welcome " + success.user.username + "!", "Please place special bets until start of the game.\n Have fun!")
+                        toastr.info('info', "Welcome " + success.user.username + "!", "Please place special bets until start of the game.\n Have fun!")
                     } else {
                         vm.noInstructions = false;
                     }

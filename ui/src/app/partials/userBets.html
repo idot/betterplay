@@ -1,15 +1,18 @@
-<div layout="column" style="height:600px" ng-cloak>
+<div layout="column" ng-cloak>
+<form name="userForm">    
  <md-toolbar md-scroll-shrink ng-if="true">
    <md-list>
         <md-list-item class="md-3-line">
-        <span class="flag-icon flag-icon-gr flag-icon-squared"></span>
+        {{vm.getTime() | date: vm.DF}}
          <img ng-src="{{vm.user && vm.user.iconurl+'&s=80'}}" alt="{{vm.user.username}}" class="md-avatar"/>
-         <div>{{vm.user.username}} <span class="badge bg-points">{{vm.user.totalPoints}}</span></div>
-         <md-button type="submit" ng-click="$state.transitionTo('user.specialBets', {'username': user.username})" value="Submit" title="Special Bets">Special Bets</button>
+         <div><a ui-sref="user">{{vm.user.username}} <span class="badge bg-points">{{vm.user.totalPoints}}</span></div>
+         <a ui-sref="user.specialBets({'username': vm.user.username})"><md-button type="submit" value="Submit"  class="md-raised" title="Special Bets">Special Bets</md-button></a>
          <ui-flag iso="gr"/>
        </md-list-item>
   </md-list>
 </md-toolbar>
+</form>
+<form name="betsForm">
 <md-content flex>
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
@@ -17,77 +20,27 @@
           <a ui-sref="game.gameBets({ gamenr: gameBet.game.game.nr })">
             <better-flag iso=gameBet.game.team1.short2></better-flag>    {{gameBet.game.team1.name}} : {{gameBet.game.team2.name}}   <better-flag iso=gameBet.game.team2.short2></better-flag>
           </a>
+           <span class="{{badge(gameBet.game.game)}}">{{gb.bet.points}}</span>
+           <span class="{{badge()}}>" </span>
+           <span>{{gameBet.game.game.serverStart | date : vm.DF}}  {{vm.timeLeft(gameBet.game.game.serverStart)}}</span>
+           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart"></better-bet-view>
         </div>
         <md-divider inset></md-divider>
       </md-list-item>
     </md-list>
   </md-content>
-</div>
-<!--div layout="column" ng-cloak class="md-inline-form">
-   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-      <form name="userEditForm">
-        <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
-            <div flex-gt-sm="80">
-               <md-input-container class="md-block" flex-gt-sm>
-                        <label for="username">username</label>
-                        <input type="text" name="username" ng-model="vm.username" required autofocus md-placeholder="username"/>
-                        <div ng-messages="loginForm.username.$error">
-                                  <div ng-message="required">required</div>
-                         </div>
-                </md-input-container>
-               <md-input-container class="md-block" flex-gt-sm>
-                       <label for="password">password</label>
-                       <input type="password" name="username" ng-model="vm.password" required md-placeholder="password"/>
-                       <div ng-messages="loginForm.password.$error">
-                                 <div ng-message="required">required</div>
-                        </div>
-                </md-input-container>
-                <md-input-container layout-align="center">
-                	<div layout="row" layout-sm="column" layout-margin>
-                            <md-button title="Login" ng-click="vm.login()" ng-disabled="!loginForm.$valid" class="md-raised" flex="50" flex-sm="100">Login</md-button>
-                        </div>
-                </md-input-container>        
-            </div>
-        </div>    
-      </form>
-  </md-content>
+ </form>
 </div>
 
 
 
-<form class="form col-xs-5" name="userEditForm" role="form">
-  <ul class="list-group">
-     <li class="list-group-item list-group-item-heading">
-       {{user.username}}  <span class="badge pull-right">{{user.totalPoints}}</span>
-     </li>
-     <li class="list-group-item">
-       {{user.firstName}} {{user.lastName}}
-     </li>
-	 <li class="list-group-item">
-		   <img ng-src="{{user && user.iconurl+'&s=80'}}" alt="gravatar" height="80" width="80"/>
-		   <button type="submit" class="btn btn-info" ng-click="$state.transitionTo('user.specialBets', {'username': user.username})" value="Submit" title="Special Bets">Special Bets</button>
-	       <button ng-if="isOwner(user.id)" type="submit" class="btn btn-primary pull-right" ng-click="$state.transitionTo('user.userEdit', {'username': user.username})" value="Submit" title="Edit">Edit</button>
-	 </li>
-	 
-  </ul>
-</form>
-
-  
 
 <form name="betsForm" class="form col-xs-12" role="form"-->
   <!-- this is the games table with bets for each game added >
    <table ng-table="tableParams" class="table" show-filter="true">
         <tr ng-repeat="gb in $data">
-            <td data-title="'nr'" sortable="'gamenr'">
-                <a ui-sref="game.gameBets({ gamenr: gb.game.game.nr })">{{gb.game.game.nr}}</a>
-            </td>
-            <td data-title="'server start'" sortable="'serverStart'">
-                {{gb.game.game.serverStart | date : DF}}
-            </td>
-			<td data-title="'bet close'" sortable="'serverStart'"
-			   filter="{ 'openGame': 'select' }" filter-data="openFilter()">
-				{{timeLeft(gb.game.game.serverStart, currentTime)}}
-			</td>
+
+
             <td data-title="'level'" sortable="'levelname'" filter="{ 'levelname': 'select' }" filter-data="levelFilter()">
 				{{gb.game.level.name}}
 			</td>

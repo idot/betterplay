@@ -69,16 +69,20 @@
                     }
                 };
             })
-            .service('betterSettings', function(Restangular, $timeout, toastr, moment, userService) {
-                   var vm = this;
-                    var startupTime = new Date();
-                    var currentTime = new Date();
+            .service('betterSettings', function($log, Restangular, $timeout, toastr, moment, userService) {
+                    var vm = this;
+                    vm.startupTime = new Date();
+                    vm.currentTime = new Date();
+
+                    vm.getTime = function(){
+                        return vm.currentTime;  
+                    };
 
                     //should we fetch the time from the server or take the interactively set time
-                    var TIMEFROMSERVER = true;
+                   var TIMEFROMSERVER = true;
 
                     //format for time display
-                    var DF = 'MM/dd HH:mm';
+                    vm.DF = 'MM/dd HH:mm';
 
                     //time before game start that bet closes
                     var MSTOCLOSING = 60 * 60 * 1000; //in ms
@@ -93,26 +97,26 @@
                         //boolean true add in/ago
                         //negative values = ago
                         //positive values = in
-                        var diff = (serverStart - MSTOCLOSING) - currentTime;
+                        var diff = (serverStart - MSTOCLOSING) - vm.currentTime;
                         var s = moment.duration(diff, "milliseconds").humanize(true);
                         return s;
                     };
 
                     vm.betClosed = function(serverStart) {
-                        var diff = (serverStart - MSTOCLOSING) - currentTime;
+                        var diff = (serverStart - MSTOCLOSING) - vm.currentTime;
                         return diff < 0;
                     };
 
                     vm.canBet = function(serverStart, bet) {
-                        var diff = (serverStart - MSTOCLOSING) - currentTime;
+                        var diff = (serverStart - MSTOCLOSING) - vm.currentTime;
                         var owner = userService.isOwner(bet.userId);
                         return diff > 0 && owner;
                     };
 
                     vm.onTimeout = function() {
                         vm.mytimeout = $timeout(vm.onTimeout, UPDATEINTERVAL);
-                        currentTime = new Date(new Date(currentTime).getTime() + UPDATEINTERVAL);
-                        var timerunning = currentTime.getTime() - startupTime.getTime();
+                        vm.currentTime = new Date(new Date(vm.currentTime).getTime() + UPDATEINTERVAL);
+                        var timerunning = vm.currentTime.getTime() - vm.startupTime.getTime();
                         if (timerunning > RESETTIMEDIFF && TIMEFROMSERVER) {
                             vm.updateTimeFromServer();
                         }
@@ -128,6 +132,7 @@
                         Restangular.one('em2016/api/time').get().then(function(currentTime) {
                             vm.startupTime = new Date(currentTime.serverTime);
                             vm.currentTime = vm.startupTime;
+                            $log.debug("updated time from server: "+moment(vm.currentTime).format());
                         })
                     };
 
@@ -138,8 +143,8 @@
                         nm.hours(om.hours());
                         nm.minutes(om.minutes());
                         nm.seconds(om.seconds());
-                        currentTime = nm.toDate();
-                        vm.updateTimeOnServer(currentTime);
+                        vm.currentTime = nm.toDate();
+                        vm.updateTimeOnServer(vm.currentTime);
                     };
 
                     vm.updateTime = function(time) {
@@ -148,8 +153,8 @@
                         var om = moment(currentTime);
                         om.hours(nm.hours());
                         om.minutes(nm.minutes());
-                        currentTime = om.toDate();
-                        vm.updateTimeOnServer(currentTime);
+                        vm.currentTime = om.toDate();
+                        vm.updateTimeOnServer(vm.currentTime);
                     };
 
                     vm.updateTimeOnServer = function(time) { //TODO fetch time from server after update, then update current time!

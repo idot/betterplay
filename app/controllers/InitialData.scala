@@ -182,7 +182,9 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
     //TODO: updateChampion()
 
     Logger.info("done inserting data in db")
-  
+    
+    BetterSettings.setDebugTime(new DateTime(2014, 3, 9, 10, 0))
+    
   }
 
 

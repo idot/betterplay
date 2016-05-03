@@ -3,10 +3,10 @@
 
   angular
     .module('ui')
-    .directive('betView', betView);
+    .directive('betterBetView', betterBetView);
 
   /** @ngInject */
-  function betView() {
+  function betterBetView() {
     var directive = {
       restrict: 'E',
       templateUrl: 'app/components/bet/bet.html',
@@ -16,17 +16,16 @@
           start: '=start'   
       },
       controller: BetController,
-      controllerAs: 'vm',
-      bindToController: true
+      controllerAs: 'vm'
     };
 
     return directive;
 
      /** @ngInject */
-    function BetController(Restangular, toastr, betterSettings) {
+    function BetController($log, Restangular, toastr, betterSettings) {
         var vm = this;
         vm.disabled = false;
-
+        
         vm.saveBet = function(bet) {
             vm.disabled = true;
             Restangular.all('em2016/api/bet/' + bet.id).customPOST(bet).then(
@@ -40,6 +39,10 @@
                     vm.disabled = false;
                 }
             );
+        };
+        
+        vm.canBet = function(start, bet) {
+              return betterSettings.canBet(start, bet);
         };
 
         vm.markBet = function(bet) {

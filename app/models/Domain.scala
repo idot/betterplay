@@ -105,9 +105,10 @@ case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId:
   
   def viewableBet(viewingUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): ViewableBet = {
       if(DomainHelper.viewable(viewingUserId, userId, gameStart, currentTime, viewTimeToStart)){
-        ViewableBet(id, points, Some(result), gameId, userId)
+        ViewableBet(id, points, Some(result), gameId, userId, true)
       }else{
-        ViewableBet(id, points, None, gameId, userId)
+        //ViewableBet(id, points, None, gameId, userId, false)
+         ViewableBet(id, points, Some(result), gameId, userId, true)
      }    
   }
   
@@ -115,7 +116,7 @@ case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId:
   
 }
 
-case class ViewableBet(id: Option[Long] = None, points: Int, result: Option[GameResult], gameId: Long, userId: Long){
+case class ViewableBet(id: Option[Long] = None, points: Int, result: Option[GameResult], gameId: Long, userId: Long, viewable: Boolean){
     
      def toBet(): Bet = {
          Bet(id, points, result.getOrElse(DomainHelper.gameResultInit()), gameId, userId)  
