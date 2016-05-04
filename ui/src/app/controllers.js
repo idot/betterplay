@@ -114,7 +114,6 @@
         vm.special = [];
         vm.gameBets = [];
         vm.DF = betterSettings.DF;
-        vm.timeLeft = betterSettings.timeLeft;
         vm.getTime = betterSettings.getTime;
        
         var queryUser = Restangular.one('em2016/api/user', vm.stateParams.username);

@@ -7,7 +7,6 @@
          <img ng-src="{{vm.user && vm.user.iconurl+'&s=80'}}" alt="{{vm.user.username}}" class="md-avatar"/>
          <div><a ui-sref="user">{{vm.user.username}} <span class="badge bg-points">{{vm.user.totalPoints}}</span></div>
          <a ui-sref="user.specialBets({'username': vm.user.username})"><md-button type="submit" value="Submit"  class="md-raised" title="Special Bets">Special Bets</md-button></a>
-         <ui-flag iso="gr"/>
        </md-list-item>
   </md-list>
 </md-toolbar>
@@ -17,13 +16,8 @@
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
         <div class="md-list-item-text">
-          <a ui-sref="game.gameBets({ gamenr: gameBet.game.game.nr })">
-            <better-flag iso=gameBet.game.team1.short2></better-flag>    {{gameBet.game.team1.name}} : {{gameBet.game.team2.name}}   <better-flag iso=gameBet.game.team2.short2></better-flag>
-          </a>
-           <span class="{{badge(gameBet.game.game)}}">{{gb.bet.points}}</span>
-           <span class="{{badge()}}>" </span>
-           <span>{{gameBet.game.game.serverStart | date : vm.DF}}  {{vm.timeLeft(gameBet.game.game.serverStart)}}</span>
-           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart"></better-bet-view>
+           <better-game-view game="gameBet.game"></better-game-view>
+           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" resultSet="gameBet.game.result.isSet"></better-bet-view>
         </div>
         <md-divider inset></md-divider>
       </md-list-item>

@@ -106,6 +106,18 @@ section.jumbotron {
      background-color: red;
 }
 
+.saveButton {
+    font-size: 10px;
+    padding: 1px 1px 1px 1px;
+    min-width: 20px;
+    margin: 1px 1px 1px 1px;
+    color: #cb3837;
+    background-color: red;
+    line-height: 10px;
+    min-height: 10px;
+    vertical-algin: top;
+}
+
 
 /**
  *  Do not remove the comment below. It's the markers used by gulp-inject to inject

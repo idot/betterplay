@@ -12,61 +12,136 @@
       templateUrl: 'app/components/bet/bet.html',
       scope: {
           bet: '=bet', 
+          //TODO: bind game.result isSet => for display of points
 	//	    onSend: '&',      // Pass a reference to the method 
-          start: '=start'   
+          start: '=start',
+          resultSet: '=resultSet'
       },
-      controller: BetController,
+      controller: BetViewController,
       controllerAs: 'vm'
     };
 
     return directive;
 
      /** @ngInject */
-    function BetController($log, Restangular, toastr, betterSettings) {
+    function BetViewController($log, Restangular, toastr, betterSettings, $scope, _) {
         var vm = this;
         vm.disabled = false;
+        vm.disableSave = true;
+        vm.saveStyle = {};
+        vm.points = _.range(15);
+        vm.withTime = betterSettings.currentTime;
+        vm.canBet = betterSettings.canBet($scope.start, $scope.bet);
+               
+        //we set a result if there is none available because its hidden from the user; otherwise the user owns the bet 
+        //so: 
+        // we set strings if the result is not set yet to force errors on 1/2 submissions
+        // we set other symbols
+        
+        function transformBet(bet){
+            bet.marked = false;
+            if(bet.result === undefined){
+                bet.result = { 'goalsTeam1' :  "hidden", 'goalsTeam2' : "hidden", 'isSet' : false, 'points' : 'NA' };   
+            } else {
+                if(! bet.result.isSet){
+                    if(vm.canBet){
+                       bet.result.goalsTeam1 = "-";
+                       bet.result.goalsTeam2 = "-";
+                    } else {    
+                       bet.result.goalsTeam1 = "closed!";
+                       bet.result.goalsTeam2 = "closed!";
+                    }
+               }
+            } 
+        };
+        
+        transformBet($scope.bet); 
+        vm.originalBet = $scope.bet;    
+        
+        function checkSubmission(bet){
+            var error = [];
+            if(! _.isNumber(bet.result.goalsTeam1)){
+                error.push("team1");
+            } 
+            if(! _.isNumber(bet.result.goalsTeam2)){
+                error.push("team2");
+            }    
+            var errors = error.join()
+            if(errors.length > 0){
+               return "Please set "+errors+"!";   
+            } else { return errors };            
+        };
         
         vm.saveBet = function(bet) {
+            var error = checkSubmission(bet);
+            if(error.length > 0){
+                  toastr.error(error);
+                  return;                   
+            }
+            vm.disableSave = true;
             vm.disabled = true;
+            vm.saveStyle = vm.saveStyleValue(bet);
+
             Restangular.all('em2016/api/bet/' + bet.id).customPOST(bet).then(
                 function(success) {
                     var game = success.game;
                     var betold = success.betold;
                     var betnew = success.betnew;
-                    var show = game.game.nr + ": " + vm.prettyBet(betold) + " -> " + vm.prettyBet(betnew)
-                    toastr.info('success', "updated bet ", show);
-                    bet['marked'] = false;
+                    var flag = function(team){
+                        return "<span class='flag-icon flag-icon-"+team.short2+" flag-icon-squared'></span>";  
+                    };
+                    var g = flag(game.team1)+" : "+flag(game.team2)
+                    var res = vm.prettyBet(betold) + " -> " + vm.prettyBet(betnew)
+                    toastr.success("<span>"+g+"     "+res+"</span>", "updated bet");
+                    
+                    bet.marked = false;
                     vm.disabled = false;
+                    vm.originalBet = betnew;
+                    vm.saveStyle = vm.saveStyleValue(vm.originalBet);
                 }
             );
         };
-        
-        vm.canBet = function(start, bet) {
-              return betterSettings.canBet(start, bet);
+                
+        vm.saveStyleValue = function(bet){
+            if(vm.disabled){
+               return  { 'fill' : 'white' };
+            }
+            if(bet.viewable){
+                if(bet.marked ){
+                    return { 'fill' : 'green' };
+                } else if(! bet.result.isSet){
+                    return { 'fill': 'red' };
+                } 
+            }     
         };
-
+          
         vm.markBet = function(bet) {
-            bet['marked'] = true;
+            bet.marked = true;
+            vm.disableSave = false;
+            vm.saveStyle = vm.saveStyleValue(bet);
+           $log.debug( vm.disableSave );
         };
-
-        vm.withTime = betterSettings.currentTime;
-
+    
         vm.saveButton = function(bet) {
-            if (typeof bet.marked === "undefined" || bet.marked == false) {
-                return "btn btn-default btn-xs";
+            if(! bet.marked ) {
+                return "";
             } else {
-                return "btn btn-warning btn-xs";
+                return "md-raised";
             }
         };
-
+        
+        vm.saveStyle = vm.saveStyleValue(vm.originalBet);
+     
         vm.prettyBet = function(bet) {
-            if (bet.result.isSet) {
-                return bet.result.goalsTeam1 + ":" + bet.result.goalsTeam2;
-            } else {
-                return "-:-"
-            }
+             if (bet.result.isSet) {
+                     return bet.result.goalsTeam1 + ":" + bet.result.goalsTeam2;
+             } else {
+                     return "-:-"
+             }
         }
-    } 
+        
+    }  
+     
   }
 
 })();

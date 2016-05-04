@@ -98,7 +98,7 @@
                         //negative values = ago
                         //positive values = in
                         var diff = (serverStart - MSTOCLOSING) - vm.currentTime;
-                        var s = moment.duration(diff, "milliseconds").humanize(true);
+                        var s = moment.duration(diff, "milliseconds").humanize(false);
                         return s;
                     };
 

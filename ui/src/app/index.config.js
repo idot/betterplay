@@ -6,16 +6,20 @@
         .config(config);
 
     /** @ngInject */
-    function config($logProvider, toastrConfig) {
+    function config($logProvider, toastrConfig, $mdIconProvider) {
         // Enable log
         $logProvider.debugEnabled(true);
 
         // Set options third-party lib
         toastrConfig.allowHtml = true;
-        toastrConfig.timeOut = 3000;
+        toastrConfig.timeOut = 1200;
         toastrConfig.positionClass = 'toast-top-right';
-        toastrConfig.preventDuplicates = true;
+        toastrConfig.preventDuplicates = false;
         toastrConfig.progressBar = true;
+        
+        
+        $mdIconProvider.iconSet('content', 'bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-content-symbol.svg', 10)
+        
     }
 
 })();

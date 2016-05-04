@@ -1,0 +1,5 @@
+ <a ui-sref="game.gameBets({ gamenr: game.game.nr })">
+    <better-flag iso=game.team1.short2></better-flag><better-flag iso=game.team2.short2></better-flag>  {{game.team1.name}} : {{game.team2.name}}
+ </a>
+<span class="{{badge()}}>" </span>
+<span>{{game.game.serverStart | date : vm.DF}}, {{vm.timeLeft(game.game.serverStart)}}</span>
