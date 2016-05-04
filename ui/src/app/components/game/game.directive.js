@@ -22,11 +22,15 @@
 
      /** @ngInject */
     function GameViewController($log, Restangular, toastr, betterSettings, $scope, _) {
-        $log.debug("game view cont")
         var vm = this;
+        vm.game = $scope.game.game;
         vm.disabled = false;
         vm.DF = betterSettings.DF;
         vm.timeLeft = betterSettings.timeLeft;
+        vm.gameClosed = betterSettings.betClosed(vm.game.serverStart);
+        vm.resultSet = vm.game.result.isSet;
+        vm.prettyResult = betterSettings.prettyResult(vm.game.result);
+        
         
     } 
   }

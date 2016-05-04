@@ -118,44 +118,15 @@
        
         var queryUser = Restangular.one('em2016/api/user', vm.stateParams.username);
 
-        vm.openFilter = ['open', 'closed'];
-
-        vm.levelFilter = ['group', 'last16', 'quarter', 'semi', 'final', 'third'];
-
-        vm.bettedFilter = ['set', 'not'];
-
-        function transformGameBets(gb) {
-            gb.team1name = gb.game.team1.name;
-            gb.team2name = gb.game.team2.name;
-            gb.levelname = gb.game.level.name;
-            gb.openGame = betterSettings.betClosed(gb.game.game.serverStart) ? "closed" : "open";
-            gb.betset = gb.bet.result.isSet ? "set" : "not";
-            gb.serverStart = gb.game.game.serverStart;
-            gb.gamenr = gb.game.game.nr;
-        }
 
         function getUser() {
             queryUser.get().then(function(userWithSpAndGB) {
                 vm.user = userWithSpAndGB.user;
                 vm.special = userWithSpAndGB.special;
                 var gameBets = userWithSpAndGB.gameBets;
-                vm.gameBets = _.each(gameBets, function(gb) {
-                    transformGameBets(gb)
-                });
-
+               // vm.gameBets = testFilter(gameBets)
+                vm.gameBets = gameBets;
             })
-        }
-
-        vm.badge = function(game) {
-            return game.result.isSet ? "badge badge-resultset" : "badge";
-        };
-
-        vm.prettyGame = function(game) {
-            if (game.result.isSet) {
-                return game.result.goalsTeam1 + ":" + game.result.goalsTeam2;
-            } else {
-                return "-:-"
-            }
         }
 
         activate();

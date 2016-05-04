@@ -4,6 +4,29 @@
         angular
             .module('ui')
             .value('version', '0.1')
+            .factory('betterFilterService', function($log, _, userService){
+                vm = this;
+                vm.closedGame = "inactive";
+                vm.level = "inactive";
+                vm.wasSet = "inactive";
+                
+                vm.closedGameFilter = ["open", "closed"];  //filters game
+                vm.levelFilter = ["group", "round of 16", "quarter-finals", "semi-finals", "final"]; //filters game
+                vm.wasSetFilter = ["not set","set"]; //filers bets
+                
+                vm.openFilter = ['open', 'closed'];
+
+                vm.levelFilter = ['group', 'last16', 'quarter', 'semi', 'final', 'third'];
+
+                vm.bettedFilter = ['set', 'not'];
+                
+                vm.filterGames = function(games){
+                         
+                    
+                };
+                
+                
+            })
             .factory('specialBetService', function($state, Restangular, toastr, _) {
                 return {
                     getSpecialBet: function(betId, username) {
@@ -82,7 +105,7 @@
                    var TIMEFROMSERVER = true;
 
                     //format for time display
-                    vm.DF = 'MM/dd HH:mm';
+                    vm.DF = 'd/M HH:mm';
 
                     //time before game start that bet closes
                     var MSTOCLOSING = 60 * 60 * 1000; //in ms
@@ -176,6 +199,14 @@
                             })
                     };
 
+                    vm.prettyResult = function(result){
+                        if (result.isSet) {
+                                return result.goalsTeam1 + ":" + result.goalsTeam2;
+                        } else {
+                                return "-:-"
+                        }  
+                    };
+
                     vm.updateTimeFromServer()
                     $timeout(vm.onTimeout, UPDATEINTERVAL);
                 })
@@ -190,6 +221,8 @@
         };
         var loggedInUser = NOUSER;
         var authtoken = "";
+        
+        vm.filterName = "nd";
 
         vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
             Restangular.all("em2016/api/login").post(credentials).then(

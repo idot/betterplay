@@ -17,4 +17,5 @@ tmp
 activator-sbt-*-shim.sbt
 node_modules
 bower_components
+
 *.log

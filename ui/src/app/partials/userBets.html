@@ -14,10 +14,10 @@
 <form name="betsForm">
 <md-content flex>
     <md-list>
-      <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
+      <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets | test">
         <div class="md-list-item-text">
            <better-game-view game="gameBet.game"></better-game-view>
-           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" resultSet="gameBet.game.result.isSet"></better-bet-view>
+           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" gameResult="gameBet.game.result"></better-bet-view>
         </div>
         <md-divider inset></md-divider>
       </md-list-item>

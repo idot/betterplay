@@ -91,19 +91,32 @@ section.jumbotron {
  
 }
 
-.badge{
-    display: inline-block;
-    min-width: 10px;
-    font-size: 11px;
-    line-height: 1;
-    white-space: nowrap;
-    vertical-align: middle;
-    border-radius: 10px;  
-    padding: 3px; 
+.badge {
+  padding: 1px 9px 2px 0px;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+ // color: #ffffff;
+//  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
 }
 
 .bg-points {
-     background-color: red;
+    background-color: #039BE5;
+}
+
+.bg-gold {
+     background-color: #DAA520;
+}
+
+.bg-silver {
+     background-color: #C0C0C0 ;
+}
+
+.bg-bronze {
+     background-color: #CD7F32;
 }
 
 .saveButton {

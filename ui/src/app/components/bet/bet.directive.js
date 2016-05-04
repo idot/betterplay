@@ -15,7 +15,7 @@
           //TODO: bind game.result isSet => for display of points
 	//	    onSend: '&',      // Pass a reference to the method 
           start: '=start',
-          resultSet: '=resultSet'
+          gameResult: '=gameResult'
       },
       controller: BetViewController,
       controllerAs: 'vm'
@@ -91,7 +91,7 @@
                         return "<span class='flag-icon flag-icon-"+team.short2+" flag-icon-squared'></span>";  
                     };
                     var g = flag(game.team1)+" : "+flag(game.team2)
-                    var res = vm.prettyBet(betold) + " -> " + vm.prettyBet(betnew)
+                    var res = betterSettings.prettyResult(betold.result) + " -> " + betterSettings.prettyResult(betnew.result); 
                     toastr.success("<span>"+g+"     "+res+"</span>", "updated bet");
                     
                     bet.marked = false;
@@ -108,18 +108,29 @@
             }
             if(bet.viewable){
                 if(bet.marked ){
-                    return { 'fill' : 'green' };
+                    if(checkSubmission(bet).length == 0){
+                        return { 'fill' : 'green' };
+                    } else {
+                        return { 'fill': 'yellow' };                        
+                    }
                 } else if(! bet.result.isSet){
                     return { 'fill': 'red' };
                 } 
             }     
         };
           
+        vm.disableSaveValue = function(bet){
+             if(checkSubmission(bet).length == 0){
+                 return false;  
+             }else{
+                 return true;
+             }
+        };      
+          
         vm.markBet = function(bet) {
             bet.marked = true;
-            vm.disableSave = false;
+            vm.disableSave = vm.disableSaveValue(bet);
             vm.saveStyle = vm.saveStyleValue(bet);
-           $log.debug( vm.disableSave );
         };
     
         vm.saveButton = function(bet) {
@@ -131,15 +142,14 @@
         };
         
         vm.saveStyle = vm.saveStyleValue(vm.originalBet);
-     
-        vm.prettyBet = function(bet) {
-             if (bet.result.isSet) {
-                     return bet.result.goalsTeam1 + ":" + bet.result.goalsTeam2;
-             } else {
-                     return "-:-"
-             }
-        }
         
+        vm.prettyResult = function(){
+            return  betterSettings.prettyResult($scope.gameResult);
+        };
+        
+        vm.points = function(){
+             return vm.originalBet.result.points;  
+        };
     }  
      
   }
