@@ -76,6 +76,10 @@ section.jumbotron {
   }
 }
 
+.betView {
+    margin: 0px 0px 0px 15px;
+}
+
 .techs {
   display: flex;
   flex-flow: row wrap;
@@ -89,6 +93,14 @@ section.jumbotron {
     }
   } 
  
+}
+
+.filterInput {
+    margin: 5px 0px 3px 0px; 
+}
+
+.betInput {
+    margin: 2px 0px 2px 0px;
 }
 
 .badge {

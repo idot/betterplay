@@ -1,23 +1,29 @@
 <div>
-    <md-input-container>
+    <md-input-container class="filterInput">
        <!-- sort by teams?-->
         <label>Game</label>
        <md-select ng-model="vm.filter.game" aria-label="filter game open" ng-change="vm.filterChanged()">
-           <md-option ng-value="filter" ng-repeat="filter in vm.gameFilter">{{ filter }}</md-option>
+           <md-optgroup label="Game">
+                 <md-option ng-value="filter" ng-repeat="filter in vm.gameFilter">{{ filter }}</md-option>
+            </md-optgroup>
        </md-select>
     </md-input-container>
 
-    <md-input-container>
+    <md-input-container class="filterInput">
         <label>Bet</label>
        <md-select ng-model="vm.filter.bet" aria-label="filter bet set" ng-change="vm.filterChanged()">
-           <md-option ng-value="filter" ng-repeat="filter in vm.betFilter">{{ filter }}</md-option>
+           <md-optgroup label="Bet">
+               <md-option ng-value="filter" ng-repeat="filter in vm.betFilter">{{ filter }}</md-option>
+           <md-optgroup>
        </md-select>
    </md-input-container>
 
-    <md-input-container>
+    <md-input-container class="filterInput">
        <label>Level</label>
        <md-select ng-model="vm.filter.level" aria-label="filter level" ng-change="vm.filterChanged()">
-           <md-option ng-value="filter" ng-repeat="filter in vm.levelFilter">{{ filter }}</md-option>
+           <md-optgroup label="Level">
+               <md-option ng-value="filter" ng-repeat="filter in vm.levelFilter">{{ filter }}</md-option>
+           <md-optgroup>
        </md-select>
    </md-input-container>
    <!--md-button type="button" aria-label="save" class="md-raised saveButton" ng-click="vm.saveBet(bet)" ng-disabled="vm.disableSave">
