@@ -1,13 +1,24 @@
 <div class="gameView">
- <a ui-sref="game.gameBets({ gamenr: game.game.nr })">
-    <better-flag iso=game.team1.short2></better-flag><better-flag iso=game.team2.short2></better-flag>  {{game.team1.name}} : {{game.team2.name}}</a>
-<span ng-if="! vm.gameClosed">
-      <span>  {{game.game.serverStart | date : vm.DF}}, {{vm.timeLeft(game.game.serverStart)}}</span>
-</span>
-<span ng-if="vm.gameClosed && !vm.resultSet">
-      <span>closed, no result</span>
-</span>
-<span ng-if="vm.gameClosed && vm.resultSet">
-      <span>vm.prettyResult()</span>
-</span>
+    <div>
+         <a ui-sref="game.gameBets({ gamenr: game.game.nr })">
+              <better-flag iso=game.team1.short2></better-flag><better-flag iso=game.team2.short2></better-flag>  {{game.team1.name}} : {{game.team2.name}}
+         </a>
+         <span ng-if="! vm.gameClosed">
+                    <span>  {{game.game.serverStart | date : vm.DF}}, {{vm.timeLeft(game.game.serverStart)}}</span>
+         </span>
+         <span ng-if="vm.gameClosed && !vm.resultSet">
+                   <span>closed, no result</span>
+          </span>
+          <span ng-if="vm.gameClosed && vm.resultSet">
+                  <span>vm.prettyResult()</span>
+          </span>
+          <span ng-if="vm.expand">
+                 &nbsp&nbsplevel: {{game.level.name}} reward: <span class="badge">{{game.level.pointsExact}}/{{game.level.pointsTendency}}</span>
+          </span>    
+      	  <span ng-if="vm.isAdmin() && vm.expand && vm.gameClosed">
+              <a ui-sref="game.gameEdit({'gamenr': game.game.nr })">
+                  <md-button type="submit" value="Submit"  class="md-raised" title="Edit Game">Edit Game</md-button>
+              </a>
+          </span>
+     </div>
 </div>

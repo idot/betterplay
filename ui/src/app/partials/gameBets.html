@@ -1,15 +1,36 @@
-<form class="form col-xs-8" name="gameEditForm" role="form">
-    <div class="col-xs-7">
-	<ul class="list-group">
-       <li class="list-group-item list-group-item-heading">
-         {{gwt.game.nr}}  {{gwt.team1.name}}:{{gwt.team2.name}} {{gwt.level.name}}
-       </li>
-       <li class="list-group-item">
-         bet close {{timeLeft(gwt.game.serverStart, currentTime)}}  reward: <span class="badge">{{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}</span>
-       </li>
-	   <li class="list-group-item">
-		 local: {{gwt.game.localStart | date: DF }} server: {{gwt.game.serverStart | date: DF }}	
-	  </li>	
+<div layout="column" ng-cloak>
+<form name="userForm">    
+ <md-toolbar md-scroll-shrink ng-if="true">
+   <md-list>
+        <md-list-item class="md-3-line">
+        <better-game-view user="vm.gwt"></better-game-view>
+       </md-list-item>
+  </md-list>
+  <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
+</md-toolbar>
+</form>
+<!-- this are all the user/bets for one game -->
+<form name="betsForm">
+<md-content flex>
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
+        <div class="md-list-item-text"  layout-gt-xs="row">
+           <better-game-view game="gameBet.game"></better-game-view>
+           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" gameResult="gameBet.game.result"></better-bet-view>
+        </div>
+        <md-divider inset></md-divider>
+      </md-list-item>
+    </md-list>
+  </md-content>
+ </form>
+</div>
+
+
+
+
+
+
+
   	  <li ng-if="isAdmin() && betClosed(gwt.game.serverStart, currentTime)" class="list-group-item">
    	       <button type="submit" class="btn btn-primary" ng-click="$state.transitionTo('game.gameEdit', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result</button>
   	  </li>

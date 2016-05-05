@@ -11,6 +11,7 @@
       restrict: 'E',
       templateUrl: 'app/components/game/game.html',
       scope: {
+          fullcontent: '=fullcontent',
           game: '=game'
 	//	    onSend: '&',      // Pass a reference to the method 
       },
@@ -21,7 +22,7 @@
     return directive;
 
      /** @ngInject */
-    function GameViewController($log, Restangular, toastr, betterSettings, $scope, _) {
+    function GameViewController($log, Restangular, toastr,  $scope, _, $mdMedia, betterSettings , userService) {
         var vm = this;
         vm.game = $scope.game.game;
         vm.disabled = false;
@@ -30,8 +31,8 @@
         vm.gameClosed = betterSettings.betClosed(vm.game.serverStart);
         vm.resultSet = vm.game.result.isSet;
         vm.prettyResult = betterSettings.prettyResult(vm.game.result);
-        
-        
+        vm.expand = $mdMedia('gt-xs') || $scope.fullcontent;
+        vm.isAdmin = userService.isAdmin()
     } 
   }
 
