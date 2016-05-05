@@ -4,9 +4,7 @@
    <md-list>
         <md-list-item class="md-3-line">
         {{vm.getTime() | date: vm.DF}}
-         <img ng-src="{{vm.user && vm.user.iconurl+'&s=80'}}" alt="{{vm.user.username}}" class="md-avatar"/>
-         <div><a ui-sref="user">{{vm.user.username}} <span class="badge bg-points">{{vm.user.totalPoints}}</span></div>
-         <a ui-sref="user.specialBets({'username': vm.user.username})"><md-button type="submit" value="Submit"  class="md-raised" title="Special Bets">Special Bets</md-button></a>
+        <better-user-view user="vm.user"></better-user-view>
        </md-list-item>
   </md-list>
   <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  

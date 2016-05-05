@@ -1,0 +1,7 @@
+<div>
+    <img ng-src="{{ user.iconurl+'?s=80' }}" alt="{{user.username}}" class="md-avatar"/>
+    <div><a ui-sref="user">{{user.username}}<span class="badge bg-points">{{user.totalPoints}}</span></div>
+    <a ui-sref="user.specialBets({'username': user.username})">
+        <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets">Special Bets</md-button>
+    </a>    
+</div>

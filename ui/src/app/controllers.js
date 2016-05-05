@@ -110,12 +110,13 @@
     function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings, gblFilter) {
         var vm = this;
         vm.stateParams = $stateParams;
-        vm.user = [];
+        vm.user = null;
         vm.special = [];
         vm.gameBets = [];
         vm.DF = betterSettings.DF;
         vm.getTime = betterSettings.getTime;
         vm.allGameBets = [];
+
         
         var queryUser = Restangular.one('em2016/api/user', vm.stateParams.username);
      
@@ -129,7 +130,7 @@
                 vm.special = userWithSpAndGB.special;
                 var gameBets = userWithSpAndGB.gameBets;
                 vm.allGameBets = gameBets;
-                vm.gameBets = gblFilter(gameBets);
+                vm.gameBets = gblFilter(gameBets);        
             })
         }
 
