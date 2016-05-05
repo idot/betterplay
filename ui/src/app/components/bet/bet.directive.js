@@ -12,8 +12,6 @@
       templateUrl: 'app/components/bet/bet.html',
       scope: {
           bet: '=bet', 
-          //TODO: bind game.result isSet => for display of points
-	//	    onSend: '&',      // Pass a reference to the method 
           start: '=start',
           gameResult: '=gameResult'
       },
@@ -144,13 +142,6 @@
    
         vm.saveStyle = vm.saveStyleValue(vm.originalBet);
         
-        vm.prettyResult = function(){
-            return  betterSettings.prettyResult($scope.gameResult);
-        };
-        
-        vm.resultPoints = function(){
-             return vm.originalBet.result.points;  
-        };
         
    
     }  

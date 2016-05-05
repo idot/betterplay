@@ -22,7 +22,7 @@
             if(filterLevel == "all"){
                 return true;
             }
-            return item.game.level.level == filterLevel;
+            return item.game.level.name == filterLevel;
         };
 
         var filterGBL = function(item, betterSettings, userService){
