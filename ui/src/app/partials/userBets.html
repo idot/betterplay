@@ -9,12 +9,14 @@
          <a ui-sref="user.specialBets({'username': vm.user.username})"><md-button type="submit" value="Submit"  class="md-raised" title="Special Bets">Special Bets</md-button></a>
        </md-list-item>
   </md-list>
+  <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
 </md-toolbar>
 </form>
+<!-- this are all the bets for one user -->
 <form name="betsForm">
 <md-content flex>
     <md-list>
-      <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets | test">
+      <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
         <div class="md-list-item-text">
            <better-game-view game="gameBet.game"></better-game-view>
            <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" gameResult="gameBet.game.result"></better-bet-view>
@@ -28,36 +30,5 @@
 
 
 
-
-<form name="betsForm" class="form col-xs-12" role="form"-->
-  <!-- this is the games table with bets for each game added >
-   <table ng-table="tableParams" class="table" show-filter="true">
-        <tr ng-repeat="gb in $data">
-
-
-            <td data-title="'level'" sortable="'levelname'" filter="{ 'levelname': 'select' }" filter-data="levelFilter()">
-				{{gb.game.level.name}}
-			</td>
-			<td data-title="'reward'">
-				 <span class="badge">{{gb.game.level.pointsExact}}/{{gb.game.level.pointsTendency}}</span>
-			</td>
-			<td data-title="'points'">
-				 <span class="{{badge(gb.game.game)}}">{{gb.bet.points}}</span>
-			</td>
-			<td data-title="'team1'" sortable="'team1name'" filter="{ 'team1name': 'text' }">
-			    {{gb.game.team1.name}}
-			</td>
-			<td data-title="'team2'" sortable="'team2name'" filter="{ 'team2name': 'text' }">
-			    {{gb.game.team2.name}}
-			</td>
-			<td data-title="'result'">
-			    {{prettyGame(gb.game.game)}}
-			</td>
-			<td data-title="'bet'" filter="{ 'betset': 'select' }" filter-data="bettedFilter()">
-			    <better-bet bet="gb.bet" start="gb.game.game.serverStart"></better-bet>
-			</td>
-        </tr>
-   </table>
-</form-->  
 
   

@@ -37,7 +37,6 @@
         //so: 
         // we set strings if the result is not set yet to force errors on 1/2 submissions
         // we set other symbols
-        
         function transformBet(bet){
             bet.marked = false;
             if(bet.result === undefined){

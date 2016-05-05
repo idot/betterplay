@@ -107,7 +107,7 @@
 
     }
     /** @ngInject */
-    function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings) {
+    function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings, gblFilter) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = [];
@@ -115,17 +115,21 @@
         vm.gameBets = [];
         vm.DF = betterSettings.DF;
         vm.getTime = betterSettings.getTime;
-       
+        vm.allGameBets = [];
+        
         var queryUser = Restangular.one('em2016/api/user', vm.stateParams.username);
-
+     
+        vm.filterChanged = function(){
+            vm.gameBets = gblFilter(vm.allGameBets);
+        }
 
         function getUser() {
             queryUser.get().then(function(userWithSpAndGB) {
                 vm.user = userWithSpAndGB.user;
                 vm.special = userWithSpAndGB.special;
                 var gameBets = userWithSpAndGB.gameBets;
-               // vm.gameBets = testFilter(gameBets)
-                vm.gameBets = gameBets;
+                vm.allGameBets = gameBets;
+                vm.gameBets = gblFilter(gameBets);
             })
         }
 
