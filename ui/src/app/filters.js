@@ -37,7 +37,6 @@
                     return filterGBL(item, betterSettings, userService);
                 });   
             };
-              
         })
 })();
 

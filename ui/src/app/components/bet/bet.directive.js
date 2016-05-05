@@ -32,7 +32,7 @@
         vm.points = _.range(15);
         vm.withTime = betterSettings.currentTime;
         vm.canBet = betterSettings.canBet($scope.start, $scope.bet);
-               
+              
         //we set a result if there is none available because its hidden from the user; otherwise the user owns the bet 
         //so: 
         // we set strings if the result is not set yet to force errors on 1/2 submissions
@@ -96,18 +96,19 @@
                     bet.marked = false;
                     vm.disabled = false;
                     vm.originalBet = betnew;
+                    $scope.bet = betnew;
                     vm.saveStyle = vm.saveStyleValue(vm.originalBet);
                 }
             );
         };
                 
-        vm.saveStyleValue = function(bet){
+        vm.saveStyleValue = function(bet) {
             if(vm.disabled){
                return  { 'fill' : 'white' };
             }
             if(bet.viewable){
                 if(bet.marked ){
-                    if(checkSubmission(bet).length == 0){
+                    if(checkSubmission(bet).length == 0) {
                         return { 'fill' : 'green' };
                     } else {
                         return { 'fill': 'yellow' };                        
@@ -118,10 +119,11 @@
             }     
         };
           
-        vm.disableSaveValue = function(bet){
+     
+        vm.disableSaveValue = function(bet) {
              if(checkSubmission(bet).length == 0){
                  return false;  
-             }else{
+             } else {
                  return true;
              }
         };      
@@ -139,19 +141,21 @@
                 return "md-raised";
             }
         };
-        
+   
         vm.saveStyle = vm.saveStyleValue(vm.originalBet);
         
         vm.prettyResult = function(){
             return  betterSettings.prettyResult($scope.gameResult);
         };
         
-        vm.points = function(){
+        vm.resultPoints = function(){
              return vm.originalBet.result.points;  
         };
+        
+   
     }  
      
   }
-
+ 
 })();
 
