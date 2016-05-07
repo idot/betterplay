@@ -1,10 +1,10 @@
 <div class="gameView">
     <div>
-         <a ui-sref="game.gameBets({ gamenr: game.game.nr })">
-              <better-flag iso=game.team1.short2></better-flag><better-flag iso=game.team2.short2></better-flag>  {{game.team1.name}} : {{game.team2.name}}
+         <a ui-sref="game.gameBets({ gamenr: gwt.game.nr })">
+              <better-flag iso=gwt.team1.short2></better-flag><better-flag iso=gwt.team2.short2></better-flag>  {{gwt.team1.name}} : {{gwt.team2.name}}
          </a>
          <span ng-if="! vm.gameClosed">
-                    <span>  {{game.game.serverStart | date : vm.DF}}, {{vm.timeLeft(game.game.serverStart)}}</span>
+                    <span>  {{gwt.game.serverStart | date : vm.DF}}, {{vm.timeLeft(gwt.game.serverStart)}}</span>
          </span>
          <span ng-if="vm.gameClosed && !vm.resultSet">
                    <span>closed, no result</span>
@@ -13,10 +13,10 @@
                   <span>vm.prettyResult()</span>
           </span>
           <span ng-if="vm.expand">
-                 &nbsp&nbsplevel: {{game.level.name}} reward: <span class="badge">{{game.level.pointsExact}}/{{game.level.pointsTendency}}</span>
+                 &nbsp&nbsplevel: {{gwt.level.name}} reward: <span class="badge">{{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}</span>
           </span>    
-      	  <span ng-if="vm.isAdmin() && vm.expand && vm.gameClosed">
-              <a ui-sref="game.gameEdit({'gamenr': game.game.nr })">
+      	  <span ng-if="vm.isAdmin && vm.expand && vm.gameClosed">
+              <a ui-sref="game.gameEdit({'gamenr': gwt.game.nr })">
                   <md-button type="submit" value="Submit"  class="md-raised" title="Edit Game">Edit Game</md-button>
               </a>
           </span>

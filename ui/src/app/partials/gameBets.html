@@ -1,22 +1,21 @@
 <div layout="column" ng-cloak>
-<form name="userForm">    
+<form name="headerForm">    
  <md-toolbar md-scroll-shrink ng-if="true">
    <md-list>
         <md-list-item class="md-3-line">
-        <better-game-view user="vm.gwt"></better-game-view>
+        <better-game-view gwt="vm.gwt"></better-game-view>
        </md-list-item>
   </md-list>
   <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
 </md-toolbar>
 </form>
 <!-- this are all the user/bets for one game -->
-<form name="betsForm">
+<form name="bodyForm">
 <md-content flex>
     <md-list>
-      <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
+      <md-list-item class="md-1-line" ng-repeat="bu in vm.betsUsers">
         <div class="md-list-item-text"  layout-gt-xs="row">
-           <better-game-view game="gameBet.game"></better-game-view>
-           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" gameResult="gameBet.game.result"></better-bet-view>
+           <better-bet-view bet="bu.bet" start="vm.gwt.game.serverStart" gameResult="vm.gwt.game.result"></better-bet-view>
         </div>
         <md-divider inset></md-divider>
       </md-list-item>
@@ -31,14 +30,8 @@
 
 
 
-  	  <li ng-if="isAdmin() && betClosed(gwt.game.serverStart, currentTime)" class="list-group-item">
-   	       <button type="submit" class="btn btn-primary" ng-click="$state.transitionTo('game.gameEdit', {'gamenr': gwt.game.nr})" value="Submit" title="Edit">Set Result</button>
-  	  </li>
-    </ul>
-   </div>
 
-
-   <!-- this is the users table with bets for this game for each user added; no filter necessary; could be sortable or filterable by username ad hoc-->
+   <!-- this is the users table with bets for this game for each user added; no filter necessary; could be sortable or filterable by username ad hoc
    <table ng-table="tableParams" class="betterlist" show-filter="true">
         <tr ng-repeat="bu in $data">
             <td data-title="'icon'">
@@ -62,3 +55,4 @@
 </form>
 
 
+-->

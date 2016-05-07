@@ -1,3 +1,4 @@
+
 (function() {
   'use strict';
 
@@ -12,7 +13,7 @@
       templateUrl: 'app/components/game/game.html',
       scope: {
           fullcontent: '=fullcontent',
-          game: '=game'
+          gwt: '=gwt'
 	//	    onSend: '&',      // Pass a reference to the method 
       },
       controller: GameViewController,
@@ -24,7 +25,7 @@
      /** @ngInject */
     function GameViewController($log, Restangular, toastr,  $scope, _, $mdMedia, betterSettings , userService) {
         var vm = this;
-        vm.game = $scope.game.game;
+        vm.game = $scope.gwt.game;
         vm.disabled = false;
         vm.DF = betterSettings.DF;
         vm.timeLeft = betterSettings.timeLeft;

@@ -76,28 +76,48 @@ trait Security{ self: Controller =>
   val AuthTokenCookieKey = "AUTH-TOKEN"   //TODO: change to XSRF-TOKEN
   val AuthTokenUrlKey = "auth"
 
+  val securityLogger = Logger("security")
+ 
   
   def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest]{
       def refine[A](input: Request[A]) = Future.successful{
           val maybeToken = input.headers.get(AuthTokenHeader)
+          securityLogger.trace(s"hasToken: $AuthTokenHeader $maybeToken $input.uri")
           maybeToken.flatMap{ token =>
-            cache.get[Long](token) map { userId => new TokenRequest(token, userId, input) }
-     }.toRight(Unauthorized)
-  }}
+              cache.get[Long](token).map{  userId =>  
+                       securityLogger.trace(s"hasToken: found token $AuthTokenHeader $maybeToken userId: $userId $input.uri")
+                       new TokenRequest(token, userId, input)
+              }
+          }.toRight(Unauthorized)
+      }
+  }
    
   def withUserA = new ActionRefiner[TokenRequest,UserRequest]{
       def refine[A](input: TokenRequest[A]) = {
          betterDb.userById(input.userId)
             .map{ user => Right(new UserRequest(user, input)) }
-            .recoverWith{ case e: AccessViolationException => Future.successful(Left(Unauthorized(e.getMessage))) }
+            .recoverWith{ case e: AccessViolationException =>
+                 securityLogger.trace(s"withUser could not find user in db: ${input.userId} ${e.getMessage}")
+                 Future.successful(Left(Unauthorized(e.getMessage))) 
+            }
       }
   }
   
   def withAdminA = new ActionRefiner[TokenRequest,AdminRequest]{
       def refine[A](input: TokenRequest[A]) = {
          betterDb.userById(input.userId)
-            .map{ user => if(user.isAdmin) Right(new AdminRequest(user, input)) else Left(Unauthorized("you must be admin")) } //todo: unauthorized
-            .recoverWith{ case e: AccessViolationException => Future.successful(Left(Unauthorized(e.getMessage))) }
+            .map{ user =>
+                  if(user.isAdmin){
+                      securityLogger.trace(s"withAdmin could find admin user in db: ${input.userId}")
+                      Right(new AdminRequest(user, input))
+                  } else {
+                      securityLogger.trace(s"withAdmin could find user in db: ${input.userId} but noadmin")
+                      Left(Unauthorized("you must be admin"))
+                  }
+            }.recoverWith{ case e: AccessViolationException =>
+                 securityLogger.trace(s"withAdmin could not find user in db: ${input.userId} ${e.getMessage}")
+                 Future.successful(Left(Unauthorized(e.getMessage))) 
+            }
       }
   }
   
@@ -106,7 +126,7 @@ trait Security{ self: Controller =>
   def withAdmin = { hasToken andThen withAdminA }
  
   def betterException(future: Future[Result]): Future[Result] = {
-      future.recoverWith{
+      future.recoverWith {
         case e: AccessViolationException => Future.successful(Unauthorized(e.getMessage))
         case e: ItemNotFoundException => Future.successful(NotFound(e.getMessage))
         case e: ValidationException => Future.successful(NotAcceptable(e.getMessage))
@@ -115,7 +135,7 @@ trait Security{ self: Controller =>
   
   
 }
-
+ 
 
 
 @Singleton
@@ -143,7 +163,7 @@ class Application(env: Environment,
            dbConfigProvider, betterDb, 
           messagesApi, cache, configuration, Some(router.get))
 
-
+   
    val debug = configuration.getBoolean("betterplay.debug").getOrElse(false)  
    val superpassword = configuration.getString("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
    val cacheExpiration = configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
@@ -205,6 +225,7 @@ class Application(env: Environment,
     }
 
     def discardingToken(token: String): Result = {
+      
       cache.remove(token)
       result.discardingCookies(DiscardingCookie(name = AuthTokenCookieKey))
     }
@@ -259,20 +280,25 @@ class Application(env: Environment,
       formErrors => Future.successful(BadRequest(formErrors.errorsAsJson)),
       loginData => {
 	      if(debug && loginData.password == superpassword){
-			   val token = java.util.UUID.randomUUID().toString
 			   betterDb.userByName(loginData.username).map{ user => 
-		       Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
+                               val token = java.util.UUID.randomUUID().toString
+                               securityLogger.trace(s"login succesful ${user.username} $token using superpassword")
+		               Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
 			   }.recoverWith{ case ex: Exception =>
 			       val error = s"user not found by name ${loginData.username}"
-			       Logger.error(error+" "+ex.getMessage)
+			       securityLogger.trace(error+" "+ex.getMessage)
 			       Future.successful(Unauthorized(Json.obj("error" -> error)))
 			   }
-		  } else {		
+	       } else {		
 	           betterDb.authenticate(loginData.username, loginData.password).map{ user =>
-	                val token = java.util.UUID.randomUUID().toString
-	                Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
-		       }.recoverWith{ case ex: Exception => Future.successful(NotFound(Json.obj("error" -> "user not found or password invalid")))}
-         }
+	                  val token = java.util.UUID.randomUUID().toString
+                          securityLogger.trace(s"login succesful ${user.username} $token")
+	                  Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
+		    }.recoverWith{ case ex: Exception => 
+                           securityLogger.trace(s"could not find user in db or password invalid requested: ${loginData.username}")
+                           Future.successful(NotFound(Json.obj("error" -> "user not found or password invalid")))
+                    }
+            }
       }
     )
   }
@@ -280,7 +306,8 @@ class Application(env: Environment,
   /** Invalidate the token in the Cache and discard the cookie */
   def logout = Action { implicit request =>
     request.headers.get(AuthTokenHeader) map { token =>
-      Redirect("/").discardingToken(token)
+              Logger.debug(s"logout called $token")
+              Redirect("/").discardingToken(token)
     } getOrElse Unauthorized(Json.obj("error" -> "no security token"))
   }
 
@@ -291,9 +318,14 @@ class Application(env: Environment,
    */
   def ping = hasToken.async { tokenRequest => 
       val userId = tokenRequest.userId.toLong
+      securityLogger.trace(s"ping $userId")
       betterDb.userById(userId).map{ user =>
-        Ok(Json.obj("userId" -> userId)).withToken(tokenRequest.token -> userId)
-    } .recoverWith{ case ex: Exception => Future.successful(NotFound(Json.obj("error" -> ex.getMessage))) }
+          securityLogger.trace(s"ping $userId found user ${user.username}")
+         Ok(Json.obj("userId" -> userId)).withToken(tokenRequest.token -> userId)
+      } .recoverWith{ case ex: Exception =>
+         securityLogger.trace(s"ping $userId could not find user in db")
+         Future.successful(NotFound(Json.obj("error" -> ex.getMessage))) 
+      }
   }
 
   onStart()

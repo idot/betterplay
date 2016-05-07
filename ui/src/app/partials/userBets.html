@@ -1,5 +1,5 @@
 <div layout="column" ng-cloak>
-<form name="userForm">    
+<form name="headerForm">    
  <md-toolbar md-scroll-shrink ng-if="true">
    <md-list>
         <md-list-item class="md-3-line">
@@ -11,12 +11,12 @@
 </md-toolbar>
 </form>
 <!-- this are all the bets for one user -->
-<form name="betsForm">
+<form name="bodyForm">
 <md-content flex>
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
         <div class="md-list-item-text"  layout-gt-xs="row" layout-align-gt-xs="space-between center">
-           <better-game-view game="gameBet.game"></better-game-view>
+           <better-game-view gwt="gameBet.game"></better-game-view>
            <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" gameResult="gameBet.game.result"></better-bet-view>
         </div>
         <md-divider inset></md-divider>

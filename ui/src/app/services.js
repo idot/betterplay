@@ -203,8 +203,10 @@
                 })
 
         
-    .service('userService', function(Restangular, $cookies, $state) {
+    .service('userService', function($log, Restangular, $cookies, $state) {
         var vm = this;
+        
+        $log.debug("created userservice");
 
         var NOUSER = {
             id: -1,

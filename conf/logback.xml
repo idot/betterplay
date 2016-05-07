@@ -26,7 +26,7 @@
 
   <logger name="play" level="INFO" />
   <logger name="application" level="DEBUG" />
-
+ 
   <!-- Off these ones as they are annoying, and anyway we manage configuration ourselves -->
   <logger name="com.avaje.ebean.config.PropertyMapLoader" level="OFF" />
   <logger name="com.avaje.ebeaninternal.server.core.XmlConfigLoader" level="OFF" />
@@ -36,12 +36,8 @@
   <logger name="slick.jdbc.JdbcBackend.statement" level="INFO"/>
   <logger name="h2database" level="ERROR"/> <!-- INFO is good for debugging; ERROR turns it off -->
 
-  <!--
-    Commment out the next line or change the root log level from DEBUG to ERROR
-    if you do not need logging to console each time static assets
-    in ui/src and ui/dist are served to a web browser through the GulpAssets controller.
-  -->
-  <logger name="controllers.GulpAssets" level="DEBUG" />
+  <!-- my loggers -->
+  <logger name="security" level="TRACE"/>
 
   <root level="WARN">
     <appender-ref ref="ASYNCFILE" />

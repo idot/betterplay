@@ -21,7 +21,7 @@
          var errors = _.map(response.data, function(value, key){ return key + " " +value; });
 	 var errorsum = errors.join("\n");
          toastr.error('error', "application error: "+response.statusText, errorsum);
-        console.log("custom error handler: "+response.status+" "+response.data);
+         $log.error("custom error handler: "+response.status+" "+response.data);
         return true; // error not handled
      });
      $log.debug('runBlock end');

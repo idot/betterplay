@@ -145,7 +145,9 @@
     function GameController($log, $filter, Restangular, $stateParams, _) {
         var vm = this;
         vm.stateParams = $stateParams;
-
+        vm.betsUsers = [];
+        vm.gwt = {};
+ 
         var queryGame = Restangular.one('em2016/api/game', vm.stateParams.gamenr);
 
 
@@ -154,10 +156,7 @@
         function getGame() {
             queryGame.get().then(function(gwtWithBetsPerUser) {
                 vm.gwt = gwtWithBetsPerUser.game;
-                var betsUsers = gwtWithBetsPerUser.betsUsers;
-                vm.betsUsers = _.each(betsUsers, function(bu) {
-                    bu.username = bu.user.username;
-                });
+                vm.betsUsers = gwtWithBetsPerUser.betsUsers;
             })
         }
 
