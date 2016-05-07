@@ -92,7 +92,7 @@ trait Security{ self: Controller =>
       }
   }
    
-  def withUserA = new ActionRefiner[TokenRequest,UserRequest]{
+  def withUserA = new ActionRefiner[TokenRequest,UserRequest]{ 
       def refine[A](input: TokenRequest[A]) = {
          betterDb.userById(input.userId)
             .map{ user => Right(new UserRequest(user, input)) }

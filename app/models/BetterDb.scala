@@ -33,6 +33,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
 
   import driver.api._
   
+   val dbLogger = Logger("db")
 
    def allTeams(): Future[Seq[Team]] = {
        db.run(teams.result)
@@ -221,7 +222,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int, submittingUser: User): Future[GameWithTeams] = {
-         Logger.debug(s"inserting new game $game $team1Name $team2Name $levelNr")
+         dbLogger.debug(s"inserting new game $game $team1Name $team2Name $levelNr $submittingUser")
          if(submittingUser.isAdmin){
              val gttl = (for{
                 ((t1,t2),l) <- ((teams.filter(_.name === team1Name)).zip(teams.filter(_.name === team2Name)).zip(levels.filter(_.level === levelNr))).result.head
@@ -374,9 +375,12 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * The successfull return value is for the messageing functionality (log, ticker, facebook etc...)
       *
       * returns game with teams, oldBet, newBet, betlog, Seq[String] of errors
+      *
+      *  I have to execute the betlog database insert, so the application has to test for invalid bet insert request by checking the error string
       * 
       */
      def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
+          dbLogger.debug(s"updating bet result: $bet ${submittingUser.username}")
           val invalid = GameResult(-1,-1,true)
           val bg = (for{
              (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id).result.head
@@ -386,6 +390,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
                         val updatedBet = b.copy(result=invalid)
                         val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, errors)
                         val upL = betlogs += log
+                        dbLogger.debug(s"updating bet result error: $bet ${submittingUser.username} $errors")
                         DBIO.successful((updatedBet, log, err.list.toList)).zip(DBIO.seq(upL))
                     }, succ => {
                          val result = bet.result.copy(isSet=true)
@@ -393,6 +398,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
                          val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, "regular update")
                          val upB = bets.filter(_.id === updatedBet.id).update(updatedBet)
                          val upL = betlogs += log
+                         dbLogger.debug(s"updating bet result success: $bet -> $updatedBet ${submittingUser.username}")
                          DBIO.successful((updatedBet, log, Seq.empty[String])).zip(DBIO.seq(upL,upB))
                     })
           }yield{ (GameWithTeams(g,t1,t2,l), b, upl._1, upl._2, upl._3) }).transactionally   
@@ -519,7 +525,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only simple bets no special bets!
       */
      def createBetsForGamesForUser(userId: Long) = {
-         Logger.debug(s"creating bets for games for user $userId")
+         dbLogger.debug(s"creating bets for games for user $userId")
          for{
             gs <- gamesWithoutBetsForUser(userId).result
             inserts <- (bets returning bets.map(_.id)) ++= gs.map( game => Bet(None, 0, GameResult(0,0,false), game.id.get, userId))
@@ -535,7 +541,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * 
       */
      def createBetsForGamesForAllUsers(submittingUser: User): Future[String] = {
-         Logger.debug(s"creating bets for games for all users")
+         dbLogger.debug(s"creating bets for games for all users")
          if(submittingUser.isAdmin){
            val create = (for{
              userIds <- users.map(_.id).result
@@ -603,7 +609,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      def invalidateGame(game: Game, submittingUser: User): Future[String] = {
          if(submittingUser.isAdmin){
              val r = games.filter(_.id === game.id).map(_.isSet).update(false)
-             Logger.info("invalidating game $game")
+             dbLogger.info("invalidating game $game")
              db.run(r).map(i => s"invalidated game ${game.id.get} count: $i")
          } else {           
             Future.failed(AccessViolationException(s"only admin user can invalidate games"))
@@ -645,7 +651,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def updateBetsWithPoints() = { 
-          Logger.info("updating bets with points") 
+          dbLogger.info("updating bets with points") 
           val glbUpdate = for{
                   glbs <- gamesWithLevelsAndBetsSet()
                    _ <- DBIO.sequence(glbs.map{ case((g,l),b) => 
@@ -663,7 +669,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def calculateAndUpdateSpecialPointsForUser(user: User) = {
-         Logger.debug(s"calculating special points for user ${user.id}")
+         dbLogger.debug(s"calculating special points for user ${user.id}")
          val up = for{
             s <- specialbetstore.join(specialbetsuser.filter(sp => sp.userId === user.id)).on( _.id === _.spId ).result   
             updated = PointsCalculator.calculateSpecialBets(s).map{ case(t,b) => b }
@@ -680,7 +686,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def updateUsersPoints() = {
-         Logger.info("updating users with points")
+         dbLogger.info("updating users with points")
          val userUpdate = for{
               suser <- users.join(bets).on(_.id === _.userId).result
               ups <- DBIO.sequence(suser.groupBy{ _._1 }.map{ case(user,ub) =>  

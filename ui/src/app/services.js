@@ -259,6 +259,7 @@
          * if cookie not there logout => reset user to default
          */
         vm.reauthenticate = function() {
+            $log.debug("reauthenticating")
             if (typeof authtoken === "undefined" || authtoken == "") {
                 var auth = $cookies.get("AUTH-TOKEN");
                 if (typeof auth !== "undefined") {

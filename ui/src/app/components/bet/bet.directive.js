@@ -30,7 +30,13 @@
         vm.points = _.range(15);
         vm.withTime = betterSettings.currentTime;
         vm.canBet = betterSettings.canBet($scope.start, $scope.bet);
-              
+                
+        vm.cloneBet = function(bet){
+            var cloned = _.clone($scope.bet);
+            cloned.result = _.clone($scope.bet.result);
+            return cloned;
+        }         
+                
         //we set a result if there is none available because its hidden from the user; otherwise the user owns the bet 
         //so: 
         // we set strings if the result is not set yet to force errors on 1/2 submissions
@@ -50,10 +56,11 @@
                     }
                }
             } 
-        };
+        }
         
-        transformBet($scope.bet); 
-        vm.originalBet = $scope.bet;    
+        
+        transformBet($scope.bet);  
+        vm.originalBet = vm.cloneBet($scope.bet);
         
         function checkSubmission(bet){
             var error = [];
@@ -91,11 +98,19 @@
                     var res = betterSettings.prettyResult(betold.result) + " -> " + betterSettings.prettyResult(betnew.result); 
                     toastr.success("<span>"+g+"     "+res+"</span>", "updated bet");
                     
+                    vm.originalBet = betnew;
+                    bet = betnew;
                     bet.marked = false;
                     vm.disabled = false;
-                    vm.originalBet = betnew;
-                    $scope.bet = betnew;
-                    vm.saveStyle = vm.saveStyleValue(vm.originalBet);
+                    vm.saveStyle = vm.saveStyleValue(bet);
+                },
+                function(error) { 
+                    error.cancelGeneralHandler(); 
+                    bet.result = _.clone(vm.originalBet.result);
+                    bet.marked = false;
+                    vm.disabled = false;
+                    toastr.error(error.data.error.join(), "reverting bet to original");
+                    vm.saveStyle = vm.saveStyleValue(bet);
                 }
             );
         };

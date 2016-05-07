@@ -12,7 +12,7 @@
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%coloredLevel %logger{15} - %message%n%xException{10}</pattern>
+      <pattern>%date %coloredLevel %logger{15} - %message%n%xException{10}</pattern>
     </encoder>
   </appender>
 
@@ -38,6 +38,7 @@
 
   <!-- my loggers -->
   <logger name="security" level="TRACE"/>
+  <logger name="db" level="DEBUG"/>
 
   <root level="WARN">
     <appender-ref ref="ASYNCFILE" />

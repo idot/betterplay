@@ -34,8 +34,12 @@ class Bets @Inject()(override val betterDb: BetterDb, override val cache: CacheA
   				     succ => succ match {  case(game, betold, betnew, log, errs) =>
   				      val vtg = game.level.viewMinutesToGame
   					   //TODO: add broadcast succ is (game,betold, betnew)
-  					    Ok(Json.obj("game" -> game, "betold" -> betold.viewableBet(request.request.userId, game.game.serverStart, now, vtg), "betnew" -> betnew.viewableBet(request.request.userId, game.game.serverStart, now, vtg)))
-  				   }
+                                       if(errs.length > 0){
+                                              NotAcceptable(Json.obj("error" -> errs))       
+                                        }else{
+  				              Ok(Json.obj("game" -> game, "betold" -> betold.viewableBet(request.request.userId, game.game.serverStart, now, vtg), "betnew" -> betnew.viewableBet(request.request.userId, game.game.serverStart, now, vtg)))
+                                         }
+                                     }
   				 }}
   			}
 		  )

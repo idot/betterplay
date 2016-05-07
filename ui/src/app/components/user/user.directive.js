@@ -11,7 +11,8 @@
       restrict: 'E',
       templateUrl: 'app/components/user/user.component.html',
       scope: {
-           user: '=user'
+           user: '=user',
+           full: '=full'
       },
       controller: UserViewController,
       controllerAs: 'vm'

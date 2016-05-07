@@ -25,13 +25,25 @@
      /** @ngInject */
     function GameViewController($log, Restangular, toastr,  $scope, _, $mdMedia, betterSettings , userService) {
         var vm = this;
-        vm.game = $scope.gwt.game;
+        vm.gwt = $scope.gwt;
         vm.disabled = false;
         vm.DF = betterSettings.DF;
         vm.timeLeft = betterSettings.timeLeft;
-        vm.gameClosed = betterSettings.betClosed(vm.game.serverStart);
-        vm.resultSet = vm.game.result.isSet;
-        vm.prettyResult = betterSettings.prettyResult(vm.game.result);
+        vm.gameClosed =  function(){
+            if(vm.gwt.game){
+                return betterSettings.betClosed(vm.gwt.game.serverStart);
+            } else { return false; }
+        };
+        vm.resultSet  = function(){
+            if(vm.gwt.game){
+               return vm.gwt.game.result.isSet;
+            } else { return false; }
+        }
+        vm.prettyResult = function(){
+              if(vm.gwt.game){
+                  return betterSettings.prettyResult(vm.gwt.game.result);
+              } else { return "-:-" }
+        }
         vm.expand = $mdMedia('gt-xs') || $scope.fullcontent;
         vm.isAdmin = userService.isAdmin()
     } 

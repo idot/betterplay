@@ -4,7 +4,7 @@
    <md-list>
         <md-list-item class="md-3-line">
         {{vm.getTime() | date: vm.DF}}
-        <better-user-view user="vm.user"></better-user-view>
+        <better-user-view user="vm.user" full="true"></better-user-view>
        </md-list-item>
   </md-list>
   <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
