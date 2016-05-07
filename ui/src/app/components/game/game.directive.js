@@ -13,6 +13,7 @@
       templateUrl: 'app/components/game/game.html',
       scope: {
           fullcontent: '=fullcontent',
+          allowedit: '=allowedit',
           gwt: '=gwt'
 	//	    onSend: '&',      // Pass a reference to the method 
       },

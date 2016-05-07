@@ -1,5 +1,5 @@
 <div layout="row">
-      <a ui-sref="user"> <!-- TODO link to??? -->
+      <a ui-sref="user.userBets({'username': user.username})">
          <img ng-src="{{ user.iconurl+'?s=80' }}" alt="{{user.username}}" class="md-avatar"/>
         {{user.username}}<span class="badge bg-points">{{user.totalPoints}}</span>
     </a>

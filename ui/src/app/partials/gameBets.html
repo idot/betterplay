@@ -3,7 +3,7 @@
  <md-toolbar md-scroll-shrink ng-if="true">
    <md-list>
         <md-list-item class="md-3-line">
-        <better-game-view gwt="vm.gwt"></better-game-view>
+        <better-game-view gwt="vm.gwt" allowedit="true" fullcontent="true"></better-game-view>
        </md-list-item>
   </md-list>
   <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
@@ -28,32 +28,3 @@
 
 
 
-
-
-
-
-   <!-- this is the users table with bets for this game for each user added; no filter necessary; could be sortable or filterable by username ad hoc
-   <table ng-table="tableParams" class="betterlist" show-filter="true">
-        <tr ng-repeat="bu in $data">
-            <td data-title="'icon'">
-				<a ui-sref="user.userBets({ username: bu.user.username})">
-					<img ng-src="{{bu && bu.user.iconurl+'&s=23'}}" alt="gravatar" width="23" height="23"/>
-				</a>
-			</td>
-			<td data-title="'user'" sortable="'user.username'" filter="{ 'username': 'text' }">
-                <a ui-sref="user.userBets({ username: bu.user.username})">{{bu.user.username}}</a>
-            </td>
-            <td data-title="'points total'" sortable="'user.totalPoints'">
-                <span class="badge">{{bu.user.totalPoints}}</span>
-            </td>
-            <td data-title="'points bet'" sortable="'bet.points'">
-                <span class="badge">{{bu.bet.points}}</span>
-            </td>
-			<td data-title="'bet'">
-			    <better-bet bet="bu.bet" start="gwt.game.serverStart"></better-bet>
-			</td>
-   </table>
-</form>
-
-
--->
