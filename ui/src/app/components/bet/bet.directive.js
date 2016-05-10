@@ -24,19 +24,22 @@
      /** @ngInject */
     function BetViewController($log, Restangular, toastr, betterSettings, $scope, _) {
         var vm = this;
-        vm.disabled = false;
+        
+        vm.enablePoints = true;
         vm.disableSave = true;
         vm.saveStyle = {};
         vm.points = _.range(15);
         vm.withTime = betterSettings.currentTime;
-        vm.canBet = betterSettings.canBet($scope.start, $scope.bet);
-                
+                 
         vm.cloneBet = function(bet){
             var cloned = _.clone($scope.bet);
             cloned.result = _.clone($scope.bet.result);
             return cloned;
         }         
-                
+        
+        vm.disabled = function(bet){
+            return ! (vm.enablePoints  !! betterSettings.canBet($scope.start));
+        };     
         //we set a result if there is none available because its hidden from the user; otherwise the user owns the bet 
         //so: 
         // we set strings if the result is not set yet to force errors on 1/2 submissions
@@ -83,7 +86,7 @@
                   return;                   
             }
             vm.disableSave = true;
-            vm.disabled = true;
+            vm.enablePoints = false;
             vm.saveStyle = vm.saveStyleValue(bet);
 
             Restangular.all('em2016/api/bet/' + bet.id).customPOST(bet).then(
@@ -101,14 +104,14 @@
                     vm.originalBet = betnew;
                     bet = betnew;
                     bet.marked = false;
-                    vm.disabled = false;
+                    vm.enablePoints = true;
                     vm.saveStyle = vm.saveStyleValue(bet);
                 },
                 function(error) { 
                     error.cancelGeneralHandler(); 
                     bet.result = _.clone(vm.originalBet.result);
                     bet.marked = false;
-                    vm.disabled = false;
+                    vm.enablePoints = true;
                     toastr.error(error.data.error.join(), "reverting bet to original");
                     vm.saveStyle = vm.saveStyleValue(bet);
                 }
@@ -116,7 +119,7 @@
         };
                 
         vm.saveStyleValue = function(bet) {
-            if(vm.disabled){
+            if(! vm.enablePoints){
                return  { 'fill' : 'white' };
             }
             if(bet.viewable){

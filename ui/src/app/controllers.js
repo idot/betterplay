@@ -21,38 +21,17 @@
     /** @ngInject */
     function UsersController($log, $filter, Restangular, betterSettings) {
         var vm = this;
-        vm.DF = betterSettings.DF;
         vm.allUsers = [];
-        vm.dtoptions = {
-            scrollbarV: false
-        };
-
-        // vm.getUsers = getUsers;
 
         var queryUsers = Restangular.all('em2016/api/users');
 
         activate();
 
-        vm.badgecolour = function(rank) {
-            switch (rank) {
-                case 1:
-                    return "badge-gold";
-                case 2:
-                    return "badge-silver";
-                case 3:
-                    return "badge-bronze";
-                default:
-                    return "";
-            }
-        };
-
         function getUsers() {
             queryUsers.getList().then(function(users) {
                 vm.allUsers = users;
-                $log.debug(users);
             });
         }
-
 
         function activate() {
             getUsers();
@@ -66,39 +45,15 @@
         vm.DF = betterSettings.DF;
         vm.allGames = [];
 
-
         var queryGames = Restangular.all('em2016/api/games');
-
-        vm.openFilter = ['open', 'closed'];
-
-        vm.levelFilter = ['group', 'last16', 'quarter', 'semi', 'final', 'third'];
 
         activate();
 
-        function transformGame(game) {
-            game.gamenr = game.game.nr;
-            game.team1name = game.team1.name;
-            game.team2name = game.team2.name;
-            game.openGame = betterSettings.betClosed(game.game.serverStart) ? "closed" : "open";
-            game.levelname = game.level.name;
-            game.serverStart = game.game.serverStart;
-        }
 
         function getGames() {
             queryGames.getList().then(function(games) {
-                var allGames = games;
-                vm.allGames = _.each(allGames, function(g) {
-                    transformGame(g)
-                });
+                vm.allGames = games;
             })
-        }
-
-        vm.prettyGame = function(game) {
-            if (game.result.isSet) {
-                return game.result.goalsTeam1 + ":" + game.result.goalsTeam2
-            } else {
-                return "-:-"
-            }
         }
 
         function activate() {
@@ -106,6 +61,7 @@
         }
 
     }
+    
     /** @ngInject */
     function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings, gblFilter) {
         var vm = this;

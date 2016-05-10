@@ -1,34 +1,25 @@
-<div layout="vertical" layout-fill>
-
-  <md-content>
-    <header>
-      <acme-navbar creation-date="main.creationDate"></acme-navbar>
-    </header>
-
-    <section class="jumbotron">
-      <h1>'Allo, 'Adfsdfsdfo!</h1>
-      <p class="lead">
-        <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
-        Always a pleasure scaffolding your apps.
-      </p>
-      <md-button class="md-raised animated infinite" ng-class="main.classAnimation" ng-click="main.showToastr()">Splendid Toastr</md-button>
-      <p>
-        With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
-      </p>
-    </section>
-
-    <div class="techs" layout-align="center">
-      <md-card ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
-        <md-card-content>
-          <img class="pull-right" ng-src="assets/images/{{ awesomeThing.logo }}" alt="{{ awesomeThing.title }}">
-          <h3 class="md-title">{{ awesomeThing.title }}</h3>
-          <p>{{ awesomeThing.description }}</p>
-        </md-card-content>
-        <div class="md-action-buttons">
-          <md-button ng-href="{{ awesomeThing.url }}">Website</md-button>
+<div layout="column" ng-cloak>
+<form name="headerForm">    
+ <md-toolbar md-scroll-shrink ng-if="true">
+   <md-list>
+        <md-list-item class="md-3-line">
+        <h4>All Users</h4>
+       </md-list-item>
+  </md-list>
+  <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
+</md-toolbar>
+</form>
+<!-- this are all the user/bets for one game -->
+<form name="bodyForm">
+<md-content flex>
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="user in vm.allUsers">
+        <div class="md-list-item-text"  layout-gt-xs="row">
+            <better-user-view user="user"></better-user-view>
         </div>
-      </md-card>
-    </div>
+        <md-divider inset></md-divider>
+      </md-list-item>
+    </md-list>
   </md-content>
-
+ </form>
 </div>

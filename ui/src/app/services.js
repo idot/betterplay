@@ -91,6 +91,19 @@
                     vm.getTime = function(){
                         return vm.currentTime;  
                     };
+                    
+                    vm.badgecolour = function(rank) {
+                        switch (rank) {
+                            case 1:
+                                return "badge-gold";
+                            case 2:
+                                return "badge-silver";
+                            case 3:
+                                return "badge-bronze";
+                            default:
+                                return "badge-points";
+                        }
+                    };
 
                     //should we fetch the time from the server or take the interactively set time
                    var TIMEFROMSERVER = true;

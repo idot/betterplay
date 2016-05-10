@@ -1,37 +1,25 @@
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">All Games</div>
-  
-   <table ng-table="tableParams" class="betterlist" show-filter="true">
-        <tr ng-repeat="gb in $data">
-            <td data-title="'nr'" sortable="'gamenr'">
-				<a ui-sref="game.gameBets({ gamenr: gb.gamenr})">{{gb.game.nr}}</a>
-            </td>
-			<td data-title="'team1'" sortable="'team1name'" filter="{ 'team1name': 'text' }">
-			    {{gb.team1.name}}
-			</td>
-			<td data-title="'team2'" sortable="'team2name'" filter="{ 'team2name': 'text' }">
-			    {{gb.team2.name}}
-			</td>
-			<td data-title="'result'">
-			    {{prettyGame(gb.game)}}
-			</td>
-			<td data-title="'bet close'" sortable="'serverStart'" 
-			          filter="{ 'openGame': 'select' }" filter-data="openFilter()"> 
-				{{timeLeft(gb.game.serverStart, currentTime)}}
-			</td>
-            <td data-title="'level'" sortable="'level.name'" filter="{ 'levelname': 'select' }" filter-data="levelFilter()"> 
-				{{gb.level.name}}
-			</td>
-            <td data-title="'local start'" sortable="'serverStart'">
-                {{gb.game.localStart | date: DF }}
-            </td>
-            <td data-title="'server start'" sortable="'serverStart'">
-                {{gb.game.serverStart | date: DF }}
-            </td>
-			<td data-title="'reward'">
-				<span class="badge">{{gb.level.pointsExact}}/{{gb.level.pointsTendency}}</span>
-			</td>
-        </tr>
-   </table>
+<div layout="column" ng-cloak>
+<form name="headerForm">    
+ <md-toolbar md-scroll-shrink ng-if="true">
+   <md-list>
+        <md-list-item class="md-3-line">
+        <h4>All Games</h4>
+       </md-list-item>
+  </md-list>
+  <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
+</md-toolbar>
+</form>
+<!-- this are all the user/bets for one game -->
+<form name="bodyForm">
+<md-content flex>
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="gwt in vm.allGames">
+        <div class="md-list-item-text"  layout-gt-xs="row">
+            <better-game-view gwt="gwt" fullcontent="true"></better-game-view>
+        </div>
+        <md-divider inset></md-divider>
+      </md-list-item>
+    </md-list>
+  </md-content>
+ </form>
 </div>

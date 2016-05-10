@@ -22,9 +22,8 @@
 
      /** @ngInject */
     function UserViewController($log, Restangular, toastr, betterSettings, userService, $scope, _) {
-        //var vm = this;
-        //vm.user = $scope.user;
-        //vm.iconUrl =  $scope.user.iconurl + '&s=80';
+        var vm = this;
+        vm.badgecolor = betterSettings.badgecolor;
       
         
     };
