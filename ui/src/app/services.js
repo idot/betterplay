@@ -231,7 +231,7 @@
         vm.filter = {
             bet : "all",
             level : "all",
-           game: "all",
+           game: "all"
         };
 
         vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
