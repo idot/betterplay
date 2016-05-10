@@ -1,38 +1,90 @@
+<div layout="column" ng-cloak>
+     <md-toolbar md-scroll-shrink ng-if="true">
+       <md-list>
+            <md-list-item class="md-3-line">
+            <h4>register user</h4>
+           </md-list-item>
+      </md-list>
+    </md-toolbar>
+    
+   <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+      <form name="registerForm">
+        <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
+            <div flex-gt-sm="80">
+               <md-input-container class="md-block" flex-gt-sm>
+                        <label for="username">username</label>
+                        <input type="text" name="username" ng-model="vm.username"
+                                  required autofocus md-placeholder="username" 
+                                  ng-minlength="3" ng-maxlength="20" ng-pattern="/^[0-9a-zA-Z_\.]+$/" ui-validate="{uniqueness : 'uniqueUsername($value)' }"/>
+                        <div ng-messages="loginForm.username.$error">
+                                  <div ng-message="required">required</div>
+                                  <div ng-message="uniqueness">username exists</div>
+                                  <div ng-message="pattern">use only a-zA-Z_@.</div>
+                                  <div ng-message="minlength">length at least 3</div>
+                                  <div ng-message="maxlength">length smaller 21</div>
+                         </div>
+                </md-input-container>
+               <md-input-container class="md-block" flex-gt-sm>
+                       <label for="password1">password</label>
+                       <input type="password" name="password1" ng-model="vm.password1" required ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
+                       <div ng-messages="loginForm.password1.$error">
+                                 <div ng-message="required">required</div>
+                                 <div ng-message="identical">passwords don't match</div>
+                                 <div ng-message="minlength">length at least 6</div>
+                                 <div ng-message="maxlength">length smaller 21</div>
+                        </div>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                        <label for="password2">password</label>
+                        <input type="password" name="password2" ng-model="vm.password2" required  
+                            ui-validate="{identical: '$value == vm.password1' }" ui-validate-watch=" 'vm.password1' "
+                           ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
+                        <div ng-messages="loginForm.password2.$error">
+                                  <div ng-message="required">required</div>
+                                  <div ng-message="identical">passwords don't match</div>
+                                  <div ng-message="minlength">length at least 6</div>
+                                  <div ng-message="maxlength">length smaller 21</div>
+                         </div>
+                 </md-input-container>
+                 <md-input-container class="md-block" flex-gt-sm>
+                        <label for="email">email</label>
+                        <input type="email" name="email" ng-model="vm.email" required/>
+                        <div ng-messages="loginForm.email.$error">
+                                  <div ng-message="required">Please add a valid e-mail address so we can notify you of problems. The e-mail will not be visible to other users</div>
+                         </div>
+                 </md-input-container>
+                 <md-input-container class="md-block" flex-gt-sm>
+                        <label for="firstname">first name</label>
+                        <input type="textl" name="firstname" ng-model="vm.firstname" required/>
+                        <div ng-messages="loginForm.firstname.$error">
+                                  <div ng-message="required">Please add your first name</div>
+                         </div>
+                 </md-input-container>
+                 <md-input-container class="md-block" flex-gt-sm>
+                        <label for="lastname">last name</label>
+                        <input type="textl" name="lastname" ng-model="vm.lastname" required/>
+                        <div ng-messages="loginForm.lastname.$error">
+                                  <div ng-message="required">Please add your last name</div>
+                         </div>
+                 </md-input-container>
+               
+                <md-input-container class="md-block" flex-gt-sm>
+                      <label for="showname">show name</label>
+                      <md-checkbox name="showname" ng-model="vm.showname" aria-label="show name">show name</md-checkbox>
+               </md-input-container>
+
+                <md-input-container layout-align="center">
+                	<div layout="row" layout-sm="column" layout-margin>
+                            <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.signon()" value="Submit" title="Submit" ng-disabled="!registerForm.$valid">Submit</button>
+                        </div>
+                </md-input-container>        
+            </div>
+        </div>    
+      </form>
+  </md-content>
+</div>
 
 
-<form class="form col-xs-5" name="registerForm" role="form">	
-    <div class="form-group">
-      <label for="username">username, only[a-zA-Z_@.]. The username can not be changed!</label>
-      <input id="username" name="username" type="text" class="form-control" ng-model="username" 
-	  required ng-minlength="3" ng-maxlength="20" ng-pattern="/^[0-9a-zA-Z_\.]+$/" ui-validate="{uniqueness : 'uniqueUsername($value)' }"/>
-	  <span class="help-block" ng-show="registerForm.username.$error.required">required</span>
-	  <span class="help-block" ng-show="registerForm.username.$error.uniqueness">username exists</span>
-	  <span class="help-block" ng-show="registerForm.username.$error.pattern">use only a-zA-Z_@.</span>
-	  <span class="help-block" ng-show="registerForm.username.$error.minlength">length at least 3</span>
-	  <span class="help-block" ng-show="registerForm.username.$error.maxlength">length smaller 21</span>
-    </div>
-	<div class="form-group">
-	  <label for="password1">password</label>
-	  <input id="password1" name="password1"  type="password" class="form-control" ng-model="password1" 
-	  required ng-minlength="6" />
-	  <span class="help-block" ng-show="registerForm.password1.$error.required">required</span>
-	  <span class="help-block" ng-show="registerForm.password1.$error.identical">passwords don't match</span>
-	  <span class="help-block" ng-show="registerForm.password1.$error.minlength">length at least 6</span>
-	</div>
-	<div class="form-group">
-	  <label for="password">password</label>
-	  <input id="password2" name="password2" type="password" class="form-control" ng-model="password2" required ui-validate="{identical: '$value == password1' }" ui-validate-watch=" 'password1' "/>
-	  <span class="help-block" ng-show="registerForm.password2.$error.required">required</span>
-	  <span class="help-block" ng-show="registerForm.password2.$error.identical">passwords don't match</span>
-	</div>
-	<div class="form-group">
-	  <label for="email">email</label>
-	  <input id="email" name="email" type="email" class="form-control" ng-model="email"	
-	  required />
-	  <span class="help-block" ng-show="registerForm.email.$error.required">Please add a valid e-mail address so we can notify you of problems. The e-mail will not be visible to other users.</span>
-	</div>
-	<div class="form-group">	
-       <button type="submit" class="btn btn-primary pull-right" ng-click="signon()" value="Submit" title="Submit" ng-disabled="!registerForm.$valid">Submit</button>
-	</div>
-<form>
+
+
 

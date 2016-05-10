@@ -1,38 +1,57 @@
-<form class="form col-xs-3" role="form">
-    <div class="form-group">
-      <label for="timeformat">global time format</label>
-      <select id="timeformat" type="text" ng-model="DF" class="form-control" ng-change="setFormat()">
-	      <option>MM/dd HH:mm</option>
-	      <option>MM/dd HH:mm:ss</option>
-	      <option>yyyy MM/dd HH:mm:ss</option>
-		  <option>yyyy MM/dd HH:mm:ss,sss</option>
-	  </select>
-    </div>
-    <div class="form-group">
-      <label for="refresh">time refresh interval (ms)</label>
-	  <input id="refresh" type="number" ng-model="updateInterval" class="form-control" ng-change="setUpdateinterval()">
-    </div>
-	<div ng-if="isDebug()">
-		<div class="form-group">
-		      <label for="dateselect">date</label>	
-		      <p id="dateselect" class="input-group">
-		        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="global.date" is-open="opened" ng-change="updateDate()"/>
-		             <span class="input-group-btn">
-		                  <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-		             </span>
-		      </p>
-	    </div>
-		<div class="form-group">
-		      <label for="timeselect">time</label>	
-		      <p id="timeselect" class="input-group">
-				<timepicker ng-model="global.time" ng-change="updateTime()" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
-		      </p>
-	    </div>
-		<div class="form-group">
-             <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="resetTime()">Reset Time</button>
-             </span>
-	    </div>
-	</div>	
-<form>
+<div layout="column" ng-cloak>
+     <md-toolbar md-scroll-shrink ng-if="true">
+       <md-list>
+            <md-list-item class="md-3-line">
+            <h4>Settings</h4>
+           </md-list-item>
+      </md-list>
+     </md-toolbar>
+     <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+     <form name="settingsForm">
+       <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
+           <div flex-gt-sm="80">
+              <md-input-container class="md-block" flex-gt-sm>
+                  <label for="timeformat">global time format</label>
+                  <md-select id="timeformat" type="text" ng-model="vm.DF" ng-change="setFormat()">
+            	      <md-option>MM/dd HH:mm</md-option>
+            	      <md-option>MM/dd HH:mm:ss</md-option>
+            	      <md-option>yyyy MM/dd HH:mm:ss</md-option>
+            	      <md-option>yyyy MM/dd HH:mm:ss,sss</md-option>
+            	  </md-select>
+              </md-input-container>
+              <md-input-container class="md-block" flex-gt-sm>
+                      <label for="refresh">time refresh interval (ms)</label>
+                      <input type="number" name="refresh" ng-model="vm.updateInterval" ng-change="setUpdateinterval()">
+               </md-input-container>
+            
+        	<div ng-if="vm.isDebug()">
+                      <div flex-gt-sm="80">
+                         <md-input-container class="md-block" flex-gt-sm>
+                               <label for="dateselect">date</label>
+                               <input mdc-datetime-picker date="true" time="false" type="text" id="dateselect"
+                                              format="hh:mm"
+                                              ng-model="vm.date"/>
+                        </md-input-container>                 
+                        <md-input-container class="md-block" flex-gt-sm>
+                              <label for="timeselect">time</label>
+                              <input mdc-datetime-picker date="false" time="true" type="text" id="timeselect" short-time="false"
+                                          format="YYYY-MM-DD"
+                                          ng-model="vm.date"/>
+                       </md-input-container>
+
+                        <md-input-container layout-align="center">
+                        	<div layout="row" layout-sm="column" layout-margin>
+                                    <md-button type="button" title="Reset Time" class="md-raised" ng-click="vm.resetTime()" value="Reset Time" title="Reset Time">Reset Time</button>
+                                </div>
+                        </md-input-container> 
+                    </div>
+        	</div>
+             </div>
+         </div>    
+       </form>
+   </md-content>
+</div>
+         
+
+
 
