@@ -38,7 +38,7 @@
         }         
         
         vm.disabled = function(bet){
-            return ! (vm.enablePoints  || betterSettings.canBet($scope.start));
+            return (! vm.enablePoints || ! betterSettings.canBet($scope.start, bet));
         };     
         //we set a result if there is none available because its hidden from the user; otherwise the user owns the bet 
         //so: 

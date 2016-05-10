@@ -1,11 +1,11 @@
 <div class="betView">
     <md-input-container class="betInput">
-       <md-select ng-model="bet.result.goalsTeam1" aria-label="goals team1" ng-change="vm.markBet(bet)" ng-diabled="vm.disabled(bet)">
+       <md-select ng-model="bet.result.goalsTeam1" aria-label="goals team1" ng-change="vm.markBet(bet)" ng-disabled="vm.disabled(bet)">
            <md-option ng-value="nr" ng-repeat="nr in vm.points">{{ nr }}</md-option>
        </md-select>
     </md-input-container>
     <md-input-container class="betInput">
-       <md-select ng-model="bet.result.goalsTeam2" aria-label="goals team2"  ng-change="vm.markBet(bet)" ng-diabled="vm.disabled(bet)">
+       <md-select ng-model="bet.result.goalsTeam2" aria-label="goals team2"  ng-change="vm.markBet(bet)" ng-disabled="vm.disabled(bet)">
            <md-option ng-value="nr" ng-repeat="nr in vm.points">{{ nr }}</md-option>
        </md-select>
    </md-input-container>
