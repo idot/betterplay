@@ -119,6 +119,9 @@
         };
                 
         vm.saveStyleValue = function(bet) {
+            if(! betterSettings.canBet($scope.start, bet)){
+                return { 'fill' : 'rgba(0, 0, 0, 0)' };
+            }
             if(! vm.enablePoints){
                return  { 'fill' : 'white' };
             }
