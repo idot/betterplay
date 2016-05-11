@@ -220,7 +220,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
 //              }
 //                  
 //           )
-           
+         case _ => 
        }
        Future.successful(Ok("hi"))
      

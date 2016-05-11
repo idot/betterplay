@@ -53,9 +53,9 @@ POST   /em2016/api/user/details              controllers.Users.updateDetails()
 POST   /em2016/api/user/password             controllers.Users.updatePassword() 
 POST   /em2016/api/user/filter               controllers.Users.updateFilter()    
 POST   /em2016/api/user/name                 controllers.Users.updateUserName()    
-POST   /em2016/api/userhadinstructions       controllers.Users.updateUserHadInstructions()
-GET     /em2016/newPassword/:token           controllers.Users.newPassword(token)
-GET     /em2016/completeRegistration/:token           controllers.Users.newPassword(token)
+POST   /em2016/api/userhadinstructions        controllers.Users.updateUserHadInstructions()
+#GET     /em2016/newPassword/:token             controllers.Users.newPasswordRequestByMail(token)
+#GET     /em2016/completeRegistration/:token           controllers.Users.completeRegistration(token)
 
 POST    /em2016/api/createBetsForUsers      controllers.Users.createBetsForUsers()
 

@@ -53,9 +53,10 @@ libraryDependencies ++= Seq(
   "commons-io" % "commons-io" % "2.4",
   "com.andersen-gott" %% "scravatar" % "1.0.3",  
   "org.apache.poi" % "poi" % "3.10-FINAL",
-  "net.sf.opencsv" % "opencsv" % "2.3"
-//,
-//  "com.typesafe" %% "play-plugins-mailer" % "2.0.4"
+  "net.sf.opencsv" % "opencsv" % "2.3",
+  "com.typesafe.play" %% "play-mailer" % "5.0.0-M1"
+
+
 )
 
 libraryDependencies += specs2 % Test
