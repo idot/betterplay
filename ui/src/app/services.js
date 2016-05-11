@@ -231,7 +231,7 @@
         vm.filter = {
             bet : "all",
             level : "all",
-           game: "all"
+            game: "all"
         };
 
         vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
@@ -290,15 +290,16 @@
             }
         };
         
-        vm.saveFilter(){
-            Restangular.all('em2016/api/user/password').customPOST(pu).then(
+        vm.saveFilter = function(){
+            Restangular.all('em2016/api/user/filter').customPOST(vm.filter).then(
                 function(success) {
-                    toastr.pop('success', "changed password");
-                    vm.pass.word1 = "";
-                    vm.pass.word2 = "";
+                    toastr.pop('success', "saved filter");
+                },
+                function(error) { 
+                    error.cancelGeneralHandler(); 
+                    toastr.warning("could not save filter settings");
                 }
-            );
-            
+            );   
         }
 
         /**
