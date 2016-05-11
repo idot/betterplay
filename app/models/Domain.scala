@@ -49,17 +49,19 @@ object DomainHelper {
   def gameResultInit(): GameResult = GameResult(0,0,false)  
   def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
   
+  def filterSettings() = FilterSettings("all","all","all")
+  
   /**
    * admins had instructions!
    */
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
 	  val (u,t) = randomGravatarUrl(user.email)
-      User(None, user.username, user.firstName, user.lastName, user.institute, user.showName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, true, 0, 0, u, t, registeringUser)
+      User(None, user.username, user.firstName, user.lastName, user.institute, user.showName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, 0, 0, u, t, registeringUser, filterSettings() )
   }
 
   def userFromUPE(username: String, password: String, firstName: String, lastName: String, email: String, registeringUser: Option[Long]): User = {
 	    val (u,t) = randomGravatarUrl(email)
-      User(None, username, firstName, lastName, "", false, email, encrypt(password), false, false, false, true, true, 0, 0, u, t, registeringUser)
+      User(None, username, firstName, lastName, "", false, email, encrypt(password), false, false, false, true, 0, 0, u, t, registeringUser, filterSettings() )
   }
  
   def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: DateTime, comment: String): BetLog = {
@@ -138,30 +140,49 @@ case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, gameStart
 	
 }
 
-
+case class FilterSettings(bet: String, game: String, level: String)
 
 /***
  * hadinstructions === special bet was set
+ * 
+ * canBet: if user wants money back before game starts canbet == false
+ *  
  */
 case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, institute: String, showName: Boolean, email: String, passwordHash: String,
-	        isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, isRegistered: Boolean,
-			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long] ){
+	        isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean,
+			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long],
+			filterSettings: FilterSettings
+
+      ){
   
      def totalPoints(): Int = points + pointsSpecialBet
   
 }
 
 
-case class UserNoPw(id: Option[Long] = None, username: String, firstName: String, lastName: String, 
+case class UserNoPw(id: Option[Long] = None, username: String, email:String, firstName: String, lastName: String, 
 	      isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, 
-		  totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long], rank: Int){
+        totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int,
+        iconurl: String, icontype: String, registeredBy: Option[Long], rank: Int,
+        filterSettings: FilterSettings, viewable: Boolean		  
+     ){
 }
    
 object UserNoPwC {
-   def apply(user: User, rank: Int = 0): UserNoPw = {
-        UserNoPw(user.id, user.username, user.firstName, user.lastName, 
-		user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
-		user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, rank)  
+   def apply(user: User, viewingUser: User, rank: Int = 0): UserNoPw = {
+        def forName(value: String): String = {
+            if(user.showName || viewingUser.id == user.id){
+               value
+            }else{
+               ""
+            }
+        }
+     
+        UserNoPw(user.id, user.username, forName(user.email), forName(user.firstName), forName(user.lastName), 
+		       user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
+		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, rank,
+		       user.filterSettings, user.id == viewingUser.id
+        )  
    }     
 }      
          
@@ -209,3 +230,9 @@ case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team
 case class GameWithTeams(game: Game, team1: Team, team2: Team, level: GameLevel)
 
 case class UserToken(id: Option[Long] = None, userId: Long, token: String, created: DateTime, used: Option[DateTime], tokentype: String)
+
+
+case class Message(id: Option[Long] = None, messageType: String, subject: String, body: String)
+case class UserMessage(id: Option[Long], userId: Long, messageId: Long, token: String, send: Boolean, sent: Option[DateTime], display: Boolean, seen: Option[DateTime])
+
+

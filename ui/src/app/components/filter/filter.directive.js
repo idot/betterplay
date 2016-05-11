@@ -32,8 +32,13 @@
         
         vm.filterChanged = function(){
             $scope.filterChanged();
+            vm.saveFilter();
         };    
         
+        vm.saveFilter = function(){
+            userService.saveFilter();  
+        };
+                
     };
   }
 

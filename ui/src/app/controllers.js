@@ -247,7 +247,7 @@
             var pu = {
                 'password': vm.pass.word1
             };
-            Restangular.all('em2016/api/user/' + vm.formUser.username + '/password').customPOST(pu).then(
+            Restangular.all('em2016/api/user/password').customPOST(pu).then(
                 function(success) {
                     toastr.pop('success', "changed password");
                     vm.pass.word1 = "";
@@ -265,13 +265,29 @@
                 email: vm.formUser.email,
                 icontype: vm.formUser.icontype
             };
-            Restangular.all('em2016/api/user/' + vm.formUser.username + '/details').customPOST(u).then(
+            Restangular.all('em2016/api/user/details').customPOST(u).then(
                 function(success) {
                     toastr.pop('success', "updated user details");
                     vm.refreshUser();
                 }
             );
         };
+        
+        vm.updateName = function() {
+            $log.debug('updating details: ');
+            var u = {
+                id: vm.form.User.username,
+                firstName: vm.formUser.firstName,
+                lastName: vm.formUser.lastName,
+            };
+            Restangular.all('em2016/api/user/details').customPOST(u).then(
+                function(success) {
+                    toastr.pop('success', "updated user details");
+                    vm.refreshUser();
+                }
+            );
+        };
+        
 
         activate();
 

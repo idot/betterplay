@@ -44,6 +44,8 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   val specialbetstore = TableQuery[SpecialBetsTs]
   val specialbetsuser = TableQuery[SpecialBetByUsers]
   val betlogs = TableQuery[BetLogs]
+  val messages = TableQuery[Messages]
+  val usersmessages = TableQuery[UsersMessages]
 
   def schema() = { 
                users.schema ++
@@ -190,7 +192,6 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def isAdmin = column[Boolean]("isadmin")
     def hadInstructions = column[Boolean]("instructions")
     def canBet = column[Boolean]("canbet")
-    def isRegistered = column[Boolean]("isregistered")
 	  def points = column[Int]("points")
     def iconurl = column[String]("iconurl")
     def icontype = column[String]("icontype")
@@ -199,10 +200,15 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def registerby = column[Option[Long]]("registerby")
     def pointsSpecial = column[Int]("pointsspecial")
     
+    def filterBet = column[String]("filterbet")
+    def filterGame = column[String]("filtergame")
+    def filterLevel = column[String]("filterlevel")
+    
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id?) 
     
-    def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, isRegistered, points, pointsSpecial, iconurl, icontype, registerby) <> (User.tupled, User.unapply)
-
+    def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, pointsSpecial, iconurl, icontype, registerby, filterSettings) <> (User.tupled, User.unapply)
+    def filterSettings = (filterBet, filterGame, filterLevel) <> (FilterSettings.tupled, FilterSettings.unapply)
+    
   }
 
   class Bets(tag: Tag) extends Table[Bet](tag, "bets") {
@@ -272,7 +278,34 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
 	  def * = (id.?, userId, gameId, gameStart, betId, t1old, t1new, t2old, t2new, created, comment) <> (BetLog.tupled, BetLog.unapply _)
   }
 
-
+  class Messages(tag: Tag) extends Table[Message](tag, "messages"){
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    def messageType = column[String]("messagetype")
+    def subject = column[String]("subject")
+    def body = column[String]("body")
+    
+    
+    def * = (id.?, messageType, subject, body) <> (Message.tupled, Message.unapply _)
+    
+  }
+  
+  class UsersMessages(tag: Tag) extends Table[UserMessage](tag, "usersmessages"){
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    def userId = column[Long]("userid")
+    def messageId = column[Long]("messageid")
+    def send = column[Boolean]("send")
+    def sent = column[Option[DateTime]]("sent")
+    def display = column[Boolean]("display")
+    def seen = column[Option[DateTime]]("seen")
+    def token = column[String]("token")
+    
+    def user = foreignKey("MESSAGE_USER_FK", userId, users)(_.id)
+    def message = foreignKey("MESSAGE_MESSAGE_FK", messageId, messages)(_.id)
+    
+    def * = (id.?, userId, messageId, token, send, sent, display, seen) <> (UserMessage.tupled, UserMessage.unapply _)
+  
+  }
+  
   
 }
 

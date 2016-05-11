@@ -7,7 +7,7 @@
       </md-list>
      </md-toolbar>
      <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
-     <form name="settingsForm">
+     <form name="settingsForm" ng-if="vm.isDebug()">
        <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
            <div flex-gt-sm="80">
               <md-input-container class="md-block" flex-gt-sm>
@@ -24,7 +24,7 @@
                       <input type="number" name="refresh" ng-model="vm.updateInterval" ng-change="setUpdateinterval()">
                </md-input-container>
             
-        	<div ng-if="vm.isDebug()">
+        	
                       <div flex-gt-sm="80">
                          <md-input-container class="md-block" flex-gt-sm>
                                <label for="dateselect">date</label>
@@ -46,8 +46,7 @@
                         </md-input-container> 
                     </div>
         	</div>
-             </div>
-         </div>    
+             </div>   
        </form>
    </md-content>
 </div>

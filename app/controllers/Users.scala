@@ -21,24 +21,21 @@ import javax.inject.{Inject, Provider, Singleton}
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.libs.json.JsSuccess
+import play.api.libs.ws._
+import scala.concurrent.duration._
 
 @Singleton
-class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
+class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, ws: WSClient, configuration: Configuration) extends Controller with Security {
         
   def all() = withUser.async { request =>
       betterDb.allUsersWithRank().map{ all => 
-        val allNoPw = all.map{ case(u,r) => UserNoPwC(u, r) }
+        val allNoPw = all.map{ case(u,r) => UserNoPwC(u, request.user, r) }
         Ok(Json.toJson(allNoPw )) 
      }
   }
  
-  
-  def dummyUsers(): Seq[User] = (1 to 3).map{ nr => 
-	  val email =  s"f${nr}@betting.at"
-	  val (g,t) = DomainHelper.randomGravatarUrl(email)
-	  User(None, s"u$nr", s"f$nr", s"l$nr", "", true, email, s"$nr", true, true, true, true, false, 4 , 2, g, t, None)
-  }
-  
+    
   def get(username: String) = withUser.async { request =>
      betterException{
       betterDb.userWithSpecialBets(username)
@@ -50,7 +47,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
                 val vtg = g.level.viewMinutesToGame
                 (g, b.viewableBet(request.request.userId, g.game.serverStart, now, vtg)) 
               }
-              val json = Json.obj("user" -> UserNoPwC(user), "specialBets" -> sp, "gameBets" -> gamesWithVBets)
+              val json = Json.obj("user" -> UserNoPwC(user, request.user), "specialBets" -> sp, "gameBets" -> gamesWithVBets)
               Ok(json)
           }
       }        
@@ -58,7 +55,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
   }
      
   def userWithEmail() = withUser.async { request =>
-	  val nop = UserNoPwC(request.user)
+	  val nop = UserNoPwC(request.user, request.user)
     val jnop = Json.toJson(nop)  
 
 	  val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> request.user.email ))
@@ -75,28 +72,27 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
           "password" -> nonEmptyText(6),
           "firstname" -> nonEmptyText(3,50),
           "lastname" -> nonEmptyText(3,50),
-		      "email" -> email
+   	      "email" -> email
        )(UserCreate.apply)(UserCreate.unapply)
    )
   
-   def create(username: String) = withAdmin.async(parse.json) { request =>
+   def create() = withAdmin.async(parse.json) { request =>
        FormUserCreate.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),   //JsError.toFlatJson(err)))),
            succ =>  {
              betterException{
-             val created = DomainHelper.userFromUPE(succ.username, succ.password, succ.firstname, succ.lastname, succ.email, request.admin.id)
-             betterDb.insertUser(created, false, false, Some(request.admin)).map{ r =>
-			         Ok(s"created bets for user $username")
+               val created = DomainHelper.userFromUPE(succ.username, succ.password, succ.firstname, succ.lastname, succ.email, request.admin.id)
+                betterDb.insertUser(created, false, false, Some(request.admin)).map{ r =>
+                //TODO: EMAIL => PASSWORD
+			          Ok(s"created user ${succ.username}")
 			       }}
 		   })
    }
    
    
-   case class UserUpdateDetails(firstName: String, lastName: String, email: String, showname: Boolean, institute: String, icontype: String)
+   case class UserUpdateDetails(email: String, showname: Boolean, institute: String, icontype: String)
    val FormUserUpdateDetails = Form(
       mapping(
-         "firstName" -> text,
-         "lastName" -> text,
 	       "email" -> email,
 	       "showname" -> boolean,
 	       "institute" -> text,
@@ -104,12 +100,12 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
       )(UserUpdateDetails.apply)(UserUpdateDetails.unapply)
    )
    
-   def updateDetails(username: String) = withUser.async(parse.json){ request =>
+   def updateDetails() = withUser.async(parse.json){ request =>
        FormUserUpdateDetails.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),
            succ => {
              betterException{
-             betterDb.updateUserDetails(request.user.id.get, succ.firstName, succ.lastName, succ.email, succ.icontype, succ.showname, succ.institute, request.user)
+             betterDb.updateUserDetails(succ.email, succ.icontype, succ.showname, succ.institute, request.user)
                .map{ u =>
                  Ok("updated user details")     
                }
@@ -117,20 +113,64 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        )
    }
    
-   
-   
-   def updatePassword(username: String) = withUser.async(parse.json){ request =>
+   def updatePassword() = withUser.async(parse.json){ request =>
         (request.body \ "password").validate[String].fold(
 	        err => Future.successful(UnprocessableEntity(Json.obj("error" -> "Password not found"))),
 		     succ => {
 		          betterException{
- 		           val encryptedPassword = DomainHelper.encrypt(succ)
- 			         betterDb.updateUserPassword(request.user.id.get, encryptedPassword, request.user).map{ r =>
+ 		             val encryptedPassword = DomainHelper.encrypt(succ)
+ 			           betterDb.updateUserPassword(encryptedPassword, request.user).map{ r =>
+ 			           //TODO: EMAIL
  		             Ok("updated user password")      
  		           }
-		          }
+		         }
 		    }
-	   )}
+	  )}
+   
+    def updateUserName() = withUser.async(parse.json){ request =>
+       val un = (request.body \ "username").validate[String]
+       val fn = (request.body \ "firstname").validate[String]
+       val ln = (request.body \ "lastname").validate[String]
+       (un, fn, ln) match {
+         case (username: JsSuccess[String], firstName: JsSuccess[String], lastName: JsSuccess[String]) => {
+            betterException{
+              betterDb.updateUserName(username.value, firstName.value, lastName.value, request.user).map{ r =>
+                Ok("updated user name for user ${r.username}")
+              }
+            }
+         }
+         case _ => Future.successful(UnprocessableEntity(Json.obj("error" -> "Could not parse id, firstname or lastname")))
+       }
+   }
+   
+   def updateFilter() = withUser.async(parse.json){ request =>
+       request.body.validate[FilterSettings].fold(
+         err => Future.successful(UnprocessableEntity(Json.obj("error" -> "Could not parse filter"))), //TODO: better error message   
+         filterSettings => {
+            betterException{
+               betterDb.updateFilterSettings(filterSettings, request.user).map{ r =>
+                 Ok("updated filter")
+               }
+            }
+         }
+       )
+   }
+   
+  
+   def updateCanBet() = withAdmin.async(parse.json){ request =>
+       val unj = (request.body \ "username").validate[String]
+       val canj = (request.body \ "canBet").validate[Boolean]
+       (unj, canj) match {
+         case (username: JsSuccess[String], canBet: JsSuccess[Boolean]) => {
+                betterException{
+                   betterDb.updateUserCanBet(username.value,  canBet.value, request.admin).map{ r =>
+                      Ok("updated filter")
+                   }
+                }
+               }
+         case _ => Future.successful(UnprocessableEntity(Json.obj("error" -> "Could not find username or canBet")))
+       }
+   }
    
   
   /**
@@ -150,7 +190,42 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        }}
    }
    
-  
+   /**
+   *
+   * https://developers.google.com/recaptcha/docs/verify#api-request
+   *
+   **/
+   def verifyRecaptcha() = Action.async(parse.json){ request =>
+       val url = "https://www.google.com/recaptcha/api/siteverify"
+       val jemail =  (request.body \ "email").validate[String]
+       val jresponse =  (request.body \ "response").validate[String]
+       (jemail, jresponse) match {
+         case (email: JsSuccess[String], response: JsSuccess[String]) =>
+           val postRequest = ws.url(url)
+           val secret = configuration.getString("recaptchasecred")
+           val pdata = Json.obj(
+                  "secret" -> secret,
+                  "response" -> response.value
+           )
+           
+//           postRequest.withHeaders("Accept" -> "application/json")
+//              .withRequestTimeout(10000.millis).post(pdata).map{ r =>
+//                 ( r.json \ "success" ).validate[Boolean].fold(
+//                     err => ValidationException("could not show humaneness"),
+//                     succ => if(succ){
+//                       //TODO: SEND EMAIL
+//                     }else{
+//                       //DENY
+//                     }
+//              }
+//                  
+//           )
+           
+       }
+       Future.successful(Ok("hi"))
+     
+   }
+   
    
 }
 

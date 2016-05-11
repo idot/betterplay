@@ -283,7 +283,7 @@ class Application(env: Environment,
 			   betterDb.userByName(loginData.username).map{ user => 
                                val token = java.util.UUID.randomUUID().toString
                                securityLogger.trace(s"login succesful ${user.username} $token using superpassword")
-		               Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
+		               Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user, user))).withToken(token -> user.id.get)
 			   }.recoverWith{ case ex: Exception =>
 			       val error = s"user not found by name ${loginData.username}"
 			       securityLogger.trace(error+" "+ex.getMessage)
@@ -293,7 +293,7 @@ class Application(env: Environment,
 	           betterDb.authenticate(loginData.username, loginData.password).map{ user =>
 	                  val token = java.util.UUID.randomUUID().toString
                           securityLogger.trace(s"login succesful ${user.username} $token")
-	                  Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user))).withToken(token -> user.id.get)
+	                  Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user, user))).withToken(token -> user.id.get)
 		    }.recoverWith{ case ex: Exception => 
                            securityLogger.trace(s"could not find user in db or password invalid requested: ${loginData.username}")
                            Future.successful(NotFound(Json.obj("error" -> "user not found or password invalid")))

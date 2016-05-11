@@ -245,6 +245,7 @@
                     } else {
                         $state.transitionTo("user.specialBets", {
                             username: loggedInUser.username
+                            //http://benfoster.io/blog/ui-router-optional-parameters add new invisible parameter to display instructions popup in specialbets
                         });
                     }
                 }
@@ -288,6 +289,17 @@
                vm.logout();
             }
         };
+        
+        vm.saveFilter(){
+            Restangular.all('em2016/api/user/password').customPOST(pu).then(
+                function(success) {
+                    toastr.pop('success', "changed password");
+                    vm.pass.word1 = "";
+                    vm.pass.word2 = "";
+                }
+            );
+            
+        }
 
         /**
          * update user calls this function without auth

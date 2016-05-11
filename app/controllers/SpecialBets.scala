@@ -26,7 +26,7 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
   def specialBetsForUser(username: String) = withUser.async { request => 
       betterException{
 	     	betterDb.userWithSpecialBets(username).map{  case(u, tb) =>
-           Ok(Json.obj("user" -> UserNoPwC(u), "templateBets" -> tb)) 
+           Ok(Json.obj("user" -> UserNoPwC(u, request.user), "templateBets" -> tb)) 
 		   }
      }
   }

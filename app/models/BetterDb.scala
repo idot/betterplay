@@ -34,7 +34,8 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
   import driver.api._
   
    val dbLogger = Logger("db")
-
+   val importantLogger = Logger("important")
+   
    def allTeams(): Future[Seq[Team]] = {
        db.run(teams.result)
    }
@@ -284,11 +285,15 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      }
 
      def authenticate(username: String, inputPassword: String):  Future[User] = {
-         val err = Future.failed(ItemNotFoundException(s"wrong password or user not found or user not registered: $username"))
-         db.run(users.filter(u => u.username === username && u.isRegistered).result).flatMap{ users =>
+         val err = Future.failed(ItemNotFoundException(s"wrong password or user not found: $username"))
+         db.run(users.filter(u => u.username === username).result).flatMap{ users =>
            if(users.size == 1){
-                if(new org.jasypt.util.password.StrongPasswordEncryptor().checkPassword(inputPassword, users(0).passwordHash))
-                  Future{ users(0) } else err
+                if(! users(0).canBet ){
+                   Future.failed(AccessViolationException(s"The user is not allowed to bet! Please complain at an admin: $username"))
+                }
+                if(new org.jasypt.util.password.StrongPasswordEncryptor().checkPassword(inputPassword, users(0).passwordHash)){
+                  Future{ users(0) } 
+                }else{ err }
            }else{ err }
          }
      }
@@ -553,37 +558,75 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          }
      }
   
-     def updateUserPassword(userId: Long, passwordHash: String, submittingUser: User): Future[User] = {
-           if(submittingUser.isAdmin || submittingUser.id.get == userId){
+     def updateUserPassword(passwordHash: String, submittingUser: User): Future[String] = {
              val upd = (for{
-               user <- users.filter(u => u.id === userId).result.head
-               updatedUser = user.copy(passwordHash=passwordHash)
-               _ <- users.filter(_.id === userId).update(updatedUser)
-             } yield( updatedUser )).transactionally
-             db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
-          } else {           
-            Future.failed(AccessViolationException(s"only admin user or the user himself can update the password"))
-          }
-     }
+               _ <- users.filter(_.id === submittingUser.id).map(u => u.passwordhash).update(passwordHash)
+             } yield{ 
+               importantLogger.info(s"updated userpassword for ${submittingUser.id} ${submittingUser.username}")
+               "updated password"
+             }).transactionally
+             db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id} ${submittingUser.username} to update password")) }
+      }
 
      /**
       * only admins can now change firstname and lastname
       */
-     def updateUserDetails(userId: Long, firstName: String, lastName: String, email: String, icontype: String, showName: Boolean, institute: String, submittingUser: User): Future[User] = {
-          if(submittingUser.isAdmin || submittingUser.id.get == userId){
-             val isAdmin = submittingUser.isAdmin
-             val (u,t) = DomainHelper.gravatarUrl(email, icontype)
+     def updateUserDetails(email: String, icontype: String, showName: Boolean, institute: String, submittingUser: User): Future[User] = {
+         val (u,t) = DomainHelper.gravatarUrl(email, icontype)
+         val upd = (for{
+             user <- users.filter(u => u.id === submittingUser.id).result.head
+             updatedUser = user.copy(email=email, showName=showName, institute=institute, iconurl=u, icontype=t)
+             _ <- users.filter(_.id === submittingUser.id).update(updatedUser)
+         } yield( updatedUser )).transactionally
+         db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id}")) }
+     }
+     
+      /**
+      * only admins can now change firstname and lastname
+      */
+     def updateUserName(username: String, firstName: String, lastName: String, submittingUser: User): Future[User] = {
+          if(submittingUser.isAdmin){
              val upd = (for{
-                 user <- users.filter(u => u.id === userId).result.head
-                 updatedUser = user.copy(firstName=if(isAdmin) firstName else user.firstName, lastName=if(isAdmin) lastName else user.lastName, email=email, showName=showName, institute=institute, iconurl=u, icontype=t)
-                 _ <- users.filter(_.id === userId).update(updatedUser)
+                 user <- users.filter(u => u.username === username).result.head
+                 updatedUser = user.copy(firstName=firstName, lastName=lastName)
+                 _ <- users.filter(_.id === updatedUser.id).update(updatedUser)
              } yield( updatedUser )).transactionally
-             db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
+             db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $username")) }
           } else {           
-            Future.failed(AccessViolationException(s"only admin user or the user himself can update the details"))
+            Future.failed(AccessViolationException(s"only admin user can update the name"))
           }
      }
-       
+     
+      /**
+      * only admins can change id user can bet 
+      */
+     def updateUserCanBet(username: String, canBet: Boolean, submittingUser: User): Future[User] = {
+          if(submittingUser.isAdmin){
+             val upd = (for{
+                 user <- users.filter(u => u.username === username).result.head
+                 updatedUser = user.copy(canBet=canBet)
+                 _ <- users.filter(_.id === updatedUser.id).update(updatedUser)
+             } yield{
+               importantLogger.info(s"updated user can bet to ${canBet} for ${updatedUser.id} ${updatedUser.username} by ${submittingUser.id} ${submittingUser.username}")  
+               updatedUser
+             }).transactionally
+             db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $username")) }
+          } else {           
+            Future.failed(AccessViolationException(s"only admin user can update wether the user can bet"))
+          }
+     }
+     
+     
+     def updateFilterSettings(filterSettings: FilterSettings, submittingUser: User): Future[User] = {
+         val upd = (for{
+             user <- users.filter(u => u.id === submittingUser.id).result.head
+             updatedUser = user.copy(filterSettings=filterSettings)
+             _ <- users.filter(_.id === submittingUser.id).update(updatedUser)
+         } yield( updatedUser )).transactionally
+         db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id}")) }
+     }
+     
+     
      def updateUserHadInstructions(userId: Long, submittingUser: User): Future[User] = {
          if(submittingUser.id.get == userId){
            val upd = (for{

@@ -159,7 +159,7 @@ class DBSpec extends Specification
            }.toSet.flatten.size === 6
            
            val user = AR(betterDb.allUsers()).filter(u => u.firstName == "f1").head
-           AR(betterDb.updateUserDetails(user.id.get, "joe", "smith",  "newmail", "retro", true, "newinst", admin))
+           AR(betterDb.updateUserDetails("newmail", "retro", true, "newinst", admin))
            val dbUser = AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head
            dbUser.lastName === "smith"
            dbUser.email === "newmail"
@@ -170,7 +170,7 @@ class DBSpec extends Specification
            AR(betterDb.updateUserHadInstructions(user.id.get, user))
            AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.hadInstructions === true
        
-           AR(betterDb.updateUserPassword(user.id.get, "newhash" , user))
+           AR(betterDb.updateUserPassword("newhash" , user))
            AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.passwordHash === "newhash"
            
            val (u1, specialWithUserId) = AR(betterDb.userWithSpecialBets(user.id.get))

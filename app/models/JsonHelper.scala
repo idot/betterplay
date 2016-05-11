@@ -69,15 +69,18 @@ object JsonHelper {
           }
       }
    }
-//the user object is never serialized because of the password
+//the user object is never serialized because of the password, and the email and the firstname lastname that should not be shown in UI
 //implicit val userFormat = Json.format[User]  DONTUNCOMMENT
 //   case class TimeMessage(serverTime: DateTime)
    
 //   implicit val timeMessageFormat = Json.format[TimeMessage]
+   implicit val filterSettingsFormat = Json.format[FilterSettings]
    implicit val userNoPWFormat = Json.format[UserNoPw]        
    implicit val levelFormat = Json.format[GameLevel]
    implicit val resultFormat = Json.format[GameResult] 
 
+   
+   
    implicit val gameFormat = Json.format[Game]
    implicit val betFormat = Json.format[ViewableBet]
 
@@ -106,9 +109,9 @@ object JsonHelper {
      }
    }
    
-   implicit val betUserWrite = new Writes[(ViewableBet,User)]{
-	   def writes(bu: (ViewableBet,User)): JsValue = {
-		   Json.obj("bet" -> bu._1, "user" -> UserNoPwC(bu._2) )
+   implicit val betUserWrite = new Writes[(ViewableBet,UserNoPw)]{
+ 	   def writes(bu: (ViewableBet, UserNoPw)): JsValue = {
+	      Json.obj("bet" -> bu._1, "user" -> bu._2 )
 	   }
    }
    

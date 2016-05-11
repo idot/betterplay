@@ -48,10 +48,14 @@ GET     /em2016/api/user/:username/specialBets  controllers.SpecialBets.specialB
 GET     /em2016/api/userWithEmail          controllers.Users.userWithEmail()
 
 #creates/updates user creates bets on first registration; does not update bets
-PUT    /em2016/api/user/:name              controllers.Users.create(name: String) 
-POST   /em2016/api/user/:name/details      controllers.Users.updateDetails(name: String) 
-POST   /em2016/api/user/:name/password     controllers.Users.updatePassword(name: String) 
-POST   /em2016/api/userhadinstructions     controllers.Users.updateUserHadInstructions()
+PUT    /em2016/api/user                      controllers.Users.create() 
+POST   /em2016/api/user/details              controllers.Users.updateDetails() 
+POST   /em2016/api/user/password             controllers.Users.updatePassword() 
+POST   /em2016/api/user/filter               controllers.Users.updateFilter()    
+POST   /em2016/api/user/name                 controllers.Users.updateUserName()    
+POST   /em2016/api/userhadinstructions       controllers.Users.updateUserHadInstructions()
+GET     /em2016/newPassword/:token           controllers.Users.newPassword(token)
+GET     /em2016/completeRegistration/:token           controllers.Users.newPassword(token)
 
 POST    /em2016/api/createBetsForUsers      controllers.Users.createBetsForUsers()
 
@@ -62,6 +66,8 @@ POST    /em2016/api/bet/:id                 controllers.Bets.update(id: Long)
 POST    /em2016/api/specialBet               controllers.SpecialBets.updateSpecialBet()
 GET     /em2016/api/specialBets/:id          controllers.SpecialBets.specialBetsByTemplate(id: Long)
 GET     /em2016/api/statistics/excel         controllers.Statistics.excel()
+
+
 
 
 # Send (user,password) to receive token
