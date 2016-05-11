@@ -15,42 +15,42 @@
                         <label for="username">username</label>
                         <input type="text" name="username" ng-model="vm.username"
                                   required autofocus md-placeholder="username" 
-                                  ng-minlength="3" ng-maxlength="20" ng-pattern="/^[0-9a-zA-Z_\.]+$/" ui-validate="{uniqueness : 'uniqueUsername($value)' }"/>
+                                  ng-minlength="3" ng-maxlength="20" ng-pattern="/^[0-9a-zA-Z_\.]+$/" ui-validate="{uniqueness : 'vm.uniqueUsername($value)' }"/>
                         <div ng-messages="registerForm.username.$error">
                                   <div ng-message="required">required</div>
                                   <div ng-message="uniqueness">username exists</div>
-                                  <div ng-message="pattern">use only a-zA-Z_@.</div>
+                                  <div ng-message="pattern">use only letters, number _ and .</div>
                                   <div ng-message="minlength">length at least 3</div>
                                   <div ng-message="maxlength">length smaller 21</div>
                          </div>
                 </md-input-container>
                <md-input-container class="md-block" flex-gt-sm>
                        <label for="password1">password</label>
-                       <input type="password" name="password1" ng-model="vm.password1" required ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
+                       <input type="password" name="password1" ng-model="vm.password1" required
+                           ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
                        <div ng-messages="registerForm.password1.$error">
                                  <div ng-message="required">required</div>
-                                 <div ng-message="identical">passwords don't match</div>
                                  <div ng-message="minlength">length at least 6</div>
                                  <div ng-message="maxlength">length smaller 21</div>
+                                <div ng-message="identical">passwords don't match</div>
                         </div>
                 </md-input-container>
                 <md-input-container class="md-block" flex-gt-sm>
                         <label for="password2">password</label>
                         <input type="password" name="password2" ng-model="vm.password2" required  
-                            ui-validate="{identical: '$value == vm.password1' }" ui-validate-watch=" 'vm.password1' "
-                           ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
+                           ng-minlength="6" ng-maxlength="20" md-placeholder="password" ng-blur="vm.comparePasswords(registerForm)"/>
                         <div ng-messages="registerForm.password2.$error">
                                   <div ng-message="required">required</div>
-                                  <div ng-message="identical">passwords don't match</div>
                                   <div ng-message="minlength">length at least 6</div>
                                   <div ng-message="maxlength">length smaller 21</div>
+                                  <div ng-message="identical">passwords don't match</div>
                          </div>
                  </md-input-container>
                  <md-input-container class="md-block" flex-gt-sm>
                         <label for="email">email</label>
                         <input type="email" name="email" ng-model="vm.email" required/>
                         <div ng-messages="registerForm.email.$error">
-                                  <div ng-message="required">Please add a valid e-mail address so we can notify you of problems. The e-mail will not be visible to other users</div>
+                                  <div ng-message="required">Please add a valid e-mail address. The e-mail will not be visible to other users</div>
                          </div>
                  </md-input-container>
                  <md-input-container class="md-block" flex-gt-sm>

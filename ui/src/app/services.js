@@ -239,9 +239,11 @@
                 function(auth) {
                    vm.updateLogin(auth.user, auth["AUTH-TOKEN"]);
                     if (auth.user.hadInstructions) {
-                        $state.transitionTo("user.userBets", {
-                            username: loggedInUser.username
-                        });
+                        $state.transitionTo("admin.registerUser");
+               //         $state.transitionTo("user.userBets", {
+            //                username: loggedInUser.username
+                   //     });
+                        
                     } else {
                         $state.transitionTo("user.specialBets", {
                             username: loggedInUser.username

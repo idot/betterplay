@@ -169,21 +169,19 @@
     }
 
      /** @ngInject */
-    function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _) {
+    function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _, $scope) {
         var vm = this;
         vm.stateParams = $stateParams;
 
         vm.allUsers = [];
+        vm.username = "";
+        vm.password1 = "";
+        vm.password2 = "";
+        vm.email = "";
+        vm.firstname = "";
+        vm.lastname = "";
 
-        var queryUsers = Restangular.all('em2016/api/users');
-
-
-        vm.setFields = function() {
-            vm.username = "";
-            vm.password1 = "";
-            vm.password2 = "";
-            vm.email = "";
-        };
+       var queryUsers = Restangular.all('em2016/api/users');
 
         vm.getUsers = function() {
             queryUsers.getList().then(function(users) {
@@ -192,6 +190,17 @@
                 });
             });
         }
+        
+        vm.comparePasswords = function(form){
+            if(vm.password2 != "" && vm.password1 != vm.password2){
+                $log.error("comparing passwords");
+                form.password2.$setValidity('identical', false);        
+             } else {
+                 if(vm.password1 == vm.password2){
+                      form.password2.$setValidity('identical', true);
+                 }
+             }  
+        };
 
         vm.uniqueUsername = function(username) {
             var duplicated = _.find(vm.allUsers, function(u) {
@@ -216,7 +225,6 @@
         };
 
         function activate() {
-            vm.setFields();
             vm.getUsers();
         }
 
