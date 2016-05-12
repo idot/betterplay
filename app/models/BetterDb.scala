@@ -470,7 +470,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          val result = game.result.copy(isSet=true)
          val gUp = (for{
            dbGame <- games.filter(_.id === game.id).result.head
-           _ <- isGameOpen(dbGame.serverStart, currentTime: DateTime, -gameDuration).fold(err => DBIO.successful("IGNORE"), succ => DBIO.failed(ValidationException(s"game $game is still not finished")))
+           _ <- isGameOpen(dbGame.serverStart, currentTime: DateTime, -gameDuration).fold(err => DBIO.successful("IGNORE"), succ => DBIO.failed(ValidationException(s"game ${game.id.get} is still not finished")))
            gameWithResult = dbGame.copy(result=result) 
            _ <- games.filter(_.id === gameWithResult.id).update(gameWithResult)
          } yield { (gameWithResult, SetResult) }).transactionally

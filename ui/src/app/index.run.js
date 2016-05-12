@@ -22,7 +22,7 @@
                function generalErrorHanding(response){
                        var errors = _.map(response.data, function(value, key){ return key + " " +value; });
                        var errorsum = errors.join("\n");
-                       toastr.error('error', "application error: "+response.statusText, errorsum);
+                       toastr.error(errorsum, "application error: "+response.statusText);
                } 
    
               ///http://stackoverflow.com/a/34362876

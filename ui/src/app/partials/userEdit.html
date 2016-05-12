@@ -27,7 +27,6 @@
      <md-input-container class="md-block" flex-gt-sm>
              <label for="password2">password</label>
              <input type="password" name="password2" ng-model="vm.password2" required  
-                 ui-validate="{identical: '$value == vm.password1' }" ui-validate-watch=" 'vm.password1' "
                 ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
              <div ng-messages="passwordForm.password2.$error">
                        <div ng-message="required">required</div>

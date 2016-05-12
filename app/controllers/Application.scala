@@ -36,16 +36,6 @@ import models.{AccessViolationException,ItemNotFoundException,ValidationExceptio
 
 import com.github.mmizutani.playgulp.GulpAssets
 
-object FormToV {
-  import play.api.i18n.Messages.Implicits._
-  import scalaz.{\/,-\/,\/-}
-  implicit def toV[T](form: Form[T])(implicit messages: play.api.i18n.Messages): JsValue \/ T = {
-	  form.fold(
-	     err => -\/(err.errorsAsJson),
-		   succ => \/-(succ)	  
-      )
-  }
-}
 
 
 
@@ -68,7 +58,7 @@ class TokenRequest[A](val token: String, val userId: Long, request: Request[A]) 
 class UserRequest[A](val user: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
 class AdminRequest[A](val admin: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
 
-trait Security{ self: Controller =>
+trait Security { self: Controller =>
   val betterDb: BetterDb
   val cache: CacheApi
  
@@ -82,10 +72,10 @@ trait Security{ self: Controller =>
   def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest]{
       def refine[A](input: Request[A]) = Future.successful{
           val maybeToken = input.headers.get(AuthTokenHeader)
-          securityLogger.trace(s"hasToken: $AuthTokenHeader $maybeToken $input.uri")
+          securityLogger.trace(s"hasToken: ${input.uri} $AuthTokenHeader $maybeToken")
           maybeToken.flatMap{ token =>
               cache.get[Long](token).map{  userId =>  
-                       securityLogger.trace(s"hasToken: found token $AuthTokenHeader $maybeToken userId: $userId $input.uri")
+                       securityLogger.trace(s"hasToken: ${input.uri} found token $AuthTokenHeader $maybeToken userId: $userId")
                        new TokenRequest(token, userId, input)
               }
           }.toRight(Unauthorized)
@@ -97,7 +87,7 @@ trait Security{ self: Controller =>
          betterDb.userById(input.userId)
             .map{ user => Right(new UserRequest(user, input)) }
             .recoverWith{ case e: AccessViolationException =>
-                 securityLogger.trace(s"withUser could not find user in db: ${input.userId} ${e.getMessage}")
+                 securityLogger.trace(s"withUser ${input.uri} could not find user in db: ${input.userId} ${e.getMessage}")
                  Future.successful(Left(Unauthorized(e.getMessage))) 
             }
       }
@@ -108,14 +98,14 @@ trait Security{ self: Controller =>
          betterDb.userById(input.userId)
             .map{ user =>
                   if(user.isAdmin){
-                      securityLogger.trace(s"withAdmin could find admin user in db: ${input.userId}")
+                      securityLogger.trace(s"withAdmin ${input.uri} could find admin user in db: ${input.userId}")
                       Right(new AdminRequest(user, input))
                   } else {
-                      securityLogger.trace(s"withAdmin could find user in db: ${input.userId} but noadmin")
+                      securityLogger.trace(s"withAdmin ${input.uri} could find user in db: ${input.userId} but noadmin")
                       Left(Unauthorized("you must be admin"))
                   }
             }.recoverWith{ case e: AccessViolationException =>
-                 securityLogger.trace(s"withAdmin could not find user in db: ${input.userId} ${e.getMessage}")
+                 securityLogger.trace(s"withAdmin ${input.uri} could not find user in db: ${input.userId} ${e.getMessage}")
                  Future.successful(Left(Unauthorized(e.getMessage))) 
             }
       }
@@ -127,9 +117,9 @@ trait Security{ self: Controller =>
  
   def betterException(future: Future[Result]): Future[Result] = {
       future.recoverWith {
-        case e: AccessViolationException => Future.successful(Unauthorized(e.getMessage))
-        case e: ItemNotFoundException => Future.successful(NotFound(e.getMessage))
-        case e: ValidationException => Future.successful(NotAcceptable(e.getMessage))
+        case e: AccessViolationException => Logger.error("EXCEPT1: "+e.getMessage); Future.successful(Unauthorized(e.getMessage))
+        case e: ItemNotFoundException => Logger.error("EXCEPT2: "+e.getMessage); Future.successful(NotFound(e.getMessage))
+        case e: ValidationException => Logger.error("EXCEPT3: "+e.getMessage); Future.successful(NotAcceptable(e.getMessage))
       }
   }
   

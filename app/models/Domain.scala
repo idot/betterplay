@@ -19,7 +19,7 @@ object BetterException {
   
 }
 
-case class AccessViolationException(val message: String) extends RuntimeException(message) with BetterException
+case class AccessViolationException(message: String) extends RuntimeException(message) with BetterException
 case class ItemNotFoundException(message: String) extends RuntimeException(message) with BetterException
 case class ValidationException(message: String) extends RuntimeException(message) with BetterException
 

@@ -193,7 +193,6 @@
         
         vm.comparePasswords = function(form){
             if(vm.password2 != "" && vm.password1 != vm.password2){
-                $log.error("comparing passwords");
                 form.password2.$setValidity('identical', false);        
              } else {
                  if(vm.password1 == vm.password2){
@@ -216,7 +215,7 @@
                 'password': vm.password1,
                 'email': vm.email
             };
-            Restangular.all('em2016/api/user/' + vm.username).customPUT(pu).then(
+            Restangular.all('em2016/api/user/create').customPUT(pu).then(
                 function(success) {
                     toastr.pop('success', "registered " + vm.username); //TODO: email
                     vm.setFields();

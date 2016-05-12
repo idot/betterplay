@@ -7,6 +7,7 @@ import play.api.libs.json.Json._
 import play.api.cache.CacheApi
 import models._
 import models.JsonHelper._
+import play.api.i18n.MessagesApi
 
 import javax.inject.{Inject, Provider, Singleton}
 

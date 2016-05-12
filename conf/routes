@@ -48,7 +48,7 @@ GET     /em2016/api/user/:username/specialBets  controllers.SpecialBets.specialB
 GET     /em2016/api/userWithEmail          controllers.Users.userWithEmail()
 
 #creates/updates user creates bets on first registration; does not update bets
-PUT    /em2016/api/user                      controllers.Users.create() 
+PUT    /em2016/api/user/create                      controllers.Users.create() 
 POST   /em2016/api/user/details              controllers.Users.updateDetails() 
 POST   /em2016/api/user/password             controllers.Users.updatePassword() 
 POST   /em2016/api/user/filter               controllers.Users.updateFilter()    

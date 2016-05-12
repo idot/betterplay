@@ -159,9 +159,11 @@ class DBSpec extends Specification
            }.toSet.flatten.size === 6
            
            val user = AR(betterDb.allUsers()).filter(u => u.firstName == "f1").head
-           AR(betterDb.updateUserDetails("newmail", "retro", true, "newinst", admin))
+           AR(betterDb.updateUserDetails("newmail", "retro", true, "newinst", user)) 
+           betterDb.updateUserName(user.username, "joe", "newlastname", user) must throwAn[AccessViolationException](message = "only admin user can update the name").await
+           AR(betterDb.updateUserName(user.username, "joe", "newlastname", admin))
            val dbUser = AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head
-           dbUser.lastName === "smith"
+           dbUser.lastName === "newlastname"
            dbUser.email === "newmail"
            dbUser.icontype === "retro"
            dbUser.institute === "newinst"
@@ -262,11 +264,11 @@ class DBSpec extends Specification
           betterDb.updateGameDetails(game1, users(0), firstStart, 90) must throwAn[ValidationException](errDet1).await
           
                           
-          betterDb.updateGameResults(game1, users(2), firstStart, 90) must throwAn[AccessViolationException].await
-          // "must be admin to change game results"           
+          betterDb.updateGameResults(game1, users(2), firstStart, 90) must throwAn[AccessViolationException](message="must be admin to change game results").await
+        
                     
-          betterDb.updateGameResults(game1, users(0), firstStart, 90) must throwAn[ValidationException].await 
-          // "game is still not finished"          
+          betterDb.updateGameResults(game1, users(0), firstStart, 90) must throwAn[ValidationException](message="game 1 is still not finished").await 
+    
                 
           users(0).hadInstructions === true
           users(2).hadInstructions === false
@@ -276,12 +278,11 @@ class DBSpec extends Specification
     		  val sps = usp.sortBy(_.specialbetId)
 		      val sp3 = sps(3).copy(prediction="XY")
 		      
-		      betterDb.updateSpecialBetForUser(sp3, firstStart, 90, users(2)) must throwAn[ValidationException].await
-          //"game closed since 0 days, 1 hours, 30 minutes, 0 seconds" 
-          
+		      betterDb.updateSpecialBetForUser(sp3, firstStart, 90, users(2)) must throwAn[ValidationException](message="game closed since 0 days, 1 hours, 30 minutes, 0 seconds").await
+            
 		      sp3.userId !== users(3).id.get
-		      betterDb.updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(3)) must throwAn[ValidationException].await
-          // "user ids differ 4 3
+		      betterDb.updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(3)) must throwAn[ValidationException](message="user ids differ 4 3").await
+      
           
           Await.result(betterDb.updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(2)), 1 seconds)
 		      val uwsb = Await.result(betterDb.userWithSpecialBets(users(2).id.get), 1 second)

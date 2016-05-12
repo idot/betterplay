@@ -12,6 +12,7 @@ import javax.inject.{Inject, Provider, Singleton}
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.i18n.MessagesApi
 
 @Singleton
 class Players @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {

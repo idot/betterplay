@@ -9,9 +9,11 @@ import models.JsonHelper._
 import play.api.libs.json.JsError
 import play.api.cache.CacheApi
 import javax.inject.{Inject, Provider, Singleton}
+import play.api.i18n.MessagesApi
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 
 @Singleton
 class Teams @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {

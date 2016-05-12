@@ -10,6 +10,7 @@ import models.JsonHelper._
 import play.api.libs.json.JsError
 import javax.inject.{Inject, Provider, Singleton}
 import play.api.cache.CacheApi
+import play.api.i18n.MessagesApi
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext

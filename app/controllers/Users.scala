@@ -9,11 +9,11 @@ import play.api.libs.json.JsError
 import play.api.data._
 import play.api.data.Forms._
 import play.api.cache.CacheApi
-import scalaz.{\/,-\/,\/-}
+import play.api.i18n.MessagesApi
+import play.api.i18n.I18nSupport
 
 import models._
 import models.JsonHelper._
-import FormToV._	
 import models.BetterSettings
 
 import javax.inject.{Inject, Provider, Singleton}
@@ -26,8 +26,9 @@ import play.api.libs.ws._
 import scala.concurrent.duration._
 
 @Singleton
-class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, ws: WSClient, configuration: Configuration) extends Controller with Security {
-        
+class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, val messagesApi: MessagesApi, ws: WSClient, configuration: Configuration) extends Controller with Security with I18nSupport {
+    
+  
   def all() = withUser.async { request =>
       betterDb.allUsersWithRank().map{ all => 
         val allNoPw = all.map{ case(u,r) => UserNoPwC(u, request.user, r) }
@@ -78,7 +79,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
   
    def create() = withAdmin.async(parse.json) { request =>
        FormUserCreate.bind(request.body).fold(
-           err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),   //JsError.toFlatJson(err)))),
+           err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),   
            succ =>  {
              betterException{
                val created = DomainHelper.userFromUPE(succ.username, succ.password, succ.firstname, succ.lastname, succ.email, request.admin.id)
@@ -102,7 +103,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
    
    def updateDetails() = withUser.async(parse.json){ request =>
        FormUserUpdateDetails.bind(request.body).fold(
-           err => Future.successful(UnprocessableEntity(Json.obj("error" -> "TODO!"))),
+           err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),
            succ => {
              betterException{
              betterDb.updateUserDetails(succ.email, succ.icontype, succ.showname, succ.institute, request.user)
