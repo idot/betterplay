@@ -203,6 +203,12 @@
         };
 
         vm.signon = function() {
+            if(vm.password1 != vm.password2){
+                 toastr.error("passwords don't match!");
+                 vm.password1 = "";
+                 vm.password2 = "";
+                 return;
+            }
             var pu = {
                 'username': vm.username,
                 'password': vm.password1,
@@ -230,43 +236,62 @@
     function EditUserController($log, $stateParams, Restangular, $state, toastr, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
-        vm.formUser = {};
-
+        vm.password1 = "";
+        vm.password2 = "";
+        
+        vm.user = {};
+        
+        vm.icontype = "";
+        vm.showname = false;
+        vm.email = "";
+        vm.institute = "";
+  
+        vm.userIdentical = function(){
+             return userService.identical(vm.stateParams.username);
+        };
+  
         vm.refreshUser = function() {
             var queryUser = Restangular.one('em2016/api/userWithEmail');
             queryUser.get().then(function(userWithEmail) {
-                vm.formUser = userWithEmail;
+                vm.icontype = userWithEmail.icontype;
+                vm.showname = userWithEmail.showname;
+                vm.email = userWithEmail.email;
+                vm.institute = userWithEmail.institute;
+                vm.user = userWithEmail;
                 userService.updateLogin(userWithEmail);
             });
         }
 
-        vm.pass = {
-            word1: "",
-            word2: ""
+        vm.comparePasswords = function(form){
+            var identical = vm.password1 == vm.password2
+            form.password2.$setValidity('identical', identical);        
         };
-
+       
         vm.updatePassword = function() {
-            $log.debug('submitting new password: ' + vm.pass.word1);
+            if(vm.password1 != vm.password2){
+                 toastr.error("passwords don't match!");
+                 vm.password1 = "";
+                 vm.password2 = "";
+                 return;
+            }
             var pu = {
-                'password': vm.pass.word1
+                'password': vm.password1
             };
             Restangular.all('em2016/api/user/password').customPOST(pu).then(
                 function(success) {
-                    toastr.pop('success', "changed password");
-                    vm.pass.word1 = "";
-                    vm.pass.word2 = "";
+                    toastr.success("changed password");
+                    vm.password1 = "";
+                    vm.password2 = "";
                 }
             );
         };
 
-
         vm.updateDetails = function() {
-            $log.debug('updating details: ');
             var u = {
-                firstName: vm.formUser.firstName,
-                lastName: vm.formUser.lastName,
-                email: vm.formUser.email,
-                icontype: vm.formUser.icontype
+                email: vm.email,
+                icontype: vm.icontype,
+                institute: vm.institute,
+                showname: vm.showname
             };
             Restangular.all('em2016/api/user/details').customPOST(u).then(
                 function(success) {

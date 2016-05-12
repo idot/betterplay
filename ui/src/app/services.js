@@ -233,6 +233,14 @@
             level : "all",
             game: "all"
         };
+        
+        vm.identical = function(username){
+             if (typeof loggedInUser === "undefined" || typeof loggedInUser.username === "undefined") {
+                 return false;
+             } else {
+               return username == loggedInUser.username;  
+            }
+        };
 
         vm.login = function(credentials) { //TODO move state back to controller by returning callback/future
             Restangular.all("em2016/api/login").post(credentials).then(

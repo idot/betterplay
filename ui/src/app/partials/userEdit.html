@@ -1,109 +1,124 @@
 <div layout="column" ng-cloak>
-<form name="headerForm">    
- <md-toolbar md-scroll-shrink ng-if="true">
-   <md-list>
-        <md-list-item class="md-3-line">
-        <better-user-view user="vm.user" full="true"></better-user-view>
-       </md-list-item>
-  </md-list>
-  <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
-</md-toolbar>
-</form>
+    <form name="headerForm">    
+        <md-toolbar md-scroll-shrink ng-if="true">
+            <md-list>
+                <md-list-item class="md-3-line">
+                    <better-user-view user="vm.user" full="true"></better-user-view>
+                </md-list-item>
+            </md-list>
+        </md-toolbar>
+    </form>
+</div>
 <!-- user settings: was in tabs -->
 
-<div ng-if="vm.userIdentical()">
-<form name="passwordForm">
-<md-content flex>
-    <md-input-container class="md-block" flex-gt-sm>
-            <label for="password1">password</label>
-            <input type="password" name="password1" ng-model="vm.password1" required ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
-            <div ng-messages="passwordForm.password1.$error">
-                      <div ng-message="required">required</div>
-                      <div ng-message="identical">passwords don't match</div>
-                      <div ng-message="minlength">length at least 6</div>
-                      <div ng-message="maxlength">length smaller 21</div>
-             </div>
-     </md-input-container>
-     <md-input-container class="md-block" flex-gt-sm>
-             <label for="password2">password</label>
-             <input type="password" name="password2" ng-model="vm.password2" required  
-                ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
-             <div ng-messages="passwordForm.password2.$error">
-                       <div ng-message="required">required</div>
-                       <div ng-message="identical">passwords don't match</div>
-                       <div ng-message="minlength">length at least 6</div>
-                       <div ng-message="maxlength">length smaller 21</div>
-              </div>
-      </md-input-container>
-     <md-input-container layout-align="center">
-    	<div layout="row" layout-sm="column" layout-margin>
-                <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changePassword()" value="Submit" title="Submit" ng-disabled="!passwordForm.$valid">Submit</button>
-            </div>
-     </md-input-container>
-  </md-content>
- </form>
+
+<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+    <div ng-if="vm.userIdentical()">
+        <form name="passwordForm">
+            <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
+                <div flex-gt-sm="80">
+                
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label for="password1">password</label>
+                        <input type="password" name="password1" ng-model="vm.password1" required ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
+                        <div ng-messages="passwordForm.password1.$error">
+                            <div ng-message="required">required</div>
+                            <div ng-message="identical">passwords don't match</div>
+                            <div ng-message="minlength">length at least 6</div>
+                            <div ng-message="maxlength">length smaller 21</div>
+                        </div>
+                    </md-input-container>
+            
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label for="password2">password</label>
+                        <input type="password" name="password2" ng-model="vm.password2" required  
+                        ng-minlength="6" ng-maxlength="20" md-placeholder="password" ng-blur="vm.comparePasswords(passwordForm)"/>
+                        <div ng-messages="passwordForm.password2.$error">
+                            <div ng-message="required">required</div>
+                            <div ng-message="identical">passwords don't match</div>
+                            <div ng-message="minlength">length at least 6</div>
+                            <div ng-message="maxlength">length smaller 21</div>
+                        </div>
+                    </md-input-container>
+        
+                    <md-input-container layout-align="center">
+                        <div layout="row" layout-sm="column" layout-margin>
+                            <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changePassword()" value="Submit" title="Submit" ng-disabled="!passwordForm.$valid">Submit</button>
+                        </div>
+                    </md-input-container>       
+                </div>
+            </div>        
+        </form>
+
  
- <form name="detailsForm">
-       <md-input-container class="md-block" flex-gt-sm>
+      <form name="detailsForm">
+         <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
+           <div flex-gt-sm="80">
+           <md-input-container class="md-block" flex-gt-sm>
               <label for="email">email</label>
               <input type="email" name="email" ng-model="vm.email" required/>
               <div ng-messages="detailsForm.email.$error">
                         <div ng-message="required">Please add a valid e-mail address so we can notify you of problems. The e-mail will not be visible to other users</div>
                </div>
-       </md-input-container>    
-      <md-input-container class="md-block" flex-gt-sm>
-            <label for="showname">show name</label>
-            <md-checkbox name="showname" ng-model="vm.showname" aria-label="show name">show name</md-checkbox>
-     </md-input-container>
-     <md-input-container class="md-block" flex-gt-sm>
-         <label for="icondefault"><a href="https://en.gravatar.com/">default icontype</a></label>
-         <md-select id="icondefault" type="text" ng-model="vm.DF" ng-change="setFormat()">
-   	      <md-option>mm</md-option>
-   	      <md-option>identicon</md-option>
-   	      <md-option>monsterid</md-option>
-   	      <md-option>wavatar</md-option>
-              <md-option>retro</md-option>
-              <md-option>blank</md-option>
-   	  </md-select>
-     </md-input-container>
-     <md-input-container layout-align="center">
-    	<div layout="row" layout-sm="column" layout-margin>
-                <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeDetails()" value="Submit" title="Submit">Submit</button>
-            </div>
-     </md-input-container>
-      
-  </form>      
-  </div>
+           </md-input-container>
+           
+        <md-input-container class="md-block" flex-gt-sm>
+                  <md-checkbox name="showname" ng-model="vm.showname" aria-label="show name">show name</md-checkbox>
+           </md-input-container>
+           
+        <md-input-container class="md-block" flex-gt-sm>
+               <label for="icondefault"><a href="https://en.gravatar.com/">default icontype</a></label>
+               <md-select id="icondefault" type="text" ng-model="vm.DF" ng-change="setFormat()">
+                       <md-option>mm</md-option>
+                       <md-option>identicon</md-option>
+                       <md-option>monsterid</md-option>
+                       <md-option>wavatar</md-option>
+                        <md-option>retro</md-option>
+                       <md-option>blank</md-option>
+                </md-select>
+             </md-input-container>
+     
+                <md-input-container layout-align="center">
+                   <div layout="row" layout-sm="column" layout-margin>
+                        <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeDetails()" value="Submit" title="Submit">Submit</button>
+                    </div>
+             </md-input-container>
+           </div>
+         </div>
+  </form>
+  </div><!-- user identical -->        
   
   
-  <div ng-if="vm.isAdmin">
-      <form name="imporantForm">
-         <md-input-container class="md-block" flex-gt-sm>
-              <label for="firstname">first name</label>
-              <input type="text" name="firstname" ng-model="vm.firstname" required/>
-              <div ng-messages="imporantForm.firstname.$error">
-                        <div ng-message="required">You need a first name</div>
-               </div>
-         </md-input-container>
-         <md-input-container class="md-block" flex-gt-sm>
-              <label for="lastname">last name</label>
-              <input type="text" name="lastname" ng-model="vm.lastname" required/>
-              <div ng-messages="imporantForm.lastname.$error">
-                        <div ng-message="required">You need a last name</div>
-               </div>
-         </md-input-container>
-          <md-input-container class="md-block" flex-gt-sm>
-                <label for="canbet">can bet</label>
-                <md-checkbox name="canbet" ng-model="vm.canbet" aria-label="can bet">can bet</md-checkbox>
-         </md-input-container>
-         
-         <md-input-container layout-align="center">
-        	<div layout="row" layout-sm="column" layout-margin>
-                    <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeImportant()" value="Submit" title="Submit">Submit</button>
+    <div ng-if="false && vm.isAdmin">
+        <form name="imporantForm">
+            <md-input-container class="md-block" flex-gt-sm>
+                <label for="firstname">first name</label>
+                <input type="text" name="firstname" ng-model="vm.firstname" required/>
+                <div ng-messages="imporantForm.firstname.$error">
+                    <div ng-message="required">You need a first name</div>
                 </div>
-         </md-input-container> <!-- TODO: are you sure 2x!!! -->
-     </form>
-  </div>
+                </md-input-container>
+                
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label for="lastname">last name</label>
+                    <input type="text" name="lastname" ng-model="vm.lastname" required/>
+                    <div ng-messages="imporantForm.lastname.$error">
+                        <div ng-message="required">You need a last name</div>
+                    </div>
+                </md-input-container>
+                
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label for="canbet">can bet</label>
+                    <md-checkbox name="canbet" ng-model="vm.canbet" aria-label="can bet">can bet</md-checkbox>
+                </md-input-container>
+         
+                <md-input-container layout-align="center">
+                    <div layout="row" layout-sm="column" layout-margin>
+                    <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeImportant()" value="Submit" title="Submit">Submit</button>
+                    </div>
+                </md-input-container> <!-- TODO: are you sure 2x!!! -->
+            </form>
+        </div>
   
-</div>
-
+    
+</md-content>
