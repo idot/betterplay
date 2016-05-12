@@ -18,11 +18,44 @@
 
    //      return false; // error handled
    //  }   
+              var mapErrors = function(errors){
+                  if(errors.error){
+                      return _.map(errors.error, function(value, key){ return key + ": " +value; }).join("\n");
+                  }else{                    
+                    var errorsp = _.map(errors, function(value, key){ return key + ": " +value; });
+                    var errorstring = errorsp.join("\n");  
+                    return errorstring;
+                 }
+               };
+   
+              var tryParse = function(data){ 
+                  try {
+                          var errors=JSON.parse(response.data);
+                          return mapErrors(errors);
+                  } catch(e) {
+                          if(response.data && response.data.indexOf("html") < 0){
+                               if(response.data.length > 70){
+                                   return response.data.substring(0, 70);
+                               }else{
+                                   return response.data;
+                               }
+                          }
+                          return "";
+                  }               
+               };
    
                function generalErrorHanding(response){
-                       var errors = _.map(response.data, function(value, key){ return key + " " +value; });
-                       var errorsum = errors.join("\n");
-                       toastr.error(errorsum, "application error: "+response.statusText);
+                   var errorstring = "";
+                   var datType = typeof(response.data);
+                   switch( datType ){
+                       case "string": 
+                           errorstring = tryParse(response.data); break;
+                       case "object":
+                           errorstring = mapErrors(response.data); break;
+                       default:
+                           $log.error("unforseen obj type: "+ datType);   
+                   }
+                   toastr.error(errorstring, "error: "+response.statusText);
                } 
    
               ///http://stackoverflow.com/a/34362876

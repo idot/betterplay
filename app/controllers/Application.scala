@@ -117,9 +117,10 @@ trait Security { self: Controller =>
  
   def betterException(future: Future[Result]): Future[Result] = {
       future.recoverWith {
-        case e: AccessViolationException => Logger.error("EXCEPT1: "+e.getMessage); Future.successful(Unauthorized(e.getMessage))
-        case e: ItemNotFoundException => Logger.error("EXCEPT2: "+e.getMessage); Future.successful(NotFound(e.getMessage))
-        case e: ValidationException => Logger.error("EXCEPT3: "+e.getMessage); Future.successful(NotAcceptable(e.getMessage))
+        case e: AccessViolationException => Logger.debug(e.getMessage); Future.successful(Unauthorized(e.getMessage))
+        case e: ItemNotFoundException => Logger.debug(e.getMessage); Future.successful(NotFound(e.getMessage))
+        case e: ValidationException => Logger.debug(e.getMessage); Future.successful(NotAcceptable(e.getMessage))
+        case e: java.sql.SQLException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
       }
   }
   

@@ -195,15 +195,16 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
 	  def points = column[Int]("points")
     def iconurl = column[String]("iconurl")
     def icontype = column[String]("icontype")
-	
-	  def usernameidx = index("USER_USERNAME_INDEX", (username))
-    def registerby = column[Option[Long]]("registerby")
+	  def registerby = column[Option[Long]]("registerby")
     def pointsSpecial = column[Int]("pointsspecial")
-    
     def filterBet = column[String]("filterbet")
     def filterGame = column[String]("filtergame")
     def filterLevel = column[String]("filterlevel")
     
+    def usernameidx = index("USER_USERNAME_INDEX", (username), unique = true)
+	  def emailidx = index("USER_EMAIL_INDEX", (email), unique = true)
+
+       
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id?) 
     
     def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, pointsSpecial, iconurl, icontype, registerby, filterSettings) <> (User.tupled, User.unapply)

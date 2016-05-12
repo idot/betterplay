@@ -15,10 +15,10 @@
                         <label for="username">username</label>
                         <input type="text" name="username" ng-model="vm.username"
                                   required autofocus md-placeholder="username" 
-                                  ng-minlength="3" ng-maxlength="20" ng-pattern="/^[0-9a-zA-Z_\.]+$/" ui-validate="{uniqueness : 'vm.uniqueUsername($value)' }"/>
+                                  ng-minlength="3" ng-maxlength="20" ng-pattern="/^[0-9a-zA-Z_\.]+$/" ng-change="vm.uniqueUsername(registerForm)"/>
                         <div ng-messages="registerForm.username.$error">
                                   <div ng-message="required">required</div>
-                                  <div ng-message="uniqueness">username exists</div>
+                                  <div ng-message="unique">username exists</div>
                                   <div ng-message="pattern">use only letters, number _ and .</div>
                                   <div ng-message="minlength">length at least 3</div>
                                   <div ng-message="maxlength">length smaller 21</div>

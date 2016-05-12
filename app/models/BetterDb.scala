@@ -508,6 +508,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *  
       */
      def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[User]): Future[User] = {
+          dbLogger.debug(s"inserting user: by ${registeringUser.map(_.username).getOrElse("noUser")} ${taintedUser.username}")
           if( registeringUser.map(r => ! r.isAdmin).getOrElse(false) ){ //if none => the data comes from text file import, no users yet!!!
              return Future.failed(AccessViolationException("must be admin user to be able to create users!"))
           }
@@ -520,10 +521,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
              spIds <- (specialbetsuser returning specialbetsuser.map(_.id)) ++= specialBets.map(s => SpecialBetByUser(None, userId, s.id.get, "", 0))
              _ <- createBetsForGamesForUser(userId)
           } yield userId).transactionally
-           
-      
           db.run(userQ).map(i => initUser.copy(id=Some(i)))
-          
      }
      
       /**

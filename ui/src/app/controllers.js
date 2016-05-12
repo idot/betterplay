@@ -171,7 +171,6 @@
      /** @ngInject */
     function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _, $scope) {
         var vm = this;
-        vm.stateParams = $stateParams;
 
         vm.allUsers = [];
         vm.username = "";
@@ -192,33 +191,30 @@
         }
         
         vm.comparePasswords = function(form){
-            if(vm.password2 != "" && vm.password1 != vm.password2){
-                form.password2.$setValidity('identical', false);        
-             } else {
-                 if(vm.password1 == vm.password2){
-                      form.password2.$setValidity('identical', true);
-                 }
-             }  
+            var identical = vm.password1 == vm.password2
+            form.password2.$setValidity('identical', identical);        
         };
 
-        vm.uniqueUsername = function(username) {
+        vm.uniqueUsername = function(form) {
             var duplicated = _.find(vm.allUsers, function(u) {
-                return u === username;
+                return u === vm.username;
             });
-            $log.debug("unique: " + username + " " + duplicated);
-            return !duplicated;
+            form.username.$setValidity('unique', ! duplicated);
         };
 
         vm.signon = function() {
             var pu = {
                 'username': vm.username,
                 'password': vm.password1,
+                'firstname': vm.firstname,
+                'lastname': vm.lastname,
                 'email': vm.email
             };
             Restangular.all('em2016/api/user/create').customPUT(pu).then(
                 function(success) {
-                    toastr.pop('success', "registered " + vm.username); //TODO: email
-                    vm.setFields();
+                    toastr.success("registered", vm.username);
+                     //TODO: email
+                    $state.reload();
                 }
             );
         };
