@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-    .module('ui', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'restangular', 'ui.router', 'ngMaterial', 'toastr', 'ngMdIcons', 'ngMaterialDatePicker', 'vcRecaptcha'])
+    .module('ui', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'restangular', 'ui.router', 'ngMaterial', 'toastr', 'ngMdIcons', 'ngMaterialDatePicker', 'vcRecaptcha', 'md.data.table'])
     .config(function($mdThemingProvider) {
         // Configure a dark theme with primary foreground yellow
         $mdThemingProvider.theme('docs-dark', 'default')

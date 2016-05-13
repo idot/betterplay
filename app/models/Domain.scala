@@ -80,6 +80,8 @@ object DomainHelper {
   
 }
 
+
+
 //embedaable
 case class GameResult(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
      def display = if(isSet) goalsTeam1+":"+goalsTeam2 else "-:-"

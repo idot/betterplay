@@ -20,6 +20,9 @@ import play.api.Environment
  * look at scripts folder
  * https://raw.githubusercontent.com/datasets/country-codes/master/data/country-codes.csv 
  * for conversion from FIFA to 2 letter country; of course data is sh*t ENG missing
+ * 
+ * This data gets inserted in debug mode for testing
+ * 
  **/
 
 
@@ -46,10 +49,10 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
 	     SpecialBetT(None, "topscorer", "highest scoring player", 8 , start, "topscorer" , SpecialBetType.player, "" ),
 		 SpecialBetT(None, "mvp", "most valuable player", 8 , start, "mvp" , SpecialBetType.player, "" ),
          SpecialBetT(None, "world champion", "world champion", 10 , start, "world champion" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" )
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" )
 	  )
 	  s
   }

@@ -1,56 +1,49 @@
-<form name="specialBetsForm" class="form col-xs-5" role="form">
-   <h2>special bets {{user.username}} <img ng-src="{{user && user.iconurl+'&s=50'}}" alt="gravatar" height="50" width="50"/>
-   </h2>
-   <h3 ng-if="noInstructions">you can change these <em>only until</em> start of the games (~ -2 hours)</h3>
-   <table class="table">
-	   <thead>
-	   <tr>
-	    <th>
-			name
-	   </th>
-	   <th>
-	       reward
-	   </th>
-	   <th>
-		   description
-	   </th>
-	   <th>
-		   result
-	   </th>
-       <th>
-		   prediction
-	   </th>
-	   <th>
-		   points
-	   </th>
-	 </tr>
-	  </thead>
-      <tbody>	  
-	    <tr ng-repeat="bet in templateBets">
-			<td>
-                 {{bet.template.name}}
-            </td>
-			<td>
-				<span class="badge">{{bet.template.points}}</span>
-			</td>
-			<td>
-				 {{bet.template.description}}
-			</td>
-			<td>
-				 {{bet.template.result}}
-			</td>
-			<td>
-				 {{bet.bet.prediction}}
-			</td>
-			<td>
-                 <span class="badge">{{bet.bet.points}}</span>
-			</td>
-			<td ng-if="$root.canBet(bet.template.closeDate, $root.currentTime, bet.bet)">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="change(bet)"><i class="fa fa-plus-square fa-lg"></i></button>
-                </span>
-			</td>
-		</tr>
-	</tbody>
-   </table>
-</form>  
+<div layout="column" ng-cloak>
+    <form name="headerForm">    
+        <md-toolbar md-scroll-shrink ng-if="true">
+            <md-list>
+                <md-list-item class="md-3-line">
+                    <better-user-view user="vm.user" full="true"></better-user-view>
+                </md-list-item>
+            </md-list>
+        </md-toolbar>
+    </form>
+    <h3 ng-if="vm.specialBetsOpen()">You can change these special bets <em>only until</em> start of the games (~ -1 hours)</h3>
+</div>
+
+<md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
+            <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
+                <div flex-gt-sm="140">
+                      <form name="specialBetsForm">
+                          <md-table-container>
+                            <table md-table>
+                              <thead md-head md-order="query.order" md-on-reorder="getDesserts">
+                                <tr md-row>
+                                  <th md-column>description</th>
+                                  <th md-column md-numeric>reward</th>
+                                  <th md-column>result</th>
+                                  <th md-column>prediction</th>
+                                  <th md-column md-numeric>points</th>
+                                  <th md-column></th>
+                                </tr>
+                              </thead>
+                              <tbody md-body>
+                                <tr md-row ng-repeat="bet in vm.templateBets">
+                                  <td md-cell>{{bet.template.description}}</td>
+                                  <td md-cell><span class="badge">{{bet.template.points}}</span></td>
+                                  <td md-cell>{{bet.template.result}}</td>
+                                  <td md-cell>{{bet.bet.prediction}}</td>
+                                  <td md-cell><span class="badge">{{bet.bet.points}}</span></td>
+                                  <td md-cell>
+                                      <md-input-container ng-if="vm.canBet(bet)">
+                                          <md-button type="submit" title="set" class="md-raised" ng-click="vm.change(bet)" value="set" title="set">set</button>
+                                      </md-input-container>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </md-table-container>                  
+                    </form> 
+            </div>
+        </div>
+</md-content>        

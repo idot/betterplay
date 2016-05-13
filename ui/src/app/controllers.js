@@ -333,7 +333,15 @@
         vm.templateBets = {};
         vm.noInstructions = true;
         vm.DF = betterSettings.DF;
-
+   
+        vm.canBet = function(bet){
+              return betterSettings.specialBetOpen(bet.bet);  
+        };
+        
+        vm.specialBetsOpen = function(){
+              return betterSettings.specialBetsOpen();  
+        };
+    
         function getUserBets() {
             Restangular.one('em2016/api/user', vm.stateParams.username).one('specialBets').get().then(
                 function(success) {
@@ -341,7 +349,7 @@
                     vm.templateBets = success.templateBets;
                     if (userService.isOwner(vm.user.id) && ! userService.userHadInstructions()) {
                         vm.noInstructions = true;
-                        toastr.info('info', "Welcome " + success.user.username + "!", "Please place special bets until start of the game.\n Have fun!")
+                        toastr.info("Please place special bets until start of the game.\n Have fun!", "Welcome "+success.user.username);
                     } else {
                         vm.noInstructions = false;
                     }
@@ -364,7 +372,7 @@
                     });
                     break;
                 default:
-                    toastr.pop('error', "someting is wrong!", "could not decide if its bet for player or team. Please inform somebody by email");
+                    toastr.error("could not decide if its bet for player or team.\nPlease inform administrators by email", "someting is wrong!");
             }
         };
 

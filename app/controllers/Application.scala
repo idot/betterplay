@@ -248,9 +248,12 @@ class Application(env: Environment,
   }
 
   
-  def settings() = Action {
-	  val j = Json.obj("debug" -> debug)
-	  Ok(j)
+  def settings() = Action.async {
+    betterDb.startOfGames().map{ ot =>
+      val start = ot.getOrElse( new DateTime() )
+       val json = Json.obj("debug" -> debug, "gamesStarts" -> start)
+       Ok(json)
+    } 
   }
   
   case class Login(username: String, password: String)
