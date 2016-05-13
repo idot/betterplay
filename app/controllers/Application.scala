@@ -330,8 +330,9 @@ class Application(env: Environment,
     Logger.info("starting up "+debugString)
     if(debug){
       insertdata match {
-        case "test" => new TestData(betterDb, env).insert(debug)
+        case "test" => new InitialData(betterDb, env).insert(debug)
         case "euro2016" => new Euro2016Data(betterDb, env).insert(debug)
+        case _ => //do nothing
       }
     }
   }

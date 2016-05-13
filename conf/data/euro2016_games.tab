@@ -1,0 +1,37 @@
+Subject,Start Date,Start Time,End Date,End Time,All day event,Reminder on/off,Reminder Date,Reminder Time,Meeting Organizer,Required Attendees,Optional Attendees,Meeting Resources,Billing Information,Categories,Description,Location,Mileage,Priority,Private,Sensitivity,Show time as
+France v Romania Group A,10/06/2016,20:00:00,10/06/2016,22:00:00,FALSE,FALSE,10/06/2016,19:45:00,,,,,,Football,"
+Albania v Switzerland Group A,11/06/2016,14:00:00,11/06/2016,16:00:00,FALSE,FALSE,11/06/2016,13:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Wales v Slovakia Group B,11/06/2016,17:00:00,11/06/2016,19:00:00,FALSE,FALSE,11/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+England v Russia Group B,11/06/2016,20:00:00,11/06/2016,22:00:00,FALSE,FALSE,11/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Poland v Northern Ireland Group C,12/06/2016,17:00:00,12/06/2016,19:00:00,FALSE,FALSE,12/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Germany v Ukraine Group C,12/06/2016,20:00:00,12/06/2016,22:00:00,FALSE,FALSE,12/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Turkey v Croatia Group D,12/06/2016,14:00:00,12/06/2016,16:00:00,FALSE,FALSE,12/06/2016,13:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Spain v Czech Republic Group D,13/06/2016,14:00:00,13/06/2016,16:00:00,FALSE,FALSE,13/06/2016,13:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Rep Ireland v Sweden Group E,13/06/2016,17:00:00,13/06/2016,19:00:00,FALSE,FALSE,13/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Belgium v Italy Group E,13/06/2016,20:00:00,13/06/2016,22:00:00,FALSE,FALSE,13/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Austria v Hungary Group F,14/06/2016,17:00:00,14/06/2016,19:00:00,FALSE,FALSE,14/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Poland v Iceland Group F,14/06/2016,20:00:00,14/06/2016,22:00:00,FALSE,FALSE,14/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Romania v Switzerland Group A,15/06/2016,17:00:00,15/06/2016,19:00:00,FALSE,FALSE,15/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+France v Albania Group A,15/06/2016,20:00:00,15/06/2016,22:00:00,FALSE,FALSE,15/06/2016,19:45:00,,,,,,Football,"
+Russia v Slovakia Group B,15/06/2016,14:00:00,15/06/2016,16:00:00,FALSE,FALSE,15/06/2016,13:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+England v Wales Group B,16/06/2016,14:00:00,16/06/2016,16:00:00,FALSE,FALSE,16/06/2016,13:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Ukraine v Northern Ireland Group C,16/06/2016,17:00:00,16/06/2016,19:00:00,FALSE,FALSE,16/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Germany v Poland Group C,16/06/2016,20:00:00,16/06/2016,22:00:00,FALSE,FALSE,16/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Czech Republic v Croatia Group D,17/06/2016,17:00:00,17/06/2016,19:00:00,FALSE,FALSE,17/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Spain v Turkey Group D,17/06/2016,20:00:00,17/06/2016,22:00:00,FALSE,FALSE,17/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Italy v Sweden Group E,17/06/2016,14:00:00,17/06/2016,16:00:00,FALSE,FALSE,17/06/2016,13:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Belgium v Rep Ireland Group E,18/06/2016,14:00:00,18/06/2016,16:00:00,FALSE,FALSE,18/06/2016,13:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Iceland v Hungary Group F,18/06/2016,17:00:00,18/06/2016,19:00:00,FALSE,FALSE,18/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Portugal v Austria Group F,18/06/2016,20:00:00,18/06/2016,22:00:00,FALSE,FALSE,18/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Romania v Albania Group A,19/06/2016,20:00:00,19/06/2016,22:00:00,FALSE,FALSE,19/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Switzerland v France Group A,19/06/2016,20:00:00,19/06/2016,22:00:00,FALSE,FALSE,19/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Russia v Wales Group B,20/06/2016,20:00:00,20/06/2016,22:00:00,FALSE,FALSE,20/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Slovakia v England Group B,20/06/2016,20:00:00,20/06/2016,22:00:00,FALSE,FALSE,20/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Northern Ireland v Germany Group C,21/06/2016,17:00:00,21/06/2016,19:00:00,FALSE,FALSE,21/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Ukraine v Poland Group C,21/06/2016,17:00:00,21/06/2016,19:00:00,FALSE,FALSE,21/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Croatia v Spain Group D,21/06/2016,20:00:00,21/06/2016,22:00:00,FALSE,FALSE,21/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Czech Republic v Turkey Group D,21/06/2016,20:00:00,21/06/2016,22:00:00,FALSE,FALSE,21/06/2016,19:45:00,,,,,,Football,"
+Italy v Rep Ireland Group E,22/06/2016,20:00:00,22/06/2016,22:00:00,FALSE,FALSE,22/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Sweden v Belgium Group E,22/06/2016,20:00:00,22/06/2016,22:00:00,FALSE,FALSE,22/06/2016,19:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Hungary v Poland Group F,22/06/2016,17:00:00,22/06/2016,19:00:00,FALSE,FALSE,22/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2
+Iceland v Austria Group F,22/06/2016,17:00:00,22/06/2016,19:00:00,FALSE,FALSE,22/06/2016,16:45:00,,,,,,Football,,,,Normal,TRUE,Private,2

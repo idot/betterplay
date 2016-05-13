@@ -390,6 +390,7 @@
         vm.betId = $stateParams.id;
         vm.user = {};
         vm.tb = {};
+        vm.playersWithTeams = [];
 
         specialBetService.getSpecialBet(vm.betId, vm.stateParams.username).then(function(success) {
             vm.user = success.user;
@@ -398,17 +399,12 @@
 
         Restangular.all('em2016/api/players').getList().then(
             function(success) {
-                var forFilter = _.map(success, function(pt) {
-                    pt.name = pt.player.name;
-                    pt.tname = pt.team.name;
-                    return pt;
-                });
-                vm.playerWithTeams = forFilter;
+                vm.playersWithTeams = success;
             }
         );
 
-        vm.selectPlayer = function() {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, vm.playerWithTeams);
+        vm.select = function(player) {
+            specialBetService.saveSelected(vm.tb.bet, vm.user, player);
         };
     }
 
@@ -432,8 +428,8 @@
             }
         );
 
-        vm.selectTeam = function() {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, vm.teams)
+        vm.select = function(team) {
+            specialBetService.saveSelected(vm.tb.bet, vm.user, team)
         };
     }
 

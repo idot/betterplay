@@ -29,66 +29,100 @@ import play.api.Environment
 class Euro2016Data(betterDb: BetterDb, environment: Environment) {
   import org.joda.time.format.DateTimeFormat
   import org.joda.time.DateTime
+  val long2cc = InitialDataX.longNameToCC(environment)
   
   val csv = new CSVParser()
   
   def parsePlayer(line: String): (Player,String) = {
       val items = line.split("\t")
-	  val country = items(2)
- 	  (Player(None, items(0), items(1), items(3), -1, DBImage("","")), country)  
+	    val country = items(0)
+	    val name = items(2)
+ 	    (Player(None, name, "", "", -1, DBImage("","")), country)  
   }  
     
- 
-  def toLines(file: String): Seq[String] = {
-     val is = environment.classLoader.getResourceAsStream("data/"+file)
-     val string = IOUtils.toString(is, "UTF-8")
-     val li = string.split("\n").drop(1)
-     is.close
-     li     
+   //T1, T2, Group
+   def parseTeamsFromLine(item: String): (String,String,String) = {
+       def getTeam(t: String): String = {
+         t match {
+           case "Rep Ireland" => "Republic of Ireland"
+           case _ => t
+         }
+       }
+       
+       val Groupr = """(.*) (Group \w)""".r
+       item match {
+         case Groupr(teams, group) => {
+            val t12 = teams.trim().split(" v ").map(_.trim)
+            val t1 = getTeam(t12(0))
+            val t2 = getTeam(t12(1))
+            (t1, t2, group.trim())
+         }
+         case _ => throw new RuntimeException("could not parse teams from line"+item)
+       }
+   }
+  
+   def teamsGames(levelId: Long): (Set[Team], Seq[(String,String,Game)]) = {
+      Logger.info("parsing games")
+      val lines = InitialDataX.toLines("euro2016_games.tab", environment)    
+      val ttg = lines.zipWithIndex.map{ case(line,index) => parseGame(line,levelId, index) }
+      val teams = ttg.map{case(t1,t2,g) => Seq(t1,t2)}.flatten.toSet
+      val ssg = ttg.map{case(t1,t2,g) => (t1.name, t2.name, g)}
+      (teams, ssg)     
   }
+   
+   def parseGame(line: String, levelId: Long, pos: Int): (Team,Team, Game) = {
+      Logger.trace(line)
+      val items = line.split("\\,")
+      val venue = ""
+      val (localStart, serverStart) = parseDate(items(1), items(2), line)
+      val (t1n,t2n,group) = parseTeamsFromLine(items(0))
+      def toTeam(long: String): Team = {
+         long2cc.get(long).map{ case(two,three) =>
+            Team(None, long, three, two)
+         }.getOrElse{
+           val minimap = Map(
+               "Wales" -> Team(None, long, "gb-wls", "gb-wls"),
+               "England" -> Team(None, long, "gb-eng", "gb-eng"),
+               "Russia" -> Team(None, long, "ru", "ru"), //TODO: is wrong
+               "Northern Ireland" -> Team(None, long, "NA", "NA"),
+               "Republic of Ireland" -> Team(None, long, "ir", "ir")
+               )
+           minimap.get(long).getOrElse(throw new RuntimeException(s"could not find team in map: $t1n x $t2n x $group :"+long+"\n"+line))
+         }
+      }
+      val t1 = toTeam(t1n)
+      val t2 = toTeam(t2n)
+      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos+1)
+      (t1,t2,g)
+  }
+  
   
   //2014-06-12 17:00:00.000000
   //TODO: time difference is 5 hours or 6 hours  in Manaus und Cuiab� !!!!
-  def parseDate(str: String, venue: String): (DateTime,DateTime) = {
+  def parseDate(days: String, times: String, line: String): (DateTime,DateTime) = {
       try{
-      val short = str.substring(0, str.lastIndexOf("."))
-      val df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
-      val dt = df.parseDateTime(short)
-	  val shift = if(venue == "+") 1 else 0
-      (dt,dt.plusHours(5+shift)) 
+         val dt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss")
+         val time = dt.parseDateTime(s"$days $times")
+         (time,time)
       }catch{
         case e: Exception => {
-          Logger.error("error on date: "+str+" "+venue+" "+e.getMessage)
+          Logger.error("error on date: "+days+" "+times+" "+e.getMessage+"\n"+line)
           throw(e)
         }
       }
   }
   
 
-  
-  //level   exact   tendency        nr #must be tab delimited
-  //group   3       1       0
-  def parseLevel(line: String): GameLevel = {
-      val items = line.split("\t")
-      GameLevel(None, items(0), items(1).toInt, items(2).toInt, items(3).toInt, 30)
-  }
-  
-  def levels(): Seq[GameLevel] = {
-      Logger.info("parsing levels")
-      val lines = toLines("levels.tab")
-      lines.map(parseLevel)    
-  }
-  
   def players(): Seq[(Player,String)] = {
-      Logger.info("parsing teams")
-	  val lines = toLines("players.tab")
-	  lines.map(parsePlayer)
+      Logger.info("parsing players")
+	    val lines = InitialDataX.toLines("euro2016_players.tab", environment)
+	    lines.map(parsePlayer)
   }
   
   def users(debug: Boolean): Seq[User] = {
       def uf(name: String, first: String, last: String, email: String, pw: String, admin: Boolean): User = {
           val encrypted = DomainHelper.encrypt(pw)
-		  val (u,t) = DomainHelper.randomGravatarUrl(email)
+		      val (u,t) = DomainHelper.randomGravatarUrl(email)
           User(None, name, first, last, "", true, email, encrypted, admin, admin, admin, true, 0, 0, u, t, None, DomainHelper.filterSettings())
       }
 	  if(debug){
@@ -105,6 +139,34 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) {
 //	     betterDb.specialbetsuser.filter(s => s.spId === 3l).map(_.prediction).update("Argentinia")  
  // }
   
+ def insert(debug: Boolean): Unit = { 
+    val ls = InitialDataX.levels(environment)
+    val us = users(debug)
+    val ps = players()
+    val sp = InitialDataX.specialBets(new DateTime(2016, 6, 10, 20, 0)) //TODO: check!
 
+    betterDb.dropCreate()
+
+    Logger.info("inserting data in db")
+    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1 seconds)
+    Logger.info("inserted special bets")
+    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1 seconds)
+    Logger.info("inserted users")
+    val admin = Await.result(betterDb.allUsers(), 1 seconds).sortBy(_.id).head
+    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1 seconds)  
+    val level = Await.result(betterDb.allLevels(), 1 second)(0)
+    val (teams, ttg) = teamsGames(level.id.get)
+    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 1 seconds)
+    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 1 seconds)
+    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 1 seconds)
+    Await.result(Future.sequence(ps.map{ case(p,t) => betterDb.insertPlayer(p, t, admin) }), 1 seconds)
+	   
+	  
+
+    Logger.info("done inserting data in db")
+    
+   
+    
+  }
 
 }

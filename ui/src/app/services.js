@@ -45,7 +45,7 @@
                                 if (!user.hadInstructions) {
                                     Restangular.all('em2016/api/userhadinstructions').customPOST().then(
                                         function(success) {
-                                            toastr.pop('success', "Congratulations " + user.username + "!", "You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.");
+                                            toastr.success("You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.", "Congratulations" + user.username+"! ");
                                         }
                                     );
                                 }
