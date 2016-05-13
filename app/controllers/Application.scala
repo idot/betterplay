@@ -325,11 +325,14 @@ class Application(env: Environment,
   onStart()
   
   def onStart() {
-    val insertdata = configuration.getBoolean("betterplay.insertdata").getOrElse(false)
+    val insertdata = configuration.getString("betterplay.insertdata").getOrElse("")
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
     Logger.info("starting up "+debugString)
-    if(debug && insertdata){
-      new InitialData(betterDb, env).insert(debug)
+    if(debug){
+      insertdata match {
+        case "test" => new TestData(betterDb, env).insert(debug)
+        case "euro2016" => new Euro2016Data(betterDb, env).insert(debug)
+      }
     }
   }
 

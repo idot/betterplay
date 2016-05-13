@@ -52,11 +52,11 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
     }
 
      def allLevels(): Future[Seq[GameLevel]] = {
-         db.run(levels.result)
+         db.run(levels.sortBy(l => l.level).result)
      }
 
      def allUsers(): Future[Seq[User]] = {
-         db.run(users.result)
+         db.run(users.sortBy(u => u.id).result)
      }
 
      def allSpecialBetTemplates(): Future[Seq[SpecialBetT]] = {
