@@ -244,7 +244,7 @@
         vm.icontype = "";
         vm.showname = false;
         vm.email = "";
-        vm.institute = "";
+        vm.institute = "NA";
   
         vm.userIdentical = function(){
              return userService.identical(vm.stateParams.username);
@@ -254,9 +254,9 @@
             var queryUser = Restangular.one('em2016/api/userWithEmail');
             queryUser.get().then(function(userWithEmail) {
                 vm.icontype = userWithEmail.icontype;
-                vm.showname = userWithEmail.showname;
+                vm.showname = userWithEmail.showName;
                 vm.email = userWithEmail.email;
-                vm.institute = userWithEmail.institute;
+              //TODO  vm.institute = userWithEmail.institute;
                 vm.user = userWithEmail;
                 userService.updateLogin(userWithEmail);
             });
@@ -267,7 +267,7 @@
             form.password2.$setValidity('identical', identical);        
         };
        
-        vm.updatePassword = function() {
+        vm.changePassword = function() {
             if(vm.password1 != vm.password2){
                  toastr.error("passwords don't match!");
                  vm.password1 = "";
@@ -280,13 +280,12 @@
             Restangular.all('em2016/api/user/password').customPOST(pu).then(
                 function(success) {
                     toastr.success("changed password");
-                    vm.password1 = "";
-                    vm.password2 = "";
+                    $state.reload();
                 }
             );
         };
 
-        vm.updateDetails = function() {
+        vm.changeDetails = function() {
             var u = {
                 email: vm.email,
                 icontype: vm.icontype,
@@ -295,7 +294,7 @@
             };
             Restangular.all('em2016/api/user/details').customPOST(u).then(
                 function(success) {
-                    toastr.pop('success', "updated user details");
+                    toastr.success("updated user details");
                     vm.refreshUser();
                 }
             );

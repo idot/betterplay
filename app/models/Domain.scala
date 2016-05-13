@@ -37,8 +37,8 @@ object DomainHelper {
   
   def gravatarUrl(email: String, gravatartype: String): (String,String) = {
 	  val gt = DefaultImage(gravatartype)
-      val url = Gravatar(email).ssl(true).default(gt).maxRatedAs(G).forceDefault(true).avatarUrl  
-      (url, gravatartype)
+    val url = Gravatar(email).ssl(true).default(gt).maxRatedAs(G).forceDefault(true).avatarUrl  
+    (url, gravatartype)
   }
   
   def randomGravatarUrl(email: String): (String,String) = {
@@ -148,8 +148,9 @@ case class FilterSettings(bet: String, game: String, level: String)
  * canBet: if user wants money back before game starts canbet == false
  *  
  */
-case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, institute: String, showName: Boolean, email: String, passwordHash: String,
-	        isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean,
+case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, institute: String, 
+      showName: Boolean, email: String, passwordHash: String,
+	    isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean,
 			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long],
 			filterSettings: FilterSettings
 
@@ -160,7 +161,8 @@ case class User(id: Option[Long] = None, username: String, firstName: String, la
 }
 
 
-case class UserNoPw(id: Option[Long] = None, username: String, email:String, firstName: String, lastName: String, 
+case class UserNoPw(id: Option[Long] = None, username: String, email:String, firstName: String, lastName: String, institute: String,
+        showName: Boolean, 
 	      isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, 
         totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int,
         iconurl: String, icontype: String, registeredBy: Option[Long], rank: Int,
@@ -178,7 +180,8 @@ object UserNoPwC {
             }
         }
      
-        UserNoPw(user.id, user.username, forName(user.email), forName(user.firstName), forName(user.lastName), 
+        UserNoPw(user.id, user.username, forName(user.email), forName(user.firstName), forName(user.lastName), user.institute,
+           user.showName,
 		       user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
 		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, rank,
 		       user.filterSettings, user.id == viewingUser.id

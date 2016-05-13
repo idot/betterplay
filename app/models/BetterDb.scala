@@ -195,6 +195,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      * API
      */
      def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
+        dbLogger.debug(s"attempting updating special bet for user ${submittingUser.username} ${sp.prediction}") 
         validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
            v.fold(
                err => Future.failed(ValidationException(err.list.toList.mkString("\n"))),
@@ -205,6 +206,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
 
      //TODO: TEST for exception when specialbet does not exist!
      def updateSPU(sp: SpecialBetByUser): Future[String] = {     
+         dbLogger.debug(s"updating special bet for user ${sp.prediction}") 
          val action = (specialbetsuser.filter(_.id === sp.id).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
              rowCount match {
                case 0 => DBIO.failed(new ItemNotFoundException(s"could not find specialbet with id ${sp.id}")) 
@@ -559,7 +561,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      def updateUserPassword(passwordHash: String, submittingUser: User): Future[String] = {
              val upd = (for{
                _ <- users.filter(_.id === submittingUser.id).map(u => u.passwordhash).update(passwordHash)
-             } yield{ 
+             } yield { 
                importantLogger.info(s"updated userpassword for ${submittingUser.id} ${submittingUser.username}")
                "updated password"
              }).transactionally
@@ -570,6 +572,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only admins can now change firstname and lastname
       */
      def updateUserDetails(email: String, icontype: String, showName: Boolean, institute: String, submittingUser: User): Future[User] = {
+         dbLogger.debug(s"updating user details ${submittingUser.username}")
          val (u,t) = DomainHelper.gravatarUrl(email, icontype)
          val upd = (for{
              user <- users.filter(u => u.id === submittingUser.id).result.head
@@ -583,6 +586,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only admins can now change firstname and lastname
       */
      def updateUserName(username: String, firstName: String, lastName: String, submittingUser: User): Future[User] = {
+          dbLogger.debug(s"updating user firstname and lastname ${username} ${submittingUser.username}")
           if(submittingUser.isAdmin){
              val upd = (for{
                  user <- users.filter(u => u.username === username).result.head
@@ -599,6 +603,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only admins can change id user can bet 
       */
      def updateUserCanBet(username: String, canBet: Boolean, submittingUser: User): Future[User] = {
+          dbLogger.info(s"updating user can bet ${username} ${submittingUser.username}") //TODO: send email!
           if(submittingUser.isAdmin){
              val upd = (for{
                  user <- users.filter(u => u.username === username).result.head
@@ -616,6 +621,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      
      
      def updateFilterSettings(filterSettings: FilterSettings, submittingUser: User): Future[User] = {
+         dbLogger.debug(s"updating fiilersettings ${submittingUser.username}") 
          val upd = (for{
              user <- users.filter(u => u.id === submittingUser.id).result.head
              updatedUser = user.copy(filterSettings=filterSettings)
@@ -625,17 +631,14 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      }
      
      
-     def updateUserHadInstructions(userId: Long, submittingUser: User): Future[User] = {
-         if(submittingUser.id.get == userId){
-           val upd = (for{
-               user <- users.filter(u => u.id === userId).result.head
+     def updateUserHadInstructions(submittingUser: User): Future[User] = {
+         dbLogger.debug(s"updating user had instructions ${submittingUser.username}") 
+         val upd = (for{
+               user <- users.filter(u => u.id === submittingUser.id).result.head
                updatedUser = user.copy(hadInstructions = true)
-               _ <- users.filter(_.id === userId).update(updatedUser)
+               _ <- users.filter(_.id === submittingUser.id).update(updatedUser)
            } yield( updatedUser )).transactionally
-           db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $userId")) }
-         }else{
-            Future.failed(AccessViolationException(s"only the user himself can update the password"))
-         }
+           db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id}")) }
      }
 
 

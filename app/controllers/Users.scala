@@ -186,7 +186,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
 
    def updateUserHadInstructions() = withUser.async { request =>
        betterException{
-       betterDb.updateUserHadInstructions(request.user.id.get, request.user)
+       betterDb.updateUserHadInstructions(request.user)
          .map{ succ => Ok("user knows instructions")
        }}
    }
