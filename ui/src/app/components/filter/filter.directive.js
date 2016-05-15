@@ -11,8 +11,6 @@
       restrict: 'E',
       templateUrl: 'app/components/filter/filter.html',
       scope: {
-          //userFilter: '=userFilter'
-         // game: '=game'
 	   filterChanged: '&',      // Pass a reference to the method 
       },
       controller: FilterViewController,
@@ -24,7 +22,7 @@
      /** @ngInject */
     function FilterViewController($log, Restangular, toastr, betterSettings, userService, $scope, _) {
         var vm = this;
-        vm.filter = userService.filter;
+        vm.userService = userService;
        
         vm.gameFilter = ['all', 'open', 'closed'];
         vm.levelFilter = ['all', 'group', 'last16', 'quarter', 'semi', 'third', 'final'];
@@ -32,13 +30,21 @@
         
         vm.filterChanged = function(){
             $scope.filterChanged();
-            vm.saveFilter();
+            userService.saveFilter();  
         };    
         
-        vm.saveFilter = function(){
-            userService.saveFilter();  
+    
+        vm.resetFilter = function(){
+            var filter = {
+                bet : "all",
+                level : "all",
+                game: "all"
+            };
+
+            vm.userService.filter = filter;
+            vm.filterChanged();
         };
-                
+        
     };
   }
 

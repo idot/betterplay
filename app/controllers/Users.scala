@@ -36,7 +36,8 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
      }
   }
  
-    
+
+  
   def get(username: String) = withUser.async { request =>
      betterException{
       betterDb.userWithSpecialBets(username)
@@ -55,11 +56,15 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
      }
   }
      
+  def userToUserNoPwC(user: User): JsObject = {
+      val nop = UserNoPwC(user, user)
+      val jnop = Json.toJson(nop)  
+	    val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> user.email ))
+	    jnope
+  }
+  
   def userWithEmail() = withUser.async { request =>
-	  val nop = UserNoPwC(request.user, request.user)
-    val jnop = Json.toJson(nop)  
-
-	  val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> request.user.email ))
+	  val jnope = userToUserNoPwC(request.user)
     Future.successful(Ok(jnope))  
   }	  	 
 	  
@@ -150,7 +155,8 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
          filterSettings => {
             betterException{
                betterDb.updateFilterSettings(filterSettings, request.user).map{ r =>
-                 Ok("updated filter")
+                  val jnope = userToUserNoPwC(r)
+                  Ok(jnope)  
                }
             }
          }

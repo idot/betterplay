@@ -2,7 +2,7 @@
     <md-input-container class="filterInput">
        <!-- sort by teams?-->
         <label>Game</label>
-       <md-select ng-model="vm.filter.game" aria-label="filter game open" ng-change="vm.filterChanged()">
+       <md-select ng-model="vm.userService.filter.game" aria-label="filter game open" ng-change="vm.filterChanged()">
            <md-optgroup label="Game">
                  <md-option ng-value="filter" ng-repeat="filter in vm.gameFilter">{{ filter }}</md-option>
             </md-optgroup>
@@ -11,7 +11,7 @@
 
     <md-input-container class="filterInput">
         <label>Bet</label>
-       <md-select ng-model="vm.filter.bet" aria-label="filter bet set" ng-change="vm.filterChanged()">
+       <md-select ng-model="vm.userService.filter.bet" aria-label="filter bet set" ng-change="vm.filterChanged()">
            <md-optgroup label="Bet">
                <md-option ng-value="filter" ng-repeat="filter in vm.betFilter">{{ filter }}</md-option>
            <md-optgroup>
@@ -20,18 +20,15 @@
 
     <md-input-container class="filterInput">
        <label>Level</label>
-       <md-select ng-model="vm.filter.level" aria-label="filter level" ng-change="vm.filterChanged()">
+       <md-select ng-model="vm.userService.filter.level" aria-label="filter level" ng-change="vm.filterChanged()">
            <md-optgroup label="Level">
                <md-option ng-value="filter" ng-repeat="filter in vm.levelFilter">{{ filter }}</md-option>
            <md-optgroup>
        </md-select>
    </md-input-container>
-   <!--md-button type="button" aria-label="save" class="md-raised saveButton" ng-click="vm.saveBet(bet)" ng-disabled="vm.disableSave">
-          <ng-md-icon icon="save" ng-style="vm.saveStyle"  size="20"></ng-md-icon>
+   <md-button type="button" aria-label="reset filter" class="md-raised saveButton" ng-click="vm.resetFilter()">
+         <ng-md-icon icon="settings_backup_restore" size="20"></ng-md-icon>
     </md-button>
-    <md-input-container ng-if="vm.userFilter">
-           <md-select ng-model="bet.result.goalsTeam2" aria-label="goals team2"  ng-change="vm.markBet(bet)" ng-diabled="vm.disabled">
-               <md-option ng-value="nr" ng-repeat="nr in vm.points"></md-option>
-           </md-select>
-     </md-input-container-->
+
+
 </div>

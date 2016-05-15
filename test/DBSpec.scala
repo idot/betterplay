@@ -169,6 +169,10 @@ class DBSpec extends Specification
            dbUser.institute === "newinst"
            dbUser.hadInstructions === false
 
+           val fs = FilterSettings("foo","bar","baz")
+           val updFilterUser = Await.result(betterDb.updateFilterSettings(fs, user), 1 seconds)
+           updFilterUser.filterSettings === fs
+           
            AR(betterDb.updateUserHadInstructions(user))
            AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.hadInstructions === true
        

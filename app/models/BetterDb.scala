@@ -80,6 +80,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          db.run(res)
      }
      
+     
      def usersWithSpecialBetsAndRank(): Future[Seq[(User,SpecialBets,Int)]] = {
             val ust = (for {
                 ((u, sp),t) <- users.join(specialbetsuser)
@@ -304,9 +305,6 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          val err = Future.failed(ItemNotFoundException(s"wrong password or user not found: $username"))
          db.run(users.filter(u => u.username === username).result).flatMap{ users =>
            if(users.size == 1){
-                if(! users(0).canBet ){
-                   Future.failed(AccessViolationException(s"The user is not allowed to bet! Please complain at an admin: $username"))
-                }
                 if(new org.jasypt.util.password.StrongPasswordEncryptor().checkPassword(inputPassword, users(0).passwordHash)){
                   Future{ users(0) } 
                 }else{ err }
@@ -635,7 +633,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      
      
      def updateFilterSettings(filterSettings: FilterSettings, submittingUser: User): Future[User] = {
-         dbLogger.debug(s"updating fiilersettings ${submittingUser.username}") 
+         dbLogger.debug(s"updating filtersettings ${submittingUser.username}") 
          val upd = (for{
              user <- users.filter(u => u.id === submittingUser.id).result.head
              updatedUser = user.copy(filterSettings=filterSettings)

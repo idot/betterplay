@@ -4,20 +4,6 @@
         angular
             .module('ui')
             .value('version', '0.1')
-            .factory('betterFilterService', function($log, _, userService){
-                vm = this;
-                    
-        
-                
-              
-                
-                vm.filterGames = function(games){
-                         
-                    
-                };
-                
-                
-            })
             .factory('specialBetService', function($state, Restangular, toastr, _) {
                 return {
                     getSpecialBet: function(betId, username) {
@@ -230,7 +216,7 @@
                 })
 
         
-    .service('userService', function($log, Restangular, $cookies, $state) {
+    .service('userService', function($log, Restangular, $cookies, $state, toastr) {
         var vm = this;
                 
         $log.debug("created userservice");
@@ -261,10 +247,10 @@
                 function(auth) {
                    vm.updateLogin(auth.user, auth["AUTH-TOKEN"]);
                     if (auth.user.hadInstructions) {
-                        $state.transitionTo("admin.registerUser");
-               //         $state.transitionTo("user.userBets", {
-            //                username: loggedInUser.username
-                   //     });
+                 //       $state.transitionTo("admin.registerUser");
+                        $state.transitionTo("user.userBets", {
+                            username: loggedInUser.username
+                        });
                         
                     } else {
                         $state.transitionTo("user.specialBets", {
@@ -307,6 +293,7 @@
                     });
                     Restangular.one('em2016/api/userWithEmail').get().then(function(userWithEmail) {
                         loggedInUser = userWithEmail;
+                        vm.filter = userWithEmail.filterSettings;
                     });
                 }
             } else {
@@ -316,12 +303,12 @@
         
         vm.saveFilter = function(){
             Restangular.all('em2016/api/user/filter').customPOST(vm.filter).then(
-                function(success) {
-                    toastr.pop('success', "saved filter");
+                function(userWithEmail) {
+                    vm.filter = userWithEmail.filterSettings;
                 },
                 function(error) { 
                     error.cancelGeneralHandler(); 
-                    toastr.warning("could not save filter settings");
+                    toastr.error("could not save filter settings");
                 }
             );   
         }
@@ -332,6 +319,8 @@
          **/
         vm.updateLogin = function(user, auth) {
             loggedInUser = user;
+            vm.filter = user.filterSettings;
+            
             if (typeof auth !== "undefined") {
                 authtoken = auth;
                 Restangular.setDefaultHeaders({
@@ -359,7 +348,7 @@
                 return loggedInUser.hadInstructions;
             }
         };
-
+         
         vm.reauthenticate();
 
     });
