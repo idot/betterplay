@@ -16,7 +16,7 @@
     <div ng-if="vm.userIdentical()">
         <form name="passwordForm">
             <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
-                <div flex-gt-sm="80">
+                <div flex-gt-sm="140">
                 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label for="password1">password</label>
@@ -50,10 +50,11 @@
             </div>        
         </form>
 
- 
+      <md-divider></md-divider>
+      
       <form name="detailsForm">
          <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
-           <div flex-gt-sm="80">
+           <div flex-gt-sm="140">
            <md-input-container class="md-block" flex-gt-sm>
               <label for="email">email</label>
               <input type="email" name="email" ng-model="vm.email" required/>
@@ -68,7 +69,7 @@
            
         <md-input-container class="md-block" flex-gt-sm>
                <label for="icondefault"><a href="https://en.gravatar.com/">default icontype</a></label>
-               <md-select id="icondefault" type="text" ng-model="vm.DF" ng-change="setFormat()">
+               <md-select id="icondefault" type="text" ng-model="vm.icontype" ng-change="setFormat()">
                        <md-option>mm</md-option>
                        <md-option>identicon</md-option>
                        <md-option>monsterid</md-option>

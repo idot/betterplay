@@ -35,17 +35,14 @@
                         )
                     },
 
-                    saveSelected: function(bet, user, selectedList) {
-                        var selected = _.filter(selectedList, function(t) {
-                            return t.selected;
-                        })[0];
+                    saveSelected: function(bet, user, selected) {
                         bet.prediction = selected.name;
                         Restangular.all('em2016/api/specialBet').customPOST(bet).then(
                             function(success) {
                                 if (!user.hadInstructions) {
                                     Restangular.all('em2016/api/userhadinstructions').customPOST().then(
                                         function(success) {
-                                            toastr.pop('success', "Congratulations " + user.username + "!", "You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.");
+                                            toastr.success("You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.", "Congratulations" + user.username+"! ");
                                         }
                                     );
                                 }
@@ -88,6 +85,11 @@
                     vm.startupTime = new Date();
                     vm.currentTime = new Date();
 
+                    vm.settings = { //default
+                          debug: false,
+                          gamesStarts: new Date()  
+                    };
+
                     vm.getTime = function(){
                         return vm.currentTime;  
                     };
@@ -128,6 +130,14 @@
                         var s = moment.duration(diff, "milliseconds").humanize(false);
                         return s;
                     };
+   
+                    vm.specialBetOpen = function(bet){
+                        return vm.canBet(vm.settings.gamesStarts, bet);
+                    };
+
+                    vm.specialBetsOpen = function(){
+                        return ! vm.betClosed(vm.settings.gamesStarts);
+                    };
 
                     vm.betClosed = function(serverStart) {
                         var diff = (serverStart - MSTOCLOSING) - vm.currentTime;
@@ -151,7 +161,9 @@
 
                     vm.updateSettings = function() {
                         Restangular.one('em2016/api/settings').get().then(function(settings) {
+                            settings.gamesStarts = new Date(settings.gamesStarts);
                             vm.settings = settings;
+                            $log.debug(settings);
                         })
                     };
 
@@ -210,7 +222,8 @@
                                 return "-:-"
                         }  
                     };
-
+                    
+                    vm.updateSettings();
                     vm.updateTimeFromServer()
                     $timeout(vm.onTimeout, UPDATEINTERVAL);
                 })
@@ -218,7 +231,7 @@
         
     .service('userService', function($log, Restangular, $cookies, $state) {
         var vm = this;
-        
+                
         $log.debug("created userservice");
 
         var NOUSER = {

@@ -169,7 +169,7 @@ class DBSpec extends Specification
            dbUser.institute === "newinst"
            dbUser.hadInstructions === false
 
-           AR(betterDb.updateUserHadInstructions(user.id.get, user))
+           AR(betterDb.updateUserHadInstructions(user))
            AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.hadInstructions === true
        
            AR(betterDb.updateUserPassword("newhash" , user))

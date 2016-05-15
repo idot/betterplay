@@ -244,7 +244,7 @@
         vm.icontype = "";
         vm.showname = false;
         vm.email = "";
-        vm.institute = "";
+        vm.institute = "NA";
   
         vm.userIdentical = function(){
              return userService.identical(vm.stateParams.username);
@@ -254,9 +254,9 @@
             var queryUser = Restangular.one('em2016/api/userWithEmail');
             queryUser.get().then(function(userWithEmail) {
                 vm.icontype = userWithEmail.icontype;
-                vm.showname = userWithEmail.showname;
+                vm.showname = userWithEmail.showName;
                 vm.email = userWithEmail.email;
-                vm.institute = userWithEmail.institute;
+              //TODO  vm.institute = userWithEmail.institute;
                 vm.user = userWithEmail;
                 userService.updateLogin(userWithEmail);
             });
@@ -267,7 +267,7 @@
             form.password2.$setValidity('identical', identical);        
         };
        
-        vm.updatePassword = function() {
+        vm.changePassword = function() {
             if(vm.password1 != vm.password2){
                  toastr.error("passwords don't match!");
                  vm.password1 = "";
@@ -280,13 +280,12 @@
             Restangular.all('em2016/api/user/password').customPOST(pu).then(
                 function(success) {
                     toastr.success("changed password");
-                    vm.password1 = "";
-                    vm.password2 = "";
+                    $state.reload();
                 }
             );
         };
 
-        vm.updateDetails = function() {
+        vm.changeDetails = function() {
             var u = {
                 email: vm.email,
                 icontype: vm.icontype,
@@ -295,7 +294,7 @@
             };
             Restangular.all('em2016/api/user/details').customPOST(u).then(
                 function(success) {
-                    toastr.pop('success', "updated user details");
+                    toastr.success("updated user details");
                     vm.refreshUser();
                 }
             );
@@ -334,7 +333,15 @@
         vm.templateBets = {};
         vm.noInstructions = true;
         vm.DF = betterSettings.DF;
-
+   
+        vm.canBet = function(bet){
+              return betterSettings.specialBetOpen(bet.bet);  
+        };
+        
+        vm.specialBetsOpen = function(){
+              return betterSettings.specialBetsOpen();  
+        };
+    
         function getUserBets() {
             Restangular.one('em2016/api/user', vm.stateParams.username).one('specialBets').get().then(
                 function(success) {
@@ -342,7 +349,7 @@
                     vm.templateBets = success.templateBets;
                     if (userService.isOwner(vm.user.id) && ! userService.userHadInstructions()) {
                         vm.noInstructions = true;
-                        toastr.info('info', "Welcome " + success.user.username + "!", "Please place special bets until start of the game.\n Have fun!")
+                        toastr.info("Please place special bets until start of the game.\n Have fun!", "Welcome "+success.user.username);
                     } else {
                         vm.noInstructions = false;
                     }
@@ -365,7 +372,7 @@
                     });
                     break;
                 default:
-                    toastr.pop('error', "someting is wrong!", "could not decide if its bet for player or team. Please inform somebody by email");
+                    toastr.error("could not decide if its bet for player or team.\nPlease inform administrators by email", "someting is wrong!");
             }
         };
 
@@ -377,12 +384,17 @@
     }
 
      /** @ngInject */
-    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toastr, _, specialBetService) {
+    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
         vm.user = {};
         vm.tb = {};
+        vm.playersWithTeams = [];
+
+        vm.specialBetsOpen = function(){
+              return betterSettings.specialBetsOpen();  
+        };
 
         specialBetService.getSpecialBet(vm.betId, vm.stateParams.username).then(function(success) {
             vm.user = success.user;
@@ -391,28 +403,28 @@
 
         Restangular.all('em2016/api/players').getList().then(
             function(success) {
-                var forFilter = _.map(success, function(pt) {
-                    pt.name = pt.player.name;
-                    pt.tname = pt.team.name;
-                    return pt;
-                });
-                vm.playerWithTeams = forFilter;
+                vm.playersWithTeams = success;
             }
         );
 
-        vm.selectPlayer = function() {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, vm.playerWithTeams);
+        vm.select = function(player) {
+            specialBetService.saveSelected(vm.tb.bet, vm.user, player.player);
         };
     }
 
 
      /** @ngInject */
-    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService) {
+    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
         vm.user = {};
         vm.tb = {};
+        vm.allTeams = {};
+        
+        vm.specialBetsOpen = function(){
+              return betterSettings.specialBetsOpen();  
+        };
 
         specialBetService.getSpecialBet(vm.betId, vm.stateParams.username).then(function(success) {
             vm.user = success.user;
@@ -421,12 +433,12 @@
 
         Restangular.all('em2016/api/teams').getList().then(
             function(success) {
-                vm.teams = success;
+                vm.allTeams = success;
             }
         );
 
-        vm.selectTeam = function() {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, vm.teams)
+        vm.select = function(team) {
+            specialBetService.saveSelected(vm.tb.bet, vm.user, team);
         };
     }
 

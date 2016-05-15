@@ -18,8 +18,8 @@ import play.api.i18n.MessagesApi
 class Players @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
  
   def all() = withUser.async { request =>
-      betterDb.allPlayers().map{ all => Ok(Json.toJson(all)) }
+      betterDb.allPlayersWithTeam().map{ all => Ok(Json.toJson(all)) }
   }
+
   
- 
 }

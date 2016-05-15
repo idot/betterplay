@@ -248,9 +248,12 @@ class Application(env: Environment,
   }
 
   
-  def settings() = Action {
-	  val j = Json.obj("debug" -> debug)
-	  Ok(j)
+  def settings() = Action.async {
+    betterDb.startOfGames().map{ ot =>
+      val start = ot.getOrElse( new DateTime() )
+       val json = Json.obj("debug" -> debug, "gamesStarts" -> start)
+       Ok(json)
+    } 
   }
   
   case class Login(username: String, password: String)
@@ -322,11 +325,15 @@ class Application(env: Environment,
   onStart()
   
   def onStart() {
-    val insertdata = configuration.getBoolean("betterplay.insertdata").getOrElse(false)
+    val insertdata = configuration.getString("betterplay.insertdata").getOrElse("")
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
     Logger.info("starting up "+debugString)
-    if(debug && insertdata){
-      new InitialData(betterDb, env).insert(debug)
+    if(debug){
+      insertdata match {
+        case "test" => new InitialData(betterDb, env).insert(debug)
+        case "euro2016" => new Euro2016Data(betterDb, env).insert(debug)
+        case _ => //do nothing
+      }
     }
   }
 

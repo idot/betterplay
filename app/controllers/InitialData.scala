@@ -23,6 +23,8 @@ import play.api.Environment
  **/
 
 
+
+
 class InitialData(betterDb: BetterDb, environment: Environment) {
   import org.joda.time.format.DateTimeFormat
   import org.joda.time.DateTime
@@ -46,10 +48,10 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
 	     SpecialBetT(None, "topscorer", "highest scoring player", 8 , start, "topscorer" , SpecialBetType.player, "" ),
 		 SpecialBetT(None, "mvp", "most valuable player", 8 , start, "mvp" , SpecialBetType.player, "" ),
          SpecialBetT(None, "world champion", "world champion", 10 , start, "world champion" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "", 5 , start, "semifinalist" , SpecialBetType.team, "" )
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" )
 	  )
 	  s
   }
