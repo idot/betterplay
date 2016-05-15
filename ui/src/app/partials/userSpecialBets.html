@@ -7,8 +7,14 @@
                 </md-list-item>
             </md-list>
         </md-toolbar>
+        <div ng-if="vm.isAdmin">
+            <h3 >You can set the result when clicking the checkbox, be careful!"</h3>
+            <md-input-container class="md-block" flex-gt-sm>
+                     <md-checkbox name="set result" ng-model="vm.setresult" aria-label="set result">set result</md-checkbox>
+             </md-input-container>
+       </div>
     </form>
-    <h3 ng-if="vm.specialBetsOpen()">You can change these special bets <em>only until</em> start of the games (~ -1 hours)</h3>
+    <h3 ng-if="vm.specialBetsOpen()">You can change these special bets <em>only until</em> ~ 1hr before start of the games</h3>
 </div>
 
 <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>

@@ -62,7 +62,7 @@ POST    /em2016/api/createBetsForUsers      controllers.Users.createBetsForUsers
 GET     /em2016/api/bet/log                 controllers.Bets.log()   
 POST    /em2016/api/bet/:id                 controllers.Bets.update(id: Long) 
 
-
+POST    /em2016/api/specialBetResult         controllers.SpecialBets.resultSpecialBet()
 POST    /em2016/api/specialBet               controllers.SpecialBets.updateSpecialBet()
 GET     /em2016/api/specialBets/:id          controllers.SpecialBets.specialBetsByTemplate(id: Long)
 GET     /em2016/api/statistics/excel         controllers.Statistics.excel()

@@ -48,6 +48,19 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
 	  )
   }
   
+  def resultSpecialBet() = withAdmin.async(parse.json) { request =>
+	  request.body.validate[SpecialBetByUser].fold(
+		  err => Future.successful(UnprocessableEntity(Json.obj("error" -> JsError.toJson(err)))),
+		  succ => {
+				    betterException{
+			      betterDb.setSpecialBetResult(succ.specialbetId, succ.prediction, request.admin)
+			         .map{ s => Ok(Json.toJson(s)) }
+		      }
+		  }
+	  )
+  }
+  
+  
   def specialBetsByTemplate(templateId: Long) = withUser.async(parse.json) { request =>
       betterException{
         betterDb.specialBetsByTemplate(templateId)

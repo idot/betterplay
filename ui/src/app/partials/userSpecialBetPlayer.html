@@ -7,6 +7,9 @@
                  please select one player from the list
                 </md-list-item>
             </md-list>
+            <div ng-if="vm.user.isAdmin && vm.setresult">
+                <h3 style="color: red;">setting result</h3>
+            </div>
         </md-toolbar>
     </form>
 </div>

@@ -290,8 +290,9 @@ class DBSpec extends Specification
           uwsb._2.unzip._2.filter(sb => sb.id == sp3.id).head.prediction === "XY"        
 		  
           //now set the special bet result on specialbetstore
-		      db.run(betterDb.specialbetstore.filter(_.id === sp3.specialbetId).map(_.result).update("XY"))
-          
+          val setSpR1 = Await.result(betterDb.setSpecialBetResult(sp3.specialbetId, "XY", admin), 1 seconds)
+	        setSpR1 === "updated special bet with result XY" 
+              
           Await.result(betterDb.startOfGames(), 1 seconds).get === firstStart
           
           //result changes are ignored

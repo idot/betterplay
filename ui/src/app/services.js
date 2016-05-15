@@ -35,11 +35,12 @@
                         )
                     },
 
-                    saveSelected: function(bet, user, selected) {
+                    saveSelected: function(bet, user, selected, setresult) {
                         bet.prediction = selected.name;
-                        Restangular.all('em2016/api/specialBet').customPOST(bet).then(
+                        var url = setresult ? 'em2016/api/specialBetResult' : 'em2016/api/specialBet';
+                        Restangular.all(url).customPOST(bet).then(
                             function(success) {
-                                if (!user.hadInstructions) {
+                                if (!user.hadInstructions && ! setresult) {
                                     Restangular.all('em2016/api/userhadinstructions').customPOST().then(
                                         function(success) {
                                             toastr.success("You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.", "Congratulations" + user.username+"! ");

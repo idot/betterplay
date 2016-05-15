@@ -59,13 +59,13 @@
                 controllerAs: 'vm'
             })
             .state('user.specialBetsspecialPlayers', {
-                url: "/:username/special/player/:id",
+                url: "/:username/special/player/:id?setresult",
                 templateUrl: 'app/partials/userSpecialBetPlayer.html',
                 controller: 'EditUserSpecialPlayerController',
                 controllerAs: 'vm'
             })
             .state('user.specialBetsspecialTeams', {
-                url: "/:username/special/team/:id",
+                url: "/:username/special/team/:id?setresult",
                 templateUrl: 'app/partials/userSpecialBetTeam.html',
                 controller: 'EditUserSpecialTeamController',
                 controllerAs: 'vm'

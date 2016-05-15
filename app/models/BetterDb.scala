@@ -203,6 +203,20 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
            )}
      }
 
+     def setSpecialBetResult(specialBetId: Long, result: String, submittingUser: User): Future[String] = {
+        dbLogger.info(s"attempting setting special bet result: ${submittingUser.username} ${specialBetId} ${result}")
+        if(submittingUser.isAdmin){
+           val action = specialbetstore.filter(_.id === specialBetId).map(_.result).update(result).flatMap{ rowCount =>
+             rowCount match {
+               case 0 => DBIO.failed(new ItemNotFoundException(s"could not find specialbet with id ${specialBetId}")) 
+               case 1 => DBIO.successful(s"updated special bet with result ${result}")
+               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${specialBetId}"))
+             }
+           }.transactionally
+           db.run(action)
+        }else Future.failed(AccessViolationException("only admins can set special bet results!"))
+     }
+     
 
      //TODO: TEST for exception when specialbet does not exist!
      def updateSPU(sp: SpecialBetByUser): Future[String] = {     
@@ -211,7 +225,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
              rowCount match {
                case 0 => DBIO.failed(new ItemNotFoundException(s"could not find specialbet with id ${sp.id}")) 
                case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
-               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special best with id ${sp.id}"))
+               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${sp.id}"))
              }
          }).transactionally
          db.run(action)

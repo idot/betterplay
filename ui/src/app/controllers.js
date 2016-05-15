@@ -333,6 +333,7 @@
         vm.templateBets = {};
         vm.noInstructions = true;
         vm.DF = betterSettings.DF;
+        vm.setresult = false;
    
         vm.canBet = function(bet){
               return betterSettings.specialBetOpen(bet.bet);  
@@ -358,18 +359,20 @@
         }
 
         vm.change = function(templatebet) {
+            params = {
+                username: vm.user.username,
+                id: templatebet.bet.id,
+            };
+            if(vm.setresult){
+                params.setresult = true;  
+            };
+            
             switch (templatebet.template.itemType) {
                 case "team":
-                    $state.transitionTo("user.specialBetsspecialTeams", {
-                        username: vm.user.username,
-                        id: templatebet.bet.id
-                    });
+                    $state.transitionTo("user.specialBetsspecialTeams", params);
                     break;
                 case "player":
-                    $state.transitionTo("user.specialBetsspecialPlayers", {
-                        username: vm.user.username,
-                        id: templatebet.bet.id
-                    });
+                    $state.transitionTo("user.specialBetsspecialPlayers", params);
                     break;
                 default:
                     toastr.error("could not decide if its bet for player or team.\nPlease inform administrators by email", "someting is wrong!");
@@ -388,6 +391,13 @@
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
+        
+        if($stateParams.setresult){
+            vm.setresult = true;
+        }else{
+            vm.setresult = false;
+        }
+        
         vm.user = {};
         vm.tb = {};
         vm.playersWithTeams = [];
@@ -408,7 +418,7 @@
         );
 
         vm.select = function(player) {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, player.player);
+            specialBetService.saveSelected(vm.tb.bet, vm.user, player.player, vm.setresult);
         };
     }
 
@@ -421,6 +431,12 @@
         vm.user = {};
         vm.tb = {};
         vm.allTeams = {};
+        
+        if($stateParams.setresult){
+            vm.setresult = true;
+        }else{
+            vm.setresult = false;
+        }
         
         vm.specialBetsOpen = function(){
               return betterSettings.specialBetsOpen();  
@@ -438,7 +454,7 @@
         );
 
         vm.select = function(team) {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, team);
+            specialBetService.saveSelected(vm.tb.bet, vm.user, team, vm.setresult);
         };
     }
 
