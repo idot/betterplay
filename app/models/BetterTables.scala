@@ -56,7 +56,9 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
                bets.schema ++
                specialbetstore.schema ++
                specialbetsuser.schema ++
-               betlogs.schema 
+               betlogs.schema ++
+               messages.schema ++
+               usersmessages.schema
   }
 
   def createTables(){
@@ -284,9 +286,9 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def messageType = column[String]("messagetype")
     def subject = column[String]("subject")
     def body = column[String]("body")
+    def sendingUser = column[Long]("sendinguser")
     
-    
-    def * = (id.?, messageType, subject, body) <> (Message.tupled, Message.unapply _)
+    def * = (id.?, messageType, subject, body, sendingUser) <> (Message.tupled, Message.unapply _)
     
   }
   
@@ -299,11 +301,12 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def display = column[Boolean]("display")
     def seen = column[Option[DateTime]]("seen")
     def token = column[String]("token")
+    def sendingUser = column[Long]("sendinguser")
     
     def user = foreignKey("MESSAGE_USER_FK", userId, users)(_.id)
     def message = foreignKey("MESSAGE_MESSAGE_FK", messageId, messages)(_.id)
     
-    def * = (id.?, userId, messageId, token, send, sent, display, seen) <> (UserMessage.tupled, UserMessage.unapply _)
+    def * = (id.?, userId, messageId, token, send, sent, display, seen, sendingUser) <> (UserMessage.tupled, UserMessage.unapply _)
   
   }
   

@@ -237,7 +237,7 @@ case class GameWithTeams(game: Game, team1: Team, team2: Team, level: GameLevel)
 case class UserToken(id: Option[Long] = None, userId: Long, token: String, created: DateTime, used: Option[DateTime], tokentype: String)
 
 
-case class Message(id: Option[Long] = None, messageType: String, subject: String, body: String)
-case class UserMessage(id: Option[Long], userId: Long, messageId: Long, token: String, send: Boolean, sent: Option[DateTime], display: Boolean, seen: Option[DateTime])
+case class Message(id: Option[Long] = None, messageType: String, subject: String, body: String, creatingUser: Long)
+case class UserMessage(id: Option[Long], userId: Long, messageId: Long, token: String, send: Boolean, sent: Option[DateTime], display: Boolean, seen: Option[DateTime], sendingUser: Long)
 
 

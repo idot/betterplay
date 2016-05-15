@@ -762,5 +762,41 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
     }
  
    
+    def insertMessage(message: Message, userId: Long, token: String, send: Boolean, display: Boolean): Future[String] = {
+        val action = (for {
+          messId <- (messages returning messages.map(_.id)) += message  
+          mess = message.copy(id=Some(messId))
+          usermessage = UserMessage(None, userId, messId, token, send, None, display, None, message.creatingUser)
+          um <- (usersmessages returning usersmessages.map(_.id)) += usermessage
+        } yield()).transactionally
+        db.run(action).map{ r => s"saved sending message to user id: $userId" }
+    }
+ 
+//TODO send bulk email    
+//    def insertMessages(message: Message, userIds: Seq[Long], send: Boolean, display: Boolean): Future[String] = {
+//        val action = (for {
+//          messId <- (messages returning messages.map(_.id)) += message  
+//          mess = message.copy(id=Some(messId))
+//          usermessage = userIds.map{ UserMessage(None, userId, messId, token, send, None, display, None, sendingUser.id.get)
+//          um <- (usersmessages returning usersmessages.map(_.id)) += usermessage
+//        } yield()).transactionally
+//        db.run(action).map{ r => s"saved sending message to $userId" } 
+//    }
+    
+    def userByTokenPassword(token: String, now: DateTime, passwordHash: String): Future[User] = {
+        if(token.length == BetterSettings.TOKENLENGTH){
+           val action = (for {
+            (message, user) <- usersmessages.filter(m => m.token === token && ! m.seen.isDefined).join(users).on( _.userId === _.id ).result.head
+            upd <- usersmessages.filter(_.id === message.id).map(_.seen).update(Some(now))
+            _ <- users.filter(_.id === user.id).map(_.passwordhash).update(passwordHash)
+           } yield(user)).transactionally
+           db.run(action).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find message with token that was not seen yet")) }
+        } else {
+           Future.failed(ValidationException(s"the token was not correct"))
+        }
+    }
+    
+    
+    
 }
 

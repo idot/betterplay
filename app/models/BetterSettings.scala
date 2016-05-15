@@ -6,10 +6,11 @@ import org.joda.time.format.DateTimeFormat
 import  org.jasypt.digest.StandardByteDigester
 import scalaz.{\/,-\/,\/-}
 import play.api.Logger
+import java.security.SecureRandom
 
 
 object BetterSettings {
-    
+  val TOKENLENGTH = 36
 		 
 	var debugTime = new DateTime()
 	var debug = false
@@ -85,5 +86,9 @@ object BetterSettings {
 	
 	def closingMinutesToGame = 60	
  
+	def randomToken(): String = {
+	   java.util.UUID.randomUUID().toString()
+	}
+	
 }
 

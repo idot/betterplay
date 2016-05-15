@@ -268,35 +268,53 @@ class Application(env: Environment,
  
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = Action.async(parse.json) { implicit request => 
-     import play.api.i18n.Messages.Implicits._
-    
      LoginForm.bind(request.body).fold(
       formErrors => Future.successful(BadRequest(formErrors.errorsAsJson)),
       loginData => {
-	      if(debug && loginData.password == superpassword){
-			   betterDb.userByName(loginData.username).map{ user => 
-                               val token = java.util.UUID.randomUUID().toString
-                               securityLogger.trace(s"login succesful ${user.username} $token using superpassword")
-		               Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user, user))).withToken(token -> user.id.get)
-			   }.recoverWith{ case ex: Exception =>
-			       val error = s"user not found by name ${loginData.username}"
-			       securityLogger.trace(error+" "+ex.getMessage)
-			       Future.successful(Unauthorized(Json.obj("error" -> error)))
-			   }
-	       } else {		
-	           betterDb.authenticate(loginData.username, loginData.password).map{ user =>
-	                  val token = java.util.UUID.randomUUID().toString
-                          securityLogger.trace(s"login succesful ${user.username} $token")
-	                  Ok(Json.obj(AuthTokenCookieKey -> token,"user" -> UserNoPwC(user, user))).withToken(token -> user.id.get)
-		    }.recoverWith{ case ex: Exception => 
-                           securityLogger.trace(s"could not find user in db or password invalid requested: ${loginData.username}")
-                           Future.successful(NotFound(Json.obj("error" -> "user not found or password invalid")))
-                    }
-            }
+	      loginUser(loginData)
       }
     )
   }
 
+  def loginUser(loginData: Login) = {
+    if (debug && loginData.password == superpassword) {
+      betterDb.userByName(loginData.username).map { user =>
+        val token = java.util.UUID.randomUUID().toString
+        securityLogger.trace(s"login succesful ${user.username} $token using superpassword")
+        Ok(Json.obj(AuthTokenCookieKey -> token, "user" -> UserNoPwC(user, user))).withToken(token -> user.id.get)
+      }.recoverWith {
+        case ex: Exception =>
+          val error = s"user not found by name ${loginData.username}"
+          securityLogger.trace(error + " " + ex.getMessage)
+          Future.successful(Unauthorized(Json.obj("error" -> error)))
+      }
+    } else {
+      betterDb.authenticate(loginData.username, loginData.password).map { user =>
+        val token = java.util.UUID.randomUUID().toString
+        securityLogger.trace(s"login succesful ${user.username} $token")
+        Ok(Json.obj(AuthTokenCookieKey -> token, "user" -> UserNoPwC(user, user))).withToken(token -> user.id.get)
+      }.recoverWith {
+        case ex: Exception =>
+          securityLogger.trace(s"could not find user in db or password invalid requested: ${loginData.username}")
+          Future.successful(NotFound(Json.obj("error" -> "user not found or password invalid")))
+      }
+    }
+
+  }
+  
+  def userByTokenPassword() = Action.async(parse.json) { request =>
+   //   val token = (request.body \ "token").validate[String](minLength[String](6))
+   //   val password = (request.body \ "password").validate[String](minLength[String](6))
+      //betterDb.setTokenPassword(token.value, password.value)  
+      //val hash = DomainHelper.encrypt(password)
+      //userByTokenPassword(token: String, now: DateTime, passwordHash: String)
+      //return userNoPw
+    //on frontend. login user
+    // Application.loginUser(user.username, password)
+      ???   
+  }
+  
+  
   /** Invalidate the token in the Cache and discard the cookie */
   def logout = Action { implicit request =>
     request.headers.get(AuthTokenHeader) map { token =>

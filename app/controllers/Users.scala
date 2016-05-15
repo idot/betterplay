@@ -35,9 +35,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
         Ok(Json.toJson(allNoPw )) 
      }
   }
- 
-
-  
+   
   def get(username: String) = withUser.async { request =>
      betterException{
       betterDb.userWithSpecialBets(username)

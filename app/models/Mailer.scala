@@ -3,12 +3,13 @@ package models
 import akka.actor._
 import javax.inject._
 import play.api.Configuration
-//import play.api.libs.mailer._
+import play.api.libs.mailer._
 
 //token contains expiry date encrypted with secret key
 
-sealed trait MessageTypes {
-  
+object MessageTypes {
+   val REGISTRATION = "registration"
+   val FREE = "free"
   
 }
 
@@ -21,8 +22,8 @@ sealed trait MessageTypes {
 //disable links until password is saved
 //
 
-//, mailerClient: MailerClient
-class Mailer @Inject() (configuration: Configuration) extends Actor {
+
+class Mailer @Inject() (configuration: Configuration, mailerClient: MailerClient) extends Actor {
   
   def receive = {
       case _ =>
@@ -38,7 +39,7 @@ class Mailer @Inject() (configuration: Configuration) extends Actor {
                     |click on the link below.
                     |After this, please don't forget to fill out the special bets until the start of the EURO 2016 on the 10. Jun.
                     |
-                    | https://ngs.vbcf.ac.at/registerUser/${token}
+                    | https://ngs.vbcf.ac.at/euro2016/completeRegistration/${token}
                     |
                     |
                     |good luck

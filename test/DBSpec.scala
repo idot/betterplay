@@ -192,7 +192,25 @@ class DBSpec extends Specification
            t === allSpecialTemplates(0)
            spBs.map(_.userId).sorted === AR(betterDb.allUsers).map(_.id.get).sorted
            
-          
+           //message: Message, userId: Long, token: String, send: Boolean, display: Boolean, sendingUser: User)
+           val message = Message(None, MessageTypes.REGISTRATION, "the subject", "the message body", admin.id.get)
+           val randomToken = BetterSettings.randomToken()
+           randomToken.length === BetterSettings.TOKENLENGTH
+           val insertToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".substring(0, BetterSettings.TOKENLENGTH)
+           val m = AR(betterDb.insertMessage(message, user.id.get, insertToken, true, true))
+           m === s"saved sending message to user id: ${user.id.get}"
+           val tokTime = new DateTime()
+           betterDb.userByTokenPassword(insertToken.substring(0, BetterSettings.TOKENLENGTH -1), tokTime, "thehash") must throwAn[ValidationException](message = "the token was not correct").await
+           betterDb.userByTokenPassword(insertToken.substring(0, BetterSettings.TOKENLENGTH -1)+"B", tokTime, "thehash") must throwAn[ItemNotFoundException](message = "could not find message with token that was not seen yet").await
+           
+          // val r = AR(db.run(betterDb.usersmessages.result))
+        
+           val tokUser = AR(betterDb.userByTokenPassword(insertToken, tokTime, "tokenhash"))
+           tokUser.username === user.username
+           AR(betterDb.allUsers()).filter(u => u.username == user.username).head.passwordHash === "tokenhash"
+      
+           //now we access it again and it should have been used!
+           betterDb.userByTokenPassword(insertToken, tokTime, "thehash") must throwAn[ItemNotFoundException](message = "could not find message with token that was not seen yet").await
       }
     
       def insertSpecialBetTemplates(){
