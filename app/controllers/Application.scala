@@ -9,6 +9,7 @@ import play.api.cache.CacheApi
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json._
+import play.api.libs.json.JsSuccess
 import play.api.data.Forms._
 import play.api.data.Form
 import models.DomainHelper
@@ -303,15 +304,20 @@ class Application(env: Environment,
   }
   
   def userByTokenPassword() = Action.async(parse.json) { request =>
-   //   val token = (request.body \ "token").validate[String](minLength[String](6))
-   //   val password = (request.body \ "password").validate[String](minLength[String](6))
-      //betterDb.setTokenPassword(token.value, password.value)  
-      //val hash = DomainHelper.encrypt(password)
-      //userByTokenPassword(token: String, now: DateTime, passwordHash: String)
-      //return userNoPw
-    //on frontend. login user
-    // Application.loginUser(user.username, password)
-      ???   
+      val tokenJ = (request.body \ "token").validate[String]
+      val passwordJ = (request.body \ "password").validate[String]
+      (tokenJ, passwordJ) match {
+        case (token: JsSuccess[String], password: JsSuccess[String]) if token.value.length == BetterSettings.TOKENLENGTH && password.value.length >= 6 => {
+           betterException {
+               betterDb.userByTokenPassword(token.value, BetterSettings.now(), DomainHelper.encrypt(password.value)).flatMap{ user =>  
+                 loginUser(Login(user.username, password.value)) 
+               }
+           }
+        }
+        case _ => {
+             Future.successful(UnprocessableEntity(Json.obj("error" -> "Could not parse token or password")))
+        }
+     }  
   }
   
   

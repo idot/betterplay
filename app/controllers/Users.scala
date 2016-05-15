@@ -11,12 +11,13 @@ import play.api.data.Forms._
 import play.api.cache.CacheApi
 import play.api.i18n.MessagesApi
 import play.api.i18n.I18nSupport
+import akka.actor._
 
 import models._
 import models.JsonHelper._
 import models.BetterSettings
 
-import javax.inject.{Inject, Provider, Singleton}
+import javax.inject.{Inject, Provider, Singleton, Named}
 
 
 import scala.concurrent.Future
@@ -26,7 +27,8 @@ import play.api.libs.ws._
 import scala.concurrent.duration._
 
 @Singleton
-class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, val messagesApi: MessagesApi, ws: WSClient, configuration: Configuration) extends Controller with Security with I18nSupport {
+class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, val messagesApi: MessagesApi,
+                  ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends Controller with Security with I18nSupport {
     
   
   def all() = withUser.async { request =>
@@ -86,11 +88,16 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
            succ =>  {
              betterException{
                val created = DomainHelper.userFromUPE(succ.username, succ.password, succ.firstname, succ.lastname, succ.email, request.admin.id)
-                betterDb.insertUser(created, false, false, Some(request.admin)).map{ r =>
-                //TODO: EMAIL => PASSWORD
-			          Ok(s"created user ${succ.username}")
-			       }}
-		   })
+               val token = BetterSettings.randomToken()
+               for{
+                 user <- betterDb.insertUser(created, false, false, Some(request.admin))
+                 message = MailGenerator.createUserRegistrationMail(user, token, request.admin)
+                 inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
+               } yield {
+                 Ok(s"created user ${user.username}")
+               }
+			       }
+		       })
    }
    
    

@@ -37,6 +37,7 @@ libraryDependencies ++= Seq(
   filters,
   "com.typesafe.play" %% "play-slick" % "2.0.0",
   "com.typesafe.slick" %% "slick" % "3.1.1",
+  "com.typesafe.akka" %% "akka-contrib" % "2.4.4", 
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
   "org.specs2" %% "specs2-core" % "3.7.2" % "test",

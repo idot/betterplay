@@ -515,9 +515,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       * canRegister: if registeringUser has registering 
       * 
-      *  the other one is token based, but I don't know if i manage to create this workflow: (Not done now!!!)
-      *  user registers with e-mail, token is generated for his id
-      *  user klicks link with token e-mail, opens web, => user signs on..
+      *  the other one is token based
       *
       *  
       */
