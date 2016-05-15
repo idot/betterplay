@@ -15,9 +15,9 @@
         <form name="specialBetsForm">
                 <md-list>
                      <md-list-item class="md-1-line" ng-repeat="team in vm.allTeams">
-                          {{team.name}} {{team.short3}} 
+                           <better-flag iso=team.short2></better-flag>&nbsp&nbsp&nbsp{{team.name}} 
                           <md-input-container ng-if="vm.specialBetsOpen()">
-                              <md-button type="submit" title="set" class="md-raised" ng-click="vm.select(team)" value="set" title="set">set</button>
+                              <md-button type="submit" title="select" class="md-raised" ng-click="vm.select(team)" value="select">select</button>
                           </md-input-container>
                          <md-divider inset></md-divider>
                    </md-list-item>

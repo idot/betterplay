@@ -384,13 +384,17 @@
     }
 
      /** @ngInject */
-    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toastr, _, specialBetService) {
+    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
         vm.user = {};
         vm.tb = {};
         vm.playersWithTeams = [];
+
+        vm.specialBetsOpen = function(){
+              return betterSettings.specialBetsOpen();  
+        };
 
         specialBetService.getSpecialBet(vm.betId, vm.stateParams.username).then(function(success) {
             vm.user = success.user;
@@ -404,18 +408,23 @@
         );
 
         vm.select = function(player) {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, player);
+            specialBetService.saveSelected(vm.tb.bet, vm.user, player.player);
         };
     }
 
 
      /** @ngInject */
-    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService) {
+    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
         vm.user = {};
         vm.tb = {};
+        vm.allTeams = {};
+        
+        vm.specialBetsOpen = function(){
+              return betterSettings.specialBetsOpen();  
+        };
 
         specialBetService.getSpecialBet(vm.betId, vm.stateParams.username).then(function(success) {
             vm.user = success.user;
@@ -424,12 +433,12 @@
 
         Restangular.all('em2016/api/teams').getList().then(
             function(success) {
-                vm.teams = success;
+                vm.allTeams = success;
             }
         );
 
         vm.select = function(team) {
-            specialBetService.saveSelected(vm.tb.bet, vm.user, team)
+            specialBetService.saveSelected(vm.tb.bet, vm.user, team);
         };
     }
 

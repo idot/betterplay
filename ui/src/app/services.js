@@ -35,10 +35,7 @@
                         )
                     },
 
-                    saveSelected: function(bet, user, selectedList) {
-                        var selected = _.filter(selectedList, function(t) {
-                            return t.selected;
-                        })[0];
+                    saveSelected: function(bet, user, selected) {
                         bet.prediction = selected.name;
                         Restangular.all('em2016/api/specialBet').customPOST(bet).then(
                             function(success) {
