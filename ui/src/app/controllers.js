@@ -326,7 +326,7 @@
    
 
     /** @ngInject */
-    function UserSpecialBetsController($log, $filter, $stateParams, Restangular, $state, toastr, betterSettings, userService) {
+    function UserSpecialBetsController($log, $filter, $stateParams, Restangular, $state, toastr, betterSettings, userService, $mdDialog, $mdMedia) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = {};
@@ -334,6 +334,9 @@
         vm.noInstructions = true;
         vm.DF = betterSettings.DF;
         vm.setresult = false;
+        
+        
+   
    
         vm.canBet = function(bet){
               return betterSettings.specialBetOpen(bet.bet);  
@@ -359,11 +362,13 @@
         }
 
         vm.change = function(templatebet) {
-            params = {
+            var params = {
                 username: vm.user.username,
                 id: templatebet.bet.id,
             };
             if(vm.setresult){
+           //   it would be better to have the warning here, but the dialog is non blocking
+           //  vm.showConfirm(templatebet);
                 params.setresult = true;  
             };
             
@@ -379,8 +384,26 @@
             }
         };
 
-        activate();
+        vm.showConfirm = function() {
+            if(! vm.setresult){
+                return;
+            }
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                  .title('You are setting the result')
+                  .textContent('Maybe you only want to bet?')
+                  .ariaLabel('set result')
+                  .ok('set result')
+                  .cancel('cancel');
+            $mdDialog.show(confirm).then(function() {
+                vm.setresult = true;
+            }, function() {
+                 vm.setresult = false;
+            });
+          };
 
+        activate();
+        
         function activate() {
             getUserBets();
         }
