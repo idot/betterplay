@@ -50,7 +50,7 @@ class MailerActor @Inject() (configuration: Configuration, mailerClient: MailerC
 
  // def sendEmails
   //regular task activated by timing based actor every 20 minutes
-  def sendMail(){
+  def sendEMail(){
     //get unsent mails
     //send mail
      //success ==> set sent
