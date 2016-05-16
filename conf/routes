@@ -69,7 +69,7 @@ GET     /em2016/api/statistics/excel         controllers.Statistics.excel()
 # Send (user,password) to receive token
 POST    /em2016/api/login                      controllers.Application.login()
 # Login user with e-mail token and set password
-POST    /em2016/api/tokenPassword             controllers.Application.userByTokenPassword() 
+PUT    /em2016/api/tokenPassword             controllers.Application.userByTokenPassword() 
 
 # Invalidate token
 POST    /em2016/api/logout                     controllers.Application.logout()

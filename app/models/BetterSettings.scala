@@ -12,7 +12,8 @@ import java.security.SecureRandom
 object BetterSettings {
   val TOKENLENGTH = 36
 	val MAILTIMEOUT = 5	 
-  
+  val DEBUGTOKEN = "123456789012345678901234567890123456"
+	
 	var debugTime = new DateTime()
 	var debug = false
 	
@@ -87,8 +88,14 @@ object BetterSettings {
 	
 	def closingMinutesToGame = 60	
  
+	
+	
 	def randomToken(): String = {
-	   java.util.UUID.randomUUID().toString()
+	   if(debug){
+	     DEBUGTOKEN 
+	   }else{
+	     java.util.UUID.randomUUID().toString()
+	   }
 	}
 	
 }

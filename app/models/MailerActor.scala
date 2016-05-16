@@ -1,5 +1,6 @@
 package models
 
+import play.api.Logger
 import akka.actor._
 import akka.pattern.ask
 import javax.inject._
@@ -36,10 +37,11 @@ object MailMessages {
 }
 
 class SendMailActor @Inject()(configuration: Configuration, mailerClient: MailerClient) extends Actor {
+   val mailLogger = Logger("mail")
    import scala.concurrent.ExecutionContext.Implicits.global
   
    def receive = {
-      case ((um: UserMessage, m: Message, user: User)) ⇒ val s = sender(); Future{ println(m) }; s ! MailMessages.mailSuccess
+      case ((um: UserMessage, m: Message, user: User)) ⇒ val s = sender(); Future{ mailLogger.debug(m.toString) }; s ! MailMessages.mailSuccess
       case _ => 
     }
 }

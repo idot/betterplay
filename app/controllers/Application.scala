@@ -30,6 +30,7 @@ import slick.driver.JdbcProfile
 import scala.concurrent.Future
 import play.api.i18n.MessagesApi
 import scala.concurrent.duration._
+import akka.pattern.AskTimeoutException
 
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
@@ -122,6 +123,7 @@ trait Security { self: Controller =>
         case e: ItemNotFoundException => Logger.debug(e.getMessage); Future.successful(NotFound(e.getMessage))
         case e: ValidationException => Logger.debug(e.getMessage); Future.successful(NotAcceptable(e.getMessage))
         case e: java.sql.SQLException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
+        case e: AskTimeoutException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
       }
   }
   

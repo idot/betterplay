@@ -73,11 +73,10 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
   /** 
   *
   **/
-  case class UserCreate(username: String, password: String, firstname: String, lastname: String, email: String)
+  case class UserCreate(username: String, firstname: String, lastname: String, email: String)
     val FormUserCreate = Form(
        mapping(
           "username" -> nonEmptyText(3,20),
-          "password" -> nonEmptyText(6),
           "firstname" -> nonEmptyText(3,50),
           "lastname" -> nonEmptyText(3,50),
    	      "email" -> email
@@ -89,7 +88,8 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),   
            succ =>  {
              betterException{
-               val created = DomainHelper.userFromUPE(succ.username, succ.password, succ.firstname, succ.lastname, succ.email, request.admin.id)
+               val random = BetterSettings.randomToken()
+               val created = DomainHelper.userFromUPE(succ.username, random, succ.firstname, succ.lastname, succ.email, request.admin.id)
                val token = BetterSettings.randomToken()
                for{
                  user <- betterDb.insertUser(created, false, false, Some(request.admin))

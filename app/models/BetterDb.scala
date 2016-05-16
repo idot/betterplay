@@ -785,7 +785,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         if(token.length == BetterSettings.TOKENLENGTH){
            val action = (for {
             (message, user) <- usersmessages.filter(m => m.token === token && ! m.seen.isDefined).join(users).on( _.userId === _.id ).result.head
-//TODO add again            upd <- usersmessages.filter(_.id === message.id).map(_.seen).update(Some(now))
+            upd <- usersmessages.filter(_.id === message.id).map(_.seen).update(Some(now))
             _ <- users.filter(_.id === user.id).map(_.passwordhash).update(passwordHash)
            } yield(user)).transactionally
            db.run(action).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find message with token that was not seen yet")) }

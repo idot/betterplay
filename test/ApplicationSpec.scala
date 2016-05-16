@@ -1,3 +1,6 @@
+package test
+
+
 import org.specs2.mutable._
 import org.specs2.runner._
 import org.junit.runner._
@@ -34,7 +37,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
                     "slick.dbs.default.db.user" -> "sa",
                     "slick.dbs.default.db.password" -> "",
                     "play.cache.defaultCache" -> "appspeccache", //prevents error for multiple app 
-                    "betterplay.insertdata" -> "true"
+                    "betterplay.insertdata" -> "test"
                 )
             )
         )
@@ -68,31 +71,51 @@ class ApplicationSpec extends Specification with JsonMatchers {
     "allow login for users, protect routes and allow logout" in new WithApplication(app=app){
        val up = JsObject(Seq("username" -> JsString("admin"), "password" -> JsString("admin")))
        
-       val unau = route(app, FakeRequest("POST", "/wm2014/api/createBetsForUsers")).get
+       val unau = route(app, FakeRequest("POST", "/em2016/api/createBetsForUsers")).get
        status(unau) must equalTo(UNAUTHORIZED)
                
-       val res = route(app, FakeRequest(POST, "/wm2014/login").withJsonBody(up)).get      
+       val res = route(app, FakeRequest(POST, "/em2016/api/login").withJsonBody(up)).get      
        val authToken = extractToken(res).get 
 	   
-       val wau = route(app, FakeRequest(method="POST", path="/wm2014/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val wau = route(app, FakeRequest(method="POST", path="/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wau) must equalTo(OK)
 	   
-	     val upd = JsObject(Seq("firstName" -> JsString("xyfirst1"), "lastName" -> JsString("xylast1"), "email" -> JsString("abcd@abcd.com"), "icontype" -> JsString("super")))
-	     val details = route(app, FakeRequest(method="POST", path="/wm2014/api/user/irrelevant/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
+	     val upd = JsObject(Seq("email" -> JsString("abcd@abcd.com"), "showname" -> JsBoolean(true), "institute" -> JsString("none"), "icontype" -> JsString("super")))
+	     val details = route(app, FakeRequest(method="POST", path="/em2016/api/user/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", authToken))).get
 	     status(details) must equalTo(OK)
 	          
-	     val userf = route(app, FakeRequest(method="GET", path="/wm2014/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	
+	     val userf = route(app, FakeRequest(method="GET", path="/em2016/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", authToken))).get	
 	     val user = contentAsString(userf) 	  
-	     user must /("firstName" -> "xyfirst1")		  
-	     user must /("lastName" -> "xylast1")	
+	     user must /("firstName" -> "admin")		  
+	     user must /("lastName" -> "admin")	
 	     user must /("email" -> "abcd@abcd.com")	
 	     user must /("icontype" -> "super")	
-			  
-       val out = route(app, FakeRequest(POST, "/wm2014/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
+			 user must /("showName" -> "true")
+			 
+			 val createUser = JsObject(Seq("username" -> JsString("createduser"), "firstname" -> JsString("Foo"), "lastname" -> JsString("lastName"), "email" -> JsString("email@email.com")))
+       val createdUser = route(app, FakeRequest(method="PUT", path="/em2016/api/user/create").withJsonBody(createUser).withHeaders(("X-AUTH-TOKEN", authToken))).get
+	   	 val createdUserContent = contentAsString(createdUser)
+	   	 createdUserContent === "created user createduser sent email"
+	      
+	     val token = models.BetterSettings.randomToken()
+	     val userTokenPass = JsObject(Seq("token" -> JsString(token), "password" -> JsString("mypassword")))
+	     val userByToken = route(app, FakeRequest(method="PUT", path="/em2016/api/tokenPassword").withJsonBody(userTokenPass)).get
+	     val authToken2 = extractToken(userByToken).get 
+	     val newUser = contentAsString(userByToken)
+	     newUser must /("user") */("firstName" -> "Foo") /("username" -> "createduser")
+	     
+	     val userBetsResult = route(app, FakeRequest(method="GET", path="/em2016/api/user/createduser").withHeaders(("X-AUTH-TOKEN", authToken2))).get
+	     val userBets = contentAsString(userBetsResult)
+	     userBets must /("user") */("username" -> "createduser") 
+	     userBets must /("specialBets") */("name" -> "topscorer")
+	     userBets must /("gameBets") */("goalsTeam1" -> "0.0")
+
+	     
+       val out = route(app, FakeRequest(POST, "/em2016/api/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(out) must equalTo(SEE_OTHER)
        redirectLocation(out) must beSome.which(_ == "/")
        
-       val wou = route(app, FakeRequest(method="POST", path="/wm2014/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val wou = route(app, FakeRequest(method="POST", path="/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(wou) must equalTo(UNAUTHORIZED)      
     }
   

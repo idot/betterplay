@@ -40,7 +40,8 @@ class DBSpec extends Specification
                     "slick.dbs.default.db.url" -> "jdbc:h2:mem:dbspec;TRACE_LEVEL_FILE=4", //TRACE_LEVEL 4 = enable SLF4J
                     "slick.dbs.default.db.user" -> "sa",
                     "slick.dbs.default.db.password" -> "",
-                    "play.cache.defaultCache" -> "dbspeccache" //prevents error for multiple app 
+                    "play.cache.defaultCache" -> "dbspeccache", //prevents error for multiple app 
+                    "betterplay.insertdata" -> "test"
                 )
             )
         )
@@ -197,7 +198,7 @@ class DBSpec extends Specification
            val randomToken = BetterSettings.randomToken()
            randomToken.length === BetterSettings.TOKENLENGTH
            val insertToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".substring(0, BetterSettings.TOKENLENGTH)
-           val m = AR(betterDb.insertMessage(message, user.id.get, insertToken, true, true))
+           val m = AR(betterDb.insertMessage(message, user.id.get, insertToken, true, true)) //the same token gets inserted 2x this could create a problem on userByTokenPassword!
            val m2 = AR(betterDb.insertMessage(message, admin.id.get, insertToken, true, true))
            m._1.userId === user.id.get
            m2._1.userId === admin.id.get
