@@ -173,12 +173,11 @@
         var vm = this;
 
         vm.allUsers = [];
-        vm.username = "";
-        vm.password1 = "";
-        vm.password2 = "";
+        vm.username = "";   
         vm.email = "";
         vm.firstname = "";
         vm.lastname = "";
+
 
        var queryUsers = Restangular.all('em2016/api/users');
 
@@ -602,6 +601,39 @@
             r.readAsArrayBuffer()
         };
     }
-
+ 
+     /** @ngInject */
+    function PasswordController($log, Restangular, toastr, betterSettings, userService, $scope, _) {
+        var vm = this;
+        
+        vm.password1 = "";
+        vm.password2 = "";
+        
+        vm.comparePasswords = function(form){
+            var identical = vm.password1 == vm.password2;
+            form.password2.$setValidity('identical', identical);     
+        };
+        
+        vm.submit = function() {
+            if(vm.password1 != vm.password2){
+                 toastr.error("passwords don't match!");
+                 vm.password1 = "";
+                 vm.password2 = "";
+                 return;
+            }
+            var pu = {
+                'password': vm.password1,
+                'token': vm.token
+            };
+            Restangular.all('em2016/api/tokenPassword').customPUT(pu).then(
+                function(userWithEmail) {
+                    toastr.success(userWithEmail.username, "welcome");
+                     //TODO: email
+                    $state.reload();
+                }
+            );
+        };
+                
+    };
 
 })();

@@ -24,7 +24,7 @@
                                   <div ng-message="maxlength">length smaller 21</div>
                          </div>
                 </md-input-container>
-               <md-input-container class="md-block" flex-gt-sm>
+               <!--md-input-container class="md-block" flex-gt-sm>
                        <label for="password1">password</label>
                        <input type="password" name="password1" ng-model="vm.password1" required
                            ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
@@ -45,7 +45,9 @@
                                   <div ng-message="maxlength">length smaller 21</div>
                                   <div ng-message="identical">passwords don't match</div>
                          </div>
-                 </md-input-container>
+                 </md-input-container-->
+                 <better-password-view password1="vm.password1" password2="vm.password2" form="registerForm"></better-password-view>  
+                   
                  <md-input-container class="md-block" flex-gt-sm>
                         <label for="email">email</label>
                         <input type="email" name="email" ng-model="vm.email" required/>

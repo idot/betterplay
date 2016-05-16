@@ -198,8 +198,14 @@ class DBSpec extends Specification
            randomToken.length === BetterSettings.TOKENLENGTH
            val insertToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".substring(0, BetterSettings.TOKENLENGTH)
            val m = AR(betterDb.insertMessage(message, user.id.get, insertToken, true, true))
-           m === s"saved sending message to user id: ${user.id.get}"
+           val m2 = AR(betterDb.insertMessage(message, admin.id.get, insertToken, true, true))
+           m._1.userId === user.id.get
+           m2._1.userId === admin.id.get
            val tokTime = new DateTime()
+           
+           val unsent = AR(betterDb.unsentMailForUser(user))
+           unsent.length === 1
+           
            betterDb.userByTokenPassword(insertToken.substring(0, BetterSettings.TOKENLENGTH -1), tokTime, "thehash") must throwAn[ValidationException](message = "the token was not correct").await
            betterDb.userByTokenPassword(insertToken.substring(0, BetterSettings.TOKENLENGTH -1)+"B", tokTime, "thehash") must throwAn[ItemNotFoundException](message = "could not find message with token that was not seen yet").await
            
@@ -209,8 +215,17 @@ class DBSpec extends Specification
            tokUser.username === user.username
            AR(betterDb.allUsers()).filter(u => u.username == user.username).head.passwordHash === "tokenhash"
       
+           val unsentN = AR(betterDb.unsentMailForUser(user))
+           unsentN.length === 0
+           
            //now we access it again and it should have been used!
            betterDb.userByTokenPassword(insertToken, tokTime, "thehash") must throwAn[ItemNotFoundException](message = "could not find message with token that was not seen yet").await
+     
+           val sent1 = AR(betterDb.setMessageSent(m2._1.id.get, new DateTime))
+           sent1 === "set message with id ${m2._1.id.get} to sent"
+           
+           val sent2 = AR(betterDb.setMessageSent(m2._1.id.get, new DateTime))
+           sent2 === "could not find message with id ${m2._1.id.get} to set to sent"
       }
     
       def insertSpecialBetTemplates(){

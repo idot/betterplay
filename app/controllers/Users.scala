@@ -12,6 +12,8 @@ import play.api.cache.CacheApi
 import play.api.i18n.MessagesApi
 import play.api.i18n.I18nSupport
 import akka.actor._
+import akka.pattern.ask
+import akka.util.Timeout
 
 import models._
 import models.JsonHelper._
@@ -93,8 +95,9 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
                  user <- betterDb.insertUser(created, false, false, Some(request.admin))
                  message = MailGenerator.createUserRegistrationMail(user, token, request.admin)
                  inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
+                 mail <- mailer.ask(RegistrationMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
                } yield {
-                 Ok(s"created user ${user.username}")
+                 Ok(s"created user ${user.username} $mail")
                }
 			       }
 		       })

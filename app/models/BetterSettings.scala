@@ -11,7 +11,8 @@ import java.security.SecureRandom
 
 object BetterSettings {
   val TOKENLENGTH = 36
-		 
+	val MAILTIMEOUT = 5	 
+  
 	var debugTime = new DateTime()
 	var debug = false
 	

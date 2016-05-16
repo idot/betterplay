@@ -54,8 +54,8 @@
             })
             .state('user.completeRegistration', {
                 url: "/:username/completeRegistration/:token",
-                templateUrl: 'app/partials/userEdit.html',
-                controller: 'EditUserController',
+                templateUrl: 'app/partials/password.html',
+                controller: 'PasswordController',
                 controllerAs: 'vm'
             })
             .state('user.specialBets', {

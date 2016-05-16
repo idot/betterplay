@@ -760,14 +760,14 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
     }
  
    
-    def insertMessage(message: Message, userId: Long, token: String, send: Boolean, display: Boolean): Future[String] = {
+    def insertMessage(message: Message, userId: Long, token: String, send: Boolean, display: Boolean): Future[(UserMessage,Message)] = {
         val action = (for {
           messId <- (messages returning messages.map(_.id)) += message  
           mess = message.copy(id=Some(messId))
           usermessage = UserMessage(None, userId, messId, token, send, None, display, None, message.creatingUser)
           um <- (usersmessages returning usersmessages.map(_.id)) += usermessage
-        } yield()).transactionally
-        db.run(action).map{ r => s"saved sending message to user id: $userId" }
+        } yield( (usermessage.copy(id=Some(um)), mess) )).transactionally
+        db.run(action)
     }
  
 //TODO send bulk email    
@@ -785,7 +785,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         if(token.length == BetterSettings.TOKENLENGTH){
            val action = (for {
             (message, user) <- usersmessages.filter(m => m.token === token && ! m.seen.isDefined).join(users).on( _.userId === _.id ).result.head
-            upd <- usersmessages.filter(_.id === message.id).map(_.seen).update(Some(now))
+//TODO add again            upd <- usersmessages.filter(_.id === message.id).map(_.seen).update(Some(now))
             _ <- users.filter(_.id === user.id).map(_.passwordhash).update(passwordHash)
            } yield(user)).transactionally
            db.run(action).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find message with token that was not seen yet")) }
@@ -794,7 +794,21 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         }
     }
     
+    def unsentMailForUser(user: User): Future[Seq[(UserMessage,Message)]] = {
+        val query = usersmessages.filter(m => m.userId === user.id && ! m.seen.isDefined ).join(messages).on( _.messageId === _.id )
+        db.run(query.result)
+    }
     
+    def setMessageSent(messageId: Long, now: DateTime): Future[String] = {
+        val up = usersmessages.filter(_.id === messageId).map(_.sent).update(Some(now))
+        db.run(up).map{ rows => 
+           rows match {
+             case 0 => val err = "could not find message with id $messageId to set to sent"; dbLogger.error(err); err
+             case 1 => s"set message with id $messageId to sent"
+             case _ => val err = "found multiple messages with id $messageId to set to sent"; dbLogger.error(err); err
+           }
+        }
+    }
     
 }
 
