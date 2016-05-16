@@ -31,27 +31,30 @@ case class RegistrationMail(user: User)
 //if param newRegistration => make toastr to remind to set password.
 //disable links until password is saved
 //
-
-
-class MailerActor @Inject() (configuration: Configuration, mailerClient: MailerClient, betterDb: BetterDb) extends Actor {
-  import scala.concurrent.ExecutionContext.Implicits.global
-  val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))
+object MailMessages {
   val mailSuccess = "mail delivered successfully"
+}
+
+class SendMailActor @Inject()(configuration: Configuration, mailerClient: MailerClient) extends Actor {
+   import scala.concurrent.ExecutionContext.Implicits.global
   
-  class SendMailActor extends Actor {
-    def receive = {
-      case ((um: UserMessage, m: Message, user: User)) ⇒ val s = sender(); Future{ println(m) }; s ! mailSuccess
+   def receive = {
+      case ((um: UserMessage, m: Message, user: User)) ⇒ val s = sender(); Future{ println(m) }; s ! MailMessages.mailSuccess
       case _ => 
     }
-  }
-  
-  val sendMail = context.actorOf(Props(classOf[SendMailActor]))
+}
+
+
+class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  @Named("sendMail") sendMail: ActorRef) extends Actor {
+  import scala.concurrent.ExecutionContext.Implicits.global
+  val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))
+
   val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], Rate(3, (1.minutes))))
   
   throttler ! SetTarget(Some(sendMail))
   
   def receive = {
-      case RegistrationMail(user) => sendMail(user,sender())  
+      case RegistrationMail(user) => sendRegistrationMailToUser(user,sender())  
       case _ =>
   }
   
@@ -67,17 +70,17 @@ class MailerActor @Inject() (configuration: Configuration, mailerClient: MailerC
   }
   
   //extra task => throtteler
-  def sendMail(user: User, sender: ActorRef){  
+  def sendRegistrationMailToUser(user: User, sender: ActorRef){  
       betterDb.unsentMailForUser(user).map{ unsent => 
          unsent.filter{ case(um, m) => m.messageType == MessageTypes.REGISTRATION }.headOption match {
            case Some((um,m)) => throttler.ask((um,m,user))(timeout).mapTo[String]
                                   .onComplete{ mailSent => 
                                      mailSent match {
-                                       case Try(s: String) if s == mailSuccess => {
+                                       case Success(s: String) if s == MailMessages.mailSuccess => {
                                          betterDb.setMessageSent(um.id.get, new DateTime())
                                          sender ! "sent email"
                                        }
-                                       case _ => {
+                                       case Failure(_) => {
                                          sender ! _
                                        }
                                      }

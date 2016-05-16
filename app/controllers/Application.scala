@@ -165,16 +165,13 @@ class Application(env: Environment,
    */
   //def index = gulpAssets.index
 
-  def index = gulpAssets.redirectRoot("/ui/")
+  def index = gulpAssets.redirectRoot("/em2016/")
 
   def toPrefix() = Action {
  	  //Redirect(routes.Application.index)
     Ok("TODO: redirect")
   }
   
-  def oldhome = Action {
-    Ok(views.html.index("Play Framework"))
-  }
 
 
   val routeCache: Array[JavaScriptReverseRoute] = {
