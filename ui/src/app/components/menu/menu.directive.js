@@ -11,7 +11,6 @@
       restrict: 'E',
       templateUrl: 'app/components/menu/menu.html',
       scope: {
-          user: '=user'
       },
       controller: MenuViewController,
       controllerAs: 'vm'
@@ -22,6 +21,7 @@
      /** @ngInject */
     function MenuViewController($log, $scope, betterSettings , userService) {
         var vm = this;
+        vm.userService = userService;
         var DF = betterSettings.DF;
       
                

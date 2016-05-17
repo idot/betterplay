@@ -22,7 +22,6 @@
     function UsersController($log, $filter, Restangular, betterSettings, userService) {
         var vm = this;
         vm.allUsers = [];
-        vm.user = userService.getLoggedInUser();
         
         var queryUsers = Restangular.all('em2016/api/users');
 
@@ -45,7 +44,6 @@
         var vm = this;
         vm.DF = betterSettings.DF;
         vm.allGames = [];
-        vm.user = userService.getLoggedInUser();
        
         var queryGames = Restangular.all('em2016/api/games');
 
@@ -105,7 +103,6 @@
         vm.stateParams = $stateParams;
         vm.betsUsers = [];
         vm.gwt = {};
-        vm.user = userService.getLoggedInUser();
  
         var queryGame = Restangular.one('em2016/api/game', vm.stateParams.gamenr);
 
@@ -174,8 +171,6 @@
      /** @ngInject */
     function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _, $scope, userService) {
         var vm = this;
-
-        vm.user = userService.getLoggedInUser();
         vm.allUsers = [];
         vm.username = "";   
         vm.email = "";
