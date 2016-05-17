@@ -217,7 +217,6 @@
             Restangular.all('em2016/api/user/create').customPUT(pu).then(
                 function(success) {
                     toastr.success("registered", vm.username);
-                     //TODO: email
                     $state.reload();
                 }
             );
@@ -333,8 +332,10 @@
         vm.DF = betterSettings.DF;
         vm.setresult = false;
         
-        
-   
+        vm.isIdentical = function(){
+            return vm.user.username && userService.loggedInUser.username == vm.user.username;  
+        };
+     
    
         vm.canBet = function(bet){
               return betterSettings.specialBetOpen(bet.bet);  

@@ -1,19 +1,21 @@
-<div layout="column" ng-cloak>
-<form name="headerForm">    
- <md-toolbar md-scroll-shrink ng-if="true">
-   <md-list>
-        <md-list-item class="md-2-line">
-        <h4>All Games</h4>
-       </md-list-item>
-  </md-list>
-  <better-menu-view></better-menu-view>
-  <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
-</md-toolbar>
-</form>
-<!-- this are all the user/bets for one game -->
+<div layout="column" class="mainMenu"> 
+  <md-toolbar md-scroll-shrink ng-if="true">
+    <better-menu-view></better-menu-view>
+    <div layout="row" class="activityRow">
+       <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
+       &nbsp&nbsp&nbsp
+       <div>
+           <span>All Games</span> 
+        </div>
+    </div>
+ </md-toolbar>
+</div>
+
+<!-- these are all the games -->
+<div>
 <form name="bodyForm">
 <md-content flex>
-    <md-list>
+    <md-list  ng-cloak>
       <md-list-item class="md-1-line" ng-repeat="gwt in vm.allGames">
         <div class="md-list-item-text"  layout-gt-xs="row">
             <better-game-view gwt="gwt" fullcontent="true"></better-game-view>

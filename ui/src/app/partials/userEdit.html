@@ -1,14 +1,13 @@
-<div layout="column" ng-cloak>
-    <form name="headerForm">    
-        <md-toolbar md-scroll-shrink ng-if="true">
-            <md-list>
-                <md-list-item class="md-2-line">
-                    <better-user-view user="vm.user" full="true"></better-user-view>
-                </md-list-item>
-            </md-list>
-             <better-menu-view></better-menu-view>
-        </md-toolbar>
-    </form>
+<div layout="column" class="mainMenu"> 
+  <md-toolbar md-scroll-shrink ng-if="true">
+    <better-menu-view></better-menu-view>
+    <div layout="row" class="activityRow">
+       &nbsp&nbsp&nbsp
+       <div>
+           <span>Edit Details</span> 
+        </div>
+    </div>
+ </md-toolbar>
 </div>
 <!-- user settings: was in tabs -->
 
