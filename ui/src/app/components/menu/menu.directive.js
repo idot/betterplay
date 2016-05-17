@@ -36,7 +36,9 @@
         vm.usersDisabled = function(){
             return $state.includes("users");  
         };
-               
+        vm.registerDisabled = function(){
+            return $state.includes("admin.registerUser");  
+        };       
                
     };
   }

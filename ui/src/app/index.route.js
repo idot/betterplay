@@ -51,11 +51,11 @@
                 templateUrl: 'app/partials/userEdit.html',
                 controller: 'EditUserController',
                 controllerAs: 'vm'
-            })
-            .state('user.completeRegistration', {
-                url: "/:username/completeRegistration/:token",
+            }) //   http://localhost:9000/em2016/#/completeRegistration/123456789012345678901234567890123456
+            .state('completeRegistration', {
+                url: "/completeRegistration/:token",
                 templateUrl: 'app/partials/password.html',
-                controller: 'PasswordController',
+                controller: 'CompleteRegistrationController',
                 controllerAs: 'vm'
             })
          //   .state('user.specialBets', {

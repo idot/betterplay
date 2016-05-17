@@ -16,7 +16,8 @@
         .controller('EditUserSpecialTeamController', EditUserSpecialTeamController)
         .controller('CreateGameController', CreateGameController)
         .controller('PlotSpecialBetsController', PlotSpecialBetsController)
-        .controller('ExcelController', ExcelController);
+        .controller('ExcelController', ExcelController)
+        .controller("CompleteRegistrationController", CompleteRegistrationController);
 
     /** @ngInject */
     function UsersController($log, $filter, Restangular, betterSettings, userService) {
@@ -352,7 +353,7 @@
                     vm.templateBets = success.templateBets;
                     if (userService.isOwner(vm.user.id) && ! userService.userHadInstructions()) {
                         vm.noInstructions = true;
-                        toastr.info("Please place special bets until start of the game.\n Have fun!", "Welcome "+success.user.username);
+                        toastr.info("Please place special bets before start of the games.\n Have fun!", "Welcome "+success.user.username, { timeOut: 5500 });
                     } else {
                         vm.noInstructions = false;
                     }
@@ -603,11 +604,13 @@
     }
  
      /** @ngInject */
-    function PasswordController($log, Restangular, toastr, betterSettings, userService, $scope, _) {
+    function CompleteRegistrationController($log, Restangular, toastr, betterSettings, userService, $scope, _, $stateParams, $state) {
         var vm = this;
         
         vm.password1 = "";
         vm.password2 = "";
+        vm.username = $stateParams.username;
+        vm.token = $stateParams.token;
         
         vm.comparePasswords = function(form){
             var identical = vm.password1 == vm.password2;
@@ -626,10 +629,13 @@
                 'token': vm.token
             };
             Restangular.all('em2016/api/tokenPassword').customPUT(pu).then(
-                function(userWithEmail) {
-                    toastr.success(userWithEmail.username, "welcome");
-                     //TODO: email
-                    $state.reload();
+                function(auth) {
+                    toastr.success(auth.user.username, "welcome");
+                    userService.updateLogin(auth.user, auth["AUTH-TOKEN"]);
+                    $state.transitionTo("user.specialBets", {
+                        username: auth.user.username
+                        //http://benfoster.io/blog/ui-router-optional-parameters add new invisible parameter to display instructions popup in specialbets
+                    });
                 }
             );
         };
