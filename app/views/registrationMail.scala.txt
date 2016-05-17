@@ -1,5 +1,4 @@
 @(user: User, registeringUser: String, token: String)
-
 Dear @user.firstName, 
             
 you have been registered by @registeringUser for the Euro2016 betting system.        

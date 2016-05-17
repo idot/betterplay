@@ -19,10 +19,10 @@
         .controller('ExcelController', ExcelController);
 
     /** @ngInject */
-    function UsersController($log, $filter, Restangular, betterSettings) {
+    function UsersController($log, $filter, Restangular, betterSettings, userService) {
         var vm = this;
         vm.allUsers = [];
-
+        
         var queryUsers = Restangular.all('em2016/api/users');
 
         activate();
@@ -40,11 +40,11 @@
     }
 
      /** @ngInject */
-    function GamesController($log, $filter, Restangular, $stateParams, _, betterSettings) {
+    function GamesController($log, $filter, Restangular, $stateParams, _, betterSettings, userService) {
         var vm = this;
         vm.DF = betterSettings.DF;
         vm.allGames = [];
-
+       
         var queryGames = Restangular.all('em2016/api/games');
 
         activate();
@@ -66,13 +66,13 @@
     function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings, gblFilter) {
         var vm = this;
         vm.stateParams = $stateParams;
-        vm.user = null;
+        vm.user = {};
         vm.special = [];
         vm.gameBets = [];
         vm.DF = betterSettings.DF;
         vm.getTime = betterSettings.getTime;
         vm.allGameBets = [];
-
+      
         
         var queryUser = Restangular.one('em2016/api/user', vm.stateParams.username);
      
@@ -98,7 +98,7 @@
     }
     
      /** @ngInject */
-    function GameController($log, $filter, Restangular, $stateParams, _) {
+    function GameController($log, $filter, Restangular, $stateParams, _, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betsUsers = [];
@@ -169,9 +169,8 @@
     }
 
      /** @ngInject */
-    function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _, $scope) {
+    function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _, $scope, userService) {
         var vm = this;
-
         vm.allUsers = [];
         vm.username = "";   
         vm.email = "";
@@ -218,7 +217,6 @@
             Restangular.all('em2016/api/user/create').customPUT(pu).then(
                 function(success) {
                     toastr.success("registered", vm.username);
-                     //TODO: email
                     $state.reload();
                 }
             );
@@ -334,8 +332,10 @@
         vm.DF = betterSettings.DF;
         vm.setresult = false;
         
-        
-   
+        vm.isIdentical = function(){
+            return vm.user.username && userService.loggedInUser.username == vm.user.username;  
+        };
+     
    
         vm.canBet = function(bet){
               return betterSettings.specialBetOpen(bet.bet);  

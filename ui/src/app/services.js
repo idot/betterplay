@@ -225,7 +225,7 @@
             id: -1,
             username: ""
         };
-        var loggedInUser = NOUSER;
+        vm.loggedInUser = NOUSER;
         var authtoken = "";
                 
         vm.filter = {
@@ -235,10 +235,10 @@
         };
         
         vm.identical = function(username){
-             if (typeof loggedInUser === "undefined" || typeof loggedInUser.username === "undefined") {
+             if (typeof vm.loggedInUser === "undefined" || typeof vm.loggedInUser.username === "undefined") {
                  return false;
              } else {
-               return username == loggedInUser.username;  
+               return username == vm.loggedInUser.username;  
             }
         };
 
@@ -249,12 +249,12 @@
                     if (auth.user.hadInstructions) {
                        $state.transitionTo("admin.registerUser");
                  //       $state.transitionTo("user.userBets", {
-                 //           username: loggedInUser.username
+                 //           username: vm.loggedInUser.username
                  //       });
                         
                     } else {
                         $state.transitionTo("user.specialBets", {
-                            username: loggedInUser.username
+                            username: vm.loggedInUser.username
                             //http://benfoster.io/blog/ui-router-optional-parameters add new invisible parameter to display instructions popup in specialbets
                         });
                     }
@@ -263,15 +263,15 @@
         };
 
         vm.isOwner = function(id){
-             if (typeof loggedInUser === "undefined" || typeof loggedInUser.id === "undefined") {
+             if (typeof vm.loggedInUser === "undefined" || typeof vm.loggedInUser.id === "undefined") {
                 return false;
              } else {
-                return id == loggedInUser.id;
+                return id == vm.loggedInUser.id;
              } 
         }
 
         vm.logout = function() {
-            loggedInUser = NOUSER;
+            vm.loggedInUser = NOUSER;
             authtoken = "";
             $cookies.remove("AUTH-TOKEN");
             Restangular.setDefaultHeaders();
@@ -292,7 +292,7 @@
                         'X-AUTH-TOKEN': auth
                     });
                     Restangular.one('em2016/api/userWithEmail').get().then(function(userWithEmail) {
-                        loggedInUser = userWithEmail;
+                        vm.loggedInUser = userWithEmail;
                         vm.filter = userWithEmail.filterSettings;
                     });
                 }
@@ -300,7 +300,7 @@
                vm.logout();
             }
         };
-        
+                
         vm.saveFilter = function(){
             Restangular.all('em2016/api/user/filter').customPOST(vm.filter).then(
                 function(userWithEmail) {
@@ -318,7 +318,7 @@
          * 
          **/
         vm.updateLogin = function(user, auth) {
-            loggedInUser = user;
+            vm.loggedInUser = user;
             vm.filter = user.filterSettings;
             
             if (typeof auth !== "undefined") {
@@ -330,10 +330,10 @@
         };
 
         vm.isAdmin = function() {
-            if (typeof loggedInUser === "undefined" || typeof  loggedInUser.isAdmin === "undefined") {
+            if (typeof vm.loggedInUser === "undefined" || typeof  vm.loggedInUser.isAdmin === "undefined") {
                 return false;
             } else {
-                return  loggedInUser.isAdmin;
+                return  vm.loggedInUser.isAdmin;
             }
         };
 
@@ -342,10 +342,10 @@
         };
 
         vm.userHadInstructions = function() {
-            if (typeof loggedInUser === "undefined" || typeof loggedInUser.hadInstructions === "undefined") {
+            if (typeof vm.loggedInUser === "undefined" || typeof vm.loggedInUser.hadInstructions === "undefined") {
                 return false;
             } else {
-                return loggedInUser.hadInstructions;
+                return vm.loggedInUser.hadInstructions;
             }
         };
          

@@ -111,6 +111,26 @@ section.jumbotron {
     margin: 2px 0px 2px 0px;
 }
 
+.mainMenu {
+    background-color: #01579b;    
+}
+
+.activityRow {
+    padding-top: 10px;
+    background-color: #0288D1;    
+}
+
+.badge-large {
+    padding: 1px 9px 2px 0px;
+    font-weight: bold;
+    white-space: nowrap;
+   // color: #ffffff;
+  //  background-color: #999999;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px; 
+}
+
 .badge {
   padding: 1px 9px 2px 0px;
   font-size: 12px;

@@ -58,6 +58,11 @@
                 controller: 'PasswordController',
                 controllerAs: 'vm'
             })
+         //   .state('user.specialBets', {
+        //        abstract: true,
+       //         url: "/dummyspecial",
+      //          template: '<ui-view/>'
+    //        })
             .state('user.specialBets', {
                 url: "/:username/special",
                 templateUrl: 'app/partials/userSpecialBets.html',

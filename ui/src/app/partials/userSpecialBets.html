@@ -1,14 +1,19 @@
-<div layout="column" ng-cloak>
-    <form name="headerForm">    
-        <md-toolbar md-scroll-shrink ng-if="true">
-            <md-list>
-                <md-list-item class="md-3-line">
-                    <better-user-view user="vm.user" full="true"></better-user-view>
-                </md-list-item>
-            </md-list>
-        </md-toolbar>
-    </form>
-    <h3 ng-if="vm.specialBetsOpen()">You can change these special bets <em>only until</em> ~ 1hr before start of the games</h3>
+<div layout="column" class="mainMenu"> 
+  <md-toolbar md-scroll-shrink ng-if="true">
+    <better-menu-view></better-menu-view>
+    <div layout="row" class="activityRow">
+       &nbsp&nbsp&nbsp
+       <div>
+           <h3 ng-if="vm.specialBetsOpen() && vm.isIdentical()">You can change these special bets <em>only until</em> ~ 1hr before start of the games</h3>
+           <div ng-if="! vm.isIdentical()">
+               Special Bets: <a ui-sref="user.userBets({'username': vm.user.username})">
+                     <img ng-src="{{ vm.user.iconurl+'&s=25' }}" alt="{{vm.user.username}}" class="md-avatar" ng-if="vm.user.iconurl" style="margin: 0px 2px 0px 10px; border-radius: 50%;"/>
+                 {{vm.user.username}}<span class="badge-large {{vm.badgecolor()}}" style="margin: 0px 2px 0px 10px;">{{vm.user.totalPoints}}</span>
+                 </a>
+            </div>
+        </div>
+    </div>
+ </md-toolbar>
 </div>
 
 <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>

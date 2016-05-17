@@ -1,18 +1,17 @@
-<div layout="column">
-    <form name="headerForm">    
-        <md-toolbar md-scroll-shrink ng-if="true">
-            <md-list>
-                <md-list-item class="md-3-line">
-                 {{tb.template.description}} <span class="badge">{{tb.template.points}}</span>
-                 please select one player from the list
-                </md-list-item>
-            </md-list>
-            <div ng-if="vm.user.isAdmin && vm.setresult">
-                <h3 style="color: red;">setting result</h3>
-            </div>
-        </md-toolbar>
-    </form>
+<div layout="column" class="mainMenu"> 
+  <md-toolbar md-scroll-shrink ng-if="true">
+    <better-menu-view></better-menu-view>
+    <div layout="row" class="activityRow">
+       &nbsp&nbsp&nbsp
+            {{tb.template.description}} <span class="badge">{{tb.template.points}}</span>
+            please select one player from the list
+       <div ng-if="vm.userService.loggedInUser.isAdmin && vm.setresult">
+           <h3 style="color: red;">setting result</h3>
+       </div>
+    </div>
+ </md-toolbar>
 </div>
+
 <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding ng-cloak>
         <form name="specialBetsForm">
              <div class="toolbarfilter" layout="row" style="width: 300px;">

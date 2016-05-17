@@ -1,11 +1,14 @@
-<div layout="column" ng-cloak>
-     <md-toolbar md-scroll-shrink ng-if="true">
-       <md-list>
-            <md-list-item class="md-3-line">
-            <h4>register user</h4>
-           </md-list-item>
-      </md-list>
-    </md-toolbar>
+<div layout="column" class="mainMenu"> 
+  <md-toolbar md-scroll-shrink ng-if="true">
+    <better-menu-view></better-menu-view>
+    <div layout="row" class="activityRow">
+       &nbsp&nbsp&nbsp
+       <div>
+           <span>Register User</span> 
+        </div>
+    </div>
+ </md-toolbar>
+</div>
     
    <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding>
       <form name="registerForm">
@@ -46,7 +49,7 @@
                                   <div ng-message="identical">passwords don't match</div>
                          </div>
                  </md-input-container-->
-                 <better-password-view password1="vm.password1" password2="vm.password2" form="registerForm"></better-password-view>  
+                 <!--better-password-view password1="vm.password1" password2="vm.password2" form="registerForm"></better-password-view-->  
                    
                  <md-input-container class="md-block" flex-gt-sm>
                         <label for="email">email</label>

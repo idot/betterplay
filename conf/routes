@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                                 controllers.Application.index
+GET     /                                 controllers.Application.index()
+#GET     /                                 com.github.mmizutani.playgulp.GulpAssetes.redirectRoot("/em2016/")
 GET     /em2016                           com.github.mmizutani.playgulp.GulpAssets.index
 
 GET     /em2016/api/time                   controllers.Application.time()

@@ -1,0 +1,11 @@
+<div layout-align="center end">
+       <a ui-sref= "user.userEdit({'username': vm.userService.loggedInUser.username})">
+               <img ng-src="{{ vm.userService.loggedInUser.iconurl+'&s=37' }}" alt="{{vm.userService.loggedInUser.username}}" style="margin: 0px 0px 6px 10px; border-radius: 50%;"/>
+       </a>
+       <md-button type="submit" value="bets" class="md-raised" title="bets" aria-label="bets" ui-sref="user.userBets({'username': vm.userService.loggedInUser.username})" ng-disabled="vm.betsDisabled()">my bets</md-button>
+       <md-button type="submit" value="games" class="md-raised" title="games" aria-label="games" ui-sref="games" ng-disabled="vm.gamesDisabled()">games</md-button>
+       <md-button type="submit" value="users" class="md-raised" title="users" aria-label="users" ui-sref="users" ng-disabled="vm.usersDisabled()">users</md-button>
+       <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets" ui-sref="user.specialBets({'username': vm.userService.loggedInUser.username})" ng-disabled="vm.specialDisabled()">
+             Special Bets
+       </md-button>
+</div>

@@ -1,13 +1,13 @@
-<div layout="column" ng-cloak>
-    <form name="headerForm">    
-        <md-toolbar md-scroll-shrink ng-if="true">
-            <md-list>
-                <md-list-item class="md-3-line">
-                    <better-user-view user="vm.user" full="true"></better-user-view>
-                </md-list-item>
-            </md-list>
-        </md-toolbar>
-    </form>
+<div layout="column" class="mainMenu"> 
+  <md-toolbar md-scroll-shrink ng-if="true">
+    <better-menu-view></better-menu-view>
+    <div layout="row" class="activityRow">
+       &nbsp&nbsp&nbsp
+       <div>
+           <span>Edit User</span> 
+        </div>
+    </div>
+ </md-toolbar>
 </div>
 <!-- user settings: was in tabs -->
 
@@ -17,7 +17,7 @@
         <form name="passwordForm">
             <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
                 <div flex-gt-sm="140">
-                
+                   <md-subheader class="md-primary">Change Password</md-subheader>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label for="password1">password</label>
                         <input type="password" name="password1" ng-model="vm.password1" required ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
@@ -51,7 +51,7 @@
         </form>
 
       <md-divider></md-divider>
-      
+      <md-subheader class="md-primary">Change Details</md-subheader>
       <form name="detailsForm">
          <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
            <div flex-gt-sm="140">
