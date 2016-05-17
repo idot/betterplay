@@ -4,7 +4,7 @@
     <div layout="row" class="activityRow">
        &nbsp&nbsp&nbsp
        <div>
-           <span>Edit Details</span> 
+           <span>Edit User</span> 
         </div>
     </div>
  </md-toolbar>
@@ -17,7 +17,7 @@
         <form name="passwordForm">
             <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
                 <div flex-gt-sm="140">
-                
+                   <md-subheader class="md-primary">Change Password</md-subheader>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label for="password1">password</label>
                         <input type="password" name="password1" ng-model="vm.password1" required ng-minlength="6" ng-maxlength="20" md-placeholder="password"/>
@@ -51,7 +51,7 @@
         </form>
 
       <md-divider></md-divider>
-      
+      <md-subheader class="md-primary">Change Details</md-subheader>
       <form name="detailsForm">
          <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
            <div flex-gt-sm="140">
