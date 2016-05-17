@@ -11,6 +11,7 @@
       restrict: 'E',
       templateUrl: 'app/components/menu/menu.html',
       scope: {
+          user: '=user'
       },
       controller: MenuViewController,
       controllerAs: 'vm'
@@ -22,8 +23,9 @@
     function MenuViewController($log, $scope, betterSettings , userService) {
         var vm = this;
         var DF = betterSettings.DF;
+      
                
-    } 
+    };
   }
 
 })();

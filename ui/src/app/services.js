@@ -301,6 +301,12 @@
             }
         };
         
+        vm.getLoggedInUser = function(){
+             var user = _.clone(loggedInUser)
+             user.filterSettings = _.clone(loggedInUser.filterSettings)
+             return user;  
+        };
+        
         vm.saveFilter = function(){
             Restangular.all('em2016/api/user/filter').customPOST(vm.filter).then(
                 function(userWithEmail) {

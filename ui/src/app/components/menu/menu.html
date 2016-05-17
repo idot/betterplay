@@ -1,11 +1,11 @@
 <div>
    <md-button aria-label="games">
-       <a ui-sref="games">
+       <a ui-sref="games">games</a>
    </md-button>
   <md-button aria-label="bets">
-      <a ui-sref="bets">
+      <a ui-sref="user.userBets({'username': user.username})">bets</a>
   </md-button>
   <md-button aria-label="settings">
-      <a ui-sref="user.userEdit({'username': user.username})">
+      <a ui-sref="user.userEdit({'username': user.username})">settings</a>
   </md-button>
 </div>
