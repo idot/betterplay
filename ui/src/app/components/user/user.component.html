@@ -3,7 +3,7 @@
          <img ng-src="{{ user.iconurl+'?s=80' }}" alt="{{user.username}}" class="md-avatar"/>
         {{user.username}}<span class="badge {{vm.badgecolor()}}">{{user.totalPoints}}</span>
     </a>
-    <a ui-sref="user.specialBets({'username': user.username})" ng-if="full">
-        <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets">Special Bets</md-button>
-    </a>    
+     <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets" ui-sref="user.specialBets({'username': user.username})" ng-if="full">
+           Special Bets
+     </md-button>
 </div>
