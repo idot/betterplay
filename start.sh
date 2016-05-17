@@ -1,6 +1,6 @@
 #!/bin/sh
 
-module load oracle-java-
+module load oracle-jdk/1.8.0_72
 
 activator clean stage
 #./target/universal/stage/bin/betterplay -Dconfig.file=./conf/production.conf -Dhttp.port=9055

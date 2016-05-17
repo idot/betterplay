@@ -2,8 +2,8 @@ BetterPlay
 ==========
 
 Tournament style betting system.
-Current initial data provided for FIFA WM2014. 
+Current initial data provided for UEFA 2016. 
 
-uses: Play2.3, slick, scala 2.10, angular
+uses: Play2.5, slick, scala 2.11, angular, angular-material
 
 
