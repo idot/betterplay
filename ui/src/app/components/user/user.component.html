@@ -1,6 +1,6 @@
 <div layout="row">
-      <a ui-sref="user.userBets({'username': user.username})">
-         <img ng-src="{{ user.iconurl+'?s=80' }}" alt="{{user.username}}" class="md-avatar"/>
+     <a ui-sref="user.userBets({'username': user.username})">
+         <img ng-src="{{ user.iconurl+'&s=37' }}" alt="{{user.username}}" class="md-avatar"/>
         {{user.username}}<span class="badge {{vm.badgecolor()}}">{{user.totalPoints}}</span>
     </a>
      <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets" ui-sref="user.specialBets({'username': user.username})" ng-if="full">

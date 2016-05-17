@@ -1,5 +1,6 @@
 <div>
        <md-button type="submit" value="games" class="md-raised" title="games" aria-label="games" ui-sref="games">games</md-button>
        <md-button type="submit" value="bets" class="md-raised" title="bets" aria-label="bets" ui-sref="user.userBets({'username': user.username})">bets</md-button>
+       <img ng-src="{{ user.iconurl+'&s=37' }}" alt="{{user.username}}" class="md-avatar"/>
        <md-button type="submit" value="settings" class="md-raised" title="settings" aria-label="settings" ui-sref="user.userEdit({'username': user.username})">settings</md-button>
 </div>

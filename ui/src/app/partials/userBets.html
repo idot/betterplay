@@ -1,13 +1,9 @@
 <div layout="column" ng-cloak>
 <form name="headerForm">    
  <md-toolbar md-scroll-shrink ng-if="true">
-   <md-list>
-        <md-list-item class="md-2-line">
-        {{vm.getTime() | date: vm.DF}}
-        <better-user-view user="vm.user" full="true"></better-user-view>
-       </md-list-item>
-  </md-list>
-  <better-menu-view user="vm.user"/>
+   <div layout="row">
+         <better-menu-view user="vm.user"></better-menu-view> <better-user-view user="vm.user" full="true"></better-user-view>
+   </div>
   <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
 </md-toolbar>
 </form>
