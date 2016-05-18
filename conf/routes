@@ -52,7 +52,7 @@ POST   /em2016/api/user/name                 controllers.Users.updateUserName()
 POST   /em2016/api/userhadinstructions        controllers.Users.updateUserHadInstructions()
 #GET   /em2016/api/newPassword/:token             controllers.Users.newPasswordRequestByMail(token)
 
-
+GET   /em2016/api/mailpassword/:password  controllers.Application.mailPassword(password: String)
 
 POST    /em2016/api/createBetsForUsers      controllers.Users.createBetsForUsers()
 

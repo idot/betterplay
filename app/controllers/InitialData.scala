@@ -141,7 +141,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
   def users(debug: Boolean): Seq[User] = {
       def uf(name: String, first: String, last: String, email: String, pw: String, admin: Boolean): User = {
           val encrypted = DomainHelper.encrypt(pw)
-		  val (u,t) = DomainHelper.randomGravatarUrl(email)
+		      val (u,t) = DomainHelper.randomGravatarUrl(email)
           User(None, name, first, last, "", true, email, encrypted, admin, admin, admin, true, 0, 0, u, t, None, DomainHelper.filterSettings())
       }
 	  if(debug){

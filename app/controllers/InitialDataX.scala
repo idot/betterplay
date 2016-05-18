@@ -18,7 +18,7 @@ object InitialDataX {
     val s = Seq(
       SpecialBetT(None, "topscorer", "highest scoring player", 8, start, "topscorer", SpecialBetType.player, ""),
       SpecialBetT(None, "mvp", "most valuable player", 8, start, "mvp", SpecialBetType.player, ""),
-      SpecialBetT(None, "world champion", "world champion", 10, start, "world champion", SpecialBetType.team, ""),
+      SpecialBetT(None, "champion", "champion", 10, start, "champion", SpecialBetType.team, ""),
       SpecialBetT(None, "semifinalist", "semifinalist", 5, start, "semifinalist", SpecialBetType.team, ""),
       SpecialBetT(None, "semifinalist", "semifinalist", 5, start, "semifinalist", SpecialBetType.team, ""),
       SpecialBetT(None, "semifinalist", "semifinalist", 5, start, "semifinalist", SpecialBetType.team, ""),

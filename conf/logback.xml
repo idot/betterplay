@@ -36,10 +36,16 @@
   <logger name="slick.jdbc.JdbcBackend.statement" level="INFO"/>
   <logger name="h2database" level="ERROR"/> <!-- INFO is good for debugging; ERROR turns it off -->
 
+  <logger name="org.jdbcdslog.ConnectionLogger" level="OFF"  /> <!-- Won' log connections -->
+  <logger name="org.jdbcdslog.StatementLogger"  level="INFO" /> <!-- Will log all statements -->
+  <logger name="org.jdbcdslog.ResultSetLogger"  level="OFF"  /> <!-- Won' log result sets -->
+  <logger name="org.apache.commons.mail" level="DEBUG"/>
+
   <!-- my loggers -->
   <logger name="security" level="TRACE"/>
   <logger name="db" level="DEBUG"/>
-
+  <logger name="mail" level="INFO"/>
+ 
   <root level="WARN">
     <appender-ref ref="ASYNCFILE" />
     <appender-ref ref="ASYNCSTDOUT" />

@@ -7,3 +7,8 @@ Current initial data provided for UEFA 2016.
 uses: Play2.5, slick, scala 2.11, angular, angular-material
 
 
+select count(*) from pg_stat_activity;
+
+select count(*) from pg_stat_activity where datname = 'better';
+
+SELECT pg_terminate_backend(procpid) FROM pg_stat_activity WHERE procpid <> pg_backend_pid() AND datname = 'better';

@@ -1,4 +1,5 @@
 <div layout-align="center end">
+       <span ng-if="vm.userService.isLoggedIn()">
        <a ui-sref= "user.userEdit({'username': vm.userService.loggedInUser.username})">
                <img ng-src="{{ vm.userService.loggedInUser.iconurl+'&s=37' }}" alt="{{vm.userService.loggedInUser.username}}" style="margin: 0px 0px 6px 10px; border-radius: 50%;"/>
        </a>
@@ -10,5 +11,12 @@
        </md-button>
        <md-button type="submit" value="Submit"  class="md-raised" title="Register User" ui-sref="admin.registerUser" ng-disabled="vm.registerDisabled()" ng-if="vm.userService.loggedInUser.isAdmin">
              Register User
+       </md-button>
+       <md-button type="submit" value="Submit"  class="md-raised" title="Logout" ui-sref="logout">
+             Logout
+       </md-button>
+       </span>
+       <md-button type="submit" value="Submit"  class="md-raised" title="Login" ui-sref="login" ng-if="! vm.userService.isLoggedIn()">
+             Login
        </md-button>
 </div>

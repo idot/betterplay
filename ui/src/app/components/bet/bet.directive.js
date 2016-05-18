@@ -38,8 +38,7 @@
         }         
         
         vm.disabled = function(bet){
-            return false;
-           // return (! vm.enablePoints || ! betterSettings.canBet($scope.start, bet));
+            return (! vm.enablePoints || ! betterSettings.canBet($scope.start, bet));
         };     
         //we set a result if there is none available because its hidden from the user; otherwise the user owns the bet 
         //so: 
@@ -103,7 +102,7 @@
                     toastr.success("<span>"+g+"     "+res+"</span>", "updated bet");
                     
                     vm.originalBet = betnew;
-                    bet = betnew;
+                    bet.result = betnew.result;
                     bet.marked = false;
                     vm.enablePoints = true;
                     vm.saveStyle = vm.saveStyleValue(bet);

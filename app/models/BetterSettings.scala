@@ -10,10 +10,20 @@ import java.security.SecureRandom
 
 
 object BetterSettings {
-  val TOKENLENGTH = 36
+        val TOKENLENGTH = 36
 	val MAILTIMEOUT = 5	 
-  val DEBUGTOKEN = "123456789012345678901234567890123456"
+        val DEBUGTOKEN = "123456789012345678901234567890123456"
 	
+        var mailPassword = "" 
+    
+        def setMailPassword(password: String){
+            mailPassword = password
+        }
+        
+        def getMailPassword(): String = {
+            mailPassword
+        }
+        
 	var debugTime = new DateTime()
 	var debug = false
 	

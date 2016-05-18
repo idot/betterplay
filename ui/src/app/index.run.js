@@ -20,6 +20,9 @@
    //  }   
               var mapErrors = function(errors){
                   if(errors.error){
+                      if(typeof errors.error == "string"){
+                          return "error: "+errors.error;
+                      }
                       return _.map(errors.error, function(value, key){ return key + ": " +value; }).join("\n");
                   }else{                    
                     var errorsp = _.map(errors, function(value, key){ return key + ": " +value; });

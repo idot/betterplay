@@ -7,14 +7,14 @@
 
     /** @ngInject */
     function routerConfig($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise("/"); 
+        $urlRouterProvider.otherwise("/user/@reload@/bets"); 
    
         
         $stateProvider
         .state('home', {
             url: "/",
-            templateUrl: 'app/main/main.html',
-            controller: 'MainController',
+            templateUrl: 'app/partials/users.html',
+            controller: 'UsersController',
             controllerAs: 'main'
         }) 
         .state('login', {
@@ -112,9 +112,8 @@
             })
             .state('logout', {
                 url: "/logout",
-                onEnter: function($rootScope, $state) {
-                    $rootScope.logout();
-                    $state.transitionTo("users");
+                onEnter: function(userService) {
+                    userService.logout();
                 }
             })
             .state('admin', {

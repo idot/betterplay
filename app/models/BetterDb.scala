@@ -139,6 +139,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      }
  
      def insertPlayer(player: Player, teamName: String, submittingUser: User): Future[Player] = {
+         dbLogger.debug(s"inserting player $player.name")
          if(submittingUser.isAdmin){
            val ins = (for{
               team <- teams.filter(t => t.name === teamName).result.head
@@ -502,7 +503,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          val allGamesWithBetsForUser = for{
             (g,b) <- games.join(bets).on(_.id === _.gameId) if b.userId === userId
          } yield (g.id)
+         dbLogger.debug(s"fetched games without bets for user $userId yield")
          val allGamesWithoutBetsForUser = games.filterNot(g => g.id in allGamesWithBetsForUser)
+         dbLogger.debug(s"fetched games without bets for user $userId filtered")
          allGamesWithoutBetsForUser
      }
      
