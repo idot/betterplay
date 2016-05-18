@@ -102,7 +102,7 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) {
   def parseDate(days: String, times: String, line: String): (DateTime,DateTime) = {
       try{
          val dt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss")
-         val time = dt.parseDateTime(s"$days $times")
+         val time = dt.parseDateTime(s"$days $times").plusHours(1)
          (time,time)
       }catch{
         case e: Exception => {
@@ -130,7 +130,7 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) {
          val users = (1 to 10).map(n => uf(s"n$n", s"f$n", s"l$n", s"f${n}.l${n}@betting.com", "p$n", false))
          admin +: users
 	  }else{
-	      val names = Seq("anjae","thomasd", "andreas")
+	      val names = Seq("ido")
           names.map(n => uf(n, "","", "", n, true))		  		    
   	  }
   }
@@ -156,10 +156,11 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) {
     Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1 seconds)  
     val level = Await.result(betterDb.allLevels(), 1 second)(0)
     val (teams, ttg) = teamsGames(level.id.get)
-    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 1 seconds)
-    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 1 seconds)
-    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 1 seconds)
-    Await.result(Future.sequence(ps.map{ case(p,t) => betterDb.insertPlayer(p, t, admin) }), 1 seconds)
+    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 3 seconds)
+    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 5 seconds)
+    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 5 seconds)
+    ps.map{ case(p,t) => Await.result(betterDb.insertPlayer(p, t, admin), 1 seconds) }
+
 	   
 	  
 

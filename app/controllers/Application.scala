@@ -124,9 +124,10 @@ trait Security { self: Controller =>
         case e: ValidationException => Logger.debug(e.getMessage); Future.successful(NotAcceptable(e.getMessage))
         case e: java.sql.SQLException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
         case e: AskTimeoutException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
+        case e: org.apache.commons.mail.EmailException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
       }
   }
-  
+
   
 }
  
@@ -174,7 +175,12 @@ class Application(env: Environment,
     Ok("TODO: redirect")
   }
   
-
+    
+  def mailPassword(password: String) = Action { implicit request =>
+      BetterSettings.setMailPassword(password)
+      Logger.info(s"set mail password ${BetterSettings.getMailPassword()}")
+      Ok("set mail password")
+  }
 
   val routeCache: Array[JavaScriptReverseRoute] = {
     val jsRoutesClass = classOf[controllers.routes.javascript]
@@ -354,7 +360,7 @@ class Application(env: Environment,
     if(debug){
       insertdata match {
         case "test" => new InitialData(betterDb, env).insert(debug)
-        case "euro2016" => new Euro2016Data(betterDb, env).insert(debug)
+        case "euro2016" => new Euro2016Data(betterDb, env).insert(false)
         case _ => //do nothing
       }
     }

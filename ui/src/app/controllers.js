@@ -64,7 +64,7 @@
     }
     
     /** @ngInject */
-    function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings, gblFilter) {
+    function UserController($log, $filter, Restangular, $stateParams, toastr, _, betterSettings, gblFilter, userService, $state) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.user = {};
@@ -73,9 +73,18 @@
         vm.DF = betterSettings.DF;
         vm.getTime = betterSettings.getTime;
         vm.allGameBets = [];
-      
+       
+        var queryUserName = vm.stateParams.username;
+        if(vm.stateParams.username && vm.stateParams.username == "@reload@"){
+            queryUserName = userService.loggedInUser.username;
+            if(queryUserName === undefined ||  queryUserName == ""){
+                 $state.go("login");
+            }else{
+                 $state.go("user.userBets", {  username: queryUserName });
+            }
+        };
         
-        var queryUser = Restangular.one('em2016/api/user', vm.stateParams.username);
+        var queryUser = Restangular.one('em2016/api/user',  queryUserName);
      
         vm.filterChanged = function(){
             vm.gameBets = gblFilter(vm.allGameBets);

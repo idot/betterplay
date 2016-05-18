@@ -4,7 +4,7 @@
         angular
             .module('ui')
             .value('version', '0.1')
-            .factory('specialBetService', function($state, Restangular, toastr, _) {
+            .factory('specialBetService', function($state, Restangular, toastr, _, userService) {
                 return {
                     getSpecialBet: function(betId, username) {
                         return Restangular.one('em2016/api/user', username).one('specialBets').get().then(
@@ -30,6 +30,7 @@
                                     Restangular.all('em2016/api/userhadinstructions').customPOST().then(
                                         function(success) {
                                             toastr.success("You have placed your first special bet.\nPlease don't forget to place all special bets until start of the games.", "Congratulations" + user.username+"! ");
+                                            userService.loggedInUser.hadInstructions = true;
                                         }
                                     );
                                 }
@@ -247,10 +248,10 @@
                 function(auth) {
                    vm.updateLogin(auth.user, auth["AUTH-TOKEN"]);
                     if (auth.user.hadInstructions) {
-                       $state.transitionTo("admin.registerUser");
-                 //       $state.transitionTo("user.userBets", {
-                 //           username: vm.loggedInUser.username
-                 //       });
+               //        $state.transitionTo("admin.registerUser");
+                        $state.transitionTo("user.userBets", {
+                            username: vm.loggedInUser.username
+                        });
                         
                     } else {
                         $state.transitionTo("user.specialBets", {
@@ -273,8 +274,11 @@
         vm.logout = function() {
             vm.loggedInUser = NOUSER;
             authtoken = "";
-            $cookies.remove("AUTH-TOKEN");
-            Restangular.setDefaultHeaders();
+            Restangular.all('/em2016/api/logout').customPOST().then(function(result){
+                $cookies.remove("AUTH-TOKEN");
+                Restangular.setDefaultHeaders();
+                $state.go("login");
+            });      
         };
 
         /**
@@ -338,7 +342,21 @@
         };
 
         vm.isLoggedIn = function() {
-            return typeof  authtoken !== "undefined" && authtoken != "";
+            var hasAuth = typeof  authtoken !== "undefined" && authtoken != "";
+   /*
+            if(hasAuth && (vm.loggedInUser === undefined || vm.loggedInUser == NOUSER)){ //we refresh the user if the user was lost, but cookie is still there
+                Restangular.one('em2016/api/userWithEmail').get().then(function(userWithEmail) {
+                    vm.loggedInUser = userWithEmail;
+                    vm.filter = userWithEmail.filterSettings;
+                    return true;
+                }, function(err){
+                    return false;
+                }
+               );
+            } else {
+*/
+                return hasAuth ? true : false;
+  //          }
         };
 
         vm.userHadInstructions = function() {

@@ -111,7 +111,8 @@ case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId:
       if(DomainHelper.viewable(viewingUserId, userId, gameStart, currentTime, viewTimeToStart)){
         ViewableBet(id, points, Some(result), gameId, userId, true)
       }else{
-        //ViewableBet(id, points, None, gameId, userId, false)
+         //TODO: currently all bets are viewable!!! until start of games
+         //ViewableBet(id, points, None, gameId, userId, false)
          ViewableBet(id, points, Some(result), gameId, userId, true)
      }    
   }
