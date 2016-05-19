@@ -95,7 +95,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
                  user <- betterDb.insertUser(created, false, false, Some(request.admin))
                  message = MailGenerator.createUserRegistrationMail(user, token, request.admin)
                  inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
-                 mail <- mailer.ask(RegistrationMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
+                 mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
                } yield {
                  Ok(s"created user ${user.username} $mail")
                }
@@ -205,42 +205,85 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        }}
    }
    
+   
+   /**** reCAPTCHA begin ****/
+   def sendPasswordEmail(user: User): Future[Result] = {
+       val token = BetterSettings.randomToken()
+       val message = MailGenerator.createPasswordRequestMail(user, token)
+       for{
+          mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
+          inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
+       }yield{
+          Ok(s"sent new password request")
+       }
+   }
+   
+   def checkCaptchaResponse(wsResponse: WSResponse, user: User): Future[Result] = {
+       ( wsResponse.json \ "success" ).validate[Boolean].fold(
+           err => Future.failed(ValidationException("could not show humaneness")),
+           succ => if(succ){
+                 sendPasswordEmail(user)       
+           }else{
+                ( wsResponse.json \ "error-codes" ).validate[Array[String]].fold(
+                   err => Future.failed(ValidationException("could not check error codes")),
+                   succ => Future.failed(ValidationException(s"errors: ${succ.mkString(",")}"))
+                )
+           }
+       )
+   }
+   
+   def getUserAndVerify(secret: String, response: String, email: String): Future[Result] = {
+      betterException {
+         val url = "https://www.google.com/recaptcha/api/siteverify"   
+         for{
+           user <- betterDb.userByEmail(email)
+           result <- ws.url(url)
+                    .withQueryString(("secret", secret),("response", response))
+                    .withRequestTimeout(10000.millis)
+                    .withHeaders("Accept" -> "application/json")
+                    .post("")
+           outcome <- checkCaptchaResponse(result, user)
+         }yield(outcome)
+       }  
+   }
+   
    /**
    *
    * https://developers.google.com/recaptcha/docs/verify#api-request
-   *
+   * request to change password by recaptcha
+   * 
    **/
-   def verifyRecaptcha() = Action.async(parse.json){ request =>
-       val url = "https://www.google.com/recaptcha/api/siteverify"
+   def changePasswordRequest() = Action.async(parse.json){ request =>
        val jemail =  (request.body \ "email").validate[String]
        val jresponse =  (request.body \ "response").validate[String]
        (jemail, jresponse) match {
          case (email: JsSuccess[String], response: JsSuccess[String]) =>
-           val postRequest = ws.url(url)
-           val secret = configuration.getString("recaptchasecred")
-           val pdata = Json.obj(
-                  "secret" -> secret,
-                  "response" -> response.value
-           )
-           
-//           postRequest.withHeaders("Accept" -> "application/json")
-//              .withRequestTimeout(10000.millis).post(pdata).map{ r =>
-//                 ( r.json \ "success" ).validate[Boolean].fold(
-//                     err => ValidationException("could not show humaneness"),
-//                     succ => if(succ){
-//                       //TODO: SEND EMAIL
-//                     }else{
-//                       //DENY
-//                     }
-//              }
-//                  
-//           )
-         case _ => 
+           configuration.getString("betterplay.recaptchasecret")
+               .fold(Future.successful(InternalServerError("could not get recaptcha secret"))){ secret =>
+                   getUserAndVerify(secret, response.value, email.value)
+               }
+         case _ => Future.successful(NotAcceptable("could not parse recaptcha request"))
        }
-       Future.successful(Ok("hi"))
-     
    }
+   /**** reCAPTCHA end ****/
    
+       
+  def mailPassword() = withAdmin.async(parse.json) { implicit request =>
+      val jpass = (request.body \ "password").validate[String]
+      jpass match {
+        case (pass: JsSuccess[String]) => {
+                      BetterSettings.setMailPassword(pass.value)
+                      Logger.info(s"set mail password")
+                      betterException {
+                          mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
+                                  .mapTo[String].map{ result => Ok(s"set mail password $result")}
+                      }
+                  }
+       case _ => {
+           Future.successful(NotAcceptable("could not parse mail password setting"))
+       }
+      }
+   }
    
 }
 

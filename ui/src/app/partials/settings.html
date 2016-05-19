@@ -25,7 +25,7 @@
                </md-input-container>
             
         	
-                      <div flex-gt-sm="80">
+               <div flex-gt-sm="80">
                          <md-input-container class="md-block" flex-gt-sm>
                                <label for="dateselect">date</label>
                                <input mdc-datetime-picker date="true" time="false" type="text" id="dateselect"
@@ -41,7 +41,7 @@
 
                         <md-input-container layout-align="center">
                         	<div layout="row" layout-sm="column" layout-margin>
-                                    <md-button type="button" title="Reset Time" class="md-raised" ng-click="vm.resetTime()" value="Reset Time" title="Reset Time">Reset Time</button>
+                                    <md-button type="button" title="Reset Time" class="md-raised" ng-click="vm.resetTime()" value="Reset Time" title="Reset Time">Reset Time</md-button>
                                 </div>
                         </md-input-container> 
                     </div>
@@ -50,6 +50,24 @@
        </form>
    </md-content>
 </div>
+
+
+  <md-content ng-if="vm.userService.loggedInUser.isAdmin">
+   <div flex-gt-sm="80">
+      Please don't change this password. Its necessary for sending e-mails!
+     <form name="mailForm"> 
+           <md-input-container class="md-block">
+                    <label for="mailpassword">mail password</label>
+                    <input type="password" name="mailpassword" ng-model="vm.mailpassword"/>
+           </md-input-container>
+           <md-input-container>
+                   <md-button type="button" title="Submit Password" class="md-raised" ng-click="vm.submitPassword()" value="Submit Password" title="Submit Password">Submit Password</md-button>
+           </md-input-container>
+     </form>
+ </div>
+ </md-content>
+
+
          
 
 

@@ -17,7 +17,8 @@
         .controller('CreateGameController', CreateGameController)
         .controller('PlotSpecialBetsController', PlotSpecialBetsController)
         .controller('ExcelController', ExcelController)
-        .controller("CompleteRegistrationController", CompleteRegistrationController);
+        .controller("CompleteRegistrationController", CompleteRegistrationController)
+        .controller("ChangePasswordRequestController", ChangePasswordRequestController);
 
     /** @ngInject */
     function UsersController($log, $filter, Restangular, betterSettings, userService) {
@@ -132,9 +133,11 @@
     }
 
      /** @ngInject */
-    function SettingsController($log, $stateParams, Restangular, toastr, moment, betterSettings) {
+    function SettingsController($log, $stateParams, Restangular, toastr, moment, betterSettings, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
+        vm.userService = userService;
+        vm.mailpassword = "";
 
         vm.DF = betterSettings.DF;
         vm.updateInterval = betterSettings.UPDATEINTERVAL;
@@ -157,7 +160,16 @@
         vm.updateDate = function() {
             betterSettings.updateDate(vm.date);
         };
-
+        
+        vm.submitPassword = function(){
+            var message = {
+                'password': vm.mailpassword
+            };
+            Restangular.all('/em2016/api/mailpassword').customPOST(message).then(function(result){
+                toastr.info("updated mail password "+result);       
+            });        
+        };
+ 
     }
 
     /** @ngInject */
@@ -316,7 +328,7 @@
             };
             Restangular.all('em2016/api/user/details').customPOST(u).then(
                 function(success) {
-                    toastr.pop('success', "updated user details");
+                    toastr.success('success', "updated user details");
                     vm.refreshUser();
                 }
             );
@@ -561,7 +573,7 @@
             };
             Restangular.all('em2016/api/game').customPOST(createdGame).then(
                 function(success) {
-                    toastr.pop('success', "created game", success);
+                    toastr.success('success', "created game", success);
                     vm.disabled = false;
                 }
             );
@@ -587,7 +599,7 @@
     }
 
      /** @ngInject */
-    function ExcelController($stateParams, $state, Restangular, $http, $document) {
+    function ExcelController($stateParams, $state, Restangular, $document) {
         var vm = this;
 
         vm.filename = ""
@@ -601,16 +613,43 @@
                     type: 'application/xls',
                     filename: vm.filename
                 });
-                $http.post('/data/fileupload', fd, {
-                    transformRequest: angular.identity,
-                    headers: {
-                        'Content-Type': undefined
-                    }
-                });
+      //          $http.post('/data/fileupload', fd, {
+        //            transformRequest: angular.identity,
+        //            headers: {
+        //                'Content-Type': undefined
+    //                }
+      //          });
             }
             r.readAsArrayBuffer()
         };
     }
+ 
+     /** @ngInject */
+    function ChangePasswordRequestController($stateParams, $state, Restangular, toastr, betterSettings) {
+        var vm = this;
+        vm.recaptchasite = betterSettings.settings.recaptchasite;
+        vm.email = "";
+        
+        vm.setResponse = function(response) {
+            if(vm.email == ""){
+                toastr.error("please enter email!");
+                return;
+            }
+            var message = {
+                email: vm.email,
+                response: response
+            };
+            
+            Restangular.all('em2016/api/changePasswordRequest').customPOST(message).then(
+                function(success) {
+                    toastr.info('success', "updated user details");
+                    vm.refreshUser();
+                }
+            );
+       };
+    }
+ 
+ 
  
      /** @ngInject */
     function CompleteRegistrationController($log, Restangular, toastr, betterSettings, userService, $scope, _, $stateParams, $state) {
@@ -620,6 +659,7 @@
         vm.password2 = "";
         vm.username = $stateParams.username;
         vm.token = $stateParams.token;
+        vm.newPassword = $state.includes("newPassword");
         
         vm.comparePasswords = function(form){
             var identical = vm.password1 == vm.password2;
@@ -639,12 +679,19 @@
             };
             Restangular.all('em2016/api/tokenPassword').customPUT(pu).then(
                 function(auth) {
-                    toastr.success(auth.user.username, "welcome");
                     userService.updateLogin(auth.user, auth["AUTH-TOKEN"]);
-                    $state.transitionTo("user.specialBets", {
-                        username: auth.user.username
-                        //http://benfoster.io/blog/ui-router-optional-parameters add new invisible parameter to display instructions popup in specialbets
-                    });
+                    if(vm.newPassword){
+                          toastr.success(auth.user.username, "changed password");
+                          $state.transitionTo("user.userBets", {
+                              username: auth.user.username
+                          });
+                    } else {
+                          toastr.success(auth.user.username, "welcome");
+                          $state.transitionTo("user.specialBets", {
+                              username: auth.user.username
+                              //http://benfoster.io/blog/ui-router-optional-parameters add new invisible parameter to display instructions popup in specialbets
+                          });
+                    }
                 }
             );
         };

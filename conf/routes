@@ -50,9 +50,10 @@ POST   /em2016/api/user/password             controllers.Users.updatePassword()
 POST   /em2016/api/user/filter               controllers.Users.updateFilter()    
 POST   /em2016/api/user/name                 controllers.Users.updateUserName()    
 POST   /em2016/api/userhadinstructions        controllers.Users.updateUserHadInstructions()
-#GET   /em2016/api/newPassword/:token             controllers.Users.newPasswordRequestByMail(token)
+POST   /em2016/api/changePasswordRequest            controllers.Users.changePasswordRequest()
 
-GET   /em2016/api/mailpassword/:password  controllers.Application.mailPassword(password: String)
+#set the password for the smtp mail user
+POST   /em2016/api/mailpassword               controllers.Users.mailPassword()
 
 POST    /em2016/api/createBetsForUsers      controllers.Users.createBetsForUsers()
 

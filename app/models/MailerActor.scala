@@ -6,7 +6,6 @@ import akka.actor._
 import akka.pattern.ask
 import javax.inject._
 import play.api.Configuration
-import play.api.libs.mailer._
 import akka.contrib.throttle._
 import akka.contrib.throttle.Throttler._
 import java.util.concurrent.TimeUnit._
@@ -22,11 +21,15 @@ import org.apache.commons.mail._
 
 object MessageTypes {
    val REGISTRATION = "registration"
+   val NEWPASSWORD = "new password"
    val FREE = "free"
   
+   val immediate = Set(REGISTRATION,NEWPASSWORD)
 }
 
-case class RegistrationMail(user: User)
+case class ImmediateMail(user: User)
+case class TestMail()
+
 
 //generate messages
 //generate email after recaptcha for new password
@@ -34,17 +37,23 @@ case class RegistrationMail(user: User)
 
 //if param newRegistration => make toastr to remind to set password.
 //disable links until password is saved
+// task going over sent messages with timestamps of sent => set seen after 48hours
 //
 object MailMessages {
+  val mailLogger = Logger("mail")
+   
   val mailSuccess = "mail delivered successfully"
+  val error = "mail not delivered"
   
   def address(mail: String, name: String): InternetAddress = new InternetAddress(mail, name)
   
-  def sendMail(subject: String, body: String, to: InternetAddress): String = {
+  def sendMail(subject: String, body: String, to: InternetAddress, debug:Boolean): String = {
+       mailLogger.debug(s"sending mail $subject ${to.getAddress}")
+       
        import scala.collection.JavaConversions._
        val tos = seqAsJavaList(Seq(to))
        val from =  "Ido Tamir <ido.tamir@vbcf.ac.at>"
-    
+       
        val email = new SimpleEmail()
        email.setHostName("webmail.imp.ac.at")
        email.setAuthenticator(new DefaultAuthenticator("ido.tamir", BetterSettings.getMailPassword()))
@@ -57,7 +66,7 @@ object MailMessages {
        email.setMsg(body)
        email.setSmtpPort(587)
        email.setSslSmtpPort("587")
-       email.setDebug(true)
+       email.setDebug(debug)
        email.send()
   }
 
@@ -65,54 +74,76 @@ object MailMessages {
 
 
 
-class SendMailActor @Inject()(configuration: Configuration, mailerClient: MailerClient) extends Actor {
+class SendMailActor @Inject()(configuration: Configuration) extends Actor {
    val mailLogger = Logger("mail")
-   val debugMode = false
-   
-   
-   val conf = new SMTPConfiguration("webmail.imp.ac.at", 587, true, true, Some("ido.tamir"), Some(BetterSettings.getMailPassword()), debugMode)
-  // val mailer = new SMTPMailer(conf)
-   
+   val mailUser = configuration.getString("betterplay.mail.user").getOrElse("")
+   val mailUserTest = configuration.getString("betterplay.mail.testreceiver").getOrElse("")
+   val debug = BetterSettings.debug || configuration.getBoolean("betterplay.mail.debug").getOrElse(false)
+
    import scala.concurrent.ExecutionContext.Implicits.global
   
-   def mail(um: UserMessage, m: Message, user: User, actorRef: ActorRef){
+   def mail(um: UserMessage, m: Message, user: User){
+       val s = sender()
        mailLogger.debug(m.toString)
-       val send = BetterSettings.getMailPassword() != ""
-       
+       val send = BetterSettings.getMailPassword() != "" && mailUser != ""      
        if(send){
-         blocking {
-            val result = MailMessages.sendMail(m.subject, m.body, MailMessages.address(user.email,user.firstName+" "+user.lastName))
-            mailLogger.debug(result)
-            actorRef ! MailMessages.mailSuccess
+         Future{
+           blocking {
+              try{
+                 val result = MailMessages.sendMail(m.subject, m.body, MailMessages.address(user.email,user.firstName+" "+user.lastName), debug)
+                 mailLogger.debug("send result:"+result)
+                 s ! MailMessages.mailSuccess
+              } catch {
+                case e: EmailException => {
+                  mailLogger.error(e.getMessage)
+                  s ! e.getMessage
+                }
+              }
+           }
          }
        } else {
-           mailLogger.error("did not send message ")
-           actorRef ! MailMessages.mailSuccess
+           mailLogger.error("did not send message")
+          s ! MailMessages.error
        }
-
+   }
+   
+   def testMail(){
+       mailLogger.info("received test mail")
+       val s = sender()
+       Future{  
+          blocking {
+             val result = MailMessages.sendMail("betterplay test email", "betterplay test body", MailMessages.address(mailUserTest, "Test"), true)
+             mailLogger.debug("test send result:"+result)
+             s ! MailMessages.mailSuccess
+          }   
+       }
    }
    
    def receive = {
-      case ((um: UserMessage, m: Message, user: User)) ⇒ val s = sender(); Future{ mail(um,m,user,s) }
+      case ((um: UserMessage, m: Message, user: User)) ⇒ mail(um,m,user) 
+      case TestMail() => testMail() 
       case _ => 
     }
 }
 
 
-class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  @Named("sendMail") sendMail: ActorRef) extends Actor {
+class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  @Named("sendMail") sendMailActor: ActorRef) extends Actor {
+  val mailLogger = Logger("mail")
+  
   import scala.concurrent.ExecutionContext.Implicits.global
   val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))
 
   val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], Rate(3, (1.minutes))))
   
-  throttler ! SetTarget(Some(sendMail))
+  throttler ! SetTarget(Some(sendMailActor))
   
   def receive = {
-      case RegistrationMail(user) => sendRegistrationMailToUser(user,sender())  
+      case ImmediateMail(user) => sendImmediateMailToUser(user)  
+      case TestMail() => mailLogger.info("got test mail"); val s = sender(); throttler.ask(TestMail())(timeout).mapTo[String].map(s ! _)
       case _ =>
   }
   
-  val config = configuration.getString("my.config").getOrElse("none")
+ 
  
  // def sendEmails
   //regular task activated by timing based actor every 20 minutes
@@ -122,24 +153,40 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
      //success ==> set sent
     //unsuccessful ==> log + retry in minutes
   }
+
+  def sendMail(userMessage: UserMessage, message: Message, user: User, s: ActorRef) {
+    throttler.ask((userMessage, message, user))(timeout).mapTo[String]
+      .onComplete { mailSent =>
+        mailSent match {
+          case Success(succ: String) if succ == MailMessages.mailSuccess => {
+            betterDb.setMessageSent(userMessage.id.get, new DateTime())
+            s ! "sent email"
+          }
+          case Success(succ: String) if succ == MailMessages.error => {
+            s ! MailMessages.error
+          }
+          case Success(succ: String) => {
+            s ! s
+          }
+          case Failure(_) => {
+            s ! _
+          }
+        }
+      }
+  }
+  
+  def sendMails(mails: Seq[(UserMessage,Message)], user: User, s: ActorRef){
+      mails.foreach{ case(um,m) => sendMail(um,m,user, s) }
+  }
   
   //extra task => throtteler
-  def sendRegistrationMailToUser(user: User, sender: ActorRef){  
+  def sendImmediateMailToUser(user: User){  
+      val s = sender()
       betterDb.unsentMailForUser(user).map{ unsent => 
-         unsent.filter{ case(um, m) => m.messageType == MessageTypes.REGISTRATION }.headOption match {
-           case Some((um,m)) => throttler.ask((um,m,user))(timeout).mapTo[String]
-                                  .onComplete{ mailSent => 
-                                     mailSent match {
-                                       case Success(s: String) if s == MailMessages.mailSuccess => {
-                                         betterDb.setMessageSent(um.id.get, new DateTime())
-                                         sender ! "sent email"
-                                       }
-                                       case Failure(_) => {
-                                         sender ! _
-                                       }
-                                     }
-                                }
-           case None =>  sender ! "no unsent messages"
+         val immediate = unsent.filter{ case(um, m) => MessageTypes.immediate.contains(m.messageType)  }
+         immediate.size match {
+           case 0 => s ! "no unsent messages"
+           case _ => sendMails(immediate, user, s)
          }
       }    
   }

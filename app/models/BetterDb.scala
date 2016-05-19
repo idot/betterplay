@@ -287,15 +287,18 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
        }
      }
      
-   //  def userWithSpecialBet(f: withFilter)
-     
+  
               
      
      def userByName(username: String): Future[User] = {
          db.run(users.filter(_.username === username).result.head)
              .recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with username $username")) }
      }
-
+ 
+     def userByEmail(email: String): Future[User] = {
+         db.run(users.filter(_.email === email).result.head)
+             .recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with email $email")) }
+     }
 
      def userById(userId: Long):  Future[User] = {
          db.run(users.filter(u => u.id === userId).result.head)
@@ -764,6 +767,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
  
    
     def insertMessage(message: Message, userId: Long, token: String, send: Boolean, display: Boolean): Future[(UserMessage,Message)] = {
+        dbLogger.debug(s"inserting message for $userId $token ${message.messageType} ${message.subject}")
         val action = (for {
           messId <- (messages returning messages.map(_.id)) += message  
           mess = message.copy(id=Some(messId))

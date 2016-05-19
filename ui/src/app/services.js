@@ -75,7 +75,8 @@
 
                     vm.settings = { //default
                           debug: false,
-                          gamesStarts: new Date()  
+                          gamesStarts: new Date(),
+                          recaptchasite: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"//default key no captcha
                     };
 
                     vm.getTime = function(){

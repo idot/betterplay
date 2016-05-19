@@ -44,7 +44,7 @@
   <!-- my loggers -->
   <logger name="security" level="TRACE"/>
   <logger name="db" level="DEBUG"/>
-  <logger name="mail" level="INFO"/>
+  <logger name="mail" level="DEBUG"/>
  
   <root level="WARN">
     <appender-ref ref="ASYNCFILE" />

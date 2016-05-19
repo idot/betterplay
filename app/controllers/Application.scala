@@ -21,7 +21,7 @@ import models.BetterSettings
 
 import play.api.i18n.I18nSupport
 import org.joda.time.DateTime
-import javax.inject.{Inject, Provider, Singleton}
+import javax.inject.{Inject, Provider, Singleton, Named}
 import play.api.mvc.{Action, Controller}
 import play.api.routing.{JavaScriptReverseRoute, JavaScriptReverseRouter, Router}
 import play.api.inject.ApplicationLifecycle
@@ -31,6 +31,9 @@ import scala.concurrent.Future
 import play.api.i18n.MessagesApi
 import scala.concurrent.duration._
 import akka.pattern.AskTimeoutException
+import akka.util.Timeout
+import akka.actor._
+import akka.pattern.ask
 
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
@@ -142,6 +145,7 @@ class Application(env: Environment,
                   val messagesApi: MessagesApi,
                   val cache: CacheApi,
                   configuration: Configuration,
+          //        @Named("mailer") mailer: ActorRef,
                   router: => Option[Router] = None) extends Controller with Security with I18nSupport {
 
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
@@ -153,10 +157,11 @@ class Application(env: Environment,
             messagesApi: MessagesApi,
             cache: CacheApi,
             configuration: Configuration,
+       //     mailer: ActorRef,
             router: Provider[Router]) =
     this(env, gulpAssets, lifecycle, 
            dbConfigProvider, betterDb, 
-          messagesApi, cache, configuration, Some(router.get))
+          messagesApi, cache, configuration,  Some(router.get))
 
    
    val debug = configuration.getBoolean("betterplay.debug").getOrElse(false)  
@@ -175,13 +180,6 @@ class Application(env: Environment,
     Ok("TODO: redirect")
   }
   
-    
-  def mailPassword(password: String) = Action { implicit request =>
-      BetterSettings.setMailPassword(password)
-      Logger.info(s"set mail password ${BetterSettings.getMailPassword()}")
-      Ok("set mail password")
-  }
-
   val routeCache: Array[JavaScriptReverseRoute] = {
     val jsRoutesClass = classOf[controllers.routes.javascript]
     for {
@@ -222,7 +220,6 @@ class Application(env: Environment,
     }
 
     def discardingToken(token: String): Result = {
-      
       cache.remove(token)
       result.discardingCookies(DiscardingCookie(name = AuthTokenCookieKey))
     }
@@ -257,8 +254,10 @@ class Application(env: Environment,
   def settings() = Action.async {
     betterDb.startOfGames().map{ ot =>
       val start = ot.getOrElse( new DateTime() )
-       val json = Json.obj("debug" -> debug, "gamesStarts" -> start)
-       Ok(json)
+      //default key no recaptcha
+      val sitekey = configuration.getString("betterplay.recaptchasite").getOrElse("6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI")
+      val json = Json.obj("debug" -> debug, "gamesStarts" -> start, "recaptchasite" -> sitekey)
+      Ok(json)
     } 
   }
   

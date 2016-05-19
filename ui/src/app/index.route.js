@@ -58,11 +58,18 @@
                 controller: 'CompleteRegistrationController',
                 controllerAs: 'vm'
             })
-         //   .state('user.specialBets', {
-        //        abstract: true,
-       //         url: "/dummyspecial",
-      //          template: '<ui-view/>'
-    //        })
+            .state('changePassword', { //same like completeRegistration
+                url: "/changePassword/:token",
+                templateUrl: 'app/partials/password.html',
+                controller: 'CompleteRegistrationController',
+                controllerAs: 'vm'
+            })
+            .state('passwordRequest', { 
+                url: "/requestPassword",
+                templateUrl: 'app/partials/passwordRequest.html',
+                controller: 'ChangePasswordRequestController',
+                controllerAs: 'vm'
+            })
             .state('user.specialBets', {
                 url: "/:username/special",
                 templateUrl: 'app/partials/userSpecialBets.html',

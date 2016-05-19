@@ -10,8 +10,8 @@ import java.security.SecureRandom
 
 
 object BetterSettings {
-        val TOKENLENGTH = 36
-	val MAILTIMEOUT = 5	 
+  val TOKENLENGTH = 36
+	val MAILTIMEOUT = 30	 
         val DEBUGTOKEN = "123456789012345678901234567890123456"
 	
         var mailPassword = "" 

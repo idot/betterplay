@@ -12,3 +12,10 @@ https://ngs.vbcf.ac.at/em2016/#/completeRegistration/@token
 good luck,
 
 your better
+
+
+PS: If during the game you often get "Unauthorized" errors,
+please log in again with: 
+https://ngs.vbcf.ac.at/em2016/#/login
+
+
