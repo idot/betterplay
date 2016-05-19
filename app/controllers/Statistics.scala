@@ -17,11 +17,7 @@ class Statistics @Inject()(override val betterDb: BetterDb, override val cache: 
   val excelSecret = configuration.getString("betterplay.excelSecret").getOrElse("BAD")  
    
   def excel() = withUser { request =>
-	   val helper = new StatsHelper(betterDb, BetterSettings.now(), request.request.userId)  
-	   val templates = helper.specialBetsTemplates()
-	   val gwts = helper.getGwts()
-     val excelD = new ExcelData(helper.createUserRows, gwts, templates)
-	   val excel = excelD.createExcelSheetComplete()
+	   val excel = ExcelData.generateExcel(betterDb, BetterSettings.now, request.user.id.get)
 	   val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 	   val name = BetterSettings.fileName(excel, excelSecret)
 	   val headers = ("Content-disposition",s"attachment; filename=$name")

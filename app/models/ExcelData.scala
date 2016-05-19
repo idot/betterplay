@@ -1,4 +1,5 @@
 package models
+import org.joda.time.DateTime
 
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -17,6 +18,19 @@ import org.apache.poi.hssf.usermodel.HSSFSheet._
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.hssf.util.HSSFColor
 import org.apache.poi.ss.usermodel.CellStyle
+
+object ExcelData {
+  
+  def generateExcel(betterDb: BetterDb, dateTime: DateTime, viewingUserId: Long): Array[Byte] = {
+     val helper = new StatsHelper(betterDb, dateTime, viewingUserId)  
+	   val templates = helper.specialBetsTemplates()
+	   val gwts = helper.getGwts()
+     val excelD = new ExcelData(helper.createUserRows, gwts, templates)
+	   val excel = excelD.createExcelSheetComplete()
+	   excel
+  }
+  
+}
 
 
 class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemplates: Seq[SpecialBetT]){

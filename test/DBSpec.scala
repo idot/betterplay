@@ -30,6 +30,7 @@ import org.junit.runner.RunWith
 @RunWith(classOf[JUnitRunner])
 class DBSpec extends Specification 
            with ThrownMessages  
+           with org.specs2.matcher.ContentMatchers
            with org.specs2.specification.mutable.ExecutionEnvironment { def is(implicit ee: ExecutionEnv) = {
    
    val app = new GuiceApplicationBuilder().configure(
@@ -199,7 +200,7 @@ class DBSpec extends Specification
            randomToken.length === BetterSettings.TOKENLENGTH
            val insertToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".substring(0, BetterSettings.TOKENLENGTH)
            val m = AR(betterDb.insertMessage(message, user.id.get, insertToken, true, true)) //the same token gets inserted 2x this could create a problem on userByTokenPassword!
-           val m2 = AR(betterDb.insertMessage(message, admin.id.get, insertToken, true, true))
+           val m2 = AR(betterDb.insertMessage(message, admin.id.get, randomToken, true, true))
            m._1.userId === user.id.get
            m2._1.userId === admin.id.get
            val tokTime = new DateTime()
@@ -223,10 +224,10 @@ class DBSpec extends Specification
            betterDb.userByTokenPassword(insertToken, tokTime, "thehash") must throwAn[ItemNotFoundException](message = "could not find message with token that was not seen yet").await
      
            val sent1 = AR(betterDb.setMessageSent(m2._1.id.get, new DateTime))
-           sent1 === "set message with id ${m2._1.id.get} to sent"
+           sent1 === s"set message with id ${m2._1.id.get} to sent"
            
            val sent2 = AR(betterDb.setMessageSent(m2._1.id.get, new DateTime))
-           sent2 === "could not find message with id ${m2._1.id.get} to set to sent"
+           sent2 === s"set message with id ${m2._1.id.get} to sent"
       }
     
       def insertSpecialBetTemplates(){
@@ -437,6 +438,13 @@ class DBSpec extends Specification
       
           AR(betterDb.allUsersWithRank()).map{ case(u,r) => (u.id.get, r)} === Seq((3,1),(2,2),(4,3),(1,3))
         
+          
+          val excel = ExcelData.generateExcel(betterDb, firstStart, admin.id.get)
+          val bos = new java.io.BufferedOutputStream(new java.io.FileOutputStream("testData/excel.xls"))
+          Stream.continually(bos.write(excel))
+          bos.close()
+          new java.io.File("testData/excel.xls") must haveSameMD5As(new java.io.File("testData/excel.expect.xls"))
+          
       }
    
       betterDb.dropCreate()

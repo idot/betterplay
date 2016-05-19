@@ -29,7 +29,7 @@ class DomainSpec extends Specification { def is =
 
   def testMail() = {
     BetterSettings.setMailPassword("")
-    val send = MailMessages.sendMail("subject", "body",  MailMessages.address("ido.tamir@vbcf.ac.at", "Ido Tamir"))
+    val send = MailMessages.sendMail("subject", "body",  MailMessages.address("ido.tamir@vbcf.ac.at", "Ido Tamir"), true)
     send === "sent" 
     
   }

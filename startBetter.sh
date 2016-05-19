@@ -27,5 +27,7 @@ LOG=prod-logback.xml
 PROD=/groups/vbcf-ngs/programs/betterplay-0.8-SNAPSHOT/conf/production.conf
 
 nohup bin/betterplay  -Dconfig.file=$PROD -Dlogger.resource=$LOG -Dhttp.port=9055 &
+echo "SET THE MAIL PASSWORD!!!!"
+
 tail -f nohup.out
 

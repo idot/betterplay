@@ -9,6 +9,9 @@
        <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets" ui-sref="user.specialBets({'username': vm.userService.loggedInUser.username})" ng-disabled="vm.specialDisabled()">
              Special Bets
        </md-button>
+       <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets" ui-sref="user.specialBets({'username': vm.userService.loggedInUser.username})" ng-disabled="vm.specialDisabled()">
+             Special Bets
+       </md-button>
        <md-button type="submit" value="Submit"  class="md-raised" title="Register User" ui-sref="admin.registerUser" ng-disabled="vm.registerDisabled()" ng-if="vm.userService.loggedInUser.isAdmin">
              Register User
        </md-button>
