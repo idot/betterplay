@@ -47,6 +47,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 	  fillSheet(wb, "resultFirstTeamGoals", 5)
 	  fillSheet(wb, "resultSecondTeamGoals", 6)
 	  fillSpecialBets(wb, 7)
+	  createMessage(wb, 8)
 	  var out = new ByteArrayOutputStream()
 	  wb.write(out)
 	  out.close()
@@ -91,7 +92,22 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 			c.setCellValue(pred)
 	    }
 	}
-		
+	
+	def createMessage(wb: HSSFWorkbook, nr: Int){
+	   val s = wb.createSheet()
+	   wb.setSheetName(nr, "important")
+	   
+	   val heading = wb.createCellStyle()
+	   heading.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"))
+	   val r = s.createRow(0)	
+	   var c = r.createCell(0)
+		 c.setCellStyle( heading )
+     c.setCellValue(new HSSFRichTextString("This excel contains all the current bets for all the users."))
+     val r2 = s.createRow(1)
+		 val c2 = r2.createCell(0)
+		 c2.setCellStyle( heading )
+		 c2.setCellValue(new HSSFRichTextString("Do not change the content or the file name (i.e. don't save it after opening). The file name contains a sigature so its possible to verify the file."))
+	}
 	
 	def fillSheet(wb: HSSFWorkbook, sheetname: String, nr: Int){
 		val s = wb.createSheet()

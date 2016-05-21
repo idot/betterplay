@@ -39,6 +39,9 @@
         vm.registerDisabled = function(){
             return $state.includes("admin.registerUser");  
         };       
+        vm.getExcel = function(){
+            vm.userService.getExcel();
+        };
                
     };
   }

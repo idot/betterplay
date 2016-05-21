@@ -218,7 +218,7 @@
                 })
 
         
-    .service('userService', function($log, Restangular, $cookies, $state, toastr) {
+    .service('userService', function($log, Restangular, $cookies, $state, toastr, FileSaver, Blob) {
         var vm = this;
                 
         $log.debug("created userservice");
@@ -278,7 +278,7 @@
             Restangular.all('/em2016/api/logout').customPOST().then(function(result){
                 $cookies.remove("AUTH-TOKEN");
                 Restangular.setDefaultHeaders();
-                $state.go("login");
+                $state.transitionTo("login");
             });      
         };
 
@@ -367,6 +367,19 @@
                 return vm.loggedInUser.hadInstructions;
             }
         };
+         
+        vm.getExcel = function(){
+            Restangular.setFullResponse(true).one('/em2016/api/statistics/excel').get().then(function(result){
+                $log.debug("got excel");
+                var cd = result.headers()["content-disposition"];
+                var filename = cd.split(" ")[1].split("=")[1];
+                var ct = result.headers()["content-type"];
+                var data = new Blob(result.data, { type: ct });
+                FileSaver.saveAs(data, filename);
+                return result;
+            });      
+        };
+         
          
         vm.reauthenticate();
 

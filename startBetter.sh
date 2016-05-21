@@ -6,7 +6,7 @@ module unload java
 module load oracle-jdk/1.8.0_72
 export JAVA_HOME=/groups/vbcf-ngs/bin/lib/java/jdk1.8.0_92
 
-
+DEPLOYDIR=/groups/vbcf-ngs/programs
 BETTER="betterplay-0.8-SNAPSHOT"
 export BETTER
 
@@ -29,5 +29,7 @@ PROD=/groups/vbcf-ngs/programs/betterplay-0.8-SNAPSHOT/conf/production.conf
 nohup bin/betterplay  -Dconfig.file=$PROD -Dlogger.resource=$LOG -Dhttp.port=9055 &
 echo "SET THE MAIL PASSWORD!!!!"
 
-tail -f nohup.out
+sleep 2 
+
+tail -n 20 /groups/vbcf-ngs/programs/${BETTER}/nohup.out
 

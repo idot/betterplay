@@ -63,8 +63,12 @@ POST    /em2016/api/bet/:id                 controllers.Bets.update(id: Long)
 POST    /em2016/api/specialBetResult         controllers.SpecialBets.resultSpecialBet()
 POST    /em2016/api/specialBet               controllers.SpecialBets.updateSpecialBet()
 GET     /em2016/api/specialBets/:id          controllers.SpecialBets.specialBetsByTemplate(id: Long)
-GET     /em2016/api/statistics/excel         controllers.Statistics.excel()
 
+GET     /em2016/api/statistics/excelAnon     controllers.Statistics.excelAnon()
+GET     /em2016/api/statistics/excel         controllers.Statistics.excel()
+GET     /em2016/api/statistics/game/:id      controllers.Statistics.game(id: Long)
+# /em2016/api/statistics/specialBet?id=123&id=456
+GET     /em2016/api/statistics/specialBets   controllers.Statistics.specialBets(id: Seq[Long])
 
 
 

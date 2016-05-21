@@ -95,7 +95,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
 			 val createUser = JsObject(Seq("username" -> JsString("createduser"), "firstname" -> JsString("Foo"), "lastname" -> JsString("lastName"), "email" -> JsString("email@email.com")))
        val createdUser = route(app, FakeRequest(method="PUT", path="/em2016/api/user/create").withJsonBody(createUser).withHeaders(("X-AUTH-TOKEN", authToken))).get
 	   	 val createdUserContent = contentAsString(createdUser)
-	   	 createdUserContent === "created user createduser sent email"
+	   	 createdUserContent === "created user createduser mail not delivered"
 	      
 	     val token = models.BetterSettings.randomToken()
 	     val userTokenPass = JsObject(Seq("token" -> JsString(token), "password" -> JsString("mypassword")))
@@ -110,13 +110,20 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     userBets must /("specialBets") */("name" -> "topscorer")
 	     userBets must /("gameBets") */("goalsTeam1" -> "0.0")
 
+	     val excelf = route(app, FakeRequest(method="GET", path="/em2016/api/statistics/excel").withHeaders(("X-AUTH-TOKEN", authToken2))).get
+       val excel = Await.result(excelf, 1 second)
+       print(excel)
+       excel.body.contentLength.get must be_>(1000l)
+	     
 	     
        val out = route(app, FakeRequest(POST, "/em2016/api/logout").withHeaders(("X-AUTH-TOKEN", authToken))).get
        status(out) must equalTo(SEE_OTHER)
        redirectLocation(out) must beSome.which(_ == "/")
        
        val wou = route(app, FakeRequest(method="POST", path="/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", authToken))).get
-       status(wou) must equalTo(UNAUTHORIZED)      
+       status(wou) must equalTo(UNAUTHORIZED)    
+       
+      
     }
   
   

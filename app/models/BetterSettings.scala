@@ -77,7 +77,7 @@ object BetterSettings {
 	def fileName(message: Array[Byte], excelSecret: String): String = {
 		val time = now()
 		val stime = formatter.print(time)
-        val dig = digester(time, excelSecret).digest(message)
+    val dig = digester(time, excelSecret).digest(message)
 		val hex = org.jasypt.commons.CommonUtils.toHexadecimal(dig)
 		"bets."+stime+"."+hex+".xls"	       
 	}

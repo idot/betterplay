@@ -68,7 +68,9 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
 			       Ok(Json.obj("template" -> t, "bets" -> bs))
         }
       }
-     
   }
+  
+  
 
 }
+

@@ -28,6 +28,8 @@ object JodaHelper { //TODO: check timezone, might have to use calendar
 }
 
 trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
+  val dbLogger = Logger("db")
+  
   import driver.api._
 
   implicit def dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
@@ -62,19 +64,19 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   }
 
   def createTables(){
-     Logger.info("creating tables") 
+     dbLogger.info("creating tables") 
      Await.result(db.run(DBIO.seq(schema.create)), 1 second)
   }
   
   def drop(){
-     Logger.info("dropping tables") 
+     dbLogger.info("dropping tables") 
      Await.result(db.run(DBIO.seq(schema.drop)), 1 second)
   }
 
   def dropCreate(){
       import scala.concurrent.ExecutionContext.Implicits.global
       
-      Logger.info("starting to drop or create tables") 
+      dbLogger.info("starting to drop or create tables") 
 
       val f = db.run(MTable.getTables(namePattern = "users").headOption)
       val r = Await.result(f, 1 seconds)
@@ -87,21 +89,6 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
           createTables()
         }
       }
-  /**    f.onComplete{
-            case Try(Some(_)) => {
-                case Some(r) => { 
-                                              drop()
-                                              createTables()
-                                            }
-                case None => createTables()       
-            }
-            case Failure(t) => {
-                Logger.error(t.getMessage)
-                createTables()
-            }
-     }
-      
-     */
   }
   
 
@@ -246,22 +233,6 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def team = foreignKey("PLAYER_COUNTRY_FK", teamId, teams)(_.id)    
     def * = (id.?, name, role, club, teamId, foto) <> (Player.tupled, Player.unapply _)
 
-  }
-
-
-
-
-  class UserTokens(tag: Tag) extends Table[UserToken](tag, "usertokens") {
-	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-	  def userId = column[Long]("user_id")
-	  def token = column[String]("token")
-	  def created = column[DateTime]("created")
-	  def used = column[Option[DateTime]]("used")
-	  def tokentype = column[String]("type")
-	  
-	  def user = foreignKey("TOKEN_USER_FK", userId, users)(_.id)
-	  
-	  def * = (id.?, userId, token, created, used, tokentype) <> (UserToken.tupled, UserToken.unapply _)
   }
 
   //no constraints in id columns so its possible to see what went wrong

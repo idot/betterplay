@@ -8,6 +8,7 @@ import play.api.cache.CacheApi
 import models._
 import models.JsonHelper._
 import play.api.i18n.MessagesApi
+import scala.concurrent.{Future,blocking}
 
 import javax.inject.{Inject, Provider, Singleton}
 
@@ -15,16 +16,43 @@ import javax.inject.{Inject, Provider, Singleton}
 class Statistics @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, configuration: Configuration) extends Controller with Security {
 
   val excelSecret = configuration.getString("betterplay.excelSecret").getOrElse("BAD")  
+  import scala.concurrent.ExecutionContext.Implicits.global
    
-  def excel() = withUser { request =>
-	   val excel = ExcelData.generateExcel(betterDb, BetterSettings.now, request.user.id.get)
-	   val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-	   val name = BetterSettings.fileName(excel, excelSecret)
-	   val headers = ("Content-disposition",s"attachment; filename=$name")
-	   Ok(excel).as(mime).withHeaders(headers)   
+  def createExcel(userId: Long): Future[Result] = {
+   
+    Future{
+        blocking{
+	        val excel = ExcelData.generateExcel(betterDb, BetterSettings.now, userId)
+	        val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+	        val name = BetterSettings.fileName(excel, excelSecret)
+	        val headers = ("Content-disposition",s"attachment; filename=$name")
+	        Ok(excel).as(mime).withHeaders(headers)
+        }
+     }
+  }
+  
+  def excel() = withUser.async { request =>
+      createExcel(request.user.id.get)
   }
    
-
+  def excelAnon() = Action.async { request =>
+      createExcel(-1)
+  }
   
+  def game(id: Long) = Action.async { request =>
+     betterException{
+        betterDb.betsForGame(id).map{ result =>
+          Ok(Json.toJson(result)) 
+        }
+     }
+  }
+  
+  def specialBets(ids: Seq[Long]) = Action.async { request =>
+     betterException {
+        betterDb.specialBetsPredictions(ids).map{ result =>
+          Ok(Json.toJson(result)) 
+        }
+     }
+  }
  
 }

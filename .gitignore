@@ -17,5 +17,8 @@ tmp
 activator-sbt-*-shim.sbt
 node_modules
 bower_components
-
+*.xls
 *.log
+.worksheet
+.cache-main
+.cache-tests

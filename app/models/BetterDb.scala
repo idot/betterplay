@@ -30,11 +30,9 @@ case class UpdatePoints()
 class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends BetterTables with HasDatabaseConfigProvider[JdbcProfile] {
   //TODO: check if this is efficient or different ExecutionContext necessary
   import scala.concurrent.ExecutionContext.Implicits.global
-
   import driver.api._
   
-   val dbLogger = Logger("db")
-   val importantLogger = Logger("important")
+  val importantLogger = Logger("important")
    
    def allTeams(): Future[Seq[Team]] = {
        db.run(teams.result)
@@ -337,6 +335,26 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          })
          db.run(bu.result)
      }
+     
+     /**
+      * stats
+      */
+     def betsForGame(id: Long): Future[Seq[GameResult]] = {
+         val q = bets.filter(_.gameId === id).map(b => b.result).result
+         db.run(q)
+     }
+     
+     /**
+      * stats
+      * must be a list for e.g. semifinalists
+      * 
+      */
+     def specialBetsPredictions(ids: Seq[Long]): Future[Seq[String]] = {
+         val q = specialbetsuser.filter(_.spId inSet ids).map(_.prediction).result 
+         db.run(q)
+     }
+     
+     
 
      /**
       * UI 2

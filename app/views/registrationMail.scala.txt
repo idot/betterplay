@@ -1,21 +1,34 @@
 @(user: User, registeringUser: String, token: String)
-Dear @user.firstName, 
+Dear @{user.firstName}, 
             
 you have been registered by @registeringUser for the Euro2016 betting system.        
 In order to play you have to activate your account by choosing a password.
 Please click on the link below.
 After this, please don't forget to fill out the special bets, until the start of the EURO 2016 on the 10. Jun.
 
+your username is: @{user.username}
 
 https://ngs.vbcf.ac.at/em2016/#/completeRegistration/@token
+
+The link is valid for 1 time only. You can request another one,
+which is also valid only for 1 time at:
+
+http://ngs.vbcf.ac.at/em2016/#/requestPassword
 
 good luck,
 
 your better
 
 
-PS: If during the game you often get "Unauthorized" errors,
-please log in again with: 
+
+PS: If during the game you get "Unauthorized" errors,
+please log in again at: 
 https://ngs.vbcf.ac.at/em2016/#/login
+
+If you forgot your password you can request a new one:
+http://ngs.vbcf.ac.at/em2016/#/requestPassword
+
+and an e-mail with further instructions will be sent to you.
+
 
 
