@@ -44,7 +44,7 @@
             .factory('specialBetStats', function(Restangular, _ ) {
                 return {
                     getStats: function(templateId) {
-                        return Restangular.one('em2016/api/specialBets', templateId).get().then(
+                        return Restangular.one('em2016/api/statistics/specialBets', templateId).get().then(
                             function(success) {
                                 var template = success.template;
                                 var grouped = _.groupBy(success.bets, function(b) {

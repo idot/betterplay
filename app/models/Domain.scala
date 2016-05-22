@@ -37,7 +37,7 @@ object DomainHelper {
   
   def gravatarUrl(email: String, gravatartype: String): (String,String) = {
 	  val gt = DefaultImage(gravatartype)
-    val url = Gravatar(email).ssl(true).default(gt).maxRatedAs(G).forceDefault(true).avatarUrl  
+    val url = Gravatar(email).ssl(true).default(gt).maxRatedAs(G).avatarUrl  
     (url, gravatartype)
   }
   
