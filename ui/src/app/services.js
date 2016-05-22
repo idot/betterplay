@@ -310,14 +310,18 @@
              } 
         }
 
-        vm.logout = function() {
-            vm.loggedInUser = NOUSER;
-            authtoken = "";
+        vm.logout = function() {        
             Restangular.all('/em2016/api/logout').customPOST().then(function(result){
-                $cookies.remove("AUTH-TOKEN");
-                Restangular.setDefaultHeaders();
-                $state.transitionTo("login");
-            });      
+                 $log.info("logout without error"); 
+            },function(error){
+                error.cancelGeneralHandler();
+                $log.info("logout with error"); 
+            });
+            authtoken = "";
+            $cookies.remove("AUTH-TOKEN");
+            vm.loggedInUser = NOUSER;
+            Restangular.setDefaultHeaders();
+            $state.transitionTo("login");      
         };
 
         /**
