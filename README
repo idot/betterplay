@@ -2,13 +2,19 @@ BetterPlay
 ==========
 
 Tournament style betting system.
-Current initial data provided for UEFA 2016. 
+Current initial data provided for UEFA EURO 2016. 
 
-uses: Play2.5, slick, scala 2.11, angular, angular-material
+uses: Play2.5, slick, scala 2.11, angular, angular-material, play-gulp
+
+for trying:
+1) checkout
+2) ./postinstall.sh (should install gulp and bower in ui)
+3) ./activator run  (will load some data in local hsqldb)
+
+to deploy:
+check deploy.sh and startBetter.sh (needs production.conf)
 
 
-select count(*) from pg_stat_activity;
 
-select count(*) from pg_stat_activity where datname = 'better';
 
-SELECT pg_terminate_backend(procpid) FROM pg_stat_activity WHERE procpid <> pg_backend_pid() AND datname = 'better';
+

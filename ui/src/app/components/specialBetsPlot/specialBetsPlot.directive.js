@@ -39,9 +39,9 @@
                          x: function(d){return d.label;},
                          y: function(d){return d.value;},
                          showValues: false,
-                 //        valueFormat: function(d){
-                //             return d3.format('.1')(d);
-                //         },
+                        valueFormat: function(d){
+                             return d3.format('.1')(d);
+                         },
                          duration: 500,
                          xAxis: {
                              rotateLabels: -90
@@ -54,13 +54,13 @@
                      }
                  };
 
-         
+   
                  specialBetStats.getStats($scope.betname).then(function(tb) {
                      vm.template = tb.template;
                      vm.plotData = tb.data;
                  });
                  
-                 
+ 
              }
              
      }	  

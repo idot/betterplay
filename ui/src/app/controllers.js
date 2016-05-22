@@ -109,7 +109,7 @@
     }
     
      /** @ngInject */
-    function GameController($log, $filter, Restangular, $stateParams, _, userService) {
+    function GameController($log, $filter, $mdDialog, Restangular, $stateParams, _, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betsUsers = [];
@@ -126,6 +126,28 @@
                 vm.betsUsers = gwtWithBetsPerUser.betsUsers;
             })
         }
+ /*
+        vm.plotBets = function(){
+            alert = $mdDialog.alert({
+                   title: 'Attention',
+                   template: ' <game-bets-plot id="id"></game-bets-plot>',
+                   ok: 'Close',
+                   locals: { id: vm.gwt.game.id }
+                 });
+                 $mdDialog
+                   .show( alert )
+                   .finally(function() {
+                     alert = undefined;
+              });
+            
+        }
+*/
+    /*    vm.plotBets = function(){
+            
+            
+            
+        }*/        
+       
 
         function activate() {
             getGame();
@@ -581,11 +603,13 @@
     }
 
      /** @ngInject */
-    function PlotSpecialBetsController($stateParams, $state, specialBetStats, Restangular) {
+    function PlotSpecialBetsController($stateParams, $state, specialBetStats, Restangular, userService) {
         var vm = this;
-        vm.template = {};
-        
-
+    
+        vm.userService = userService;
+        vm.getExcel = function(){
+            vm.userService.getExcel();
+        };
     }
 
      /** @ngInject */

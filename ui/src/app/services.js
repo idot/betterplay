@@ -68,6 +68,44 @@
                     }
                 };
             })
+            .factory('gameBetStats', function(Restangular, _ ) {
+                return {
+                    getStats: function(gameId, team1, team2) {
+                        return Restangular.one('em2016/api/statistics/game', gameId).get().then(
+                            function(gameResults){
+                                var getGoals = function(gameResults, goals, sign){
+                                    var g = _.map(gameResults, function(b){ return b.isSet ? b[goals] : "X" });
+                                    var gc = _.groupBy(g, function(b){ return b; });
+                                    var gcm = [ { label: "NA",  value: 0 }];
+                                    if(gc.length > 1){
+                                        gcm = _.map(gc, function(k,v){ return { label: k, value: v.length * sign}});
+                                    } else {
+                                        gcm = [{ label: "X", value: gc["X"].length * sign}];
+                                    }
+                                    return gcm;
+                                };
+                                var g1 = getGoals(gameResults, "goalsTeam1", -1);
+                                var g2 = getGoals(gameResults, "goalsTeam2",  1);
+                                
+                                var g1m = _.min(g1, function(o){ o.value });
+                                var g2m = _.max(g2, function(o){ o.value });
+                                var mx = _.max([g1m.value * -1, g2m.value]);
+                                
+                                
+                                var gg1 = { key:  team1, "color": "#d62728", values: g1 };
+                                var gg2 = { key:  team2, "color": "#1f77b4", values: g2 };
+                                
+                                var result = {
+                                    data:  [gg1, gg2] ,
+                                    max: mx    
+                                };
+
+                                return result;
+                            }
+                        );
+                    }
+                };
+            })
             .service('betterSettings', function($log, Restangular, $timeout, toastr, moment, userService) {
                     var vm = this;
                     vm.startupTime = new Date();
@@ -367,17 +405,23 @@
                 return vm.loggedInUser.hadInstructions;
             }
         };
-         
+        
+        
+        //DOES NOT WORK!!! BLOB is wrong 
         vm.getExcel = function(){
-            Restangular.setFullResponse(true).one('/em2016/api/statistics/excel').get().then(function(result){
-                $log.debug("got excel");
+            var exUrl = vm.isLoggedIn() ? '/em2016/api/statistics/excel' : '/em2016/api/statistics/excelAnon'
+            
+            Restangular.setFullResponse(true).one(exUrl).get().then(function(result){
+              //  $log.debug("got excel");
                 var cd = result.headers()["content-disposition"];
                 var filename = cd.split(" ")[1].split("=")[1];
                 var ct = result.headers()["content-type"];
-                var data = new Blob(result.data, { type: ct });
+                var data = new Blob([result.data], { type: ct });
                 FileSaver.saveAs(data, filename);
-                return result;
-            });      
+             //   return result;
+            //})
+             
+            })      
         };
          
          

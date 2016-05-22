@@ -9,9 +9,6 @@
        <md-button type="submit" value="Submit"  class="md-raised" title="Special Bets" ui-sref="user.specialBets({'username': vm.userService.loggedInUser.username})" ng-disabled="vm.specialDisabled()">
              Special Bets
        </md-button>
-       <!--md-button type="submit" value="excel"  class="md-raised" title="excel" ng-click="vm.getExcel()">
-             excel
-       </md-button-->
        <md-button type="submit" value="Submit"  class="md-raised" title="Register User" ui-sref="admin.registerUser" ng-disabled="vm.registerDisabled()" ng-if="vm.userService.loggedInUser.isAdmin">
              Register User
        </md-button>
@@ -19,7 +16,16 @@
              Logout
        </md-button>
        </span>
-       <md-button type="submit" value="Submit"  class="md-raised" title="Login" ui-sref="login" ng-if="! vm.userService.isLoggedIn()">
+       <span><!-- always here-->
+           <md-button type="submit" value="plots"  class="md-raised" title="plots" ui-sref="statistics.plots" ng-disabled="vm.statsDisabled()">
+                 stats
+            </md-button>
+        </span>   
+       <span ng-if="! vm.userService.isLoggedIn()">
+       <md-button type="submit" value="Submit"  class="md-raised" title="Login" ui-sref="login" ng-if="! vm.loginDisabled()">
              Login
        </md-button>
+       </span>
+      
+       
 </div>

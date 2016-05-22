@@ -39,8 +39,11 @@
         vm.registerDisabled = function(){
             return $state.includes("admin.registerUser");  
         };       
-        vm.getExcel = function(){
-            vm.userService.getExcel();
+        vm.statsDisabled = function(){
+            return $state.includes("statistics.plots");  
+        };       
+        vm.loginDisabled = function(){
+            return $state.includes("login");  
         };
                
     };
