@@ -151,47 +151,9 @@
             })
             .state('statistics.plots', {
                 url: "/plots",
-                views: {
-                    '': {
-                        templateUrl: 'app/partials/specialPlots.html'
-                    },
-                    'mvp@statistics.plots': {
-                        templateUrl: 'app/partials/plot.html',
-                        controller: 'PlotSpecialBetsController',
-                        controllerAs: 'vm',
-                        resolve: {
-                            tid: function() {
-                                return {
-                                    templateId: "1"
-                                };
-                            }
-                        }
-                    },
-                    'svp@statistics.plots': {
-                        templateUrl: 'app/partials/plot.html',
-                        controller: 'PlotSpecialBetsController',
-                        controllerAs: 'vm',
-                        resolve: {
-                            tid: function() {
-                                return {
-                                    templateId: "2"
-                                };
-                            }
-                        }
-                    },
-                    'champion@statistics.plots': {
-                        templateUrl: 'app/partials/plot.html',
-                        controller: 'PlotSpecialBetsController',
-                        controllerAs: 'vm',
-                        resolve: {
-                            tid: function() {
-                                return {
-                                    templateId: "3"
-                                };
-                            }
-                        }
-                    }
-                }
+                templateUrl: 'app/partials/specialPlots.html',
+                controller: 'PlotSpecialBetsController',
+                controllerAs: 'vm'
             });
     }
 

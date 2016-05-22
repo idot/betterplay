@@ -43,16 +43,16 @@
             })
             .factory('specialBetStats', function(Restangular, _ ) {
                 return {
-                    getStats: function(templateId) {
-                        return Restangular.one('em2016/api/statistics/specialBets', templateId).get().then(
+                    getStats: function(templateName) {
+                        return Restangular.one('em2016/api/statistics/specialBet', templateName).get().then(
                             function(success) {
                                 var template = success.template;
-                                var grouped = _.groupBy(success.bets, function(b) {
-                                    return b.prediction;
+                                var grouped = _.groupBy(success.predictions, function(b) {
+                                    return b;
                                 });
                                 var bets = _.map(grouped, function(v, k) {
                                     var item = k.toString() == "" ? "undecided" : k.toString();
-                                    var arr = [item, v.length];
+                                    var arr = { label: item, value: v.length };
                                     return arr;
                                 });
                                 var result = {

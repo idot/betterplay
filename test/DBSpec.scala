@@ -440,16 +440,9 @@ class DBSpec extends Specification
         
           val bets = AR(betterDb.betsForGame(gwt.game.id.get))
           bets.length === 4
-          val (ts,ps) = AR(betterDb.specialBetsPredictions(Seq()))
+          val ts = AR(betterDb.specialBetsPredictions(""))
           ts.length === 0
-          ps.length === 0
-          val (templates, predictions) = AR(betterDb.specialBetsPredictions(Seq(0,1,2,3,4,5,6,7,8)))
-          predictions.length === 4 * 8
-          val spL = predictions.toSet.toList.sorted
-          spL.length === 2
-          spL(0) === ""
-          spL(1) === "XY"
-          templates.length === 8
+         
           
           val excel = ExcelData.generateExcel(betterDb, firstStart, admin.id.get)
           val bos = new java.io.BufferedOutputStream(new java.io.FileOutputStream("testData/excel.xls"))

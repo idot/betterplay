@@ -349,12 +349,11 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * must be a list for e.g. semifinalists
       * 
       */
-     def specialBetsPredictions(ids: Seq[Long]): Future[(Seq[SpecialBetT],Seq[String])] = {
+     def specialBetsPredictions(name: String): Future[Seq[(SpecialBetT,String)]] = {
          val q = for{
-           sps <- specialbetstore.filter(_.id inSet ids).result
-           pred <- specialbetsuser.filter(_.spId inSet ids).map(_.prediction).result 
+           sps <- specialbetstore.filter(_.name === name).join(specialbetsuser).on(_.id === _.spId ).map{ case(t,sp) => (t, sp.prediction) }.result
          } yield {
-           (sps, pred)
+           sps
          }
          db.run(q)
      }

@@ -581,20 +581,10 @@
     }
 
      /** @ngInject */
-    function PlotSpecialBetsController($stateParams, $state, specialBetStats, tid) {
+    function PlotSpecialBetsController($stateParams, $state, specialBetStats, Restangular) {
         var vm = this;
-
-        //  $scope.stateParams = $stateParams; not applicable within a nested view
-        if (typeof tid !== "undefined") {
-            vm.templateId = tid.templateId;
-        } else {
-            //extract from parameters
-        }
-
-        specialBetStats.getStats(vm.templateId).then(function(tb) {
-            vm.template = tb.template;
-            vm.plotData = tb.data;
-        });
+        vm.template = {};
+        
 
     }
 

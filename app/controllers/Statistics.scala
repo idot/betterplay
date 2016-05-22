@@ -47,10 +47,14 @@ class Statistics @Inject()(override val betterDb: BetterDb, override val cache: 
      }
   }
   
-  def specialBets(ids: Seq[Long]) = Action.async { request =>
+  //semifinals all have same name
+  def specialBets(name: String) = Action.async { request =>
      betterException {
-        betterDb.specialBetsPredictions(ids).map{ result =>
-          Ok(Json.toJson(result)) 
+        betterDb.specialBetsPredictions(name).map{ result =>
+          result.headOption.map{ t =>
+             val r = (t._1, result.unzip._2)
+             Ok(Json.toJson(r))
+          }.getOrElse(NotFound(s"could not find special bets $name"))
         }
      }
   }

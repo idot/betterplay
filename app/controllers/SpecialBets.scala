@@ -19,9 +19,11 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 @Singleton
 class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
   
-  //TODO: for statistics!
+
   def all() = withUser.async { implicit rs =>
-      Future.successful(Ok("") )
+      betterDb.allSpecialBetTemplates().map{ r=>
+        Ok(Json.toJson(r))
+      }
   }
    
   def specialBetsForUser(username: String) = withUser.async { request => 

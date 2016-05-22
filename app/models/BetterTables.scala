@@ -75,7 +75,6 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   def dropCreate(){
       import scala.concurrent.ExecutionContext.Implicits.global
-      
       dbLogger.info("starting to drop or create tables") 
 
       val f = db.run(MTable.getTables(namePattern = "users").headOption)

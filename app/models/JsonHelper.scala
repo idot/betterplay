@@ -115,9 +115,9 @@ object JsonHelper {
 	   }
    }
     
-   implicit val specialBetsTWrite = new Writes[(Seq[SpecialBetT],Seq[String])]{
-      def writes(all: (Seq[SpecialBetT],Seq[String])): JsValue = {
-        Json.obj("templates" -> all._1, "preditions" -> all._2)
+   implicit val specialBetsTPredictionsWrite = new Writes[(SpecialBetT,Seq[String])]{
+      def writes(all: (SpecialBetT,Seq[String])): JsValue = {
+        Json.obj("template" -> all._1, "predictions" -> all._2)
       }
    }
   
