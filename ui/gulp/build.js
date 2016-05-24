@@ -90,8 +90,13 @@ gulp.task('other', function () {
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
+gulp.task('copy-flags', function(){
+  return gulp.src(conf.wiredep.directory+'/flag-icon-css/flags/**/*')
+    .pipe(gulp.dest(path.join(conf.paths.dist, '/flags/')));
+});
+
 gulp.task('clean', function () {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
 
-gulp.task('build', ['html', 'fonts', 'other']);
+gulp.task('build', ['html', 'fonts', 'other', 'copy-flags']);
