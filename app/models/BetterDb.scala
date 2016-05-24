@@ -54,7 +54,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      }
 
      def allUsers(): Future[Seq[User]] = {
-         db.run(users.sortBy(u => u.id).result)
+         db.run(users.sortBy(u => u.username).result)
      }
 
      def allSpecialBetTemplates(): Future[Seq[SpecialBetT]] = {
@@ -111,7 +111,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          } yield {
            (g, t1, t2,l)
          })
-         val li = gtt.result.map{ list => list.map{ case(g,t1,t2,l) => GameWithTeams(g,t1,t2,l) }}
+         val li = gtt.sortBy(_._1.serverStart).result.map{ list => list.map{ case(g,t1,t2,l) => GameWithTeams(g,t1,t2,l) }}
          db.run(li)
      }
      

@@ -76,11 +76,11 @@
                                 var getGoals = function(gameResults, goals, sign){
                                     var g = _.map(gameResults, function(b){ return b.isSet ? b[goals] : "X" });
                                     var gc = _.groupBy(g, function(b){ return b; });
-                                    var gcm = [ { label: "NA",  value: 0 }];
+                                    var gcm = [ { "label": "NA",  "value": 0 }];
                                     if(gc.length > 1){
-                                        gcm = _.map(gc, function(k,v){ return { label: k, value: v.length * sign}});
+                                        gcm = _.map(gc, function(k,v){ return { "label": k, "value": v.length * sign}});
                                     } else {
-                                        gcm = [{ label: "X", value: gc["X"].length * sign}];
+                                        gcm = [{ "label": "X", "value": gc["X"].length * sign}];
                                     }
                                     return gcm;
                                 };
@@ -92,11 +92,11 @@
                                 var mx = _.max([g1m.value * -1, g2m.value]);
                                 
                                 
-                                var gg1 = { key:  team1, "color": "#d62728", values: g1 };
-                                var gg2 = { key:  team2, "color": "#1f77b4", values: g2 };
-                                
+                                var gg1 = { "key":  team1, "color": "#d62728", "values": g1 };
+                                var gg2 = { "key":  team2, "color": "#1f77b4", "values": g2 };
+                                                                 
                                 var result = {
-                                    data:  [gg1, gg2] ,
+                                    dat:  [gg1, gg2] ,
                                     max: mx    
                                 };
 

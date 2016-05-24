@@ -109,15 +109,16 @@
     }
     
      /** @ngInject */
-    function GameController($log, $filter, $mdDialog, Restangular, $stateParams, _, userService) {
+    function GameController($log, $filter, $mdDialog, Restangular, $stateParams, _, userService, $scope) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betsUsers = [];
         vm.gwt = {};
  
         var queryGame = Restangular.one('em2016/api/game', vm.stateParams.gamenr);
-
-
+   
+        $scope.userName = "xy";
+  
         activate();
 
         function getGame() {
@@ -126,27 +127,30 @@
                 vm.betsUsers = gwtWithBetsPerUser.betsUsers;
             })
         }
- /*
-        vm.plotBets = function(){
-            alert = $mdDialog.alert({
+ 
+        vm.plotBets = function($event){
+            var parentEl = angular.element(document.body);          
+            alert = $mdDialog.show({
+                   clickOutsideToClose: true,
+                   parent: parentEl,
+                   targetEvent: $event,
                    title: 'Attention',
-                   template: ' <game-bets-plot id="id"></game-bets-plot>',
+                   template:   ' <md-dialog><md-dialog-content> '+
+                                     ' <game-bets-plot gwt="gwt"></game-bets-plot>'+
+                                     ' </md-dialog></md-dialog-content> ',
                    ok: 'Close',
-                   locals: { id: vm.gwt.game.id }
+                   locals: { gwt: vm.gwt },
+                  controller: function($scope, $mdDialog, gwt) {
+                        $scope.closeDialog = function() {
+                             $mdDialog.hide();
+                        }
+                       $scope.gwt = gwt;
+                  }
                  });
-                 $mdDialog
-                   .show( alert )
-                   .finally(function() {
-                     alert = undefined;
-              });
-            
-        }
-*/
-    /*    vm.plotBets = function(){
+                
+        };
             
             
-            
-        }*/        
        
 
         function activate() {

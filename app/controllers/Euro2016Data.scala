@@ -78,13 +78,13 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) {
       val (t1n,t2n,group) = parseTeamsFromLine(items(0))
       def toTeam(long: String): Team = {
          long2cc.get(long).map{ case(two,three) =>
-            Team(None, long, three, two)
+            Team(None, long, three.toLowerCase(), two.toLowerCase())
          }.getOrElse{
            val minimap = Map(
                "Wales" -> Team(None, long, "gb-wls", "gb-wls"),
                "England" -> Team(None, long, "gb-eng", "gb-eng"),
                "Russia" -> Team(None, long, "ru", "ru"), //TODO: is wrong
-               "Northern Ireland" -> Team(None, long, "NA", "NA"),
+               "Northern Ireland" -> Team(None, long, "gb-nir", "gb-nir"),
                "Republic of Ireland" -> Team(None, long, "ir", "ir")
                )
            minimap.get(long).getOrElse(throw new RuntimeException(s"could not find team in map: $t1n x $t2n x $group :"+long+"\n"+line))

@@ -67,8 +67,9 @@
                   <md-checkbox name="showname" ng-model="vm.showname" aria-label="show name">show name</md-checkbox>
            </md-input-container>
            
+        <a href="https://en.gravatar.com/">user icons are from gravatar</a>   
         <md-input-container class="md-block" flex-gt-sm>
-               <label for="icondefault"><a href="https://en.gravatar.com/">default icontype</a></label>
+               <label for="icondefault">default icontype</label>
                <md-select id="icondefault" type="text" ng-model="vm.icontype" ng-change="setFormat()">
                        <md-option>mm</md-option>
                        <md-option>identicon</md-option>
@@ -81,7 +82,7 @@
      
                 <md-input-container layout-align="center">
                    <div layout="row" layout-sm="column" layout-margin>
-                        <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeDetails()" value="Submit" title="Submit">Submit</button>
+                        <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeDetails()" value="Submit" title="Submit">Submit</md-button>
                     </div>
              </md-input-container>
            </div>
@@ -115,7 +116,7 @@
          
                 <md-input-container layout-align="center">
                     <div layout="row" layout-sm="column" layout-margin>
-                    <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeImportant()" value="Submit" title="Submit">Submit</button>
+                    <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.changeImportant()" value="Submit" title="Submit">Submit</md-button>
                     </div>
                 </md-input-container> <!-- TODO: are you sure 2x!!! -->
             </form>

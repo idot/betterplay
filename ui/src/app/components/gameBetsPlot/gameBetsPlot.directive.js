@@ -11,7 +11,7 @@
                  replace: true,
 		 restrict: 'E',
                  scope:  {
-                     id: '='
+                     gwt: '='
                  },
                  templateUrl: "app/components/gameBetsPlot/gameBetsPlot.html",
                  controller: GameBetsPlotController,
@@ -24,12 +24,10 @@
            /** @ngInject */
            function GameBetsPlotController($log, gameBetStats, $timeout, $scope, _) {
                  var vm = this;
-                 vm.plotData = {};
+                 vm.plotData = null; 
                  
-     //            vm.gwt = $scope.gwt;
-                 
-                 $log.error($scope.id);
-                 
+                 vm.gwt = $scope.gwt;
+                   
                  vm.plotOptions = {
                        chart: {
                          type: 'multiBarHorizontalChart',
@@ -37,39 +35,34 @@
                          stacked: true,
                          height: 400,
                          width: 600,
-                         forceY: [-30,30],
                          margin : {
-                             top: 10,
-                             right: 10,
-                             bottom: 200,
-                             left: 55
+                             top: 15,
+                             right: 25,
+                             bottom: 50,
+                             left: 20
                          },
                          x: function(d){return d.label;},
                          y: function(d){return d.value;},
                          showValues: false,
-                 //        valueFormat: function(d){
-                //             return d3.format('.1')(d);
-                //         },
                          duration: 500,
                          xAxis: {
-                             rotateLabels: -90
-             //                axisLabel: 'X Axis'
+                             //axisLabel: 'prediction'
                          },
                          yAxis: {
                              axisLabel: 'count',
                              axisLabelDistance: -5,
                              tickFormat: function(d){
-                                return d3.format(',.2f')(Math.abs(d));
+                                return d3.format('.1')(Math.abs(d));
                             }
                          }
                      }
                  };
 
                 var loadData = function(){
-                     gameBetStats.getStats($scope.id, "$scope.gwt.team1.name",  "$scope.gwt.team2.name").then(function(tb) {
-                         vm.plotData = tb.data;
-                         var dMax = tb.max;
-                         vm.plotOptions.chart.forceY = [-dMax,+dMax];
+                     gameBetStats.getStats($scope.gwt.game.id, $scope.gwt.team1.name,  $scope.gwt.team2.name).then(function(tb) {
+                          var dMax = tb.max;
+                          vm.plotOptions.chart.forceY = [-dMax,+dMax];
+                          vm.plotData = tb.dat;
                      });
                  };
                  

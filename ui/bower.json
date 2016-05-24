@@ -17,7 +17,7 @@
     "moment": "~2.10.6",
     "animate.css": "~3.4.0",
     "angular": "~1.5.3",
-    "flag-icon-css": "^2.1.0",
+    "flag-icon-css": "^2.3.1",
     "material-design-icons": "^2.2.3",
     "angular-material-icons": "^0.7.0",
     "angular-material-datetimepicker": "^1.4.0",

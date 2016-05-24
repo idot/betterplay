@@ -22,7 +22,7 @@
                      <md-list-item class="md-1-line" ng-repeat="player in vm.playersWithTeams | filter:playerfilter ">
                           {{player.player.name}}&nbsp&nbsp&nbsp<better-flag iso=player.team.short2></better-flag>&nbsp&nbsp&nbsp{{player.team.name}} 
                           <md-input-container ng-if="vm.specialBetsOpen()">
-                              <md-button type="select" title="select" class="md-raised" ng-click="vm.select(player)" value="select">select</button>
+                              <md-button type="select" title="select" class="md-raised" ng-click="vm.select(player)" value="select">select</md-button>
                           </md-input-container>
                          <md-divider inset></md-divider>
                    </md-list-item>

@@ -4,9 +4,7 @@
     <div layout="row" class="activityRow">
        &nbsp&nbsp&nbsp
        <div> 
-           <!--md-input-container layout-align="center">
-                <md-button type="submit" title="plot" class="md-raised" ng-click="vm.plotBets()" value="plot" title="plot">plot</button>
-           </md-input-container-->
+            <md-button type="submit" title="plot" class="md-raised" ng-click="vm.plotBets($event)" value="plot" title="plot">plot</md-button>
            <span>Bets for Game:</span> 
            <better-game-view gwt="vm.gwt" allowedit="true" fullcontent="true"></better-game-view>
         </div>
