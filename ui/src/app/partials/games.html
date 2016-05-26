@@ -1,6 +1,4 @@
-<div layout="column" class="mainMenu"> 
-  <md-toolbar md-scroll-shrink ng-if="true">
-    <better-menu-view></better-menu-view>
+<better-menu-view>
     <div layout="row" class="activityRow">
        <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
        &nbsp&nbsp&nbsp
@@ -8,8 +6,7 @@
            <span>All Games</span> 
         </div>
     </div>
- </md-toolbar>
-</div>
+</better-menu-view>
 
 <!-- these are all the games -->
 <div>

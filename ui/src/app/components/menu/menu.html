@@ -1,3 +1,26 @@
-<div>
-    <better-menu-bar></better-menu-bar>
+<div layout="column" class="mainMenu" ng-if="vm.large"> 
+    <md-toolbar md-scroll-shrink>
+       <better-menu-bar></better-menu-bar>
+       <div ng-transclude></div>
+    </md-toolbar>
+</div>
+
+  
+<div class="mainMenu" ng-if="! vm.large" layout="column">
+    <div>
+      <md-toolbar md-scroll-shrink>
+        <md-content style="position: relative;">
+             <button type="button" aria-label="menu" ng-click="vm.openLeftMenu()" style="position:absolute;  top:0; right:0; border-radius: 50%; background-color:  #01579b; border: 0px;">
+               <ng-md-icon icon="menu" size="20" style="fill: white; background-color:  #01579b;  padding: 0px; 0px; 0px; 0px;"></ng-md-icon>
+             </button>
+             <span ng-transclude></span>
+          </md-content>
+       </md-toolbar>
+   </div>
+   <div>
+      <md-sidenav md-component-id="left" class="md-sidenav-left" style="width: 154px; min-width: 154px; background-color:  #01579b;">
+         <better-menu-bar></better-menu-bar>
+       </md-sidenav>
+    <div>  
+            
 </div>

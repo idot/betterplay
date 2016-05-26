@@ -47,8 +47,8 @@
         };
           
         vm.large = $mdMedia('gt-xs');
-           
-    
+        
+      
                
     };
   }

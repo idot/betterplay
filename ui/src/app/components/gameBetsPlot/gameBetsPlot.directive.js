@@ -22,11 +22,14 @@
             
 
            /** @ngInject */
-           function GameBetsPlotController($log, gameBetStats, $timeout, $scope, _) {
+           function GameBetsPlotController($log, gameBetStats, $timeout, $scope, _, $window) {
                  var vm = this;
                  vm.plotData = null; 
                  
                  vm.gwt = $scope.gwt;
+                 vm.plotWidthMax =  $window.innerWidth - ( 25 + 20 + 30 ); //left right margins
+                 
+                 vm.plotWidth = vm.plotWidthMax < 600 ? vm.plotWidthMax  : 600;
                    
                  vm.plotOptions = {
                        chart: {
@@ -34,7 +37,7 @@
                          showControls: false,
                          stacked: true,
                          height: 400,
-                         width: 600,
+                         width: vm.plotWidth,
                          margin : {
                              top: 15,
                              right: 25,

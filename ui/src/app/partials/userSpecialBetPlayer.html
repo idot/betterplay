@@ -1,6 +1,4 @@
-<div layout="column" class="mainMenu"> 
-  <md-toolbar md-scroll-shrink ng-if="true">
-    <better-menu-view></better-menu-view>
+<better-menu-view>
     <div layout="row" class="activityRow">
        &nbsp&nbsp&nbsp
             {{tb.template.description}} <span class="badge">{{tb.template.points}}</span>
@@ -9,8 +7,7 @@
            <h3 style="color: red;">setting result</h3>
        </div>
     </div>
- </md-toolbar>
-</div>
+</better-menu-view>
 
 <md-content md-theme="docs-dark" layout-gt-sm="row" layout-padding ng-cloak>
         <form name="specialBetsForm">

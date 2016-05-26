@@ -13,17 +13,21 @@
       scope: {
       },
       controller: MenuViewController,
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      transclude: true
     };
 
     return directive;
 
      /** @ngInject */
-    function MenuViewController($log, $scope, betterSettings , userService, $state, $mdMedia, $stateParams) {
+    function MenuViewController($log, $scope, betterSettings , userService, $state, $mdMedia, $stateParams, $mdSidenav) {
         var vm = this;
         
         vm.large = $mdMedia('gt-xs');
          
+        vm.openLeftMenu = function() {
+           $mdSidenav('left').toggle();
+        }; 
         
     };
   }

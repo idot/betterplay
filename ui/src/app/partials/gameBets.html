@@ -1,17 +1,15 @@
-<div layout="column" class="mainMenu"> 
-  <md-toolbar md-scroll-shrink ng-if="true">
-    <better-menu-view></better-menu-view>
+<better-menu-view>
     <div layout="row" class="activityRow">
        &nbsp&nbsp&nbsp
        <div> 
-            <md-button type="submit" title="plot" class="md-raised" ng-click="vm.plotBets($event)" value="plot" title="plot">plot</md-button>
+              <md-button type="submit" title="plot" ng-click="vm.plotBets($event)" value="plot" title="plot">
+                  <ng-md-icon icon="insert_chart" size="20"></ng-md-icon>
+              </md-button>
            <span>Bets for Game:</span> 
            <better-game-view gwt="vm.gwt" allowedit="true" fullcontent="true"></better-game-view>
         </div>
     </div>
- </md-toolbar>
-</div>
-
+</better-menu-view>
 
 
 <!-- this are all the user/bets for one game -->
