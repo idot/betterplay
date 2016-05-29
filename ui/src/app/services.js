@@ -77,23 +77,53 @@
                                     var g = _.map(gameResults, function(b){ return b.isSet ? b[goals] : "X" });
                                     var gc = _.groupBy(g, function(b){ return b; });
                                     var gcm = [ { "label": "NA",  "value": 0 }];
-                                    if(gc.length > 1){
-                                        gcm = _.map(gc, function(k,v){ return { "label": k, "value": v.length * sign}});
-                                    } else {
-                                        gcm = [{ "label": "X", "value": gc["X"].length * sign}];
-                                    }
+                             //       if(gc.length > 1){
+                                        gcm = _.map(gc, function(k,v){ 
+                                            var num = parseInt(v);
+                                            if(isNaN(num)){
+                                                num = "X";
+                                            }
+                                            return { "label": num, "value": k.length * sign}}
+                                        );
+                             //       } else {
+                             //           gcm = [{ "label": "X", "value": gc["X"].length * sign}];
+                             //       }
                                     return gcm;
                                 };
                                 var g1 = getGoals(gameResults, "goalsTeam1", -1);
                                 var g2 = getGoals(gameResults, "goalsTeam2",  1);
+                                var g1vs = _.map(g1, function(k,v){ return k.label; });
+                                var g2vs = _.map(g2, function(k,v){ return k.label; });
+                                var vs = g1vs.concat(g2vs);
+                                var vvs = _.filter(vs, function(v){ return ! isNaN(v); });
+                                var vmax = _.max(vvs);
+                                var vmin = _.min(vvs);
+                                var vrange = _.range(vmin, vmax+1);
+                                vrange.unshift("X");
+                                var expandResults = function(g, range){
+                                      var arr = [];
+                                      for(var i = 0; i < range.length; i++){
+                                          var label = range[i];
+                                          var item = g.find(function(v){ return v.label == label; });
+                                          if(item){
+                                              arr.push(item);                                              
+                                          }else{
+                                              arr.push({ "label":  label, "value": 0});
+                                          }
+                                      };
+                                      return arr;                                    
+                                };                         
+                                
+                                var g1ex = expandResults(g1, vrange);
+                                var g2ex = expandResults(g2, vrange);
                                 
                                 var g1m = _.min(g1, function(o){ o.value });
                                 var g2m = _.max(g2, function(o){ o.value });
                                 var mx = _.max([g1m.value * -1, g2m.value]);
                                 
                                 
-                                var gg1 = { "key":  team1, "color": "#d62728", "values": g1 };
-                                var gg2 = { "key":  team2, "color": "#1f77b4", "values": g2 };
+                                var gg1 = { "key":  team1, "color": "#d62728", "values": g1ex };
+                                var gg2 = { "key":  team2, "color": "#1f77b4", "values": g2ex };
                                                                  
                                 var result = {
                                     dat:  [gg1, gg2] ,

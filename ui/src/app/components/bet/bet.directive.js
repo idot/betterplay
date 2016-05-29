@@ -112,7 +112,7 @@
                     bet.result = _.clone(vm.originalBet.result);
                     bet.marked = false;
                     vm.enablePoints = true;
-                    toastr.error(error.data.error.join(), "reverting bet to original");
+                    toastr.error(error.data.error.join(), "reverting bet to original", { timeOut: 2500 });
                     vm.saveStyle = vm.saveStyleValue(bet);
                 }
             );

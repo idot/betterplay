@@ -30,6 +30,7 @@
         vm.disabled = false;
         vm.DF = betterSettings.DF;
         vm.timeLeft = betterSettings.timeLeft;
+
         vm.gameClosed =  function(){
             if(vm.gwt.game){
                 return betterSettings.betClosed(vm.gwt.game.serverStart);

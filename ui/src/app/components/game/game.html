@@ -1,8 +1,9 @@
 <div class="gameView">
     <div>
          <a ui-sref="game.gameBets({ gamenr: gwt.game.nr })">
-              <better-flag iso=gwt.team1.short2></better-flag><better-flag iso=gwt.team2.short2></better-flag>  {{gwt.team1.name}} : {{gwt.team2.name}}
+              <better-flag iso=gwt.team1.short2></better-flag><better-flag iso=gwt.team2.short2></better-flag>  {{gwt.team1.name}} : {{gwt.team2.name}}  
          </a>
+         <ng-md-icon icon="whatshot" style="fill: red;"  size="20" ng-if="gwt.game.nextGame == true"></ng-md-icon>
          <span ng-if="! vm.gameClosed()">
                     <span>  {{gwt.game.serverStart | date : vm.DF}}, {{vm.timeLeft(gwt.game.serverStart)}}</span>
          </span>
