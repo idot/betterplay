@@ -6,7 +6,7 @@
     .run(runBlock);
 
   /** @ngInject */
-  function runBlock($log, $timeout, Restangular, toastr, _) {
+  function runBlock($log, $timeout, Restangular, toastr, _, virtualContent, $rootScope) {
     
     Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
     // if(response.status === 403) {
@@ -72,6 +72,11 @@
            }
         
      );
+     
+    
+     $rootScope.virtCont = virtualContent;
+
+     
      $log.debug('runBlock end');
   
     

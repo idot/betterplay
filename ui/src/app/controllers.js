@@ -117,7 +117,6 @@
  
         var queryGame = Restangular.one('em2016/api/game', vm.stateParams.gamenr);
    
-        $scope.userName = "xy";
   
         activate();
 

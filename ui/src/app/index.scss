@@ -183,16 +183,17 @@ section.jumbotron {
 }
 
 
-.virtualRepeatdemoVerticalUsage #vertical-container {
-  height: 292px;
-  width: 100%;
-  max-width: 400px; 
+.vertical-container {
+   min-height: 300px;
+ // width: 100%;
+//  max-width: 400px; 
 }
-.virtualRepeatdemoVerticalUsage .repeated-item {
-  border-bottom: 1px solid #ddd;
-  box-sizing: border-box;
-  height: 40px;
-  padding-top: 10px;
+
+.repeated-item {
+ // border-bottom: 1px solid #ddd;
+ // box-sizing: border-box;
+ // height: 40px;
+//  padding-top: 10px;
 }
 .virtualRepeatdemoVerticalUsage md-content {
   margin: 16px;

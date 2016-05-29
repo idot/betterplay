@@ -4,6 +4,17 @@
         angular
             .module('ui')
             .value('version', '0.1')
+            .factory('virtualContent', function($window, $mdMedia) {
+               return {
+                  height: function() {
+                      var large = $mdMedia('gt-xs');
+                      var height = $window.innerHeight;
+                      var height = large ? 800 :  height - 140
+                      var result = { "height":  height+"px" };
+                      return result;
+                }
+               };
+            })
             .factory('specialBetService', function($state, Restangular, toastr, _, userService) {
                 return {
                     getSpecialBet: function(betId, username) {

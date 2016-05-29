@@ -1,4 +1,4 @@
-<div class="betView">
+<div class="betView" layout="row">
     <md-input-container class="betInput">
        <md-select ng-model="bet.result.goalsTeam1" aria-label="goals team1" ng-change="vm.markBet(bet)" ng-disabled="vm.disabled(bet)">
            <md-option ng-value="nr" ng-repeat="nr in vm.points">{{ nr }}</md-option>
