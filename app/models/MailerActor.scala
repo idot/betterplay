@@ -29,7 +29,7 @@ object MessageTypes {
 
 case class ImmediateMail(user: User)
 case class TestMail()
-
+case class SendUnsent()
 
 //generate messages
 //generate email after recaptcha for new password
@@ -74,10 +74,12 @@ object MailMessages {
 
 
 
-class SendMailActor @Inject()(configuration: Configuration) extends Actor {
+class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) extends Actor {
    val mailLogger = Logger("mail")
    val mailUser = configuration.getString("betterplay.mail.user").getOrElse("")
    val mailUserTest = configuration.getString("betterplay.mail.testreceiver").getOrElse("")
+
+   
    val debug = BetterSettings.debug || configuration.getBoolean("betterplay.mail.debug").getOrElse(false)
 
    import scala.concurrent.ExecutionContext.Implicits.global
@@ -95,8 +97,10 @@ class SendMailActor @Inject()(configuration: Configuration) extends Actor {
                  s ! MailMessages.mailSuccess
               } catch {
                 case e: EmailException => {
-                  mailLogger.error(e.getMessage)
-                  s ! e.getMessage
+                  val error = e.getMessage()
+                  mailLogger.error(error)
+                  betterDb.setMessageError(um, error, BetterSettings.now)
+                  s ! error
                 }
               }
            }
@@ -129,25 +133,34 @@ class SendMailActor @Inject()(configuration: Configuration) extends Actor {
 
 class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  @Named("sendMail") sendMailActor: ActorRef) extends Actor {
   val mailLogger = Logger("mail")
-  
+  //how often do we go over unsent messages to send them in minutes
+  val sendMailInterval = configuration.getInt("betterplay.send.interval").getOrElse(0) 
+   
   import scala.concurrent.ExecutionContext.Implicits.global
   val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))
 
   val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], Rate(3, (1.minutes))))
-  
   throttler ! SetTarget(Some(sendMailActor))
+  
+  if(sendMailInterval > 0){
+       context.system.scheduler.schedule(1 minutes, sendMailInterval minutes, self, SendUnsent())
+  }
   
   def receive = {
       case ImmediateMail(user) => sendImmediateMailToUser(user)  
       case TestMail() => mailLogger.info("got test mail"); val s = sender(); throttler.ask(TestMail())(timeout).mapTo[String].map(s ! _)
+      case SendUnsent() => sendUnsent()
       case _ =>
   }
   
  
- 
- // def sendEmails
-  //regular task activated by timing based actor every 20 minutes
-  def sendEMail(){
+  //NOT DONE
+  def sendUnsent(){
+    blocking{
+   //   betterDb.un
+      
+      
+    }
     //get unsent mails
     //send mail
      //success ==> set sent

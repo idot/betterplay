@@ -24,7 +24,6 @@ case object ChangeDetails extends GameUpdate
 case object NewGame extends GameUpdate
 
 
-case class UpdatePoints()
 
 @Singleton()
 class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends BetterTables with HasDatabaseConfigProvider[JdbcProfile] {
@@ -168,6 +167,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
             }    
      }
 
+     
       
      def insertSpecialBetInStore(specialBetT: SpecialBetT): Future[SpecialBetT] = {
          db.run((specialbetstore returning specialbetstore.map(_.id)) += specialBetT).map{ spid =>
@@ -824,7 +824,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
     }
     
     def unsentMailForUser(user: User): Future[Seq[(UserMessage,Message)]] = {
-        val query = usersmessages.filter(m => m.userId === user.id && ! m.seen.isDefined ).join(messages).on( _.messageId === _.id )
+        val query = usersmessages.filter(m => m.userId === user.id && ! m.sent.isDefined).join(messages).on( _.messageId === _.id )
         db.run(query.result)
     }
     
@@ -839,5 +839,22 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         }
     }
     
+    def setMessageError(um: UserMessage, error: String, now: DateTime): Future[MessageError] = {
+        val me = MessageError(None, um.id.get, error, now)
+        db.run((messageserrors returning messageserrors.map(_.id)) += me).map{ lid => me.copy(id=Some(lid))}
+    }
+    
+    def setGameClosed
+    
+   
+//    def unsentMails() = {
+//       val query = usersmessages.filter(m => ! m.sent.isDefined)
+ //           .join(messages).join(users).join(messageserrors).on{ case (((usersmessages, messages), users), messageserrors) =>
+//              
+            
+ //      }   
+ //      
+ //  }
+
 }
 

@@ -48,7 +48,8 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   val betlogs = TableQuery[BetLogs]
   val messages = TableQuery[Messages]
   val usersmessages = TableQuery[UsersMessages]
-
+  val messageserrors = TableQuery[MessagesErrors]
+  
   def schema() = { 
                users.schema ++
                teams.schema ++
@@ -60,7 +61,8 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
                specialbetsuser.schema ++
                betlogs.schema ++
                messages.schema ++
-               usersmessages.schema
+               usersmessages.schema ++
+               messageserrors.schema
   }
 
   def createTables(){
@@ -127,13 +129,15 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def venue = column[String]("venue")
     def group = column[String]("group")
     def nr = column[Int]("nr")
-
+    def viewMinutesToGame = column[Int]("viewminutestogame")
+    def gameClosed = column[Boolean]("gameclosed")
+    def nextGame = column[Boolean]("nextgame")
     
     def team1 = foreignKey("GAME_TEAM1_FK", team1Id, teams)(_.id) 
     def team2 = foreignKey("GAME_TEAM2_FK", team2Id, teams)(_.id) 
     def level = foreignKey("GAME_LEVEL_FK", levelId, levels)(_.id) 
     
-    def * = (id.?, result, team1Id, team2Id, levelId, localStart, localtz, serverStart, servertz, venue, group, nr) <> (Game.tupled, Game.unapply)
+    def * = (id.?, result, team1Id, team2Id, levelId, localStart, localtz, serverStart, servertz, venue, group, nr, viewMinutesToGame, gameClosed, nextGame) <> (Game.tupled, Game.unapply)
     def result = (goalsTeam1, goalsTeam2, isSet) <> (GameResult.tupled, GameResult.unapply)
 
   }
@@ -280,6 +284,20 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
   
   }
   
+  
+  class MessagesErrors(tag: Tag) extends Table[MessageError](tag, "messageserrors"){
+     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+     def userMessageId = column[Long]("usermessageid")
+     def error = column[String]("error")
+     def time = column[DateTime]("time")
+    
+     def message = foreignKey("ERROR_USERMESSAGE_FK", userMessageId, usersmessages)(_.id)
+    
+     def * = (id.?, userMessageId, error, time) <> (MessageError.tupled, MessageError.unapply _)
+  
+  }
+      
+     
   
 }
 

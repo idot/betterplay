@@ -11,7 +11,7 @@ import play.api.data.Forms._
 import play.api.libs.concurrent.Akka
 import play.api.cache.CacheApi
 import play.api.i18n.MessagesApi
-
+import akka.actor._
 
 import models._
 import models.JsonHelper._
@@ -20,7 +20,7 @@ import models.JsonHelper._
 import org.joda.time.DateTime
 
 
-import javax.inject.{Inject, Provider, Singleton}
+import javax.inject.{Inject, Provider, Singleton, Named}
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -70,7 +70,7 @@ class Games @Inject()(override val betterDb: BetterDb, override val cache: Cache
 		    err =>  Future.successful(BadRequest(Json.obj("error" -> JsError.toJson(err)))),
 		  cg => {
 		    betterException{
-		     val game = Game(None, DomainHelper.gameResultInit, 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0)
+		     val game = Game(None, DomainHelper.gameResultInit, 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0, 59, false, false)
 			       betterDb.insertGame(game, cg.team1, cg.team2, cg.level, request.admin)
 			        .flatMap{ gwt => 
 				           betterDb.createBetsForGamesForAllUsers(request.admin)

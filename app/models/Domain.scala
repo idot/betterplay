@@ -221,7 +221,7 @@ case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, po
  * startServer: start in server timezone
  * 
  **/
-case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: DateTime, localtz: String, serverStart: DateTime, servertz: String, venue: String, group: String, nr: Int){
+case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: DateTime, localtz: String, serverStart: DateTime, servertz: String, venue: String, group: String, nr: Int, viewMinutesToGame: Int, gameClosed: Boolean, nextGame: Boolean){
   //     def GameResultPrettyPrint = if(calculated) GameResult.goalsTeam1+":"+GameResult.goalsTeam2 else "NA"
 	    	 
  //	     def datePrettyPrint = sdf.format(date.getTime)
@@ -237,5 +237,5 @@ case class GameWithTeams(game: Game, team1: Team, team2: Team, level: GameLevel)
 
 case class Message(id: Option[Long] = None, messageType: String, subject: String, body: String, creatingUser: Long)
 case class UserMessage(id: Option[Long], userId: Long, messageId: Long, token: String, send: Boolean, sent: Option[DateTime], display: Boolean, seen: Option[DateTime], sendingUser: Long)
-
+case class MessageError(id: Option[Long], userMessageId: Long, error: String, time: DateTime)
 
