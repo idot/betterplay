@@ -22,7 +22,7 @@
      /** @ngInject */
     function MenuViewController($log, $scope, betterSettings , userService, $state, $mdMedia, $stateParams, $mdSidenav) {
         var vm = this;
-        
+        vm.open = false;
         vm.large = $mdMedia('gt-xs');
          
         vm.openLeftMenu = function() {

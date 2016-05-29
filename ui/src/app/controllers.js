@@ -121,6 +121,11 @@
   
         activate();
 
+        vm.items = [];
+        for (var i = 0; i < 1000; i++) {
+                vm.items.push(i);
+       }
+
         function getGame() {
             queryGame.get().then(function(gwtWithBetsPerUser) {
                 vm.gwt = gwtWithBetsPerUser.game;

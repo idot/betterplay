@@ -12,3 +12,4 @@ TODO:
 * component from plotgame stats
 * add plotgame to statistics page
 * exchange diskette with sync, sync_disabled 
+* test virtual-scroll for repeats
