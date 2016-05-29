@@ -195,7 +195,7 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
   //extra task => throtteler
   def sendImmediateMailToUser(user: User){  
       val s = sender()
-      betterDb.unsentMailForUser(user).map{ unsent => 
+      betterDb.unseenMailForUser(user).map{ unsent => 
          val immediate = unsent.filter{ case(um, m) => MessageTypes.immediate.contains(m.messageType)  }
          immediate.size match {
            case 0 => s ! "no unsent messages"

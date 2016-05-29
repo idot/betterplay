@@ -42,7 +42,7 @@ class DBSpec extends Specification
                     "slick.dbs.default.db.user" -> "sa",
                     "slick.dbs.default.db.password" -> "",
                     "play.cache.defaultCache" -> "dbspeccache", //prevents error for multiple app 
-                    "betterplay.insertdata" -> "test"
+                    "betterplay.insertdata" -> "false"
                 )
             )
         )
@@ -205,7 +205,7 @@ class DBSpec extends Specification
            m2._1.userId === admin.id.get
            val tokTime = new DateTime()
            
-           val unsent = AR(betterDb.unsentMailForUser(user))
+           val unsent = AR(betterDb.unseenMailForUser(user))
            unsent.length === 1
            
            betterDb.userByTokenPassword(insertToken.substring(0, BetterSettings.TOKENLENGTH -1), tokTime, "thehash") must throwAn[ValidationException](message = "the token was not correct").await
@@ -217,7 +217,7 @@ class DBSpec extends Specification
            tokUser.username === user.username
            AR(betterDb.allUsers()).filter(u => u.username == user.username).head.passwordHash === "tokenhash"
       
-           val unsentN = AR(betterDb.unsentMailForUser(user))
+           val unsentN = AR(betterDb.unseenMailForUser(user))
            unsentN.length === 0
            
            //now we access it again and it should have been used!
@@ -238,8 +238,35 @@ class DBSpec extends Specification
   		  }
   	  }
   	  
-  	
-	
+      def checkGames(games: Seq[Game], start: DateTime, msg: String) = {
+          val (before,after) = games.partition{ g => g.serverStart.isBefore(start) }
+          println(before.map(_.gameClosed))
+          println(after.map(_.gameClosed))
+  	      (before.map(_.gameClosed).toSet === Set(true)).setMessage(msg)
+  	      (after.map(_.gameClosed).toSet === Set(false)).setMessage(msg)
+  	      ((before ++ after.drop(1)).map(_.nextGame).toSet === Set(false)).setMessage(msg)
+          (after.head.nextGame === true).setMessage(msg)
+      }
+      
+  	  def maintainGames(){
+  	      val g1 = AR(betterDb.allGamesWithTeams()).map(_.game)
+  	      g1.map(_.gameClosed).toSet === Set(false)
+  	      val gm = g1(g1.size / 2)
+  	      val startMid = gm.serverStart
+  	      val beforeStartMid = startMid.minusMinutes(1)
+  	      val afterStartMid = startMid.plusMinutes(1)
+  	      AR(betterDb.maintainGames(beforeStartMid))
+  	      val g2 = AR(betterDb.allGamesWithTeams()).map(_.game)
+  	      checkGames(g2, beforeStartMid, "g2")
+  	      AR(betterDb.maintainGames(afterStartMid))
+  	      val g3 = AR(betterDb.allGamesWithTeams()).map(_.game)
+  	      checkGames(g3, afterStartMid, "g3")   	
+  	      AR(betterDb.maintainGames(afterStartMid.plusYears(4000)))
+  	      val g4 = AR(betterDb.allGamesWithTeams()).map(_.game)
+  	      g4.map(_.gameClosed).toSet === Set(true)
+  	      g4.map(_.nextGame).toSet === Set(false)
+  	  }
+	 
       def makeBets1(){
          val users = AR(betterDb.allUsers).sortBy(_.id)
          val gb1 = AR(betterDb.gamesWithBetForUser(users(1))).sortBy(_._1.game.id)
@@ -384,7 +411,7 @@ class DBSpec extends Specification
       def newGames(){
           val admin = getAdmin()
           val finalGameStart = firstStart.plusMinutes(100)
-          val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart.minusHours(5), "local", finalGameStart, "server",  "stadium", "groupC", 4)
+          val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart.minusHours(5), "local", finalGameStart, "server",  "stadium", "groupC", 4, 59, false, false)
           val teams = Await.result(betterDb.allTeams(), 1 seconds).sortBy(_.id)
           val level = Await.result(betterDb.allLevels, 1 seconds).sortBy(_.level).reverse.head
           val gwt = Await.result(betterDb.insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin), 1 seconds).toOption.get
@@ -460,6 +487,7 @@ class DBSpec extends Specification
       insertGames()
       insertUsers()
       insertPlayers()
+      maintainGames()
       makeBets1()
       updateGames()
       newGames()

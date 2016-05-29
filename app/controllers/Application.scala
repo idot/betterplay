@@ -145,6 +145,7 @@ class Application(env: Environment,
                   val messagesApi: MessagesApi,
                   val cache: CacheApi,
                   configuration: Configuration,
+                  system: ActorSystem,
           //        @Named("mailer") mailer: ActorRef,
                   router: => Option[Router] = None) extends Controller with Security with I18nSupport {
 
@@ -158,10 +159,11 @@ class Application(env: Environment,
             cache: CacheApi,
             configuration: Configuration,
        //     mailer: ActorRef,
+            system: ActorSystem,
             router: Provider[Router]) =
     this(env, gulpAssets, lifecycle, 
            dbConfigProvider, betterDb, 
-          messagesApi, cache, configuration,  Some(router.get))
+          messagesApi, cache, configuration, system, Some(router.get))
 
    
    val debug = configuration.getBoolean("betterplay.debug").getOrElse(false)  
@@ -363,7 +365,29 @@ class Application(env: Environment,
         case _ => //do nothing
       }
     }
+    scheduleTasks()
   }
+  
+  
+  def scheduleTasks(){
+      scheduleGamesMaintenance()
+  }
+  
+  def scheduleGamesMaintenance(){
+    val maintenenceInterval = configuration.getInt("betterplay.gamemaintenance.interval").getOrElse(0) 
+    if(maintenenceInterval > 0){
+      Logger.info(s"maintaining games each $maintenenceInterval minutes")
+      class Maintain extends Runnable {
+         def run {
+            betterDb.maintainGames(BetterSettings.now)
+         }
+      }
+      system.scheduler.schedule( 1 minutes, maintenenceInterval minutes, new Maintain()) 
+    }else{
+      Logger.info(s"not maintaining games")
+    }
+  }
+  
 
 }
 

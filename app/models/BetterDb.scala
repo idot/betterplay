@@ -810,6 +810,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
 //        db.run(action).map{ r => s"saved sending message to $userId" } 
 //    }
     
+    /**
+     * the token usage sets seen = true
+     */
     def userByTokenPassword(token: String, now: DateTime, passwordHash: String): Future[User] = {
         if(token.length == BetterSettings.TOKENLENGTH){
            val action = (for {
@@ -823,8 +826,8 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         }
     }
     
-    def unsentMailForUser(user: User): Future[Seq[(UserMessage,Message)]] = {
-        val query = usersmessages.filter(m => m.userId === user.id && ! m.sent.isDefined).join(messages).on( _.messageId === _.id )
+    def unseenMailForUser(user: User): Future[Seq[(UserMessage,Message)]] = {
+        val query = usersmessages.filter(m => m.userId === user.id && ! m.seen.isDefined).join(messages).on( _.messageId === _.id )
         db.run(query.result)
     }
     
@@ -844,8 +847,19 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         db.run((messageserrors returning messageserrors.map(_.id)) += me).map{ lid => me.copy(id=Some(lid))}
     }
     
-    def setGameClosed
-    
+   /**
+    * sets nextGame and closed game
+    * 
+    */
+   def maintainGames(now: DateTime): Future[Int] = {
+      val q = (for{
+        closed <- games.filter(g => g.serverStart < now).map(g => (g.gameClosed,g.nextGame)).update((true,false))
+        open <- games.filter(g => g.serverStart > now).map(g => (g.gameClosed,g.nextGame)).update((false,false))
+        next <- games.filter(g => g.serverStart > now).sortBy(_.serverStart).take(1).result.headOption
+        setNext <- games.filter(_.id === next.map(_.id).getOrElse(Some(-1l))).map(_.nextGame).update(true) 
+      } yield(setNext)).transactionally
+      db.run(q)
+   }
    
 //    def unsentMails() = {
 //       val query = usersmessages.filter(m => ! m.sent.isDefined)
