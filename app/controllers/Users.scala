@@ -27,6 +27,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.JsSuccess
 import play.api.libs.ws._
 import scala.concurrent.duration._
+import JodaHelper._
 
 @Singleton
 class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, val messagesApi: MessagesApi,
@@ -51,7 +52,8 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
                 val vtg = g.level.viewMinutesToGame
                 (g, b.viewableBet(request.request.userId, g.game.serverStart, now, vtg)) 
               }
-              val json = Json.obj("user" -> UserNoPwC(user, request.user), "specialBets" -> sp, "gameBets" -> gamesWithVBets)
+              val gwbvs = gamesWithVBets.sortBy{case (g,b) => g.game.serverStart }
+              val json = Json.obj("user" -> UserNoPwC(user, request.user), "specialBets" -> sp, "gameBets" -> gwbvs)
               Ok(json)
           }
       }        

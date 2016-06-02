@@ -41,7 +41,8 @@ class Games @Inject()(override val betterDb: BetterDb, override val cache: Cache
             val now = BetterSettings.now
   				  val vtg = game.level.viewMinutesToGame
             val vbWithUsers = betsWithUsers.map{ case(b,u) => (b.viewableBet(request.request.userId, game.game.serverStart, now, vtg), UserNoPwC(u, request.user)) }
-            val json = Json.obj("game" -> game, "betsUsers" -> vbWithUsers)
+            val vbs = vbWithUsers.sortBy{ case(b,u) => u.username }
+            val json = Json.obj("game" -> game, "betsUsers" -> vbs)
             Ok(json)
           } 
          }

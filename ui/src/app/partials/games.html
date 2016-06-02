@@ -1,3 +1,4 @@
+<div layout="column" ng-style="virtCont.height()">
 <better-menu-view>
     <div layout="row" class="activityRow">
        <better-filter-view filter-changed="vm.filterChanged()"></better-filter-view>  
@@ -9,10 +10,9 @@
 </better-menu-view>
 
 <!-- these are all the games -->
-<div>
-<form name="bodyForm">
+
 <md-content flex>
-    <md-list  ng-cloak>
+    <md-list ng-cloak>
       <md-list-item class="md-1-line" ng-repeat="gwt in vm.allGames">
         <div class="md-list-item-text"  layout-gt-xs="row">
             <better-game-view gwt="gwt" fullcontent="true"></better-game-view>
@@ -21,5 +21,4 @@
       </md-list-item>
     </md-list>
   </md-content>
- </form>
 </div>

@@ -1,1 +1,19 @@
+ 
  ALTER TABLE gamelevel RENAME "viewtoGame" TO viewtogame;
+
+ 
+ ALTER TABLE games add column viewminutestogame integer DEFAULT 59;
+ ALTER TABLE games add column gameclosed boolean DEFAULT 'f';
+ ALTER TABLE games add column nextgame boolean DEFAULT 'f';
+ 
+create sequence messageserrors_id_seq;
+create table messageserrors (
+    id bigint  not null default nextval('messageserrors_id_seq'::regclass),
+    usermessageid bigint not null, 
+    time  timestamp without time zone not null,
+    error character varying not null
+    
+);
+
+alter table messageserrors ADD CONSTRAINT messageserrors_pkey PRIMARY KEY (id);
+alter table messageserrors ADD CONSTRAINT "ERROR_USERMESSAGE_FK" FOREIGN KEY (usermessageid) references usersmessages(id) ;

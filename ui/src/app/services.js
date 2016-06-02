@@ -9,7 +9,7 @@
                   height: function() {
                       var large = $mdMedia('gt-xs');
                       var height = $window.innerHeight;
-                      var height = large ? 800 :  height - 140
+                  //    var height = large ? 800 :  height - 140
                       var result = { "height":  height+"px" };
                       return result;
                 }

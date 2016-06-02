@@ -1,3 +1,4 @@
+<div layout="column" ng-style="virtCont.height()">
 <better-menu-view>
     <div layout="row" class="activityRow">
        <!-- TODO: user name filter -->  
@@ -8,10 +9,7 @@
     </div>
 </better-menu-view>
 
-<div>
-</form>
 <!-- these are all the users -->
-<form name="bodyForm">
 <md-content flex>
     <md-list ng-cloak>
       <md-list-item class="md-1-line" ng-repeat="user in vm.allUsers">
@@ -22,5 +20,4 @@
       </md-list-item>
     </md-list>
   </md-content>
- </form>
 </div>

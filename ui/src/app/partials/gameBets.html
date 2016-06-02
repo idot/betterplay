@@ -1,3 +1,4 @@
+<div layout="column" ng-style="virtCont.height()">
 <better-menu-view>
     <div layout="row" class="activityRow">
        &nbsp&nbsp&nbsp
@@ -10,12 +11,7 @@
         </div>
     </div>
 </better-menu-view>
-
-
-
-
- <form name="bodyForm">
-  <md-content  layout="column">
+ <md-content  layout="column">
     <md-list ng-cloak>
       <md-list-item class="md-1-line" ng-repeat="bu in vm.betsUsers">
         <div class="md-list-item-text"  layout-gt-xs="row">
@@ -26,19 +22,11 @@
       </md-list-item>
     </md-list>
    </md-content>
- </form>
+</div>
 
 
 
-<!--md-list>
-       <md-virtual-repeat-container class="vertical-container"  ng-style="virtCont.height()">  
-             <md-list-item class="md-1-line" md-virtual-repeat="bu in vm.betsUsers" class="repeated-item" layout-gt-xs="row" layout-xs="column">
-              <better-user-view user="bu.user"></better-user-view>
-              <better-bet-view bet="bu.bet" start="vm.gwt.game.serverStart" gameResult="vm.gwt.game.result"></better-bet-view>
-              <md-divider inset></md-divider>
-             </md-list-item>
-        </md-virtual-repeat-container>
-</md-list-->
+
     
 
 
