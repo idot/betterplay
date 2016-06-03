@@ -123,7 +123,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
   //group   3       1       0
   def parseLevel(line: String): GameLevel = {
       val items = line.split("\t")
-      GameLevel(None, items(0), items(1).toInt, items(2).toInt, items(3).toInt, 30)
+      GameLevel(None, items(0), items(1).toInt, items(2).toInt, items(3).toInt)
   }
   
   def levels(): Seq[GameLevel] = {

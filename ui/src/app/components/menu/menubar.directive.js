@@ -22,7 +22,10 @@
     function MenuBarController($log, $scope, betterSettings , userService, $state, $mdMedia, $stateParams) {
         var vm = this;
         vm.userService = userService;
-        var DF = betterSettings.DF;
+        
+        vm.DF = function(){
+            return betterSettings.DF;  
+        };
         
         vm.specialDisabled = function(){
             return $state.includes("**.specialBets.**")  &&  $stateParams.username !== undefined &&  $stateParams.username == vm.userService.loggedInUser.username;  
@@ -44,6 +47,14 @@
         };       
         vm.loginDisabled = function(){
             return $state.includes("login");  
+        };
+        
+        vm.isDebug = function(){
+            return betterSettings.isDebug();  
+        };
+          
+        vm.currentTime = function(){
+            return betterSettings.currentTime;   
         };
           
         vm.large = $mdMedia('gt-xs');

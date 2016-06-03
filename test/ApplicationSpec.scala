@@ -18,6 +18,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.Configuration
 import play.api.inject.bind
 import play.api.Mode
+import org.joda.time.DateTime
 
 //TODO: add ApplicationSpec tests from play-gulp-standalone
 
@@ -49,6 +50,11 @@ class ApplicationSpec extends Specification with JsonMatchers {
        (Json.parse(contentAsString((result))) \ "AUTH-TOKEN").asOpt[String]
     }  
       
+    def setTime(time: DateTime): Option[String] = {
+     //POST 'em2016/api/time'  { serverTime: // }
+      null
+    }
+    
 //   val appWithRoutes = () => FakeApplication(withRoutes = {
 //      case ("GET", "/") => Action{ Ok }
 //   }) 
@@ -109,6 +115,8 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     userBets must /("user") */("username" -> "createduser") 
 	     userBets must /("specialBets") */("name" -> "topscorer")
 	     userBets must /("gameBets") */("goalsTeam1" -> "0.0")
+	     
+	     
 
 	     val excelf = route(app, FakeRequest(method="GET", path="/em2016/api/statistics/excel").withHeaders(("X-AUTH-TOKEN", authToken2))).get
        val excel = Await.result(excelf, 1 second)

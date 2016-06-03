@@ -108,9 +108,8 @@ trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
     def pointsExact = column[Int]("pointsexact")
     def pointsTendency = column[Int]("pointstendency")
     def level = column[Int]("level")
-    def viewMinutesToGame = column[Int]("viewtogame")
     
-    def * = (id.?, name, pointsExact, pointsTendency, level, viewMinutesToGame) <> (GameLevel.tupled, GameLevel.unapply)
+    def * = (id.?, name, pointsExact, pointsTendency, level) <> (GameLevel.tupled, GameLevel.unapply)
 
   }
 

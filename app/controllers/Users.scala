@@ -49,7 +49,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
             .map{ gamesWithBets =>
               val now = BetterSettings.now
               val gamesWithVBets = gamesWithBets.map{ case(g, b) => 
-                val vtg = g.level.viewMinutesToGame
+                val vtg = g.game.viewMinutesToGame
                 (g, b.viewableBet(request.request.userId, g.game.serverStart, now, vtg)) 
               }
               val gwbvs = gamesWithVBets.sortBy{case (g,b) => g.game.serverStart }

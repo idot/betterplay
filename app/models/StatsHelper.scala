@@ -109,7 +109,7 @@ class StatsHelper(betterDb: BetterDb, currentTime: DateTime, viewingUserId: Long
 	    def createUserBets(user: User, sp: SpecialBets, rank: Int): UserBets = {
 	        val bets = gwts.zipWithIndex.map{ case(gwt,i) => 
 	          val bet = allBetsMap.get(user.id.get, gwt.game.id.get) 
-	          bet.map(b => b.viewableBet(viewingUserId, gwt.game.serverStart, currentTime, gwt.level.viewMinutesToGame))
+	          bet.map(b => b.viewableBet(viewingUserId, gwt.game.serverStart, currentTime, gwt.game.viewMinutesToGame))
 	        }
 	        UserBets(user, bets, rank, sp) 
 	    }

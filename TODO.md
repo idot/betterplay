@@ -9,5 +9,7 @@ TODO:
 * actor sending unsent mails
 * view for unsent mails
 * exchange diskette with sync, sync_disabled 
+* add individual games popup to stats view
+* validate Excel in DBSpec
 
 

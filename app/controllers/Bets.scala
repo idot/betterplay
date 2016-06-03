@@ -33,7 +33,7 @@ class Bets @Inject()(override val betterDb: BetterDb, override val cache: CacheA
   				  betterException{
   				   betterDb.updateBetResult(bet.toBet, request.user, now, mtg).map{
   				     succ => succ match {  case(game, betold, betnew, log, errs) =>
-  				      val vtg = game.level.viewMinutesToGame
+  				      val vtg = game.game.viewMinutesToGame
   					   //TODO: add broadcast succ is (game,betold, betnew)
                                        if(errs.length > 0){
                                               NotAcceptable(Json.obj("error" -> errs))       

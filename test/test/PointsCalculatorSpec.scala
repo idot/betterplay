@@ -91,7 +91,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
 	"A pointsCalculator can evaluate special bets for a group partially correct item" ! specialBetsForGroupPartCorrect ^ 
     end
     
-    val gl = GameLevel(None, "test", 3, 2, 1, 30)
+    val gl = GameLevel(None, "test", 3, 2, 1)
     
     def tendencyTie = {
         Prop.forAll(RG.genTieResult(true), RG.genTieResult(true)){ (bet: GameResult, game: GameResult) =>

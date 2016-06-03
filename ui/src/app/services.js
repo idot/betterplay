@@ -9,7 +9,6 @@
                   height: function() {
                       var large = $mdMedia('gt-xs');
                       var height = $window.innerHeight;
-                  //    var height = large ? 800 :  height - 140
                       var result = { "height":  height+"px" };
                       return result;
                 }
@@ -246,7 +245,7 @@
                     vm.updateDate = function(date) {
                         TIMEFROMSERVER = false;
                         var nm = moment(date);
-                        var om = moment(currentTime);
+                        var om = moment(vm.currentTime);
                         nm.hours(om.hours());
                         nm.minutes(om.minutes());
                         nm.seconds(om.seconds());
@@ -257,7 +256,7 @@
                     vm.updateTime = function(time) {
                         TIMEFROMSERVER = false;
                         var nm = moment(time);
-                        var om = moment(currentTime);
+                        var om = moment(vm.currentTime);
                         om.hours(nm.hours());
                         om.minutes(nm.minutes());
                         vm.currentTime = om.toDate();
@@ -269,7 +268,7 @@
                             serverTime: time.getTime()
                         }).then(
                             function(success) {
-                                toastr.pop('success', "changed time", success);
+                                toastr.success(success, "changed time");
                             })
                     };
 
@@ -279,7 +278,7 @@
                             function(success) {
                                 vm.TIMEFROMSERVER = true;
                                 vm.updateTimeFromServer()
-                                toastr.pop('success', "reset time", success);
+                                toastr.success(success, "reset time");
                             })
                     };
 
@@ -289,6 +288,10 @@
                         } else {
                                 return "-:-"
                         }  
+                    };
+                    
+                    vm.isDebug = function(){
+                        return vm.settings.debug;  
                     };
                     
                     vm.updateSettings();

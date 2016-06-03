@@ -144,12 +144,17 @@
         vm.stateParams = $stateParams;
         vm.userService = userService;
         vm.mailpassword = "";
+        
 
         vm.DF = betterSettings.DF;
         vm.updateInterval = betterSettings.UPDATEINTERVAL;
         //separating current date and time for datepicker and timepicker
         vm.date = new Date(betterSettings.currentTime.getTime());
         vm.time = new Date(betterSettings.currentTime.getTime());
+
+        vm.isDebug = function(){
+            return betterSettings.isDebug();
+        }
 
         vm.setFormat = function() {
             betterSettings.DF = vm.DF;
@@ -158,12 +163,17 @@
         vm.setUpdateinterval = function() {
             betterSettings.UPDATEINTERVAL = vm.updateInterval;
         };
+        
+        vm.resetTime = function(){
+            betterSettings.resetTime();
+        };
 
-        vm.updateTime = function() {
+       
+        vm.submitTime = function() {
             betterSettings.updateTime(vm.time);
         };
 
-        vm.updateDate = function() {
+        vm.submitDate = function() {
             betterSettings.updateDate(vm.date);
         };
         

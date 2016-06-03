@@ -111,14 +111,10 @@ case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId:
       if(DomainHelper.viewable(viewingUserId, userId, gameStart, currentTime, viewTimeToStart)){
         ViewableBet(id, points, Some(result), gameId, userId, true)
       }else{
-         //TODO: currently all bets are viewable!!! until start of games
-         //ViewableBet(id, points, None, gameId, userId, false)
-         ViewableBet(id, points, Some(result), gameId, userId, true)
+        ViewableBet(id, points, None, gameId, userId, false)
      }    
   }
-  
-  
-  
+    
 }
 
 case class ViewableBet(id: Option[Long] = None, points: Int, result: Option[GameResult], gameId: Long, userId: Long, viewable: Boolean){
@@ -214,7 +210,8 @@ case class SpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]){
 
 }
 
-case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int, viewMinutesToGame: Int)//name: groups, quarter final, semi final, final
+//name: groups, quarter final, semi final, final
+case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, pointsTendency: Int, level: Int)
 
 /**
  * startLocal: start in local timezone 
