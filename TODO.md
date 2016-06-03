@@ -8,7 +8,6 @@ TODO:
 * mail interface (mailto: all, or list of users)
 * actor sending unsent mails
 * view for unsent mails
-* component from plotgame stats
-* add plotgame to statistics page
 * exchange diskette with sync, sync_disabled 
+
 

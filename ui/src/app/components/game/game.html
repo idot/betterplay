@@ -13,6 +13,7 @@
           <span ng-if="vm.gameClosed() && vm.resultSet">
                   <span>vm.prettyResult()</span>
           </span>
+          <game-bets-popup gwt="gwt"></game-bets-popup>
           <span ng-if="vm.expand">
                  &nbsp&nbsp{{gwt.level.name}} <span class="badge badge-points">{{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}</span>
           </span>    

@@ -109,7 +109,7 @@
     }
     
      /** @ngInject */
-    function GameController($log, $filter, $mdDialog, Restangular, $stateParams, _, userService, $scope) {
+    function GameController($log, $filter, Restangular, $stateParams, _, userService, $scope) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betsUsers = [];
@@ -131,31 +131,7 @@
                 vm.betsUsers = gwtWithBetsPerUser.betsUsers;
             })
         }
- 
-        vm.plotBets = function($event){
-            var parentEl = angular.element(document.body);          
-            alert = $mdDialog.show({
-                   clickOutsideToClose: true,
-                   parent: parentEl,
-                   targetEvent: $event,
-                   title: 'Attention',
-                   template:   ' <md-dialog><md-dialog-content> '+
-                                     ' <game-bets-plot gwt="gwt"></game-bets-plot>'+
-                                     ' </md-dialog></md-dialog-content> ',
-                   ok: 'Close',
-                   locals: { gwt: vm.gwt },
-                  controller: function($scope, $mdDialog, gwt) {
-                        $scope.closeDialog = function() {
-                             $mdDialog.hide();
-                        }
-                       $scope.gwt = gwt;
-                  }
-                 });
-                
-        };
-            
-            
-       
+             
 
         function activate() {
             getGame();
