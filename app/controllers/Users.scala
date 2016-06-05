@@ -33,6 +33,11 @@ import JodaHelper._
 class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, val messagesApi: MessagesApi,
                   ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends Controller with Security with I18nSupport {
     
+   //TODO move to mail controller
+   def sendUnsentMail() = withAdmin.async { request =>
+       mailer ! SendUnsent()
+       Future{ Ok("done something") }
+   }
   
   def all() = withUser.async { request =>
       betterDb.allUsersWithRank().map{ all => 

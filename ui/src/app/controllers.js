@@ -726,7 +726,7 @@
                 body: vm.body
             };
             
-            Restangular.all('em2016/api/sendMail').customPOST(message).then(
+            Restangular.all('em2016/api/createMail').customPOST(message).then(
                 function(success) {
                     toastr.info('success', "saved mail in database");
                     vm.subject = "";
