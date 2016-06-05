@@ -71,7 +71,11 @@ GET     /em2016/api/statistics/game/:id      controllers.Statistics.game(id: Lon
 GET     /em2016/api/statistics/specialBet/:name   controllers.Statistics.specialBets(name: String)
 
 POST    /em2016/api/createMail                   controllers.Mail.createMail()
+<<<<<<< HEAD
 POST    /em2016/api/sendUnsentMail                   controllers.Users.sendUnsentMail()
+=======
+POST    /em2016/api/sendUnsentMail                   controllers.Mail.sendUnsentMail()
+>>>>>>> 3f10cc2c2dae40516726a5277c7fe14b67d86a39
 
 # Send (user,password) to receive token
 POST    /em2016/api/login                      controllers.Application.login()
