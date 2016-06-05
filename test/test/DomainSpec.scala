@@ -1,6 +1,7 @@
 package models
 
 import org.junit.runner._
+import org.joda.time.DateTime
 import org.specs2.runner._
 import org.specs2._
 import org.specs2.Specification
@@ -11,7 +12,8 @@ import org.junit.runner.RunWith
 class DomainSpec extends Specification { def is =
 
     "The custom exceptions should have a message stored" ! message ^
- //   "test mail" ! testMail ^
+    "viewable should not always be true" ! testViewableTime^
+    //   "test mail" ! testMail ^
     end
 	
 	
@@ -27,12 +29,24 @@ class DomainSpec extends Specification { def is =
 		  ex3.getMessage === mess
 	}
 
-  def testMail() = {
+  def testMail() = {//disabled just for debugging of mail settings
     BetterSettings.setMailPassword("")
     val send = MailMessages.sendMail("subject", "body",  MailMessages.address("ido.tamir@vbcf.ac.at", "Ido Tamir"), true)
     send === "sent" 
     
   }
 
+  def testViewableTime() = {
+      val now = new DateTime()
+      val before = now.minusMinutes(10)
+      DomainHelper.viewableTime(before, now, 9) === false 
+      DomainHelper.viewableTime(before, now, 10) === true 
+      DomainHelper.viewable(10, 3, before, now, 9) === false
+      DomainHelper.viewable(10, 3, before, now, 10) === true 
+      DomainHelper.viewable(3, 3, before, now, 9) === true //your own are alway visible!!!
+      DomainHelper.viewable(3, 3, before, now, 10) === true 
+   }
+  
+  
 
 }

@@ -9,7 +9,7 @@ import play.api.cache.CacheApi
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json._
-import play.api.libs.json.JsSuccess
+import play.api.libs.json.{JsSuccess,JsError}
 import play.api.data.Forms._
 import play.api.data.Form
 import models.DomainHelper
@@ -235,10 +235,10 @@ class Application(env: Environment,
   
 
   def setDebugTime() = withAdmin(parse.json) { request =>
-	  if(debug){
-         (request.body \ "serverTime").validate[DateTime].fold(
-		   err => BadRequest(Json.obj("error" -> "could not parse json")),
-		   succ => {
+ 	  if(debug){
+       (request.body \ "serverTime").validate[DateTime].fold(
+		     err => BadRequest(Json.obj("error" -> JsError.toJson(err))),
+		     succ => {
 			    BetterSettings.setDebugTime(succ)	
 				  Ok("set time to debug")
 		   })

@@ -68,6 +68,9 @@ object DomainHelper {
       BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), game.serverStart, betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time, comment)
   }
  
+  /**
+   * its viewable AFTER the time!!!
+   */
   def viewableTime(gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): Boolean = {
        val viewOpen = gameStart.minusMinutes(viewTimeToStart)
        val open = currentTime.isAfter(viewOpen)
@@ -75,7 +78,11 @@ object DomainHelper {
   }
   
   def viewable(viewingUserId: Long, betUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): Boolean = {
-       viewingUserId == betUserId && viewableTime(gameStart, currentTime, viewTimeToStart)
+       if(viewingUserId == betUserId){
+         true
+       }else{
+         viewableTime(gameStart, currentTime, viewTimeToStart)
+       }
   }
   
 }

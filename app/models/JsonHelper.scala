@@ -116,7 +116,8 @@ object JsonHelper {
         val bet = (json \ "bet").validate[ViewableBet]
         (game, bet) match {
           case (g: JsSuccess[GameWithTeams],b: JsSuccess[ViewableBet]) => JsSuccess((g.value,b.value))
-          case _ => JsError("could not parse game bets reads")
+          case (g: JsError, b: JsError) => g ++ JsError("\n\n\n") ++ b
+          case _ => JsError("could not parse game bets reads"+json.toString())
         }
      }
    }
