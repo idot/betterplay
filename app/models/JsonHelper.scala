@@ -2,6 +2,7 @@ package models
 
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
+import play.api.libs.json._
 import play.api.libs.json.Format
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsString
@@ -10,7 +11,7 @@ import play.api.libs.json.JsResult
 import scalaz.{\/,-\/,\/-}
 import play.api.libs.json.JsError
 import play.api.libs.json.JsSuccess
-import play.api.libs.json.Writes
+import play.api.libs.json.{Writes,Reads}
 import play.api.libs.json.JsObject
 
 
@@ -108,6 +109,19 @@ object JsonHelper {
         Json.obj("game" -> gb._1, "bet" -> gb._2)       
      }
    }
+   
+   implicit val gamesBetsReads = new Reads[(GameWithTeams,ViewableBet)]{
+     def reads(json: JsValue): JsResult[(GameWithTeams,ViewableBet)] = {
+        val game = (json \ "game").validate[GameWithTeams]
+        val bet = (json \ "bet").validate[ViewableBet]
+        (game, bet) match {
+          case (g: JsSuccess[GameWithTeams],b: JsSuccess[ViewableBet]) => JsSuccess((g.value,b.value))
+          case _ => JsError("could not parse game bets reads")
+        }
+     }
+   }
+
+
    
    implicit val betUserWrite = new Writes[(ViewableBet,UserNoPw)]{
  	   def writes(bu: (ViewableBet, UserNoPw)): JsValue = {

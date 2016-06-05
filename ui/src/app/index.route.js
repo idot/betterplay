@@ -140,6 +140,12 @@
                 controller: 'RegisterUserController',
                 controllerAs: 'vm'
             })
+            .state('admin.mail', {
+                url: "/mail",
+                templateUrl: 'app/partials/mail.html',
+                controller: 'MailController',
+                controllerAs: 'vm'
+            })
             .state('statistics', {
                 abstract: true,
                 url: "/statistics",

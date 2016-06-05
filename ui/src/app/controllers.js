@@ -18,7 +18,9 @@
         .controller('PlotSpecialBetsController', PlotSpecialBetsController)
         .controller('ExcelController', ExcelController)
         .controller("CompleteRegistrationController", CompleteRegistrationController)
-        .controller("ChangePasswordRequestController", ChangePasswordRequestController);
+        .controller("ChangePasswordRequestController", ChangePasswordRequestController)
+        .controller("MailController", MailController);
+        
 
     /** @ngInject */
     function UsersController($log, $filter, Restangular, betterSettings, userService) {
@@ -707,5 +709,32 @@
         };
                 
     };
+    
+     /** @ngInject */
+    function MailController($stateParams, $state, Restangular, toastr, betterSettings) {
+        var vm = this;
+        vm.subject = "";
+        vm.body = "";
+        
+        vm.setResponse = function(response) {
+            if(vm.subject.trim()  == "" || vm.body.trim() == ""){
+                toastr.error("please specify subject and body");
+                return;
+            }
+            var message = {
+                subject: vm.subject,
+                body: vm.body
+            };
+            
+            Restangular.all('em2016/api/sendMail').customPOST(message).then(
+                function(success) {
+                    toastr.info('success', "saved mail in database");
+                    vm.subject = "";
+                    vm.body = "";
+                }
+            );
+       };
+    }
+    
 
 })();

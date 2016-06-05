@@ -19,6 +19,7 @@ import play.api.Configuration
 import play.api.inject.bind
 import play.api.Mode
 import org.joda.time.DateTime
+import models._
 
 //TODO: add ApplicationSpec tests from play-gulp-standalone
 
@@ -57,6 +58,16 @@ class ApplicationSpec extends Specification with JsonMatchers {
        res === "set time to debug"
     }
     
+  //  def bet(authToken: String, bet: Bet) = {
+  //      val viewableBet = 
+  //  }
+    
+    def checkMexCameroon(username: String, authToken: String, should: String) = {
+       val userBetsResult = route(app, FakeRequest(method="GET", path=s"/em2016/api/user/$username").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val userBets = contentAsString(userBetsResult)
+       userBets must /("gameBets") */("goalsTeam1" -> "XY")
+    }
+    
 //   val appWithRoutes = () => FakeApplication(withRoutes = {
 //      case ("GET", "/") => Action{ Ok }
 //   }) 
@@ -77,6 +88,11 @@ class ApplicationSpec extends Specification with JsonMatchers {
   
   
     "allow login for users, protect routes and allow logout" in new WithApplication(app=app){
+       val MexCam = new DateTime(2014, 6, 13, 18, 0)//y m d h min
+       val betPossible = MexCam.minusMinutes(61)
+       val betForbidden = MexCam.minusMinutes(60)
+       val betVisible = MexCam.minusMinutes(59)
+      
        val up = JsObject(Seq("username" -> JsString("admin"), "password" -> JsString("admin")))
        
        val unau = route(app, FakeRequest("POST", "/em2016/api/createBetsForUsers")).get
@@ -117,9 +133,12 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     userBets must /("user") */("username" -> "createduser") 
 	     userBets must /("specialBets") */("name" -> "topscorer")
 	     userBets must /("gameBets") */("goalsTeam1" -> "0.0")
-	     
-	     
-
+	     val json = Json.parse(userBets)
+	     import JsonHelper._
+	     val gameBets = (json \\ "gameBets").map(_.as[(GameWithTeams,ViewableBet)])
+	     val mexCam = gameBets.filter{ case(gwt, b) => gwt.team1.name.contains("Mex") && gwt.team2.name.contains("Cam") } 
+	   
+         
 	     val excelf = route(app, FakeRequest(method="GET", path="/em2016/api/statistics/excel").withHeaders(("X-AUTH-TOKEN", authToken2))).get
        val excel = Await.result(excelf, 1 second)
        print(excel)
