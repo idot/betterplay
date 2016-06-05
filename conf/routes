@@ -70,7 +70,8 @@ GET     /em2016/api/statistics/excel         controllers.Statistics.excel()
 GET     /em2016/api/statistics/game/:id      controllers.Statistics.game(id: Long)
 GET     /em2016/api/statistics/specialBet/:name   controllers.Statistics.specialBets(name: String)
 
-POST    /em2016/api/sendMail                   controllers.Mail.sendMail()
+POST    /em2016/api/createMail                   controllers.Mail.createMail()
+POST    /em2016/api/sendUnsentMail                   controllers.Mail.sendUnsentMail()
 
 # Send (user,password) to receive token
 POST    /em2016/api/login                      controllers.Application.login()

@@ -143,7 +143,8 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
   throttler ! SetTarget(Some(sendMailActor))
   
   if(sendMailInterval > 0){
-       context.system.scheduler.schedule(1 minutes, sendMailInterval minutes, self, SendUnsent())
+  //TODO: enable interval scanning when error handling complete to prevent sending mails with an error count > 2  
+  //   context.system.scheduler.schedule(1 minutes, sendMailInterval minutes, self, SendUnsent())
   }
   
   def receive = {
@@ -154,17 +155,15 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
   }
   
  
-  //NOT DONE
   def sendUnsent(){
+    mailLogger.info("sending unsent mail")
+    val s = sender()
     blocking{
-   //   betterDb.un
-      
-      
+       betterDb.unsentMails().map{ ms =>
+         ms.map{ case(um, m, u) => sendMail(um,m,u,s) }
+       }      
     }
-    //get unsent mails
-    //send mail
-     //success ==> set sent
-    //unsuccessful ==> log + retry in minutes
+    mailLogger.info("sent unsent mail")
   }
 
   def sendMail(userMessage: UserMessage, message: Message, user: User, s: ActorRef) {

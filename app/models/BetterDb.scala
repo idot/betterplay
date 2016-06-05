@@ -810,6 +810,20 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
 //        db.run(action).map{ r => s"saved sending message to $userId" } 
 //    }
     
+//    def messageToAll(subject: String, body: String, sendingId: Long): Future[String] = {
+//        val action = (
+//          for{
+//            users <- users.result
+//            messages = DBIO.sequence( users.map{user => 
+//               val message = MailGenerator.personalize(subject.value, body.value, user, sendingId)
+//               val um =  
+//            }
+
+          
+//         } yield()).transactionally
+//        null
+//    }   
+         
     /**
      * the token usage sets seen = true
      */
@@ -861,14 +875,18 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       db.run(q)
    }
    
-//    def unsentMails() = {
-//       val query = usersmessages.filter(m => ! m.sent.isDefined)
- //           .join(messages).join(users).join(messageserrors).on{ case (((usersmessages, messages), users), messageserrors) =>
-//              
-            
- //      }   
- //      
- //  }
+    def unsentMails(): Future[Seq[(UserMessage,Message,User)]] = {
+       val query = 
+         for{
+           ((um,m),u) <- usersmessages.filter(m => ! m.sent.isDefined && m.send === true) 
+                     .join(messages).join(users).on{ case ((um, m), u) =>
+                           um.messageId === m.id && um.userId === u.id 
+                     }
+         }yield{
+           (um,m,u)
+         }
+       db.run(query.result)
+   }
 
 }
 
