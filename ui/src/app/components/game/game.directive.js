@@ -27,7 +27,7 @@
     function GameViewController($log, Restangular, toastr,  $scope, _, $mdMedia, betterSettings , userService) {
         var vm = this;
         vm.gwt = $scope.gwt;
- //       $log.error("GWC: "+vm.gwt.game.id);
+
         vm.disabled = false;
         vm.DF = betterSettings.DF;
         vm.timeLeft = betterSettings.timeLeft;

@@ -50,9 +50,11 @@ class ApplicationSpec extends Specification with JsonMatchers {
        (Json.parse(contentAsString((result))) \ "AUTH-TOKEN").asOpt[String]
     }  
       
-    def setTime(time: DateTime): Option[String] = {
-     //POST 'em2016/api/time'  { serverTime: // }
-      null
+    def setTime(time: DateTime, authToken: String) = {
+       val nt = JsObject(Seq("serverTime" -> JsString(JSON.format(time))))
+       val updt = route(app, FakeRequest(method="POST", path="'em2016/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
+       val res = Await.result(updt, 1 second)
+       res === "set time to debug"
     }
     
 //   val appWithRoutes = () => FakeApplication(withRoutes = {

@@ -599,12 +599,13 @@
      /** @ngInject */
     function PlotSpecialBetsController($stateParams, $state, specialBetStats, Restangular, userService) {
         var vm = this;
+        
     
         vm.userService = userService;
         vm.getExcel = function(){
             vm.userService.getExcel();
-        };
-    }
+          };
+     }
 
      /** @ngInject */
     function ExcelController($stateParams, $state, Restangular, $document) {
@@ -669,6 +670,7 @@
         vm.token = $stateParams.token;
         vm.newPassword = $state.includes("newPassword");
         
+    
         vm.comparePasswords = function(form){
             var identical = vm.password1 == vm.password2;
             form.password2.$setValidity('identical', identical);     
