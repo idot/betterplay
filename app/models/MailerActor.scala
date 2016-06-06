@@ -160,7 +160,10 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
     val s = sender()
     blocking{
        betterDb.unsentMails().map{ ms =>
-         ms.map{ case(um, m, u) => sendMail(um,m,u,s) }
+           ms.map{ case(um, m, u) => 
+              mailLogger.debug(s"try sending mail to ${u.username}")
+              sendMail(um,m,u,s) 
+           }
        }      
     }
     mailLogger.info("sent unsent mail")

@@ -715,8 +715,18 @@
         var vm = this;
         vm.subject = "";
         vm.body = "";
-        
-        vm.setResponse = function(response) {
+                
+        vm.sendMail = function(){
+            Restangular.all('em2016/api/sendUnsentMail').customPOST({}).then(
+                function(success) {
+                    toastr.info('success', "sent unsent mail");
+                    vm.subject = "";
+                    vm.body = "";
+                }
+            );
+        };     
+                
+        vm.createMail = function(response) {
             if(vm.subject.trim()  == "" || vm.body.trim() == ""){
                 toastr.error("please specify subject and body");
                 return;

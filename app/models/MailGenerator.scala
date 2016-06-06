@@ -19,9 +19,9 @@ object MailGenerator {
   }
   
   def personalize(subject: String, body: String, user: User, sendingId: Long): Message = {
-      val bU = body.replaceAll("{{username}}", user.username)
-      val bF = bU.replaceAll("{{firstname}}", user.firstName)
-      val bL = bF.replaceAll("{{lastname}}", user.lastName)
+      val bU = body.replaceAll("""\{\{username}}""", user.username)
+      val bF = bU.replaceAll("""\{\{firstname}}""", user.firstName)
+      val bL = bF.replaceAll("""\{\{lastname}}""", user.lastName)
       Message(None, MessageTypes.FREE, subject, bL, sendingId) 
   }
   

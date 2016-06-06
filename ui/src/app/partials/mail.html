@@ -1,0 +1,30 @@
+<div layout="column" ng-style="virtCont.height()">
+<better-menu-view>
+    <div layout="row" class="activityRow">
+       Compose e-mail! <span></span>
+    </div>
+</better-menu-view>
+   <md-content>
+     <form layout="column">
+       <md-input-container>
+         <label>Subject</label>
+         <input ng-model="vm.subject" type="text">
+       </md-input-container>
+       <md-input-container>
+         <label>Message insert recipient with <span ng-non-bindable>{{firstname}} {{lastname}} {{username}}</span></label>
+         <textarea cols="50" rows="50" ng-model="vm.body"></textarea>
+       </md-input-container>
+       <div>
+       <md-button type="submit" value="put mail in database"  class="md-raised" title="put mail in database" ng-click="vm.createMail()">
+           put mail in database
+       </md-button>
+      </div>
+       <div>
+       <md-button type="submit" value="send mail in database"  class="md-raised" title="send unsent mail" ng-click="vm.sendMail()">
+           send unsent mail
+       </md-button>
+      </div>
+      
+    </form>
+   </md-content>
+</div>

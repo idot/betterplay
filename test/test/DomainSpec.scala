@@ -13,6 +13,7 @@ class DomainSpec extends Specification { def is =
 
     "The custom exceptions should have a message stored" ! message ^
     "viewable should not always be true" ! testViewableTime^
+    "mail generator pattern" ! mailGenerator^
     //   "test mail" ! testMail ^
     end
 	
@@ -47,6 +48,13 @@ class DomainSpec extends Specification { def is =
       DomainHelper.viewable(3, 3, before, now, 10) === true 
    }
   
-  
+   def mailGenerator() = {
+       val body = "this is {{username}} {{firstname}} {{lastname}} {{username}} end"
+       val user = User(None, "theusername", "thefirstname", "thelastname", "theinstitute", 
+        false, "email@email.com", "pwhash", false, false, false, true, 0, 0,  "", "", None,
+			 FilterSettings("","","")) 
+       val message = MailGenerator.personalize("the subject", body, user, 0l)
+       message.body === "this is theusername thefirstname thelastname theusername end"
+   }
 
 }

@@ -111,12 +111,6 @@
                 controller: 'CreateGameController',
                 controllerAs: 'vm'
             })
-            .state('settings', {
-                url: "/settings",
-                templateUrl: 'app/partials/settings.html',
-                controller: 'SettingsController',
-                controllerAs: 'vm'
-            })
             .state('logout', {
                 url: "/logout",
                 onEnter: function(userService) {
@@ -144,6 +138,12 @@
                 url: "/mail",
                 templateUrl: 'app/partials/mail.html',
                 controller: 'MailController',
+                controllerAs: 'vm'
+            })
+            .state('admin.settings', {
+                url: "/settings",
+                templateUrl: 'app/partials/settings.html',
+                controller: 'SettingsController',
                 controllerAs: 'vm'
             })
             .state('statistics', {
