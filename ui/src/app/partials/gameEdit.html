@@ -1,27 +1,36 @@
-<h3>currently only setting of results is possible</h3>
-<p>depending on necessity changing of dates, teams will be implemented</p>
-<form class="form col-xs-3" role="form">
-    <ul class="list-group">
-       <li class="list-group-item list-group-item-heading">
-         {{gwt.game.nr}}  {{gwt.team1.name}}:{{gwt.team2.name}} {{gwt.level.name}}
-       </li>
-       <li class="list-group-item">
-         bet close {{timeLeft(gwt.game.serverStart, currentTime)}} 
-       </li>
-	   <li class="list-group-item">
-		 local: {{gwt.game.localStart | date: DF }} server: {{gwt.game.serverStart | date: DF }}	
-	  </li>	
-    </ul>
+<div layout="column" ng-style="virtCont.height()">
+<better-menu-view>
+    <div layout="row" class="activityRow">
+       &nbsp&nbsp&nbsp
+       <div> 
+            <h3>Edit Game:</h3> 
+            <p>currently only setting of results is possible depending on necessity changing of dates, teams will be implemented</p>
+        </div>
+    </div>
+</better-menu-view>
+ <md-content  layout="column">
+     <better-game-view gwt="vm.gwt" allowedit="true" fullcontent="true"></better-game-view>
+     <form>
+           <div layout="row"  layout-xs="column" layout-sm="column" layout-align="left center">
+               <md-input-container class="betInput">
+                  <md-select ng-model="vm.gwt.game.result.goalsTeam1" aria-label="goals team1" ng-disabled="! vm.gameClosed()">
+                      <md-option ng-value="nr" ng-repeat="nr in vm.points">{{ nr }}</md-option>
+                  </md-select>
+               </md-input-container>
+               <md-input-container class="betInput">
+                  <md-select ng-model="vm.gwt.game.result.goalsTeam2" aria-label="goals team2" ng-disabled="! vm.gameClosed()">
+                      <md-option ng-value="nr" ng-repeat="nr in vm.points">{{ nr }}</md-option>
+                  </md-select>
+              </md-input-container>  
+              <md-input-container layout-align="center">
+                  <div layout="row" layout-sm="column" layout-margin>
+                      <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.submit()" value="Submit" title="Submit" ng-disabled="! vm.gameClosed()">Submit</md-button>
+                  </div>
+              </md-input-container> 
+           </div>
+      </form>
+   </md-content>
+</div>
+
+
 	
-    <div class="form-group">
-	  <input class="betCell" type="number" min="0" max="30" 
-	  ng-minlength="1" ng-maxlength="2" 
-	  ng-model="gwt.game.result.goalsTeam1"/>
-	  <input class="betCell" type="number" min="0" max="30" 
-	  ng-minlength="1" ng-maxlength="2" 
-	  ng-model="gwt.game.result.goalsTeam2"/>
-	</div>
-	<div class="form-group">	
-       <button type="submit" class="btn btn-primary pull-right" ng-click="submitResult()" value="Submit" title="Submit">Submit</button>
-	</div>
-</form>

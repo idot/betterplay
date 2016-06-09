@@ -23,9 +23,9 @@
      /** @ngInject */
     function UserViewController($log, Restangular, toastr, betterSettings, userService, $scope, _) {
         var vm = this;
-        vm.badgecolor = betterSettings.badgecolor;
-      
-        
+        vm.badgecolor = function(){
+            return betterSettings.badgecolour($scope.user.rank);
+        };
     };
   }
 

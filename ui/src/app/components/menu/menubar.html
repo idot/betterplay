@@ -45,7 +45,10 @@
             </md-button>
          </div>
        </span>
+       <span>
+           {{ vm.currentTime() | date :  "HH:mm" }}
+        </span>
        <span ng-if="vm.isDebug()">
-            {{ vm.currentTime()  | date : vm.DF() }}    
+            &nbsp{{ vm.currentTime()  | date : "dd-MM-yy"}}    
        </span>
 </div>

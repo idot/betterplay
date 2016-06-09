@@ -7,6 +7,7 @@
         .controller('GamesController', GamesController)
         .controller('UserController', UserController)
         .controller('GameController', GameController)
+        .controller('EditGameController',EditGameController)
         .controller('SettingsController', SettingsController)
         .controller('LoginController', LoginController)
         .controller('RegisterUserController', RegisterUserController)
@@ -19,7 +20,8 @@
         .controller('ExcelController', ExcelController)
         .controller("CompleteRegistrationController", CompleteRegistrationController)
         .controller("ChangePasswordRequestController", ChangePasswordRequestController)
-        .controller("MailController", MailController);
+        .controller("MailController", MailController)
+        ;
         
 
     /** @ngInject */
@@ -44,19 +46,24 @@
     }
 
      /** @ngInject */
-    function GamesController($log, $filter, Restangular, $stateParams, _, betterSettings, userService) {
+    function GamesController($log, $filter, Restangular, $stateParams, _, glFilter, betterSettings, userService) {
         var vm = this;
         vm.DF = betterSettings.DF;
+        vm.allGamesS = [];
         vm.allGames = [];
        
         var queryGames = Restangular.all('em2016/api/games');
 
         activate();
 
+        vm.filterChanged = function(){
+             vm.allGames = glFilter(vm.allGamesS);
+        }
 
         function getGames() {
             queryGames.getList().then(function(games) {
-                vm.allGames = games;
+                vm.allGamesS = games;
+                vm.allGames = glFilter(vm.allGamesS);
             })
         }
 
@@ -111,7 +118,7 @@
     }
     
      /** @ngInject */
-    function GameController($log, $filter, Restangular, $stateParams, _, userService, $scope) {
+    function GameController($log, $filter, Restangular, $stateParams, _, userService, betterSettings, $scope) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betsUsers = [];
@@ -122,16 +129,56 @@
   
         activate();
 
-        vm.items = [];
-        for (var i = 0; i < 1000; i++) {
-                vm.items.push(i);
-       }
-
         function getGame() {
             queryGame.get().then(function(gwtWithBetsPerUser) {
                 vm.gwt = gwtWithBetsPerUser.game;
                 vm.betsUsers = gwtWithBetsPerUser.betsUsers;
             })
+        }
+             
+        function activate() {
+            getGame();
+        }
+    }
+
+     /** @ngInject */
+    function  EditGameController($log, toastr, $filter, $state, Restangular, $stateParams, _, userService, betterSettings, $scope) {
+        if(! userService.isAdmin()){
+            $state.go("user.userBets", {
+                username: userService.getUsername()
+            });
+        }
+        
+        
+        var vm = this;
+        vm.stateParams = $stateParams;
+        vm.gwt = {};
+        vm.points = _.range(15);
+        
+        vm.gameClosed =  function(){
+           var closed = true;
+           if(vm.gwt.game){
+                closed = betterSettings.betClosed(vm.gwt.game.serverStart);
+            }
+            return closed;
+        };
+        
+        var queryGame = Restangular.one('em2016/api/game', vm.stateParams.gamenr);
+   
+  
+        activate();
+
+        function getGame() {
+            queryGame.get().then(function(gwtWithBetsPerUser) { //yes I load more than necessary
+                vm.gwt = gwtWithBetsPerUser.game;
+            })
+        }
+        
+        vm.submit = function(){
+            Restangular.all('/em2016/api/game/results').customPOST(vm.gwt.game).then(function(success) {
+                  toastr.success("success", "updated game");     
+                  getGame();             
+            })               
         }
              
 
@@ -142,6 +189,11 @@
 
      /** @ngInject */
     function SettingsController($log, $stateParams, Restangular, toastr, moment, betterSettings, userService) {
+        if(! userService.isAdmin()){
+            $state.transitionTo("user.userBets", {
+                username: userService.getUsername()
+            });
+        }
         var vm = this;
         vm.stateParams = $stateParams;
         vm.userService = userService;
@@ -210,6 +262,12 @@
 
      /** @ngInject */
     function RegisterUserController($log, $stateParams, Restangular, $state, toastr, _, $scope, userService) {
+        if(! userService.isAdmin()){
+            $state.transitionTo("user.userBets", {
+                username: userService.getUsername()
+            });
+        }
+        
         var vm = this;
         vm.allUsers = [];
         vm.username = "";   
@@ -522,6 +580,12 @@
 
      /** @ngInject */
     function CreateGameController($log, $filter, $stateParams, Restangular, $state, toastr, moment) {
+        if(! userService.isAdmin()){
+            $state.transitionTo("user.userBets", {
+                username: userService.getUsername()
+            });
+        }
+        
         var vm = this;
         vm.stateParams = $stateParams;
 
@@ -584,7 +648,7 @@
             var local = toDateTime(vm.local.date, vm.local.time);
             var createdGame = {
                 serverStart: server.getTime(),
-                localStart: local.getTime(),
+                localStart: server.getTime(),  //!!!!!!! simplified!!!!!!!
                 team1: vm.team1.name,
                 team2: vm.team2.name,
                 level: vm.level.level
@@ -605,7 +669,7 @@
     
         vm.userService = userService;
         vm.getExcel = function(){
-            vm.userService.getExcel();
+              vm.userService.getExcel();
           };
      }
 
@@ -712,6 +776,12 @@
     
      /** @ngInject */
     function MailController($stateParams, $state, Restangular, toastr, betterSettings) {
+        if(! userService.isAdmin()){
+            $state.transitionTo("user.userBets", {
+                username: userService.getUsername()
+            });
+        }
+        
         var vm = this;
         vm.subject = "";
         vm.body = "";

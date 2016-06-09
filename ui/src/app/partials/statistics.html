@@ -1,0 +1,19 @@
+<div layout="column" ng-style="virtCont.height()">
+<better-menu-view>
+    <div layout="row" class="activityRow">
+     <md-button type="submit" value="excel"  class="md-raised" title="excel" ng-click="vm.getExcel()">
+           excel
+     </md-button>
+    </div>
+</better-menu-view>
+ <md-content  layout="column">
+
+  <special-bets-plot betname="'champion'"></special-bets-plot>
+  <special-bets-plot betname="'semifinalist'"></special-bets-plot>
+  <special-bets-plot betname="'mvp'"></special-bets-plot>
+  <special-bets-plot betname="'topscorer'"></special-bets-plot>
+
+</md-content>
+
+</div>
+     <md-button type="submit" value="excel"  class="md-raised" title="excel" href="api/statistics/excelAnon">

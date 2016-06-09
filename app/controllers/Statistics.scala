@@ -25,7 +25,7 @@ class Statistics @Inject()(override val betterDb: BetterDb, override val cache: 
 	        val excel = ExcelData.generateExcel(betterDb, BetterSettings.now, userId)
 	        val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 	        val name = BetterSettings.fileName(excel, excelSecret)
-	        val headers = ("Content-disposition",s"attachment; filename=$name")
+	        val headers = ("Content-Disposition",s"attachment; filename=${name}")
 	        Ok(excel).as(mime).withHeaders(headers)
         }
      }

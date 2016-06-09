@@ -11,7 +11,8 @@
       restrict: 'E',
       templateUrl: 'app/components/filter/filter.html',
       scope: {
-	   filterChanged: '&',      // Pass a reference to the method 
+           filterBet: '=',
+	   filterChanged: '&'      // Pass a reference to the method 
       },
       controller: FilterViewController,
       controllerAs: 'vm'

@@ -157,7 +157,7 @@
             })
             .state('statistics.plots', {
                 url: "/plots",
-                templateUrl: 'app/partials/specialPlots.html',
+                templateUrl: 'app/partials/statistics.html',
                 controller: 'PlotSpecialBetsController',
                 controllerAs: 'vm'
             });

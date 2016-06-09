@@ -146,7 +146,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) {
       }
 	  if(debug){
          val admin = uf("admin", "admin" ,"admin", "admin@admin.com", "admin", true)
-         val users = (1 to 10).map(n => uf(s"n$n", s"f$n", s"l$n", s"f${n}.l${n}@betting.com", "p$n", false))
+         val users = (1 to 10).map(n => uf(s"n$n", s"f$n", s"l$n", s"f${n}.l${n}@betting.com", "p", false))
          admin +: users
 	  }else{
 	      val names = Seq("anjae","thomasd", "andreas")

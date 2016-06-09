@@ -29,8 +29,7 @@
         vm.disableSave = true;
         vm.saveStyle = {};
         vm.points = _.range(15);
-        vm.withTime = betterSettings.currentTime;
-                 
+                  
         vm.cloneBet = function(bet){
             var cloned = _.clone($scope.bet);
             cloned.result = _.clone($scope.bet.result);

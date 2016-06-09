@@ -9,7 +9,7 @@
        </md-select>
     </md-input-container>
 
-    <md-input-container class="filterInput">
+    <md-input-container class="filterInput" ng-if="filterBet">
         <label>Bet</label>
        <md-select ng-model="vm.userService.filter.bet" aria-label="filter bet set" ng-change="vm.filterChanged()">
            <md-optgroup label="Bet">

@@ -300,7 +300,7 @@
                 })
 
         
-    .service('userService', function($log, Restangular, $cookies, $state, toastr, FileSaver, Blob) {
+    .service('userService', function($log, Restangular, $cookies, $state, toastr, FileSaver, Blob, $window) {
         var vm = this;
                 
         $log.debug("created userservice");
@@ -316,6 +316,10 @@
             bet : "all",
             level : "all",
             game: "all"
+        };
+        
+        vm.getUsername = function(){
+            return (typeof vm.loggedInUser === "undefined") ? "" :  vm.loggedInUser.username;  
         };
         
         vm.identical = function(username){
@@ -457,18 +461,13 @@
         
         //DOES NOT WORK!!! BLOB is wrong 
         vm.getExcel = function(){
-            var exUrl = vm.isLoggedIn() ? '/em2016/api/statistics/excel' : '/em2016/api/statistics/excelAnon'
-            
-            Restangular.setFullResponse(true).one(exUrl).get().then(function(result){
-              //  $log.debug("got excel");
+            var exUrl = vm.isLoggedIn() ? '/em2016/api/statistics/excel' : '/em2016/api/statistics/excelAnon';
+            Restangular.setFullResponse(true).one(exUrl).withHttpConfig({responseType: 'blob'}).get().then(function(result){
                 var cd = result.headers()["content-disposition"];
                 var filename = cd.split(" ")[1].split("=")[1];
                 var ct = result.headers()["content-type"];
-                var data = new Blob([result.data], { type: ct });
-                FileSaver.saveAs(data, filename);
-             //   return result;
-            //})
-             
+                var rd = result.data;
+                FileSaver.saveAs(result.data, filename, true);
             })      
         };
          
