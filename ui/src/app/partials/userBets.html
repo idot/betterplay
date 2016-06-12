@@ -18,7 +18,7 @@
       <md-list-item class="md-1-line" ng-repeat="gameBet in vm.gameBets">
         <div class="md-list-item-text"  layout-gt-xs="row" layout-align-gt-xs="space-between center">
            <better-game-view gwt="gameBet.game"></better-game-view>
-           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" gameResult="gameBet.game.result"></better-bet-view>
+           <better-bet-view bet="gameBet.bet" start="gameBet.game.game.serverStart" gameresult="gameBet.game.game.result"></better-bet-view>
         </div>
         <md-divider inset></md-divider>
       </md-list-item>

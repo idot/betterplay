@@ -13,7 +13,7 @@
       scope: {
           bet: '=bet', 
           start: '=start',
-          gameResult: '=gameResult'
+          gameresult: '=gameresult'
       },
       controller: BetViewController,
       controllerAs: 'vm'
@@ -29,7 +29,9 @@
         vm.disableSave = true;
         vm.saveStyle = {};
         vm.points = _.range(15);
-                  
+                   
+        vm.gr = $scope.gameresult;           
+                   
         vm.cloneBet = function(bet){
             var cloned = _.clone($scope.bet);
             cloned.result = _.clone($scope.bet.result);
@@ -55,10 +57,10 @@
                     } else {    
                        bet.result.goalsTeam1 = "closed!";
                        bet.result.goalsTeam2 = "closed!";
-                    }
-               }
+                   }
+               } 
             } 
-        }
+        };
         
         
         transformBet($scope.bet);  

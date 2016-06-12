@@ -31,6 +31,11 @@
         vm.disabled = false;
         vm.DF = betterSettings.DF;
         vm.timeLeft = betterSettings.timeLeft;
+    
+        vm.allowEdit = function(){
+           var res = $scope.allowedit  && vm.expand && vm.isAdmin && vm.gameClosed();
+           return res;
+        };
 
         vm.gameClosed =  function(){
             if(vm.gwt.game){
@@ -48,7 +53,7 @@
               } else { return "-:-" }
         }
         vm.expand = $mdMedia('gt-xs') || $scope.fullcontent;
-        vm.isAdmin = userService.isAdmin()
+        vm.isAdmin = userService.isAdmin();
     } 
   }
 

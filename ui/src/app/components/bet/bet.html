@@ -12,8 +12,8 @@
    <md-button type="button" aria-label="save" class="md-raised saveButton" ng-click="vm.saveBet(bet)" ng-disabled="vm.disableSave">
           <ng-md-icon icon="sync" ng-style="vm.saveStyle"  size="20"></ng-md-icon>
     </md-button>
-    <span ng-if="vm.gameResult.isSet">
-         <span>Points</span><span class="badge badge-points">vm.originalBet.result.points</span>       
+    <span ng-if="gameresult.isSet">
+         <span class="badge badge-points">{{vm.originalBet.points}}</span>       
     </span>
 </div>
 

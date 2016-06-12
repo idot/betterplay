@@ -775,7 +775,7 @@
     };
     
      /** @ngInject */
-    function MailController($stateParams, $state, Restangular, toastr, betterSettings) {
+    function MailController($stateParams, $state, Restangular, toastr, betterSettings, userService) {
         if(! userService.isAdmin()){
             $state.transitionTo("user.userBets", {
                 username: userService.getUsername()

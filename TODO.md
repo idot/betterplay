@@ -1,4 +1,5 @@
 TODO: 
+* check if xls.xlx is returned for excel download and fix
 * disable betting for users that canBet = false
 * create GAMES delayed (i.e. insert the time slot without the teams, then allow changing teams)
 * unit test in javascript for betting component
@@ -8,4 +9,5 @@ TODO:
 * add individual games popup to stats view
 * validate Excel in DBSpec
 * add sync disabled in bets view
+
 

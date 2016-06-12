@@ -17,7 +17,7 @@
           <span ng-if="vm.expand">
                  &nbsp&nbsp{{gwt.level.name}} <span class="badge badge-points">{{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}</span>
           </span>    
-      	  <span ng-if="allowedit  && vm.expand && vm.isAdmin && vm.gameClosed()">
+      	  <span ng-if="vm.allowEdit()">
                   <md-button type="submit" value="Submit"  class="md-raised" title="set result"  ui-sref="game.gameEdit({'gamenr': gwt.game.nr })">
                       set result
                   </md-button>
