@@ -41,7 +41,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
   
   def all() = withUser.async { request =>
       betterDb.allUsersWithRank().map{ all => 
-        val allNoPw = all.sortBy{ case(u,r) => (r,u.username.toLowerCase) }.map{ case(u,r) => UserNoPwC(u, request.user, r) }
+        val allNoPw = all.sortBy{ case(u,r) => (r, u.username.toLowerCase) }.map{ case(u,r) => UserNoPwC(u, request.user, r) }
         Ok(Json.toJson(allNoPw )) 
      }
   }

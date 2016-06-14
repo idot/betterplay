@@ -188,7 +188,7 @@
     }
 
      /** @ngInject */
-    function SettingsController($log, $stateParams, Restangular, toastr, moment, betterSettings, userService) {
+    function SettingsController($log, $stateParams, $state, Restangular, toastr, moment, betterSettings, userService) {
         if(! userService.isAdmin()){
             $state.transitionTo("user.userBets", {
                 username: userService.getUsername()
