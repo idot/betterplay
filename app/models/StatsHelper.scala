@@ -20,6 +20,10 @@ case class Row(size: Int){
 	
 	def get(index: Int) = values(index)
 	
+	def mergeToTab(other: Row): String = {
+	    values.zip(other.values).map{ case(f,s) => f+":"+s }.mkString("\t")
+	}
+	
 }
 
 
@@ -28,6 +32,10 @@ case class Row(size: Int){
 case class UserRow(user: User, games: Row, pointsPerGame: Row
 	, cumulatedPoints: Row, firstGoals: Row, secondGoals: Row, resultFirstTeam: Row, resultSecondTeam: Row,  rank: Int, specialBets: SpecialBets ){
 	
+
+  
+  def toLine(): String = user.username+"\t"+firstGoals.mergeToTab(secondGoals)
+  
 }
 
 object UserRow {

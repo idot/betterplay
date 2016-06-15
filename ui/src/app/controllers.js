@@ -17,7 +17,6 @@
         .controller('EditUserSpecialTeamController', EditUserSpecialTeamController)
         .controller('CreateGameController', CreateGameController)
         .controller('PlotSpecialBetsController', PlotSpecialBetsController)
-        .controller('ExcelController', ExcelController)
         .controller("CompleteRegistrationController", CompleteRegistrationController)
         .controller("ChangePasswordRequestController", ChangePasswordRequestController)
         .controller("MailController", MailController)
@@ -663,41 +662,37 @@
     }
 
      /** @ngInject */
-    function PlotSpecialBetsController($stateParams, $state, specialBetStats, Restangular, userService) {
+    function PlotSpecialBetsController($stateParams, $state, $document, specialBetStats, Restangular, userService,  toastr,  FileUploader) {
         var vm = this;
         
-    
         vm.userService = userService;
+        vm.uploader = new FileUploader({
+            url: 'api/statistics/uploadExcel',
+            removeAfterUpload: true
+        });
+        
+        vm.uploader.onAfterAddingFile = function(fileItem) {
+              vm.uploader.uploadItem(fileItem);
+        };
+        
+        vm.uploader.onSuccessItem = function(item, response, status, headers){
+                toastr.success("file valid", { timeOut: 5500 });
+        };
+        
+        vm.uploader.onErrorItem = function(item, response, status, headers){
+                toastr.error(response, "error" , { timeOut: 5500 });
+        };
+        
         vm.getExcel = function(){
               vm.userService.getExcel();
-          };
+         };
+          
+         vm.upload = function() {
+               vm.uploader.upload();
+        }    
      }
 
-     /** @ngInject */
-    function ExcelController($stateParams, $state, Restangular, $document) {
-        var vm = this;
 
-        vm.filename = ""
-
-        vm.upload = function() {
-            fd = $document.getElementById('file').files[0],
-                r = new FileReader();
-            r.onloadend = function(e) {
-                var data = e.target.result;
-                var blob = new Blob([data.content], {
-                    type: 'application/xls',
-                    filename: vm.filename
-                });
-      //          $http.post('/data/fileupload', fd, {
-        //            transformRequest: angular.identity,
-        //            headers: {
-        //                'Content-Type': undefined
-    //                }
-      //          });
-            }
-            r.readAsArrayBuffer()
-        };
-    }
  
      /** @ngInject */
     function ChangePasswordRequestController($stateParams, $state, Restangular, toastr, betterSettings) {

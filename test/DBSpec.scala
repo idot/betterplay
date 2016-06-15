@@ -477,6 +477,8 @@ class DBSpec extends Specification
           bos.close()
           new java.io.File("testData/excel.xls") must haveSameMD5As(new java.io.File("testData/excel.expect.xls"))
           
+          
+          
       }
    
       betterDb.dropCreate()

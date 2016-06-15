@@ -53,7 +53,7 @@ libraryDependencies ++= Seq(
   "org.jasypt" % "jasypt" % "1.9.2",
   "commons-io" % "commons-io" % "2.4",
   "com.andersen-gott" %% "scravatar" % "1.0.3",  
-  "org.apache.poi" % "poi" % "3.10-FINAL",
+  "org.apache.poi" % "poi" % "3.14",
   "net.sf.opencsv" % "opencsv" % "2.3",
   "org.apache.commons" % "commons-email" % "1.4" 
 

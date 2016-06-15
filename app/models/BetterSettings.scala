@@ -79,7 +79,7 @@ object BetterSettings {
 		val stime = formatter.print(time)
     val dig = digester(time, excelSecret).digest(message)
 		val hex = org.jasypt.commons.CommonUtils.toHexadecimal(dig)
-		"bets."+stime+"."+hex+".xls"	       
+		"bets."+stime+"."+hex+".xlsx"	       
 	}
 	
 	def matchDigest(message: Array[Byte], dates: String, md5inHex: String, excelSecret: String): Boolean = {
@@ -89,11 +89,17 @@ object BetterSettings {
 	}
 	
 	def validate(message: Array[Byte], filename: String, excelSecret: String): String \/ String = {
-		val fileNameR = """bets\.(\d{12})\.(\w*)\.xls""".r
+		val fileNameR = """bets\.(\d{12})\.(\w*)\.xlsx""".r
 		filename match {
 		    case fileNameR(date, hex) => if(matchDigest(message, date, hex, excelSecret)) \/-("valid file") else -\/("invalid file content changed")
-			case _ => -\/("file name pattern not recognized: must be bets.yyyyMMddHHmm.hexdigest.xls")
+			case _ => -\/("file name pattern not recognized: must be bets.yyyyMMddHHmm.hexdigest.xlsx")
 		}
+	}
+	
+	def validate(path: String, filename: String, excelSecret: String): String \/ String = {
+	  import java.nio.file.{Files, Paths}
+    val byteArray = Files.readAllBytes(Paths.get(path))
+	  validate(byteArray, filename, excelSecret)
 	}
 	
 	def closingMinutesToGame = 60	

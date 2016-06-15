@@ -65,6 +65,7 @@ POST    /em2016/api/specialBet               controllers.SpecialBets.updateSpeci
 GET     /em2016/api/specialBets/:id          controllers.SpecialBets.specialBetsByTemplate(id: Long)
 GET     /em2016/api/specialBetTemplates      controllers.SpecialBets.all()
 
+POST    /em2016/api/statistics/uploadExcel   controllers.Statistics.uploadExcel()
 GET     /em2016/api/statistics/excelAnon     controllers.Statistics.excelAnon()
 GET     /em2016/api/statistics/excel         controllers.Statistics.excel()
 GET     /em2016/api/statistics/game/:id      controllers.Statistics.game(id: Long)

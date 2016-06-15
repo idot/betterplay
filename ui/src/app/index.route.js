@@ -151,10 +151,6 @@
                 url: "/statistics",
                 template: '<ui-view/>'
             })
-            .state('statistics.excel', {
-                url: "/excel",
-                templateUrl: 'app/partials/excel.html'
-            })
             .state('statistics.plots', {
                 url: "/plots",
                 templateUrl: 'app/partials/statistics.html',

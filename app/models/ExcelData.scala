@@ -30,7 +30,56 @@ object ExcelData {
 	   excel
   }
   
+ /** 
+  def generateCSV(betterDb: BetterDb, dateTime: DateTime, viewingUserId: Long): Array[Byte] = {
+     val helper = new StatsHelper(betterDb, dateTime, viewingUserId)  
+	   val templates = helper.specialBetsTemplates()
+	   val gwts = helper.getGwts()
+     val csv = new CSVData(helper.createUserRows, gwts, templates)
+	   val excel = excelD.createExcelSheetComplete()
+	   excel
+  }
+  ***/
 }
+
+/***class CSVData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemplates: Seq[SpecialBetT]){
+    val specialBetTs = specialBetTemplates.sortBy(_.id)
+	  val headingStrings = specialBetTs.map(_.name)
+	  
+	  
+	  def createText(){
+       val buf = new StringBuffer()
+       gwts.zipWithIndex.foreach{ case (gwt,index) =>
+            val gwt = 
+       for( (ur,rowNr) <- userRows.zipWithIndex.map(t => (t._1, t._2+1)) ){
+          buf.append(ur.toLine())
+ 
+			val r = s.createRow(rowNr)
+			c = r.createCell(0)
+			c.setCellValue(new HSSFRichTextString(ur.user.username))		
+			c = r.createCell(1)
+            if( ur.rank == 1){
+                c.setCellStyle( leadingCell )
+            }else{
+                c.setCellStyle( pointsCell ) 
+            }
+			c.setCellValue(ur.user.points)
+			gwts.zipWithIndex.foreach{ case (gwt,index) =>
+				c = r.createCell(index + 2)
+				val cellValue = sheetname match {
+					case "all" => ur.games.get(index)
+					case "points" => ur.pointsPerGame.get(index)
+					case "cumulatedPoints" => ur.cumulatedPoints.get(index)
+					case "betFirstTeamGoals" => ur.firstGoals.get(index)
+					case "betSecondTeamGoals" => ur.secondGoals.get(index)
+					case "resultFirstTeamGoals" => ur.resultFirstTeam.get(index)
+					case "resultSecondTeamGoals" => ur.resultSecondTeam.get(index)
+				}
+				c.setCellValue(new HSSFRichTextString( cellValue ))
+			}
+    }
+}
+***/
 
 
 class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemplates: Seq[SpecialBetT]){
