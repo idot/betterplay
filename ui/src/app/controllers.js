@@ -668,7 +668,8 @@
         vm.userService = userService;
         vm.uploader = new FileUploader({
             url: 'api/statistics/uploadExcel',
-            removeAfterUpload: true
+            removeAfterUpload: true,
+            queueLimit: 1
         });
         
         vm.uploader.onAfterAddingFile = function(fileItem) {

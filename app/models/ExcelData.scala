@@ -8,15 +8,16 @@ import java.util.Collections
 import java.util.Comparator
 import java.util.List
 
-import org.apache.poi.hssf.usermodel.HSSFCell
-import org.apache.poi.hssf.usermodel.HSSFCellStyle
-import org.apache.poi.hssf.usermodel.HSSFDataFormat
-import org.apache.poi.hssf.usermodel.HSSFRichTextString
-import org.apache.poi.hssf.usermodel.HSSFRow
-import org.apache.poi.hssf.usermodel.HSSFSheet
-import org.apache.poi.hssf.usermodel.HSSFSheet._
-import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import org.apache.poi.hssf.util.HSSFColor
+import org.apache.poi.xssf.usermodel.XSSFCell
+import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFDataFormat
+import org.apache.poi.xssf.usermodel.XSSFRichTextString
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFSheet._
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.apache.poi.ss.usermodel.BuiltinFormats
+import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.ss.usermodel.CellStyle
 
 object ExcelData {
@@ -30,56 +31,9 @@ object ExcelData {
 	   excel
   }
   
- /** 
-  def generateCSV(betterDb: BetterDb, dateTime: DateTime, viewingUserId: Long): Array[Byte] = {
-     val helper = new StatsHelper(betterDb, dateTime, viewingUserId)  
-	   val templates = helper.specialBetsTemplates()
-	   val gwts = helper.getGwts()
-     val csv = new CSVData(helper.createUserRows, gwts, templates)
-	   val excel = excelD.createExcelSheetComplete()
-	   excel
-  }
-  ***/
+
 }
 
-/***class CSVData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemplates: Seq[SpecialBetT]){
-    val specialBetTs = specialBetTemplates.sortBy(_.id)
-	  val headingStrings = specialBetTs.map(_.name)
-	  
-	  
-	  def createText(){
-       val buf = new StringBuffer()
-       gwts.zipWithIndex.foreach{ case (gwt,index) =>
-            val gwt = 
-       for( (ur,rowNr) <- userRows.zipWithIndex.map(t => (t._1, t._2+1)) ){
-          buf.append(ur.toLine())
- 
-			val r = s.createRow(rowNr)
-			c = r.createCell(0)
-			c.setCellValue(new HSSFRichTextString(ur.user.username))		
-			c = r.createCell(1)
-            if( ur.rank == 1){
-                c.setCellStyle( leadingCell )
-            }else{
-                c.setCellStyle( pointsCell ) 
-            }
-			c.setCellValue(ur.user.points)
-			gwts.zipWithIndex.foreach{ case (gwt,index) =>
-				c = r.createCell(index + 2)
-				val cellValue = sheetname match {
-					case "all" => ur.games.get(index)
-					case "points" => ur.pointsPerGame.get(index)
-					case "cumulatedPoints" => ur.cumulatedPoints.get(index)
-					case "betFirstTeamGoals" => ur.firstGoals.get(index)
-					case "betSecondTeamGoals" => ur.secondGoals.get(index)
-					case "resultFirstTeamGoals" => ur.resultFirstTeam.get(index)
-					case "resultSecondTeamGoals" => ur.resultSecondTeam.get(index)
-				}
-				c.setCellValue(new HSSFRichTextString( cellValue ))
-			}
-    }
-}
-***/
 
 
 class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemplates: Seq[SpecialBetT]){
@@ -87,7 +41,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 	val headingStrings = specialBetTs.map(_.name)
 	
 	def createExcelSheetComplete(): Array[Byte] = {
-	  var wb = new HSSFWorkbook()
+	  var wb = new XSSFWorkbook()
 	  fillSheet(wb, "all", 0)
 	  fillSheet(wb, "points", 1)
 	  fillSheet(wb, "cumulatedPoints", 2)
@@ -103,17 +57,17 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 	  out.toByteArray
 	}
 	
-	def fillSpecialBets(wb: HSSFWorkbook, nr: Int){
+	def fillSpecialBets(wb: XSSFWorkbook, nr: Int){
 		val s = wb.createSheet()
 //		 declare a row object reference
-	//	val HSSFRow r = null
+	//	val XSSFRow r = null
 		//		 declare a cell object reference
-	//	HSSFCell c = null
+	//	XSSFCell c = null
 		//		 create 3 cell styles
 		val userHeading = wb.createCellStyle()
 		val pointsCell = wb.createCellStyle()
 		pointsCell.setBorderRight(CellStyle.BORDER_THIN )
-		userHeading.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"))
+		userHeading.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
 		userHeading.setBorderBottom(CellStyle.BORDER_THIN)
 		wb.setSheetName(nr, "special Bets")
 
@@ -123,7 +77,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		for((h,index) <- headings.zipWithIndex ){
 			val c = r.createCell(index)
 			c.setCellStyle( userHeading )
-			c.setCellValue(new HSSFRichTextString(h))
+			c.setCellValue(new XSSFRichTextString(h))
 		}
 		for( (ur,rowNr) <- userRows.zipWithIndex.map(t => (t._1, t._2+1)) ){
 			val r = s.createRow(rowNr)
@@ -131,7 +85,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		}
 	}
 	
-	def createRow(row: HSSFRow, userRow: UserRow){
+	def createRow(row: XSSFRow, userRow: UserRow){
 		val user = userRow.user 
 		val c = row.createCell(0)
 		c.setCellValue(userRow.user.username)
@@ -142,47 +96,47 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 	    }
 	}
 	
-	def createMessage(wb: HSSFWorkbook, nr: Int){
+	def createMessage(wb: XSSFWorkbook, nr: Int){
 	   val s = wb.createSheet()
 	   wb.setSheetName(nr, "important")
 	   
 	   val heading = wb.createCellStyle()
-	   heading.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"))
+	   heading.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
 	   val r = s.createRow(0)	
 	   var c = r.createCell(0)
 		 c.setCellStyle( heading )
-     c.setCellValue(new HSSFRichTextString("This excel contains all the current bets for all the users."))
+     c.setCellValue(new XSSFRichTextString("This excel contains all the current bets for all the users."))
      val r2 = s.createRow(1)
 		 val c2 = r2.createCell(0)
 		 c2.setCellStyle( heading )
-		 c2.setCellValue(new HSSFRichTextString("Do not change the content or the file name (i.e. don't save it after opening). The file name contains a sigature so its possible to verify the file."))
+		 c2.setCellValue(new XSSFRichTextString("Do not change the content or the file name (i.e. don't save it after opening). The file name contains a sigature so its possible to verify the file."))
 	}
 	
-	def fillSheet(wb: HSSFWorkbook, sheetname: String, nr: Int){
+	def fillSheet(wb: XSSFWorkbook, sheetname: String, nr: Int){
 		val s = wb.createSheet()
 //		 declare a row object reference
-	//	val HSSFRow r = null
+	//	val XSSFRow r = null
 		//		 declare a cell object reference
-	//	HSSFCell c = null
+	//	XSSFCell c = null
 		//		 create 3 cell styles
 		val userHeading = wb.createCellStyle()
 		val gameStyle = wb.createCellStyle()
         val pointsHeading = wb.createCellStyle()
         pointsHeading.setRotation(90)
         pointsHeading.setBorderBottom(CellStyle.BORDER_THIN)
-        pointsHeading.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"))
+        pointsHeading.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
 		gameStyle.setRotation(70)
 		gameStyle.setBorderBottom(CellStyle.BORDER_THIN)
 		gameStyle.setAlignment(CellStyle.ALIGN_LEFT)
         gameStyle.setWrapText(true)
 		val pointsCell = wb.createCellStyle()
 		pointsCell.setBorderRight(CellStyle.BORDER_THIN )
-		userHeading.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"))
+		userHeading.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
 		userHeading.setBorderBottom(CellStyle.BORDER_THIN)
-		gameStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("text"))
+		gameStyle.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
         val leadingCell = wb.createCellStyle()
         leadingCell.setBorderRight(CellStyle.BORDER_THIN )
-        leadingCell.setFillBackgroundColor(HSSFColor.AQUA.index)
+        leadingCell.setFillBackgroundColor(new XSSFColor(java.awt.Color.BLUE))
         leadingCell.setFillPattern(CellStyle.FINE_DOTS)
 		wb.setSheetName(nr, sheetname)
 
@@ -190,20 +144,20 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		r.setHeightInPoints(100)
 		var c = r.createCell(0)
 		c.setCellStyle( userHeading )
-        c.setCellValue(new HSSFRichTextString("User"))
+        c.setCellValue(new XSSFRichTextString("User"))
         c = r.createCell(1)
 		c.setCellStyle( pointsHeading )
-        c.setCellValue(new HSSFRichTextString("Points"))
+        c.setCellValue(new XSSFRichTextString("Points"))
         gwts.zipWithIndex.foreach{ case(gwt, index) =>
 			c = r.createCell((index + 2))
 			c.setCellStyle( gameStyle )
 			val gameName = gwt.team1.name + "-" + gwt.team2.name + "\n" + gwt.game.result.display
-			c.setCellValue( new HSSFRichTextString(gameName) )
+			c.setCellValue( new XSSFRichTextString(gameName) )
 		}
 		for( (ur,rowNr) <- userRows.zipWithIndex.map(t => (t._1, t._2+1)) ){
 			val r = s.createRow(rowNr)
 			c = r.createCell(0)
-			c.setCellValue(new HSSFRichTextString(ur.user.username))		
+			c.setCellValue(new XSSFRichTextString(ur.user.username))		
 			c = r.createCell(1)
             if( ur.rank == 1){
                 c.setCellStyle( leadingCell )
@@ -222,7 +176,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 					case "resultFirstTeamGoals" => ur.resultFirstTeam.get(index)
 					case "resultSecondTeamGoals" => ur.resultSecondTeam.get(index)
 				}
-				c.setCellValue(new HSSFRichTextString( cellValue ))
+				c.setCellValue(new XSSFRichTextString( cellValue ))
 			}
 		}
         s.setColumnWidth(1, 256 * 4)
