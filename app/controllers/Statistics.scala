@@ -83,8 +83,8 @@ class Statistics @Inject()(override val betterDb: BetterDb, override val cache: 
                err => NotAcceptable(err),
                succ => Ok("valid file")
            )
-     //      outf.delete()
-     //      new java.io.File(outdir).delete()
+           outf.delete()
+           new java.io.File(outdir).delete()
            result
         }
     }.getOrElse {
