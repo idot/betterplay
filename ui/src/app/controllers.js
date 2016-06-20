@@ -578,7 +578,7 @@
     }
 
      /** @ngInject */
-    function CreateGameController($log, $filter, $stateParams, Restangular, $state, toastr, moment) {
+    function CreateGameController($log, $filter, $stateParams, Restangular, $state, toastr, moment, userService, _) {
         if(! userService.isAdmin()){
             $state.transitionTo("user.userBets", {
                 username: userService.getUsername()
@@ -587,10 +587,17 @@
         
         var vm = this;
         vm.stateParams = $stateParams;
-
+        vm.teams = [];
+        vm.team1 = {};
+        vm.team2 = {};
+        vm.levels = [];
+        vm.level = {};
+        vm.server = new Date();
+        vm.disabled = false;
+        
         Restangular.all('em2016/api/teams').getList().then(
             function(success) {
-                vm.teams = success;
+                vm.teams = _.sortBy(success, function(s){ return s.name });
                 vm.team1 = vm.teams[0];
                 vm.team2 = vm.teams[0];
             }
@@ -603,21 +610,7 @@
             }
         );
 
-        vm.servero = false;
-        vm.localo = false;
-
-        vm.opens = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            vm.servero = true;
-        };
-
-        vm.openl = function($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            vm.localo = true;
-        };
-
+  
         var toDateTime = function(d, t) {
             var md = moment(d);
             var mt = moment(t);
@@ -626,28 +619,15 @@
             return md.toDate();
         };
 
-        var now = function() {
-            var md = new Date();
-            var m = moment(md);
-            m.hours(18);
-            m.minutes(0);
-            return {
-                date: m.toDate(),
-                time: m.toDate()
-            };
-        };
-
-        vm.server = now();
-        vm.local = now();
-        vm.disabled = false;
+       
 
         vm.submit = function() {
             vm.disabled = true;
-            var server = toDateTime(vm.server.date, vm.server.time);
-            var local = toDateTime(vm.local.date, vm.local.time);
+            var server = toDateTime(vm.date, vm.time);
+            var local = server;
             var createdGame = {
                 serverStart: server.getTime(),
-                localStart: server.getTime(),  //!!!!!!! simplified!!!!!!!
+                localStart: local.getTime(),  //!!!!!!! simplified!!!!!!!
                 team1: vm.team1.name,
                 team2: vm.team2.name,
                 level: vm.level.level

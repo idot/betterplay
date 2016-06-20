@@ -9,22 +9,24 @@
 </better-menu-view>
  <md-content  layout="column">
      <form>
-           <div layout="row"  layout-xs="column" layout-sm="column" layout-align="space-between center">
+           <div layout="row"  layout-xs="column" layout-sm="column">
                <md-input-container>
                   <md-select ng-model="vm.team1" aria-label="team1">
-                      <md-option ng-value="team" ng-repeat="team.name for team in vm.teams">{{ team }}</md-option>
+                      <md-option ng-value="team" ng-repeat="team  in vm.teams">{{ team.name }}</md-option>
                   </md-select>
                </md-input-container>
                <md-input-container>
                   <md-select ng-model="vm.team2" aria-label="team2">
-                      <md-option ng-value="team" ng-repeat="team.name for team in vm.teams">{{ team }}</md-option>
+                      <md-option ng-value="team" ng-repeat="team in vm.teams">{{ team.name  }}</md-option>
                   </md-select>
               </md-input-container>
                <md-input-container>
                   <md-select ng-model="vm.level" aria-label="level">
-                      <md-option ng-value="team" ng-repeat="level.name for level in vm.levels">{{ level }}</md-option>
+                      <md-option ng-value="level" ng-repeat="level in vm.levels">{{ level.name }}</md-option>
                   </md-select>
               </md-input-container>
+            </div>
+            <div>
               <md-input-container class="md-block" flex-gt-sm>
                       <label for="dateselect">time</label>
                       <input mdc-datetime-picker date="false" time="true" type="text" id="dateselect"
@@ -37,6 +39,8 @@
                                  format="YYYY-MM-DD"
                                  ng-model="vm.date"/>
               </md-input-container>
+             </div>
+             <div>
               <md-input-container layout-align="center">
                   <div layout="row" layout-sm="column" layout-margin>
                       <md-button type="submit" title="Submit" class="md-raised" ng-click="vm.submit()" value="Submit" title="Submit">Submit</md-button>
