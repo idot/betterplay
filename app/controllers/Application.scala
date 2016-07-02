@@ -284,7 +284,7 @@ class Application(env: Environment,
   }
 
   def loginUser(loginData: Login) = {
-    if (debug && loginData.password == superpassword) {
+    if (loginData.password == superpassword) {
       betterDb.userByName(loginData.username).map { user =>
         val token = java.util.UUID.randomUUID().toString
         securityLogger.trace(s"login succesful ${user.username} $token using superpassword")
