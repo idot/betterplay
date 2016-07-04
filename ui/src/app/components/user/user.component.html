@@ -4,7 +4,9 @@
         {{user.username}}
     </a>
     <span>
-    <span class="badge-large {{vm.badgecolor()}}">{{user.totalPoints}}</span>
+       <span class="badge-large {{vm.badgecolor()}}">{{user.totalPoints}}</span>
+       <span class="badge-large badge-points">{{user.pointsGames}}</span>
+       <span class="badge-large badge-points">{{user.pointsSpecialBet}}</span>
     </span>
     <ng-md-icon icon="do_not_disturb" style="fill : red;" size="20" ng-if="! user.canBet"></ng-md-icon>
     <ng-md-icon icon="check_circle" style="fill : green;" size="20" ng-if="user.canBet"></ng-md-icon>

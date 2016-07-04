@@ -506,15 +506,15 @@
     }
 
      /** @ngInject */
-    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings) {
+    function EditUserSpecialPlayerController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
+        vm.setresult = false;
+        vm.isAdmin = userService.isAdmin();
         
         if($stateParams.setresult){
             vm.setresult = true;
-        }else{
-            vm.setresult = false;
         }
         
         vm.user = {};
@@ -543,18 +543,18 @@
 
 
      /** @ngInject */
-    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings) {
+    function EditUserSpecialTeamController($log, $filter, $stateParams, Restangular, $state, toastr, specialBetService, betterSettings, userService) {
         var vm = this;
         vm.stateParams = $stateParams;
         vm.betId = $stateParams.id;
         vm.user = {};
         vm.tb = {};
         vm.allTeams = {};
-        
+        vm.setresult = false;
+        vm.isAdmin = userService.isAdmin();
+         
         if($stateParams.setresult){
             vm.setresult = true;
-        }else{
-            vm.setresult = false;
         }
         
         vm.specialBetsOpen = function(){

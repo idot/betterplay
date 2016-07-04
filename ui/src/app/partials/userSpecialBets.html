@@ -37,7 +37,10 @@
                                   <td md-cell ng-if="! vm.specialBetsOpen()">{{bet.template.result}}</td>
                                   <td md-cell>
                                       <md-input-container ng-if="vm.canBet(bet)">
-                                          <md-button type="submit" title="set" class="md-raised" ng-click="vm.change(bet)" value="set" title="set">set</md-button>
+                                          <md-button type="submit" class="md-raised" ng-click="vm.change(bet)" value="set" title="set">set</md-button>
+                                      </md-input-container>
+                                      <md-input-container ng-if="vm.user.isAdmin && ! vm.specialBetsOpen() && vm.setresult">
+                                          <md-button type="submit" class="md-raised" ng-click="vm.change(bet)" value="set result" title="set result">set result</md-button>
                                       </md-input-container>
                                   </td>
                                   <td md-cell>{{bet.bet.prediction}}</td>
