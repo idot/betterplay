@@ -1,17 +1,12 @@
-import PlayGulpPlugin._
-import PlayGulpKeys._
-
 name := """betterplay"""
 
-version := "0.8-SNAPSHOT"
+version := "0.9-SNAPSHOT"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.4"
 
-
-
-lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
-
+lazy val root = (project in file(".")).enablePlugins(PlayJava).settings(
+  watchSources ++= (baseDirectory.value / "public/ui" ** "*").get
+)
 
 
 resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
@@ -21,35 +16,37 @@ resolvers += "thirdpary" at "http://mammut:8082/nexus/content/repositories/third
 // Required by specs2 to get scalaz-stream
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
-
 parallelExecution in Test := false
 
-routesGenerator := InjectedRoutesGenerator
+//routesGenerator := InjectedRoutesGenerator
 
 fork in run := true
 
 scalacOptions in Test ++= Seq("-Yrangepos")
 
+val specs2Version = "4.1.0"
+
 libraryDependencies ++= Seq(
   jdbc,
-  cache,
+  ehcache,
   ws,
   filters,
-  "com.typesafe.play" %% "play-slick" % "2.0.0",
-  "com.typesafe.slick" %% "slick" % "3.1.1",
+  guice,
+  "com.typesafe.play" %% "play-slick" % "3.0.1",
+  "com.typesafe.slick" %% "slick" % "3.2.3",
   "com.typesafe.akka" %% "akka-contrib" % "2.4.4", 
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
-  "org.specs2" %% "specs2-core" % "3.7.2" % "test",
-  "org.specs2" %% "specs2-matcher-extra" % "3.7.2" % "test",
-  "org.specs2" %% "specs2-scalacheck" % "3.7.2" % "test",
+  "org.specs2" %% "specs2-core" % specs2Version % "test",
+  "org.specs2" %% "specs2-matcher-extra" % specs2Version % "test",
+  "org.specs2" %% "specs2-scalacheck" % specs2Version % "test",
   "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
-  "org.scalactic" %% "scalactic" % "2.2.6", //for scalatest
-  "org.scalatest" %% "scalatest" % "2.2.6" % "test", //for scalatest
-  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0-RC1" % "test", //scalatest
+  "org.scalactic" %% "scalactic" % "3.0.5", //for scalatest
+  "org.scalatest" %% "scalatest" % "3.0.5" % "test", //for scalatest
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % "test", //scalatest
   "com.h2database" % "h2" % "1.4.191",
   "org.postgresql" % "postgresql" % "9.2-1003-jdbc4",
-  "org.scalaz" %% "scalaz-core" % "7.2.2",
+  "org.scalaz" %% "scalaz-core" % "7.2.22",
   "org.jasypt" % "jasypt" % "1.9.2",
   "commons-io" % "commons-io" % "2.4",
   "com.andersen-gott" %% "scravatar" % "1.0.3",  
@@ -64,4 +61,3 @@ libraryDependencies += specs2 % Test
 
 coverageEnabled := false
 
-PlayGulpPlugin.playGulpSettings ++ PlayGulpPlugin.withTemplates

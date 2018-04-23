@@ -39,7 +39,6 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 
-import com.github.mmizutani.playgulp.GulpAssets
 
 
 
@@ -138,7 +137,6 @@ trait Security { self: Controller =>
 
 @Singleton
 class Application(env: Environment,
-                  gulpAssets: GulpAssets,
                   lifecycle: ApplicationLifecycle,
                   dbConfigProvider: DatabaseConfigProvider,
                   override val betterDb: BetterDb,
@@ -151,7 +149,7 @@ class Application(env: Environment,
 
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
   @Inject
-  def this(env: Environment, gulpAssets: GulpAssets,
+  def this(env: Environment, 
             lifecycle: ApplicationLifecycle,
             dbConfigProvider: DatabaseConfigProvider,
             betterDb: BetterDb,
@@ -161,7 +159,7 @@ class Application(env: Environment,
        //     mailer: ActorRef,
             system: ActorSystem,
             router: Provider[Router]) =
-    this(env, gulpAssets, lifecycle, 
+    this(env, lifecycle, 
            dbConfigProvider, betterDb, 
           messagesApi, cache, configuration, system, Some(router.get))
 
@@ -175,7 +173,7 @@ class Application(env: Environment,
    */
   //def index = gulpAssets.index
 
-  def index = gulpAssets.redirectRoot("/em2016/")
+  //def index = gulpAssets.redirectRoot("/em2016/")
 
   def toPrefix() = Action {
  	  //Redirect(routes.Application.index)
