@@ -13,7 +13,7 @@ https://ngs.vbcf.ac.at/em2016/#/completeRegistration/@token
 The link is valid for 1 time only. You can request another one,
 which is also valid only for 1 time at:
 
-http://ngs.vbcf.ac.at/em2016/#/requestPassword
+https://ngs.vbcf.ac.at/em2016/#/requestPassword
 
 good luck,
 
@@ -26,7 +26,7 @@ please log in again at:
 https://ngs.vbcf.ac.at/em2016/#/login
 
 If you forgot your password you can request a new one:
-http://ngs.vbcf.ac.at/em2016/#/requestPassword
+https://ngs.vbcf.ac.at/em2016/#/requestPassword
 
 and an e-mail with further instructions will be sent to you.
 

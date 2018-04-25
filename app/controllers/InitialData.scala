@@ -7,9 +7,8 @@ import play.api.db.slick._
 import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
-import scala.concurrent.{Future,Await}
+import scala.concurrent.{Future,Await,ExecutionContext}
 import scala.concurrent.duration._
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import javax.inject.Singleton
 import org.joda.time.DateTime
 import play.api.Environment
@@ -25,7 +24,7 @@ import play.api.Environment
 
 
 
-class InitialData(betterDb: BetterDb, environment: Environment) {
+class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: ExecutionContext) {
   import org.joda.time.format.DateTimeFormat
   import org.joda.time.DateTime
   

@@ -11,7 +11,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava).settings(
 
 resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
-resolvers += "thirdpary" at "http://mammut:8082/nexus/content/repositories/thirdparty"
+//resolvers += "thirdpary" at "http://mammut:8082/nexus/content/repositories/thirdparty"
 
 // Required by specs2 to get scalaz-stream
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
@@ -24,7 +24,9 @@ fork in run := true
 
 scalacOptions in Test ++= Seq("-Yrangepos")
 
-val specs2Version = "4.1.0"
+//val specs2Version = "4.1.0" //the playframework version is behind, upgrade not possible because errors
+val specs2Version = "3.8.9"
+
 
 libraryDependencies ++= Seq(
   jdbc,
@@ -33,14 +35,17 @@ libraryDependencies ++= Seq(
   filters,
   guice,
   "com.typesafe.play" %% "play-slick" % "3.0.1",
+  "com.typesafe.play" %% "play-json" % "2.6.0", 
+  "com.typesafe.play" % "play-json-joda_2.12" % "2.6.0",
   "com.typesafe.slick" %% "slick" % "3.2.3",
-  "com.typesafe.akka" %% "akka-contrib" % "2.4.4", 
+  "com.typesafe.akka" %% "akka-contrib" % "2.5.12" , //todo change throttler to stream
   "joda-time" % "joda-time" % "2.3",
   "org.joda" % "joda-convert" % "1.6",
-  "org.specs2" %% "specs2-core" % specs2Version % "test",
-  "org.specs2" %% "specs2-matcher-extra" % specs2Version % "test",
+ // "org.specs2" %% "specs2-core" % specs2Version % "test",
+   "org.specs2" %% "specs2-matcher-extra" % specs2Version % "test",
   "org.specs2" %% "specs2-scalacheck" % specs2Version % "test",
-  "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
+ // "org.specs2" %% "specs2-junit" % specs2Version % "test",
+ // "org.scalacheck" %% "scalacheck" % "1.14.0" % "test",
   "org.scalactic" %% "scalactic" % "3.0.5", //for scalatest
   "org.scalatest" %% "scalatest" % "3.0.5" % "test", //for scalatest
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % "test", //scalatest
@@ -60,4 +65,7 @@ libraryDependencies ++= Seq(
 libraryDependencies += specs2 % Test
 
 coverageEnabled := false
+
+// Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
+EclipseKeys.preTasks := Seq(compile in Compile, compile in Test)
 

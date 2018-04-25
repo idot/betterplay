@@ -1,10 +1,16 @@
 package models
 
+import javax.inject.{ Inject, Singleton }
+
 import org.joda.time.DateTime
-import play.api.db.slick.HasDatabaseConfigProvider
+import javax.inject.{ Inject, Singleton }
+import slick.jdbc.JdbcProfile
+import play.api.db.slick.DatabaseConfigProvider
+
+import scala.concurrent.{ Future, ExecutionContext }
 
 import slick.jdbc.meta.MTable
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 import org.joda.time.Period
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -27,10 +33,16 @@ object JodaHelper { //TODO: check timezone, might have to use calendar
   
 }
 
-trait BetterTables { self: HasDatabaseConfigProvider[JdbcProfile] =>
+trait BetterTables { 
   val dbLogger = Logger("db")
   
-  import driver.api._
+  protected def dbConfigProvider: DatabaseConfigProvider
+ 
+  protected val dbConfig = dbConfigProvider.get[JdbcProfile]
+
+  import dbConfig._
+  import profile.api._
+
 
   implicit def dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
      { dt => new java.sql.Timestamp(dt.getMillis) },

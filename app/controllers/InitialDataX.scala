@@ -6,9 +6,8 @@ import play.api.db.slick._
 import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
-import scala.concurrent.{Future,Await}
+import scala.concurrent.{Future,Await,ExecutionContext}
 import scala.concurrent.duration._
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import javax.inject.Singleton
 import org.joda.time.DateTime
 import play.api.Environment
@@ -114,7 +113,7 @@ trait InitialDataX {
     
     def dbTeamsMap(teams: Seq[Team]): Map[String,Team]
     
-    def insert(debug: Boolean): Unit = { 
+    def insert(debug: Boolean) (implicit ec: ExecutionContext) : Unit = { 
         betterDb.dropCreate()
         Logger.info("inserting data in db")
         Await.result(Future.sequence(importSpecialBets(specialBetsStart(environment), environment).map(t => betterDb.insertSpecialBetInStore(t))), 1 seconds)

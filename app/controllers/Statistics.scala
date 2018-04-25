@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import models._
 import models.JsonHelper._
 import play.api.i18n.MessagesApi
@@ -13,10 +13,10 @@ import scala.concurrent.{Future,blocking}
 import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
-class Statistics @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, configuration: Configuration) extends Controller with Security {
+class Statistics @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, configuration: Configuration) extends AbstractController(cc) with Security {
 
-  val excelSecret = configuration.getString("betterplay.excelSecret").getOrElse("BAD")  
-  import scala.concurrent.ExecutionContext.Implicits.global
+  val excelSecret = configuration.getOptional[String]("betterplay.excelSecret").getOrElse("BAD")  
+
    
   def createExcel(userId: Long): Future[Result] = {
    

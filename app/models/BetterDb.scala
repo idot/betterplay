@@ -7,14 +7,14 @@ import javax.inject.{Singleton, Inject}
 import org.joda.time.DateTime
 import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
 import slick.driver.JdbcProfile
-import slick.profile.FixedSqlAction
+//import slick.profile.FixedSqlAction
 
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
 import scalaz.syntax.apply._ 
 import scala.concurrent.Future
 
 import play.api.Logger
-
+import scala.concurrent.ExecutionContext
 /**
  * message types for games
  */
@@ -26,10 +26,10 @@ case object NewGame extends GameUpdate
 
 
 @Singleton()
-class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends BetterTables with HasDatabaseConfigProvider[JdbcProfile] {
-  //TODO: check if this is efficient or different ExecutionContext necessary
-  import scala.concurrent.ExecutionContext.Implicits.global
-  import driver.api._
+class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implicit ec: ExecutionContext) extends BetterTables {
+ 
+  import dbConfig._
+  import profile.api._
   
   val importantLogger = Logger("important")
    

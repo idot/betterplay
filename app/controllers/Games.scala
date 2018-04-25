@@ -9,7 +9,7 @@ import play.api.libs.json.JsError
 import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Akka
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import play.api.i18n.MessagesApi
 import akka.actor._
 
@@ -23,10 +23,10 @@ import org.joda.time.DateTime
 import javax.inject.{Inject, Provider, Singleton, Named}
 
 import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 
 @Singleton
-class Games @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
+class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
   
   def all() = withUser.async { request =>
       betterDb.allGamesWithTeams().map{ teams =>  
@@ -62,6 +62,10 @@ class Games @Inject()(override val betterDb: BetterDb, override val cache: Cache
 	      }
   )}
  
+  
+  //TODO: switch to java.time
+import play.api.libs.json.JodaWrites._
+import play.api.libs.json.JodaReads._
   
   case class CreatedGame(serverStart: DateTime, localStart: DateTime, team1: String, team2: String, level: Int)
   implicit val createdGameFormat = Json.format[CreatedGame] 

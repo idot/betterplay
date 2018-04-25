@@ -50,8 +50,7 @@ object MailMessages {
   def sendMail(subject: String, body: String, to: InternetAddress, debug:Boolean): String = {
        mailLogger.debug(s"sending mail $subject ${to.getAddress}")
        
-       import scala.collection.JavaConversions._
-       val tos = seqAsJavaList(Seq(to))
+       val tos = scala.collection.JavaConverters.seqAsJavaList(Seq(to))
        val from =  "Ido Tamir <ido.tamir@vbcf.ac.at>"
        
        val email = new SimpleEmail()
@@ -76,11 +75,11 @@ object MailMessages {
 
 class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) extends Actor {
    val mailLogger = Logger("mail")
-   val mailUser = configuration.getString("betterplay.mail.user").getOrElse("")
-   val mailUserTest = configuration.getString("betterplay.mail.testreceiver").getOrElse("")
+   val mailUser = configuration.getOptional[String]("betterplay.mail.user").getOrElse("")
+   val mailUserTest = configuration.getOptional[String]("betterplay.mail.testreceiver").getOrElse("")
 
    
-   val debug = BetterSettings.debug || configuration.getBoolean("betterplay.mail.debug").getOrElse(false)
+   val debug = BetterSettings.debug || configuration.getOptional[Boolean]("betterplay.mail.debug").getOrElse(false)
 
    import scala.concurrent.ExecutionContext.Implicits.global
   
@@ -134,7 +133,7 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
 class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  @Named("sendMail") sendMailActor: ActorRef) extends Actor {
   val mailLogger = Logger("mail")
   //how often do we go over unsent messages to send them in minutes
-  val sendMailInterval = configuration.getInt("betterplay.send.interval").getOrElse(0) 
+  val sendMailInterval = configuration.getOptional[Int]("betterplay.send.interval").getOrElse(0) 
    
   import scala.concurrent.ExecutionContext.Implicits.global
   val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))

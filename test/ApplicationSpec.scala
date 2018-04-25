@@ -34,7 +34,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
     val app = new GuiceApplicationBuilder().configure(
             Configuration.from(
                 Map(
-                    "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
+                    "slick.dbs.default.profile" -> "slick.jdbc.H2Profile$",
                     "slick.dbs.default.db.driver" -> "org.h2.Driver",
                     "slick.dbs.default.db.url" -> "jdbc:h2:mem:appspec;TRACE_LEVEL_FILE=4", //TRACE_LEVEL 4 = enable SLF4J
                     "slick.dbs.default.db.user" -> "sa",
@@ -54,6 +54,10 @@ class ApplicationSpec extends Specification with JsonMatchers {
     }  
       
     def setTime(time: DateTime, authToken: String, message: String) = {
+        //TODO: joda => java.time
+       import play.api.libs.json.JodaWrites._
+       import play.api.libs.json.JodaReads._
+      
        val nt = JsObject(Seq("serverTime" -> Json.toJson(time)))
        val updt = route(app, FakeRequest(method="POST", path="/em2016/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
        val res = Await.result(updt, 1 second)
@@ -177,7 +181,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     
          
 	     val excelf = route(app, FakeRequest(method="GET", path="/em2016/api/statistics/excelAnon").withHeaders(("X-AUTH-TOKEN", createdUserToken))).get
-       val excel = Await.result(excelf, 1 second)
+       val excel = Await.result(excelf, 1 second) //TODO: was 1 second why is it slower or blocking???
   //     print(excel)
        excel.body.contentLength.get must be_>(1000l)
 	     

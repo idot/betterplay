@@ -9,7 +9,7 @@ import org.specs2.matcher.ThrownMessages
 import scala.collection.mutable.ArrayBuffer
 import javax.inject.Inject
 import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 import org.specs2.concurrent.ExecutionEnv
 import scala.concurrent.{Future,Await}
 import scala.concurrent.duration._
@@ -30,13 +30,12 @@ import org.junit.runner.RunWith
 @RunWith(classOf[JUnitRunner])
 class DBSpec extends Specification 
            with ThrownMessages  
-           with org.specs2.matcher.ContentMatchers
-           with org.specs2.specification.mutable.ExecutionEnvironment { def is(implicit ee: ExecutionEnv) = {
+           with org.specs2.matcher.ContentMatchers { def is(implicit ee: ExecutionEnv) = {
    
    val app = new GuiceApplicationBuilder().configure(
             Configuration.from(
                 Map(
-                    "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
+                    "slick.dbs.default.profile" -> "slick.jdbc.H2Profile$",
                     "slick.dbs.default.db.driver" -> "org.h2.Driver",
                     "slick.dbs.default.db.url" -> "jdbc:h2:mem:dbspec;TRACE_LEVEL_FILE=4", //TRACE_LEVEL 4 = enable SLF4J
                     "slick.dbs.default.db.user" -> "sa",
@@ -53,7 +52,7 @@ class DBSpec extends Specification
    val dbConfig = betterDb.dbConfigProvider.get[JdbcProfile]
    val db = dbConfig.db
    
-   import dbConfig.driver.api._
+   import dbConfig.profile.api._
    
 
    def AR[A](future: Future[A]) = {

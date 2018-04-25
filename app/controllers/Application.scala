@@ -5,13 +5,16 @@ import play.api._
 import play.api.db.DatabaseConfig
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.mvc._
-import play.api.cache.CacheApi
+import play.api.mvc.AnyContent
+import play.api.cache.SyncCacheApi
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json._
 import play.api.libs.json.{JsSuccess,JsError}
 import play.api.data.Forms._
 import play.api.data.Form
+import scala.concurrent.ExecutionContext
+
 import models.DomainHelper
 import models.BetterDb
 import models.User
@@ -35,11 +38,13 @@ import akka.util.Timeout
 import akka.actor._
 import akka.pattern.ask
 
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 
-
+//TODO: switch to java.time
+import play.api.libs.json.JodaWrites._
+import play.api.libs.json.JodaReads._
 
 
 
@@ -62,18 +67,20 @@ class TokenRequest[A](val token: String, val userId: Long, request: Request[A]) 
 class UserRequest[A](val user: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
 class AdminRequest[A](val admin: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
 
-trait Security { self: Controller =>
+
+trait Security { self: AbstractController =>
   val betterDb: BetterDb
-  val cache: CacheApi
- 
+  val cache: SyncCacheApi //TODO switch to AsyncCacheApi
+  
   val AuthTokenHeader = "X-AUTH-TOKEN"   //TODO: change to X-XSRF-TOKEN
   val AuthTokenCookieKey = "AUTH-TOKEN"   //TODO: change to XSRF-TOKEN
   val AuthTokenUrlKey = "auth"
 
   val securityLogger = Logger("security")
- 
   
-  def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest]{
+  implicit val ec = defaultExecutionContext  
+  
+  def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest, AnyContent]{
       def refine[A](input: Request[A]) = Future.successful{
           val maybeToken = input.headers.get(AuthTokenHeader)
           securityLogger.trace(s"hasToken: ${input.uri} $AuthTokenHeader $maybeToken")
@@ -84,6 +91,8 @@ trait Security { self: Controller =>
               }
           }.toRight(Unauthorized)
       }
+      override def parser = controllerComponents.parsers.defaultBodyParser
+      override def executionContext = controllerComponents.executionContext
   }
    
   def withUserA = new ActionRefiner[TokenRequest,UserRequest]{ 
@@ -95,6 +104,7 @@ trait Security { self: Controller =>
                  Future.successful(Left(Unauthorized(e.getMessage))) 
             }
       }
+      override def executionContext = controllerComponents.executionContext
   }
   
   def withAdminA = new ActionRefiner[TokenRequest,AdminRequest]{
@@ -113,6 +123,7 @@ trait Security { self: Controller =>
                  Future.successful(Left(Unauthorized(e.getMessage))) 
             }
       }
+      override def executionContext = controllerComponents.executionContext
   }
   
   def withUser = { hasToken andThen withUserA }
@@ -139,34 +150,36 @@ trait Security { self: Controller =>
 class Application(env: Environment,
                   lifecycle: ApplicationLifecycle,
                   dbConfigProvider: DatabaseConfigProvider,
+                  cc: ControllerComponents,
                   override val betterDb: BetterDb,
-                  val messagesApi: MessagesApi,
-                  val cache: CacheApi,
+                  override val messagesApi: MessagesApi,
+                  val cache: SyncCacheApi,
                   configuration: Configuration,
                   system: ActorSystem,
           //        @Named("mailer") mailer: ActorRef,
-                  router: => Option[Router] = None) extends Controller with Security with I18nSupport {
+                  router: => Option[Router] = None) extends AbstractController(cc) with Security with I18nSupport {
 
   // Router needs to be wrapped by Provider to avoid circular dependency when doing DI
   @Inject
   def this(env: Environment, 
             lifecycle: ApplicationLifecycle,
             dbConfigProvider: DatabaseConfigProvider,
+            cc: ControllerComponents,
             betterDb: BetterDb,
             messagesApi: MessagesApi,
-            cache: CacheApi,
+            cache: SyncCacheApi,
             configuration: Configuration,
        //     mailer: ActorRef,
             system: ActorSystem,
             router: Provider[Router]) =
     this(env, lifecycle, 
-           dbConfigProvider, betterDb, 
+           dbConfigProvider,  cc, betterDb, 
           messagesApi, cache, configuration, system, Some(router.get))
 
    
-   val debug = configuration.getBoolean("betterplay.debug").getOrElse(false)  
-   val superpassword = configuration.getString("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
-   val cacheExpiration = configuration.getInt("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
+   val debug = configuration.getOptional[Boolean]("betterplay.debug").getOrElse(false)  
+   val superpassword = configuration.getOptional[String]("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
+   val cacheExpiration = configuration.getOptional[Int]("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
    
   /**
    * Returns ui/src/index.html in dev/test mode and ui/dist/index.html in production mode
@@ -180,21 +193,7 @@ class Application(env: Environment,
     Ok("TODO: redirect")
   }
   
-  val routeCache: Array[JavaScriptReverseRoute] = {
-    val jsRoutesClass = classOf[controllers.routes.javascript]
-    for {
-      controller <- jsRoutesClass.getFields.map(_.get(null))
-      method <- controller.getClass.getDeclaredMethods if method.getReturnType == classOf[JavaScriptReverseRoute]
-    } yield method.invoke(controller).asInstanceOf[JavaScriptReverseRoute]
-  }
 
-  /**
-   * Returns the JavaScript router that the client can use for "type-safe" routes.
-   * @param varName The name of the global variable, defaults to `jsRoutes`
-   */
-  def jsRoutes(varName: String = "jsRoutes") = Action { implicit request =>
-     Ok(JavaScriptReverseRouter(varName)(routeCache: _*)).as(JAVASCRIPT)
-  }
 
   /**
    * Returns a list of all the HTTP action routes for easier debugging
@@ -255,7 +254,7 @@ class Application(env: Environment,
     betterDb.startOfGames().map{ ot =>
       val start = ot.getOrElse( new DateTime() )
       //default key no recaptcha
-      val sitekey = configuration.getString("betterplay.recaptchasite").getOrElse("6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI")
+      val sitekey = configuration.getOptional[String]("betterplay.recaptchasite").getOrElse("6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI")
       val json = Json.obj("debug" -> debug, "gamesStarts" -> start, "recaptchasite" -> sitekey)
       Ok(json)
     } 
@@ -353,7 +352,7 @@ class Application(env: Environment,
   onStart()
   
   def onStart() {
-    val insertdata = configuration.getString("betterplay.insertdata").getOrElse("")
+    val insertdata = configuration.getOptional[String]("betterplay.insertdata").getOrElse("")
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
     Logger.info("starting up "+debugString)
     if(debug){
@@ -372,7 +371,7 @@ class Application(env: Environment,
   }
   
   def scheduleGamesMaintenance(){
-    val maintenenceInterval = configuration.getInt("betterplay.gamemaintenance.interval").getOrElse(0) 
+    val maintenenceInterval = configuration.getOptional[Int]("betterplay.gamemaintenance.interval").getOrElse(0) 
     if(maintenenceInterval > 0){
       Logger.info(s"maintaining games each $maintenenceInterval minutes")
       class Maintain extends Runnable {

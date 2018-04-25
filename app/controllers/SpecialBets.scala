@@ -9,15 +9,14 @@ import models._
 import models.JsonHelper._
 import play.api.libs.json.JsError
 import javax.inject.{Inject, Provider, Singleton}
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import play.api.i18n.MessagesApi
 
 import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 
 @Singleton
-class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
+class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
   
 
   def all() = withUser.async { implicit rs =>

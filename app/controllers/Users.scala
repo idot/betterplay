@@ -8,7 +8,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsError
 import play.api.data._
 import play.api.data.Forms._
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import play.api.i18n.MessagesApi
 import play.api.i18n.I18nSupport
 import akka.actor._
@@ -23,15 +23,14 @@ import javax.inject.{Inject, Provider, Singleton, Named}
 
 
 import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.JsSuccess
 import play.api.libs.ws._
 import scala.concurrent.duration._
 import JodaHelper._
 
 @Singleton
-class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, val messagesApi: MessagesApi,
-                  ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends Controller with Security with I18nSupport {
+class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, override val messagesApi: MessagesApi,
+                  ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends AbstractController(cc) with Security with I18nSupport {
     
    //TODO move to mail controller
    def sendUnsentMail() = withAdmin.async { request =>
@@ -90,7 +89,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        )(UserCreate.apply)(UserCreate.unapply)
    )
   
-   def create() = withAdmin.async(parse.json) { request =>
+   def create() = withAdmin.async(parse.json) {implicit request =>
        FormUserCreate.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),   
            succ =>  {
@@ -121,7 +120,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
       )(UserUpdateDetails.apply)(UserUpdateDetails.unapply)
    )
    
-   def updateDetails() = withUser.async(parse.json){ request =>
+   def updateDetails() = withUser.async(parse.json){implicit request =>
        FormUserUpdateDetails.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),
            succ => {
@@ -245,9 +244,9 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
          for{
            user <- betterDb.userByEmail(email)
            result <- ws.url(url)
-                    .withQueryString(("secret", secret),("response", response))
+                    .withQueryStringParameters(("secret", secret),("response", response))
                     .withRequestTimeout(10000.millis)
-                    .withHeaders("Accept" -> "application/json")
+                    .withHttpHeaders("Accept" -> "application/json")
                     .post("")
            outcome <- checkCaptchaResponse(result, user)
          }yield(outcome)
@@ -265,7 +264,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        val jresponse =  (request.body \ "response").validate[String]
        (jemail, jresponse) match {
          case (email: JsSuccess[String], response: JsSuccess[String]) =>
-           configuration.getString("betterplay.recaptchasecret")
+           configuration.getOptional[String]("betterplay.recaptchasecret")
                .fold(Future.successful(InternalServerError("could not get recaptcha secret"))){ secret =>
                    getUserAndVerify(secret, response.value, email.value)
                }

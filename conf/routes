@@ -88,7 +88,6 @@ GET    /em2016/api/settings				controllers.Application.settings()
 
 
 GET        /em2016/routes                     controllers.Application.routes
-GET        /em2016/jsroutes.js                controllers.Application.jsRoutes(varName ?= "jsRoutes")
 
 # Map static resources from the /public folder to the /assets URL path
 # Serve static assets under public directory
