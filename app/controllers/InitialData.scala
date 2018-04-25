@@ -10,7 +10,7 @@ import au.com.bytecode.opencsv.CSVParser
 import scala.concurrent.{Future,Await,ExecutionContext}
 import scala.concurrent.duration._
 import javax.inject.Singleton
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import play.api.Environment
 
 /**
@@ -25,9 +25,8 @@ import play.api.Environment
 
 
 class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: ExecutionContext) {
-  import org.joda.time.format.DateTimeFormat
-  import org.joda.time.DateTime
-  
+  import java.time.format.DateTimeFormatter
+   
   val csv = new CSVParser()
   
   val fifa2iso2 = {
@@ -42,7 +41,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   }  
   
   def specialBets(): Seq[SpecialBetT] = {
-	  val start = new DateTime(2014, 6, 12, 22, 0)
+	  val start = OffsetDateTime.of(2014, 6, 12, 22, 0, 0, 0, BetterSettings.offset)
 	  val s = Seq(
 	   SpecialBetT(None, "topscorer", "highest scoring player", 8 , start, "topscorer" , SpecialBetType.player, "" ),
 		 SpecialBetT(None, "mvp", "most valuable player", 8 , start, "mvp" , SpecialBetType.player, "" ),
@@ -73,12 +72,13 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   
   //2014-06-12 17:00:00.000000
   //TODO: time difference is 5 hours or 6 hours  in Manaus und Cuiab� !!!!
-  def parseDate(str: String, venue: String): (DateTime,DateTime) = {
+  def parseDate(str: String, venue: String): (OffsetDateTime,OffsetDateTime) = {
       try{
       val short = str.substring(0, str.lastIndexOf("."))
-      val df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
-      val dt = df.parseDateTime(short)
-	  val shift = if(venue == "+") 1 else 0
+      val df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+      val dt = OffsetDateTime.parse(short, df)
+    
+	     val shift = if(venue == "+") 1 else 0
       (dt,dt.plusHours(5+shift)) 
       }catch{
         case e: Exception => {
@@ -184,7 +184,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
 
     Logger.info("done inserting data in db")
     
-    BetterSettings.setDebugTime(new DateTime(2014, 3, 9, 10, 0))
+    BetterSettings.setDebugTime(OffsetDateTime.of(2014, 3, 9, 10, 0, 0, 0, BetterSettings.offset()))
     
   }
 

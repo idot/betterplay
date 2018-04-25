@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit._
 import scala.concurrent.duration._
 import akka.util.Timeout
 import scala.util.{Try, Success, Failure}
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import scala.concurrent.Future
 import scala.concurrent.blocking
 import org.apache.commons.mail._
@@ -173,7 +173,7 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
       .onComplete { mailSent =>
         mailSent match {
           case Success(succ: String) if succ == MailMessages.mailSuccess => {
-            betterDb.setMessageSent(userMessage.id.get, new DateTime())
+            betterDb.setMessageSent(userMessage.id.get, BetterSettings.now())
             s ! "sent email"
           }
           case Success(succ: String) if succ == MailMessages.error => {

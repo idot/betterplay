@@ -1,5 +1,5 @@
 package models
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -24,7 +24,7 @@ import org.apache.poi.ss.usermodel.CellStyle
 
 object ExcelData {
   
-  def generateExcel(betterDb: BetterDb, dateTime: DateTime, viewingUserId: Long) (implicit ec: ExecutionContext) : Array[Byte] = {
+  def generateExcel(betterDb: BetterDb, dateTime: OffsetDateTime, viewingUserId: Long) (implicit ec: ExecutionContext) : Array[Byte] = {
      val helper = new StatsHelper(betterDb, dateTime, viewingUserId)  
 	   val templates = helper.specialBetsTemplates()
 	   val gwts = helper.getGwts()

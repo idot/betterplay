@@ -2,36 +2,27 @@ package models
 
 import javax.inject.{ Inject, Singleton }
 
-import org.joda.time.DateTime
+
 import javax.inject.{ Inject, Singleton }
 import slick.jdbc.JdbcProfile
 import play.api.db.slick.DatabaseConfigProvider
 
 import scala.concurrent.{ Future, ExecutionContext }
 
-import slick.jdbc.meta.MTable
-import slick.jdbc.JdbcProfile
-import org.joda.time.Period
+
+import java.time.OffsetDateTime
+
+
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.util.{Try,Success,Failure}
 import play.api.Logger
+import slick.jdbc.meta.MTable
+import slick.jdbc.JdbcProfile
 
-object JodaHelper { //TODO: check timezone, might have to use calendar
 
-  implicit object DateTimeOrdering extends Ordering[DateTime] { def compare(o1: DateTime, o2: DateTime) = o1.compareTo(o2)}
   
-  def compareTimeHuman(firstTime: DateTime, lastTime: DateTime): String = {
-      val period = new Period(firstTime, lastTime)
-      val days = period.getDays()
-      val hours = period.getHours()
-      val minutes = period.getMinutes()
-      val seconds = period.getSeconds()
-      val result = s"$days days, $hours hours, $minutes minutes, $seconds seconds"
-      result  
-  } 
-  
-}
+
 
 trait BetterTables { 
   val dbLogger = Logger("db")
@@ -44,9 +35,9 @@ trait BetterTables {
   import profile.api._
 
 
-  implicit def dateTimeColumnType = MappedColumnType.base[org.joda.time.DateTime, java.sql.Timestamp](
-     { dt => new java.sql.Timestamp(dt.getMillis) },
-     { ts => new org.joda.time.DateTime(ts) }
+  implicit def StringColumnType = MappedColumnType.base[java.time.OffsetDateTime, String](
+     { dt => dt.toString()  },
+     { ts => OffsetDateTime.parse(ts) }
   )
 
   val users = TableQuery[Users]
@@ -133,9 +124,9 @@ trait BetterTables {
     def team1Id = column[Long]("team1_id")
     def team2Id = column[Long]("team2_id")
     def levelId = column[Long]("level_id")
-    def localStart = column[DateTime]("localstart")
+    def localStart = column[OffsetDateTime]("localstart")
     def localtz = column[String]("localtz")
-    def serverStart = column[DateTime]("serverstart")
+    def serverStart = column[OffsetDateTime]("serverstart")
     def servertz = column[String]("servertz")
     def venue = column[String]("venue")
     def group = column[String]("group")
@@ -159,7 +150,7 @@ trait BetterTables {
      def name = column[String]("name")
      def description = column[String]("description")
      def points = column[Int]("points")
-	   def closeDate = column[DateTime]("closedate")
+	   def closeDate = column[OffsetDateTime]("closedate")
 	   def betGroup = column[String]("betgroup")
      def itemtype = column[String]("itemtype")
      def result = column[String]("result") 
@@ -254,13 +245,13 @@ trait BetterTables {
 	  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 	  def userId = column[Long]("user_id")
 	  def gameId = column[Long]("game_id")
-	  def gameStart = column[DateTime]("gameStart")
+	  def gameStart = column[OffsetDateTime]("gameStart")
 	  def betId = column[Long]("bet_id")
     def t1old = column[Int]("t1old")
     def t1new = column[Int]("t1new")
     def t2old = column[Int]("t2old")
     def t2new = column[Int]("t2new")
-	  def created = column[DateTime]("change")
+	  def created = column[OffsetDateTime]("change")
 	  def comment = column[String]("comment")
 	  
 	  def * = (id.?, userId, gameId, gameStart, betId, t1old, t1new, t2old, t2new, created, comment) <> (BetLog.tupled, BetLog.unapply _)
@@ -282,9 +273,9 @@ trait BetterTables {
     def userId = column[Long]("userid")
     def messageId = column[Long]("messageid")
     def send = column[Boolean]("send")
-    def sent = column[Option[DateTime]]("sent")
+    def sent = column[Option[OffsetDateTime]]("sent")
     def display = column[Boolean]("display")
-    def seen = column[Option[DateTime]]("seen")
+    def seen = column[Option[OffsetDateTime]]("seen")
     def token = column[String]("token")
     def sendingUser = column[Long]("sendinguser")
     
@@ -300,7 +291,7 @@ trait BetterTables {
      def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
      def userMessageId = column[Long]("usermessageid")
      def error = column[String]("error")
-     def time = column[DateTime]("time")
+     def time = column[OffsetDateTime]("time")
     
      def message = foreignKey("ERROR_USERMESSAGE_FK", userMessageId, usersmessages)(_.id)
     

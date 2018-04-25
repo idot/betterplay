@@ -26,7 +26,7 @@ import scala.concurrent.Future
 import play.api.libs.json.JsSuccess
 import play.api.libs.ws._
 import scala.concurrent.duration._
-import JodaHelper._
+import TimeHelper._
 
 @Singleton
 class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, override val messagesApi: MessagesApi,

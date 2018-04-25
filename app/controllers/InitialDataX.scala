@@ -9,11 +9,11 @@ import au.com.bytecode.opencsv.CSVParser
 import scala.concurrent.{Future,Await,ExecutionContext}
 import scala.concurrent.duration._
 import javax.inject.Singleton
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import play.api.Environment
 
 object InitialDataX {
-  def specialBets(start: DateTime): Seq[SpecialBetT] = {
+  def specialBets(start: OffsetDateTime): Seq[SpecialBetT] = {
     val s = Seq(
       SpecialBetT(None, "topscorer", "highest scoring player", 8, start, "topscorer", SpecialBetType.player, ""),
       SpecialBetT(None, "mvp", "most valuable player", 8, start, "mvp", SpecialBetType.player, ""),
@@ -88,7 +88,7 @@ trait InitialDataX {
     def parseGame(line: String, levelId: Long): (Game,Team,Team)
     
     def importLevels(environment: Environment): Seq[GameLevel] = InitialDataX.levels(environment)
-    def importSpecialBets(start: DateTime, environment: Environment): Seq[SpecialBetT]
+    def importSpecialBets(start: OffsetDateTime, environment: Environment): Seq[SpecialBetT]
     def importTeams(environment: Environment): Seq[Team]
     
     def importGames(environment: Environment, levelId: Long): Seq[(Game,Team,Team)] = {
@@ -107,7 +107,7 @@ trait InitialDataX {
     def fifa2isoMap(environment: Environment): Map[String, String] = InitialDataX.fifa2iso(environment)
 
     
-    def specialBetsStart(environment: Environment): DateTime
+    def specialBetsStart(environment: Environment): OffsetDateTime
     def teamNameForPlayer(p: Player): String
 
     

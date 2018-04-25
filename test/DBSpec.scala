@@ -4,7 +4,7 @@ import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
 import models._
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import org.specs2.matcher.ThrownMessages
 import scala.collection.mutable.ArrayBuffer
 import javax.inject.Inject
@@ -85,7 +85,7 @@ class DBSpec extends Specification
   "DB" should {
     "be able to play a little game" in {
       
-      val firstStart = new DateTime(2014, 3, 9, 10, 0)//y m d h min
+      val firstStart = OffsetDateTime.of(2014, 3, 9, 10, 0, 0, 0, BetterSettings.offset())//y m d h min
       val changedStart = firstStart.minusMinutes(30)
                 
 
@@ -202,7 +202,7 @@ class DBSpec extends Specification
            val m2 = AR(betterDb.insertMessage(message, admin.id.get, randomToken, true, true))
            m._1.userId === user.id.get
            m2._1.userId === admin.id.get
-           val tokTime = new DateTime()
+           val tokTime = BetterSettings.now()
            
            val unsent = AR(betterDb.unseenMailForUser(user))
            unsent.length === 1
@@ -222,10 +222,10 @@ class DBSpec extends Specification
            //now we access it again and it should have been used!
            betterDb.userByTokenPassword(insertToken, tokTime, "thehash") must throwAn[ItemNotFoundException](message = "could not find message with token that was not seen yet").await
      
-           val sent1 = AR(betterDb.setMessageSent(m2._1.id.get, new DateTime))
+           val sent1 = AR(betterDb.setMessageSent(m2._1.id.get, BetterSettings.now()))
            sent1 === s"set message with id ${m2._1.id.get} to sent"
            
-           val sent2 = AR(betterDb.setMessageSent(m2._1.id.get, new DateTime))
+           val sent2 = AR(betterDb.setMessageSent(m2._1.id.get, BetterSettings.now()))
            sent2 === s"set message with id ${m2._1.id.get} to sent"
       }
     
@@ -237,7 +237,7 @@ class DBSpec extends Specification
   		  }
   	  }
   	  
-      def checkGames(games: Seq[Game], start: DateTime, msg: String) = {
+      def checkGames(games: Seq[Game], start: OffsetDateTime, msg: String) = {
           val (before,after) = games.partition{ g => g.serverStart.isBefore(start) }
           println(before.map(_.gameClosed))
           println(after.map(_.gameClosed))
@@ -282,8 +282,8 @@ class DBSpec extends Specification
          AR(db.run(betterDb.betlogs.size.result)) === 0
          val upD = AR(betterDb.updateBetResult(b1, users(0), firstStart, 60))
          AR(db.run(betterDb.betlogs.size.result)) === 1
-         val timeDiff = org.joda.time.Minutes.minutesBetween(gb1(0)._1.game.serverStart, firstStart)
-         timeDiff.getMinutes === 0
+         val timeDiff = java.time.Duration.between(gb1(0)._1.game.serverStart.toLocalTime, firstStart.toLocalTime())
+         timeDiff.toMinutes === 0
          upD._5 === Seq("user ids differ 2 1", "game closed since 0 days, 1 hours, 0 minutes, 0 seconds")
          tl( betterDb.betlogs,1, "Bet1" )
          Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, -1, 0, -1, firstStart, "user ids differ 2 1;game closed since 0 days, 1 hours, 0 minutes, 0 seconds")

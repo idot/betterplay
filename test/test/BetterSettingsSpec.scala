@@ -33,3 +33,26 @@ class BetterSettingsSpec extends Specification { def is =
 
 
 }
+
+
+
+
+class TimeHelperSpec extends Specification with org.specs2.specification.Tables { def is = s2"""
+
+ TimeHelper can print a nice formatted string of elapsed days, hours, minutes, seconds ${
+  "days"   | "hours" | "minutes" | "seconds" |>
+   0    !  0  !  0  ! 0  |                 
+   0    !  0  !  0  ! 12 |
+   0    !  0  !  5  ! 3  |
+   0    !  23 !  9  ! 7  |
+   4    !  12 !  17 ! 43 |
+  { (days, hours, minutes, seconds) => TimeHelper.durationToString(java.time.Duration.ofSeconds(days * (24 * 60 * 60) + hours * (60 * 60) + minutes * 60 + seconds )) must_== s"$days days, $hours hours, $minutes minutes, $seconds seconds" }      
+ }
+"""
+
+}
+  
+  
+  
+  
+  

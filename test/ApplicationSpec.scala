@@ -18,7 +18,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.Configuration
 import play.api.inject.bind
 import play.api.Mode
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import models._
 import JsonHelper._
 	     
@@ -53,10 +53,8 @@ class ApplicationSpec extends Specification with JsonMatchers {
        (Json.parse(contentAsString((result))) \ "AUTH-TOKEN").asOpt[String]
     }  
       
-    def setTime(time: DateTime, authToken: String, message: String) = {
-        //TODO: joda => java.time
-       import play.api.libs.json.JodaWrites._
-       import play.api.libs.json.JodaReads._
+    def setTime(time: OffsetDateTime, authToken: String, message: String) = {
+
       
        val nt = JsObject(Seq("serverTime" -> Json.toJson(time)))
        val updt = route(app, FakeRequest(method="POST", path="/em2016/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
@@ -95,7 +93,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
   
   
     "allow login for users, protect routes and allow logout" in new WithApplication(app=app){
-       val MexCam = new DateTime(2014, 6, 13, 18, 0)//y m d h min
+       val MexCam = OffsetDateTime.of(2014, 6, 13, 18, 0, 0, 0, BetterSettings.offset())//y m d h min
        val betPossible = MexCam.minusMinutes(61)
        val betForbidden = MexCam.minusMinutes(60)
        val betVisible = MexCam.minusMinutes(58)
@@ -147,8 +145,8 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     val (agwt,acam) = extractMexCameroon(adminBets)
 	    
 	     
-	     val diff = new org.joda.time.Duration(agwt.game.serverStart, MexCam)
-	     diff.getStandardMinutes() === 0 //timezones could be a problem in unit tests
+	     val diff = java.time.Duration.between(agwt.game.serverStart.toLocalTime(), MexCam.toLocalTime())
+	     diff.toMinutes() === 0 //timezones could be a problem in unit tests
 	     
 	     val SRESULT = Some(GameResult(1,0,false))
 	     val GRESULT = Some(GameResult(1,0,true))

@@ -14,9 +14,6 @@ import play.api.libs.json.JsSuccess
 import play.api.libs.json.{Writes,Reads}
 import play.api.libs.json.JsObject
 
-//TODO: switch to java.time
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
 
 object JsonHelper {
    val DATAREGEX = """data:image/(\w*);base64,(.*)""".r

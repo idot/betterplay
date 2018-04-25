@@ -17,7 +17,7 @@ import models._
 import models.JsonHelper._
 
 
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 
 
 import javax.inject.{Inject, Provider, Singleton, Named}
@@ -62,12 +62,9 @@ class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
 	      }
   )}
  
+
   
-  //TODO: switch to java.time
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
-  
-  case class CreatedGame(serverStart: DateTime, localStart: DateTime, team1: String, team2: String, level: Int)
+  case class CreatedGame(serverStart: OffsetDateTime, localStart: OffsetDateTime, team1: String, team2: String, level: Int)
   implicit val createdGameFormat = Json.format[CreatedGame] 
 	 
   def createGame() = withAdmin.async(parse.json){ request =>

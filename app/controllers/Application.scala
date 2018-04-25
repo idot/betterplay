@@ -23,7 +23,7 @@ import models.UserNoPwC
 import models.BetterSettings
 
 import play.api.i18n.I18nSupport
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import javax.inject.{Inject, Provider, Singleton, Named}
 import play.api.mvc.{Action, Controller}
 import play.api.routing.{JavaScriptReverseRoute, JavaScriptReverseRouter, Router}
@@ -42,9 +42,6 @@ import akka.pattern.ask
 
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 
-//TODO: switch to java.time
-import play.api.libs.json.JodaWrites._
-import play.api.libs.json.JodaReads._
 
 
 
@@ -233,7 +230,7 @@ class Application(env: Environment,
 
   def setDebugTime() = withAdmin(parse.json) { request =>
  	  if(debug){
-       (request.body \ "serverTime").validate[DateTime].fold(
+       (request.body \ "serverTime").validate[OffsetDateTime].fold(
 		     err => BadRequest(Json.obj("error" -> JsError.toJson(err))),
 		     succ => {
 			    BetterSettings.setDebugTime(succ)	
@@ -252,7 +249,7 @@ class Application(env: Environment,
   
   def settings() = Action.async {
     betterDb.startOfGames().map{ ot =>
-      val start = ot.getOrElse( new DateTime() )
+      val start = ot.getOrElse( BetterSettings.now() )
       //default key no recaptcha
       val sitekey = configuration.getOptional[String]("betterplay.recaptchasite").getOrElse("6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI")
       val json = Json.obj("debug" -> debug, "gamesStarts" -> start, "recaptchasite" -> sitekey)

@@ -10,7 +10,7 @@ import au.com.bytecode.opencsv.CSVParser
 import scala.concurrent.{Future,Await,ExecutionContext}
 import scala.concurrent.duration._
 import javax.inject.Singleton
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import play.api.Environment
 
 /**
@@ -26,8 +26,7 @@ import play.api.Environment
 
 
 class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: ExecutionContext) {
-  import org.joda.time.format.DateTimeFormat
-  import org.joda.time.DateTime
+  import java.time.format.DateTimeFormatter
   val long2cc = InitialDataX.longNameToCC(environment)
   
   val csv = new CSVParser()
@@ -98,10 +97,10 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
   
   //2014-06-12 17:00:00.000000
   //TODO: time difference is 5 hours or 6 hours  in Manaus und Cuiab� !!!!
-  def parseDate(days: String, times: String, line: String): (DateTime,DateTime) = {
+  def parseDate(days: String, times: String, line: String): (OffsetDateTime,OffsetDateTime) = {
       try{
-         val dt = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss")
-         val time = dt.parseDateTime(s"$days $times").plusHours(1)
+         val dt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+         val time = OffsetDateTime.parse(s"$days $times", dt).plusHours(1)
          (time,time)
       }catch{
         case e: Exception => {
@@ -142,7 +141,7 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
     val ls = InitialDataX.levels(environment)
     val us = users(debug)
     val ps = players()
-    val sp = InitialDataX.specialBets(new DateTime(2016, 6, 10, 20, 0)) //TODO: check!
+    val sp = InitialDataX.specialBets(OffsetDateTime.of(2016, 6, 10, 20, 0,0,0,BetterSettings.offset())) //TODO: check!
 
     betterDb.dropCreate()
 

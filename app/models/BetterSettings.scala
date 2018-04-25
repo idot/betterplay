@@ -1,8 +1,10 @@
 package models
 
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import org.jasypt.salt.SaltGenerator
-import org.joda.time.format.DateTimeFormat
+import java.time.format.DateTimeFormatter
 import  org.jasypt.digest.StandardByteDigester
 import scalaz.{\/,-\/,\/-}
 import play.api.Logger
@@ -12,51 +14,60 @@ import java.security.SecureRandom
 object BetterSettings {
   val TOKENLENGTH = 36
 	val MAILTIMEOUT = 30	 
-        val DEBUGTOKEN = "123456789012345678901234567890123456"
 	
-        var mailPassword = "" 
+  val DEBUGTOKEN = "123456789012345678901234567890123456"
+	val ZONEID = ZoneId.of("Europe/Vienna")
+  
+  
+  var mailPassword = "" 
     
-        def setMailPassword(password: String){
-            mailPassword = password
-        }
+  def setMailPassword(password: String){
+       mailPassword = password
+  }
         
-        def getMailPassword(): String = {
-            mailPassword
-        }
+  def getMailPassword(): String = {
+       mailPassword
+  }
         
-	var debugTime = new DateTime()
+	var debugTime = localNow()
 	var debug = false
 	
-	val formatter = DateTimeFormat.forPattern("yyyyMMddHHmm")
-	val logformatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm")
+	val formatter = DateTimeFormatter.ofPattern( "yyyyMMddHHmm" ).withZone(zoneId)
+	val logformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(zoneId)
     
-	def setDebugTime(time: DateTime){
-                Logger.info(s"set time to: ${logformatter.print(time)}")
+	def setDebugTime(time: OffsetDateTime){
+    Logger.info(s"set time to: ${logformatter.format(time)}")
 		debugTime = time
 		debug = true	
 	}
 	
+	def zoneId(): ZoneId = {  ZONEID }
+	
+	def offset(): ZoneOffset = java.time.ZoneOffset.ofHours(0)
+	
 	def resetTime(){
-             Logger.info(s"debug time off")
-	     debug = false
+      Logger.info(s"debug time off")
+	    debug = false
 	}
+	
+	def localNow(): OffsetDateTime = OffsetDateTime.now(zoneId())
 	
 	/**
 	 * 
 	 * 
 	 * @return current time/date
 	 */
-	def now(): DateTime = {
+	def now(): OffsetDateTime = {
 		if(debug){
 		   debugTime
-		}else{
-		    new DateTime()
-	    }
+		} else {
+		   localNow()
+	  }
 	}
 	
 	
-	def digester(date: DateTime, excelSecret: String): StandardByteDigester = {
-		val time = formatter.print(date)	    
+	def digester(date: OffsetDateTime, excelSecret: String): StandardByteDigester = {
+		val time = formatter.format(date)	    
 		val digester = new StandardByteDigester()
 		val combined = time+excelSecret 
 		val saltdigest = createSalt(time, excelSecret)
@@ -76,7 +87,7 @@ object BetterSettings {
 	
 	def fileName(message: Array[Byte], excelSecret: String): String = {
 		val time = now()
-		val stime = formatter.print(time)
+		val stime = formatter.format(time)
     val dig = digester(time, excelSecret).digest(message)
 		val hex = org.jasypt.commons.CommonUtils.toHexadecimal(dig)
 		"bets."+stime+"."+hex+".xlsx"	       
@@ -84,7 +95,7 @@ object BetterSettings {
 	
 	def matchDigest(message: Array[Byte], dates: String, md5inHex: String, excelSecret: String): Boolean = {
 		val digest = org.jasypt.commons.CommonUtils.fromHexadecimal(md5inHex)
-		val date = formatter.parseDateTime(dates)
+		val date = OffsetDateTime.parse(dates, formatter)
 		digester(date, excelSecret).matches(message, digest)
 	}
 	

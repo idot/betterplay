@@ -4,10 +4,9 @@ package models
 
 import javax.inject.{Singleton, Inject}
 
-import org.joda.time.DateTime
-import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
-import slick.driver.JdbcProfile
-//import slick.profile.FixedSqlAction
+import java.time.OffsetDateTime
+import play.api.db.slick.DatabaseConfigProvider
+
 
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
 import scalaz.syntax.apply._ 
@@ -179,7 +178,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
          if(settingUser.isAdmin) Success(settingUser) else Failure(s"only admin can make these changes")
      }
      
-     def validSPU(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[ValidationNel[String,String]] = {
+     def validSPU(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[ValidationNel[String,String]] = {
          startOfGames().map{ OstartTime =>
              val withStart = OstartTime.map{ startTime => isGameOpen(startTime, currentTime, closingMinutesToGame) }.getOrElse( Failure("no games yet") )
              val ids = compareIds(submittingUser.id.getOrElse(-1), sp.userId, "user ids").toValidationNel
@@ -194,7 +193,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
      /**
      * API
      */
-     def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
+     def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
         dbLogger.debug(s"attempting updating special bet for user ${submittingUser.username} ${sp.prediction}") 
         validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
            v.fold(
@@ -377,10 +376,10 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       * all times are stored in local time
       * This happens at import where the timezone has to be specified
       */
-     def isGameOpen(gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): Validation[String,String] = {
+     def isGameOpen(gameTimeStart: OffsetDateTime, currentTime: OffsetDateTime, closingMinutesToGame: Int): Validation[String,String] = {
          val gameClosing = gameTimeStart.minusMinutes(closingMinutesToGame)
          val open = currentTime.isBefore(gameClosing)
-         if(open) Success("valid time") else Failure(s"game closed since ${JodaHelper.compareTimeHuman(gameClosing, currentTime)}")
+         if(open) Success("valid time") else Failure(s"game closed since ${TimeHelper.compareTimeHuman(gameClosing, currentTime)}")
      }
 
 
@@ -388,7 +387,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       *
       *
       */
-     def startOfGames(): Future[Option[DateTime]] = {
+     def startOfGames(): Future[Option[OffsetDateTime]] = {
           db.run(games.sortBy(_.serverStart ).result).map{ games => games.headOption.map(_.serverStart) }
      }
 
@@ -396,7 +395,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       * 
       * TODO: not needed anymore?
       */
-     //def closingTimeSpecialBet(closingMinutesToGame: Int): Future[Option[DateTime]] = {
+     //def closingTimeSpecialBet(closingMinutesToGame: Int): Future[Option[OffsetDateTime]] = {
      //    startOfGames.map{ s => s.map(_.minusMinutes(closingMinutesToGame)) }
      //}
 
@@ -424,7 +423,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       *  I have to execute the betlog database insert, so the application has to test for invalid bet insert request by checking the error string
       * 
       */
-     def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
+     def updateBetResult(bet: Bet, submittingUser: User, currentTime: OffsetDateTime, closingMinutesToGame: Int): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
           dbLogger.debug(s"updating bet result: $bet ${submittingUser.username}")
           val invalid = GameResult(-1,-1,true)
           val bg = (for{
@@ -459,7 +458,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
          if(cb) Success("can bet") else Failure(s"user has not paid, no dice")
      }
 
-     def compareBet(cb: Boolean, userId: Long, betUserId: Long, gameId: Long, betGameId: Long, gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): ValidationNel[String,String] = {
+     def compareBet(cb: Boolean, userId: Long, betUserId: Long, gameId: Long, betGameId: Long, gameTimeStart: OffsetDateTime, currentTime: OffsetDateTime, closingMinutesToGame: Int): ValidationNel[String,String] = {
          (compareIds(userId, betUserId, "user ids").toValidationNel |@|
              compareIds(gameId, betGameId, "game ids").toValidationNel |@|
              isGameOpen(gameTimeStart, currentTime, closingMinutesToGame).toValidationNel |@|
@@ -484,7 +483,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       *
       * //game open can not set points but can change teams and start time
       */
-     def updateGameDetails(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
+     def updateGameDetails(game: Game, submittingUser: User, currentTime: OffsetDateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
          if(! submittingUser.isAdmin){
            return Future.failed(AccessViolationException("only admin user can change game details"))
          }
@@ -503,14 +502,14 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       * contoller should initiate points calculation
       *
       */
-     def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
+     def updateGameResults(game: Game, submittingUser: User, currentTime: OffsetDateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
          if(! submittingUser.isAdmin){
            return Future.failed(AccessViolationException("must be admin to change game results"))
          }
          val result = game.result.copy(isSet=true)
          val gUp = (for{
            dbGame <- games.filter(_.id === game.id).result.head
-           _ <- isGameOpen(dbGame.serverStart, currentTime: DateTime, -gameDuration).fold(err => DBIO.successful("IGNORE"), succ => DBIO.failed(ValidationException(s"game ${game.id.get} is still not finished")))
+           _ <- isGameOpen(dbGame.serverStart, currentTime: OffsetDateTime, -gameDuration).fold(err => DBIO.successful("IGNORE"), succ => DBIO.failed(ValidationException(s"game ${game.id.get} is still not finished")))
            gameWithResult = dbGame.copy(result=result) 
            _ <- games.filter(_.id === gameWithResult.id).update(gameWithResult)
          } yield { (gameWithResult, SetResult) }).transactionally
@@ -827,7 +826,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
     /**
      * the token usage sets seen = true
      */
-    def userByTokenPassword(token: String, now: DateTime, passwordHash: String): Future[User] = {
+    def userByTokenPassword(token: String, now: OffsetDateTime, passwordHash: String): Future[User] = {
         if(token.length == BetterSettings.TOKENLENGTH){
            val action = (for {
             (message, user) <- usersmessages.filter(m => m.token === token && ! m.seen.isDefined).join(users).on( _.userId === _.id ).result.head
@@ -845,7 +844,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
         db.run(query.result)
     }
     
-    def setMessageSent(messageId: Long, now: DateTime): Future[String] = {
+    def setMessageSent(messageId: Long, now: OffsetDateTime): Future[String] = {
         val up = usersmessages.filter(_.id === messageId).map(_.sent).update(Some(now))
         db.run(up).map{ rows => 
            rows match {
@@ -856,7 +855,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
         }
     }
     
-    def setMessageError(um: UserMessage, error: String, now: DateTime): Future[MessageError] = {
+    def setMessageError(um: UserMessage, error: String, now: OffsetDateTime): Future[MessageError] = {
         val me = MessageError(None, um.id.get, error, now)
         db.run((messageserrors returning messageserrors.map(_.id)) += me).map{ lid => me.copy(id=Some(lid))}
     }
@@ -865,7 +864,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
     * sets nextGame and closed game
     * 
     */
-   def maintainGames(now: DateTime): Future[Int] = {
+   def maintainGames(now: OffsetDateTime): Future[Int] = {
       val q = (for{
         closed <- games.filter(g => g.serverStart < now).map(g => (g.gameClosed,g.nextGame)).update((true,false))
         open <- games.filter(g => g.serverStart > now).map(g => (g.gameClosed,g.nextGame)).update((false,false))

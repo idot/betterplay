@@ -1,7 +1,7 @@
 package models
 
 import org.junit.runner._
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import org.specs2.runner._
 import org.specs2._
 import org.specs2.Specification
@@ -38,7 +38,7 @@ class DomainSpec extends Specification { def is =
   }
 
   def testViewableTime() = {
-      val now = new DateTime()
+      val now = BetterSettings.now()
       val before = now.minusMinutes(10)
       DomainHelper.viewableTime(before, now, 9) === false 
       DomainHelper.viewableTime(before, now, 10) === true 

@@ -1,6 +1,6 @@
 package models
 
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 
 object ObjectMother {
 
@@ -26,7 +26,7 @@ object ObjectMother {
       )
   }
   
-  def specialTemplates(stype: String, start: DateTime): Seq[SpecialBetT] = {
+  def specialTemplates(stype: String, start: OffsetDateTime): Seq[SpecialBetT] = {
 	  val nm = "template "+stype
 	  (1 to 6).map{ i =>  
 		  if(i < 4){ //first 3 -> grouped bets 
@@ -42,7 +42,7 @@ object ObjectMother {
    * this is like the scala input for BetterDb.insertGame
    * 
    */
-  def dummyGames(totalStart: DateTime): Seq[(Game,String,String,Int)] = (1 to 3).map{ nr =>
+  def dummyGames(totalStart: OffsetDateTime): Seq[(Game,String,String,Int)] = (1 to 3).map{ nr =>
       val nr2 = nr*2
       val t1 = dummyTeams(nr2 - 2).name
       val t2 = dummyTeams(nr2 - 1).name
