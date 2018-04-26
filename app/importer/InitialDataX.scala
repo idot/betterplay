@@ -1,4 +1,4 @@
-package controllers
+package importer
 
 import play.api._
 import play.api.Logger
@@ -6,11 +6,11 @@ import play.api.db.slick._
 import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
-import scala.concurrent.{Future,Await,ExecutionContext}
+import scala.concurrent.{Future, Await, ExecutionContext}
 import scala.concurrent.duration._
-import javax.inject.Singleton
 import java.time.OffsetDateTime
 import play.api.Environment
+import scala.collection.Seq
 
 object InitialDataX {
   def specialBets(start: OffsetDateTime): Seq[SpecialBetT] = {

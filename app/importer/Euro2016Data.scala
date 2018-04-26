@@ -1,17 +1,15 @@
-package controllers
+package importer
 
 import play.api._
-import play.api.Play.current
 import play.api.Logger
 import play.api.db.slick._
-import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
-import scala.concurrent.{Future,Await,ExecutionContext}
+import scala.concurrent.{Future, Await, ExecutionContext}
 import scala.concurrent.duration._
-import javax.inject.Singleton
 import java.time.OffsetDateTime
 import play.api.Environment
+import scala.collection.Seq
 
 /**
  * DATA FROM:
@@ -26,7 +24,7 @@ import play.api.Environment
 
 
 class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: ExecutionContext) {
-  import java.time.format.DateTimeFormatter
+
   val long2cc = InitialDataX.longNameToCC(environment)
   
   val csv = new CSVParser()
@@ -99,8 +97,7 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
   //TODO: time difference is 5 hours or 6 hours  in Manaus und Cuiab� !!!!
   def parseDate(days: String, times: String, line: String): (OffsetDateTime,OffsetDateTime) = {
       try{
-         val dt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
-         val time = OffsetDateTime.parse(s"$days $times", dt).plusHours(1)
+         val time = TimeHelper.fromString(s"$days $times","dd/MM/yyyy HH:mm:ss").plusHours(1)
          (time,time)
       }catch{
         case e: Exception => {

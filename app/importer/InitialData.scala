@@ -1,17 +1,16 @@
-package controllers
+package importer
 
 import play.api._
-import play.api.Play.current
 import play.api.Logger
 import play.api.db.slick._
 import org.apache.commons.io.IOUtils
 import models._
 import au.com.bytecode.opencsv.CSVParser
-import scala.concurrent.{Future,Await,ExecutionContext}
+import scala.concurrent.{Future, Await, ExecutionContext}
 import scala.concurrent.duration._
-import javax.inject.Singleton
 import java.time.OffsetDateTime
 import play.api.Environment
+import scala.collection.Seq
 
 /**
  * DATA FROM:
@@ -25,7 +24,6 @@ import play.api.Environment
 
 
 class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: ExecutionContext) {
-  import java.time.format.DateTimeFormatter
    
   val csv = new CSVParser()
   
@@ -75,8 +73,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   def parseDate(str: String, venue: String): (OffsetDateTime,OffsetDateTime) = {
       try{
       val short = str.substring(0, str.lastIndexOf("."))
-      val df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-      val dt = OffsetDateTime.parse(short, df)
+      val dt = TimeHelper.fromString(short, "yyyy-MM-dd HH:mm:ss")
     
 	     val shift = if(venue == "+") 1 else 0
       (dt,dt.plusHours(5+shift)) 

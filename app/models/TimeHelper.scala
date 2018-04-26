@@ -23,6 +23,11 @@ object TimeHelper {
       durationToString(d)
   } 
   
+  def fromString(dates: String, pattern: String): OffsetDateTime = {
+      val formatter = DateTimeFormatter.ofPattern( pattern ).withZone(BetterSettings.zoneId())
+      ZonedDateTime.parse(dates, formatter).toOffsetDateTime()
+  }
+  
   def fromYYYYMMddHHmm(date: String): OffsetDateTime = ZonedDateTime.parse(date, formatter).toOffsetDateTime()
   def toYYYYMMddHHmm(date: OffsetDateTime): String = formatter.format(date)
   
