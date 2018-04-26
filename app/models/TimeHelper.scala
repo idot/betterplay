@@ -2,6 +2,7 @@ package models
 
 
 import java.time.OffsetDateTime
+import java.time.ZonedDateTime
 import java.time.Duration
 import java.time.format.DateTimeFormatter
 import java.time.ZoneOffset
@@ -9,14 +10,21 @@ import java.time.ZoneOffset
 
 
 object TimeHelper { 
-  final val formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(BetterSettings.ZONEID)
   
+  final val formatter = DateTimeFormatter.ofPattern( "yyyyMMddHHmm" ).withZone(BetterSettings.zoneId())
+	final val logformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(BetterSettings.zoneId())
+  
+  
+   
   implicit object OffsetDateTimeOrdering extends Ordering[OffsetDateTime] { def compare(o1: OffsetDateTime, o2: OffsetDateTime) = o1.compareTo(o2)}
   
   def compareTimeHuman(firstTime: OffsetDateTime, lastTime: OffsetDateTime): String = {
       val d = Duration.between(firstTime.toLocalDate(), lastTime.toLocalDate())
       durationToString(d)
   } 
+  
+  def fromYYYYMMddHHmm(date: String): OffsetDateTime = ZonedDateTime.parse(date, formatter).toOffsetDateTime()
+  def toYYYYMMddHHmm(date: OffsetDateTime): String = formatter.format(date)
   
   def standardFormatter(): DateTimeFormatter = formatter
   

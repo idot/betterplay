@@ -24,7 +24,7 @@ class Statistics @Inject()(cc: ControllerComponents, override val betterDb: Bett
         blocking{
 	        val excel = ExcelData.generateExcel(betterDb, BetterSettings.now, userId)
 	        val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-	        val name = BetterSettings.fileName(excel, excelSecret)
+	        val name = CryptoHelper.fileName(excel, excelSecret)
 	        val headers = ("Content-Disposition",s"attachment; filename=${name}")
 	        Ok(excel).as(mime).withHeaders(headers)
         }
@@ -79,7 +79,7 @@ class Statistics @Inject()(cc: ControllerComponents, override val betterDb: Bett
            val outf = new File(s"${outdir}/$filename")
            Logger.debug(s"creating: $outf")
            xls.ref.moveTo(outf)
-           val result = BetterSettings.validate(outf.getAbsolutePath, filename, excelSecret).fold(
+           val result = CryptoHelper.validate(outf.getAbsolutePath, filename, excelSecret).fold(
                err => NotAcceptable(err),
                succ => Ok("valid file")
            )
