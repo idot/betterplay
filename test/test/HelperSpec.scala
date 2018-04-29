@@ -8,9 +8,9 @@ import org.specs2.Specification
 import org.junit.runner.RunWith
 
 @RunWith(classOf[JUnitRunner])
-class HelperSpec extends Specification { def is =
+class CryptoHelperSpec extends Specification { def is =
 
-    "A bettersettings can create a digest for a message and compare the resulting file with the message again" ! validate ^
+    "A CryptoHelper can create a digest for a message and compare the resulting file with the message again" ! validate ^
     end
 	
 	
@@ -37,7 +37,7 @@ class HelperSpec extends Specification { def is =
 
 
 
-class TimeHelperSpec extends Specification with org.specs2.specification.Tables { def is = s2"""
+class TimeHelperHumanSpec extends Specification with org.specs2.specification.Tables { def is = s2"""
 
  TimeHelper can print a nice formatted string of elapsed days, hours, minutes, seconds ${
   "days"   | "hours" | "minutes" | "seconds" |>
@@ -46,13 +46,28 @@ class TimeHelperSpec extends Specification with org.specs2.specification.Tables 
    0    !  0  !  5  ! 3  |
    0    !  23 !  9  ! 7  |
    4    !  12 !  17 ! 43 |
-  { (days, hours, minutes, seconds) => TimeHelper.durationToString(java.time.Duration.ofSeconds(days * (24 * 60 * 60) + hours * (60 * 60) + minutes * 60 + seconds )) must_== s"$days days, $hours hours, $minutes minutes, $seconds seconds" }      
+  { (days, hours, minutes, seconds) => TimeHelper.durationToString((days * (24 * 60 * 60) + hours * (60 * 60) + minutes * 60 + seconds )) must_== s"$days days, $hours hours, $minutes minutes, $seconds seconds" }      
  }
 """
 
+ 
 }
   
   
   
-  
+class TimeHelperSpec extends Specification { def is =
+
+   "A TimeHelper can print the duration" ! duration ^
+   end
+
+	def duration = {
+    val pattern = "yyyy-MM-dd'T'HH:mmxxx"
+    val t1 = TimeHelper.fromString("2014-06-13T17:00+02:00", pattern)
+    val t2 = TimeHelper.fromString("2014-06-13T17:02+02:00", pattern)
+    val res = TimeHelper.compareTimeHuman( t1, t2 )
+		res === "0 days, 0 hours, 2 minutes, 0 seconds"
+  }
+
+
+}
   
