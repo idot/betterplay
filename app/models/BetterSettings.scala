@@ -18,27 +18,27 @@ object BetterSettings {
 	
   val DEBUGTOKEN = "123456789012345678901234567890123456"
 	val ZONEID = ZoneId.of("Europe/Vienna")
-  
-  
-  var mailPassword = "" 
     
+  private var _mailPassword = "" 
+  private var _debugTime = now()
+	private var _debug = false  
+  private	var _viewMinutesToGame = 59
+	
   def setMailPassword(password: String){
-       mailPassword = password
+       _mailPassword = password
   }
         
   def getMailPassword(): String = {
-       mailPassword
+       _mailPassword
   }
         
-	var debugTime = localNow()
-	var debug = false
+  def debug(): Boolean = _debug
 	
-
     
 	def setDebugTime(time: OffsetDateTime){
-    Logger.info(s"set time to: ${TimeHelper.logformatter.format(time)}")
-		debugTime = time
-		debug = true	
+    Logger.info(s"set time to: ${TimeHelper.log(time)}")
+		_debugTime = time
+		_debug = true	
 	}
 	
 	def zoneId(): ZoneId = {  ZONEID }
@@ -47,26 +47,42 @@ object BetterSettings {
 	
 	def resetTime(){
       Logger.info(s"debug time off")
-	    debug = false
+	    _debug = false
 	}
-	
-	def localNow(): OffsetDateTime = OffsetDateTime.now(zoneId())
-	
+		
 	/**
 	 * 
 	 * 
-	 * @return current time/date
+	 * @return current time/date or debugTime if debug
+	 * 
+	 * 
 	 */
 	def now(): OffsetDateTime = {
-		if(debug){
-		   debugTime
+		if(_debug){
+		   _debugTime
 		} else {
-		   localNow()
+		   OffsetDateTime.now(zoneId())
 	  }
 	}
 	
-	def closingMinutesToGame = 60	
+	/**
+	 * how many minutes before game starts you can change a bet
+	 */
+	def closingMinutesToGame() = 60	
 	
+	/**
+	 * how many minutes before game starts the bets are visible to other ppl
+	 * 
+	 */
+	def viewMinutesToGame(): Int = _viewMinutesToGame
+	
+	/***
+	 * only for debugging
+	 * 
+	 */
+	def setViewMinutesToGame(minutes: Int){
+	     _viewMinutesToGame = minutes
+	}
 	
 	def randomToken(): String = {
 	   if(debug){

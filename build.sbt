@@ -41,7 +41,7 @@ libraryDependencies ++= Seq(
  // "org.specs2" %% "specs2-core" % specs2Version % "test",
    "org.specs2" %% "specs2-matcher-extra" % specs2Version % "test",
   "org.specs2" %% "specs2-scalacheck" % specs2Version % "test",
- // "org.specs2" %% "specs2-junit" % specs2Version % "test",
+  "org.specs2" %% "specs2-junit" % specs2Version % "test",
  // "org.scalacheck" %% "scalacheck" % "1.14.0" % "test",
   "org.scalactic" %% "scalactic" % "3.0.5", //for scalatest
   "org.scalatest" %% "scalatest" % "3.0.5" % "test", //for scalatest

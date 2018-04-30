@@ -88,7 +88,10 @@ trait Security { self: AbstractController =>
                        securityLogger.trace(s"hasToken: ${input.uri} found token $AuthTokenHeader $maybeToken userId: $userId")
                        new TokenRequest(token, userId, input)
               }
-          }.toRight(Unauthorized)
+          }.toRight{
+            securityLogger.trace(s"hasToken: didn't find token: ${input.uri} $AuthTokenHeader $maybeToken UNAUTHORIZED")
+            Unauthorized
+          }
       }
       override def parser = controllerComponents.parsers.defaultBodyParser
       override def executionContext = controllerComponents.executionContext
@@ -97,7 +100,10 @@ trait Security { self: AbstractController =>
   def withUserA = new ActionRefiner[TokenRequest,UserRequest]{ 
       def refine[A](input: TokenRequest[A]) = {
          betterDb.userById(input.userId)
-            .map{ user => Right(new UserRequest(user, input)) }
+            .map{ user => Right{
+              securityLogger.trace(s"withUser ${input.uri} could find user in db: ${input.userId}")
+              new UserRequest(user, input) 
+            }}
             .recoverWith{ case e: AccessViolationException =>
                  securityLogger.trace(s"withUser ${input.uri} could not find user in db: ${input.userId} ${e.getMessage}")
                  Future.successful(Left(Unauthorized(e.getMessage))) 
@@ -130,13 +136,14 @@ trait Security { self: AbstractController =>
   def withAdmin = { hasToken andThen withAdminA }
  
   def betterException(future: Future[Result]): Future[Result] = {
+      def toJs(e: Exception) = Json.obj("error" -> e.getMessage)
       future.recoverWith {
-        case e: AccessViolationException => Logger.debug(e.getMessage); Future.successful(Unauthorized(e.getMessage))
-        case e: ItemNotFoundException => Logger.debug(e.getMessage); Future.successful(NotFound(e.getMessage))
-        case e: ValidationException => Logger.debug(e.getMessage); Future.successful(NotAcceptable(e.getMessage))
-        case e: java.sql.SQLException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
-        case e: AskTimeoutException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
-        case e: org.apache.commons.mail.EmailException => Logger.debug(e.getMessage); Future.successful(InternalServerError(e.getMessage))
+        case e: AccessViolationException => Logger.debug(e.getMessage); Future.successful(Unauthorized(toJs(e)))
+        case e: ItemNotFoundException => Logger.debug(e.getMessage); Future.successful(NotFound(toJs(e)))
+        case e: ValidationException => Logger.debug(e.getMessage); Future.successful(NotAcceptable(toJs(e)))
+        case e: java.sql.SQLException => Logger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
+        case e: AskTimeoutException => Logger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
+        case e: org.apache.commons.mail.EmailException => Logger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
       }
   }
 
@@ -353,12 +360,12 @@ class Application(env: Environment,
   def onStart() {
     val insertdata = configuration.getOptional[String]("betterplay.insertdata").getOrElse("")
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
-    Logger.info("starting up "+debugString)
+    Logger.info(s"starting up: $debugString")
     if(debug){
       insertdata match {
         case "test" => new InitialData(betterDb, env).insert(debug)
         case "euro2016" => new Euro2016Data(betterDb, env).insert(false)
-        case _ => //do nothing
+        case _ => Logger.info("not inserting any data!!!")//do nothing
       }
     }
     scheduleTasks()

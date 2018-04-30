@@ -4,6 +4,8 @@ import java.time.OffsetDateTime
 
 object ObjectMother {
 
+  
+  
   def g(email: String): (String,String) = DomainHelper.randomGravatarUrl(email)
 
   def adminUser(): User = User(None, "a1", "af1","al1", "", true, "emaila1", "pwa1", true, true, true, true, 3, 0, g("emaila1")._1, g("emaila1")._2, None, DomainHelper.filterSettings())   
@@ -47,7 +49,7 @@ object ObjectMother {
       val t1 = dummyTeams(nr2 - 2).name
       val t2 = dummyTeams(nr2 - 1).name
       val st = totalStart.plusMinutes(10 * (nr-1))
-      val g = Game(None, GameResult(3,4,true), 0, 0, 0, st.minusHours(5),"local", st, "server", "", "", nr, 59, false, false)  
+      val g = Game(None, GameResult(3,4,true), 0, 0, 0, st.minusHours(5),"local", st, "server", "", "", nr, BetterSettings.viewMinutesToGame(), false, false)  
       (g,t1,t2,0)
   } 
   

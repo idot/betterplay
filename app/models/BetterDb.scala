@@ -191,14 +191,17 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
    
 
      /**
-     * API
+     * I am loading the special bet by id from the database and check if the user is the actual owner to make sure its not tampered with 
+     * 
+     * 
+     * 
      */
      def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
         dbLogger.debug(s"attempting updating special bet for user ${submittingUser.username} ${sp.prediction}") 
         validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
            v.fold(
                err => Future.failed(ValidationException(err.list.toList.mkString("\n"))),
-               succ => updateSPU(sp)
+               succ => updateSPU(sp, submittingUser)
            )}
      }
 
@@ -218,11 +221,15 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
      
 
      //TODO: TEST for exception when specialbet does not exist!
-     def updateSPU(sp: SpecialBetByUser): Future[String] = {     
+     def updateSPU(sp: SpecialBetByUser, submittingUser: User): Future[String] = {     
          dbLogger.debug(s"updating special bet for user ${sp.prediction}") 
-         val action = (specialbetsuser.filter(_.id === sp.id).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
+         val action = (specialbetsuser.filter(spdb => spdb.id === sp.id && spdb.userId === submittingUser.id && spdb.spId === sp.specialbetId).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
              rowCount match {
-               case 0 => DBIO.failed(new ItemNotFoundException(s"could not find specialbet with id ${sp.id}")) 
+               case 0 => { 
+                      val err = s"could not find specialbet with ids ${sp.id} ${sp.userId} ${sp.specialbetId} - ${submittingUser.id}"; 
+                      dbLogger.error(err); 
+                      DBIO.failed(new ItemNotFoundException(err)) 
+               }
                case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
                case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${sp.id}"))
              }

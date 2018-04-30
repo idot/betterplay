@@ -48,8 +48,9 @@ class Bets @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, 
     def log() = withUser.async { request =>
       betterDb.allBetLogs().map{ log =>
         val now = BetterSettings.now
-  			val vtg = 30
-  			//TODO:BetterSettings.viewMinutesToGame
+  			val vtg = BetterSettings.viewMinutesToGame()
+
+  			//TODO?
   			//join betLogs with games/levels map game.level.viewMinutesToGame => hide vtg
         val txt = log.map(l => l.toText(request.request.userId, l.gameStart, now, vtg)).mkString("\n") 
         Ok(txt)

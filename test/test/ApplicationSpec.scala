@@ -22,6 +22,8 @@ import java.time.OffsetDateTime
 import models._
 import JsonHelper._
 	     
+import play.api.Logger
+
 //TODO: add ApplicationSpec tests from play-gulp-standalone
 
 /**
@@ -60,6 +62,13 @@ class ApplicationSpec extends Specification with JsonMatchers {
        status(updt) must equalTo(OK).setMessage(message)
     }
     
+    def setTimeFail(time: OffsetDateTime, authToken: String, message: String) = {
+       val nt = JsObject(Seq("serverTime" -> Json.toJson(time)))
+       val updt = route(app, FakeRequest(method="POST", path="/em2016/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
+       val res = Await.result(updt, 1 second)
+       status(updt) must equalTo(UNAUTHORIZED).setMessage(message)
+    }
+    
     def setBet(authToken: String, bet: ViewableBet, message: String) = {
        val pb = Json.toJson(bet)
        val updatePB = route(app, FakeRequest(method="POST", path=s"/em2016/api/bet/${bet.id.get}").withJsonBody(pb).withHeaders(("X-AUTH-TOKEN", authToken))).get
@@ -69,18 +78,57 @@ class ApplicationSpec extends Specification with JsonMatchers {
     def setBetFail(authToken: String, bet: ViewableBet, message: String) = {
        val pb = Json.toJson(bet)
        val updatePB = route(app, FakeRequest(method="POST", path=s"/em2016/api/bet/${bet.id.get}").withJsonBody(pb).withHeaders(("X-AUTH-TOKEN", authToken))).get
-	   contentAsString(updatePB) === """{"error":["game closed since 0 days, 0 hours, 2 minutes, 0 seconds"]}"""
+	     contentAsString(updatePB) === """{"error":["game closed since 0 days, 0 hours, 2 minutes, 0 seconds"]}"""
        status(updatePB) must equalTo(406).setMessage(message)
     }
     
     def extractMexCameroon(userBets: String) : (GameWithTeams, ViewableBet) = {      
-       val json = Json.parse(userBets)
-	   val gameBets = (json \\ "gameBets").map(x => x.as[Seq[(GameWithTeams,ViewableBet)]]).flatten
+     val json = try {
+       Json.parse(userBets)
+     }catch {
+       case e: Exception => System.err.println("err parse: "+userBets); throw(e)
+     }
+	   val gameBets = (json \\ "gameBets").map(x => x.as[Seq[(GameWithTeams,ViewableBet)]]).flatten  //implemented in JsonHelper
 	   val (gwt, mexCam) = gameBets.filter{ case(gwt, b) => gwt.team1.name.contains("Mex") && gwt.team2.name.contains("Cam") }.head
 	   (gwt, mexCam)
     }
     
+    
+    def firstGameStart(token: String): OffsetDateTime = {
+        val firstGame = route(app, FakeRequest(method="GET", path="/em2016/api/game/1").withHeaders(("X-AUTH-TOKEN", token))).get
+	      val start = (Json.parse(contentAsString(firstGame)) \ "game" \ "game" \ "serverStart").as[OffsetDateTime]
+	      start
+    }
+    
+    def getSpecialBet(username: String, token: String, row: Int): SpecialBetByUser = {
+         val specials =  route(app, FakeRequest(method="GET", path=s"/em2016/api/user/${username}/specialBets").withHeaders(("X-AUTH-TOKEN", token))).get
+         val bets =  (Json.parse(contentAsString(specials)) \\ "templateBets" ).map(x => x.as[Seq[(SpecialBetT,SpecialBetByUser)]]).flatten //implemented in JsonHelper
+         bets(row)._2
+    }
+    
+    def change1SpecialBet(username: String, token: String, row: Int, prediction: String, message: String) = {
+        val bet = getSpecialBet(username, token, row)
+        val changed = Json.toJson(bet.copy(prediction = prediction))
+        val updated = route(app, FakeRequest(method="POST", path=s"/em2016/api/specialBet").withJsonBody(changed).withHeaders(("X-AUTH-TOKEN", token))).get
+        status(updated) must equalTo(OK).setMessage(message) 
+        contentAsString(updated) === s""""updated special bet with prediction $prediction""""
+        val bet2 = getSpecialBet(username, token, row)
+        bet2.prediction === prediction 
+        bet2.prediction !== bet.prediction
+    }
+    
+    def change1SpecialBetFail(username: String, token: String, row: Int, prediction: String, message: String) = {
+        val bet = getSpecialBet(username, token, row)
+        val changed = Json.toJson(bet.copy(prediction = prediction))
+        val updated = route(app, FakeRequest(method="POST", path=s"/em2016/api/specialBet").withJsonBody(changed).withHeaders(("X-AUTH-TOKEN", token))).get
+        status(updated) must equalTo(406).setMessage(message) //NotAcceptable
+        contentAsString(updated) === """{"error":"game closed since 0 days, 0 hours, 0 minutes, 0 seconds"}"""
+        val bet2 = getSpecialBet(username, token, row)
+        bet2.prediction must be_==(bet.prediction).setMessage(message)
+    }
+    
     def checkMexCameroon(username: String, authToken: String, should: Option[GameResult], message: String) = {
+       Logger.debug(s"mexCam: $username $authToken $should $message")
        val userBetsResult = route(app, FakeRequest(method="GET", path=s"/em2016/api/user/$username").withHeaders(("X-AUTH-TOKEN", authToken))).get
        val userBets = contentAsString(userBetsResult)
        val (gwt, mexCam) = extractMexCameroon(userBets)
@@ -91,16 +139,19 @@ class ApplicationSpec extends Specification with JsonMatchers {
   
   
     "allow login for users, protect routes and allow logout" in new WithApplication(app=app){
-       val MexCam = OffsetDateTime.of(2014, 6, 13, 18, 0, 0, 0, BetterSettings.offset())//y m d h min
-       val betPossible = MexCam.minusMinutes(61)
-       val betForbidden = MexCam.minusMinutes(60)
-       val betVisible = MexCam.minusMinutes(58)
+       val MexCam = java.time.LocalDateTime.of(2014, 6, 13, 18, 0, 0, 0).atZone(BetterSettings.zoneId()).toOffsetDateTime()//y m d h min
+       val betPossible = MexCam.minusMinutes(BetterSettings.viewMinutesToGame + 2)
+       val betForbidden = MexCam.minusMinutes(BetterSettings.viewMinutesToGame + 1)
+       val betVisible = MexCam.minusMinutes(BetterSettings.viewMinutesToGame - 1)
       
        val up = JsObject(Seq("username" -> JsString("admin"), "password" -> JsString("admin")))
        
        val unau = route(app, FakeRequest("POST", "/em2016/api/createBetsForUsers")).get
        status(unau) must equalTo(UNAUTHORIZED)
                
+       val unau2 = route(app, FakeRequest("POST", "/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", "WRONGTOKEN"))).get
+       status(unau2) must equalTo(UNAUTHORIZED)
+       
        val res = route(app, FakeRequest(POST, "/em2016/api/login").withJsonBody(up)).get      
        val adminUserToken = extractToken(res).get 
 	   
@@ -117,10 +168,10 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     user must /("lastName" -> "admin")	
 	     user must /("email" -> "abcd@abcd.com")	
 	     user must /("icontype" -> "super")	
-		 user must /("showName" -> "true")
+		   user must /("showName" -> "true")
 			 
-		 val createUser = JsObject(Seq("username" -> JsString("createduser"), "firstname" -> JsString("Foo"), "lastname" -> JsString("lastName"), "email" -> JsString("email@email.com")))
-         val createdUser = route(app, FakeRequest(method="PUT", path="/em2016/api/user/create").withJsonBody(createUser).withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+		   val createUser = JsObject(Seq("username" -> JsString("createduser"), "firstname" -> JsString("Foo"), "lastname" -> JsString("lastName"), "email" -> JsString("email@email.com")))
+       val createdUser = route(app, FakeRequest(method="PUT", path="/em2016/api/user/create").withJsonBody(createUser).withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
 	   	 val createdUserContent = contentAsString(createdUser)
 	   	 createdUserContent === "created user createduser mail not delivered"
 	      
@@ -142,18 +193,35 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     val adminBets = contentAsString(adminBetsResult)
 	     val (agwt,acam) = extractMexCameroon(adminBets)
 	    
+	     val start = firstGameStart(adminUserToken)
+	     val beforeClosing = start.minusMinutes(BetterSettings.closingMinutesToGame() + 1) 
+	     setTime(beforeClosing, adminUserToken, s"set time to before start of games ${TimeHelper.log(beforeClosing)}")
+	     change1SpecialBet("admin", adminUserToken, 2, "pred1", "changing special bet before game starts admin admintoken")
+       change1SpecialBet("createduser", createdUserToken, 2, "pred2", "changing special bet before game starts createduser createdusertoken")
+//	     change1SpecialBetFail("createduser", adminUserToken, 2, "pred3", "changing special bet before game starts createduser adminusertoken")
 	     
-	     val diff = java.time.Duration.between(agwt.game.serverStart.toLocalTime(), MexCam.toLocalTime())
+	     
+	     val beforeStart = start.minusMinutes(BetterSettings.closingMinutesToGame()) 
+	     setTime(beforeStart, adminUserToken, s"set time to before start of games ${TimeHelper.log(beforeStart)}")
+       change1SpecialBetFail("admin", adminUserToken, 2, "predX", "changing special bet before game starts admin admintoken")
+       change1SpecialBetFail("createduser", createdUserToken, 2, "predY", "changing special bet before game starts createduser createdusertoken")
+	     
+	     
+	     val diff = java.time.Duration.between(agwt.game.serverStart.toLocalDateTime(), MexCam.toLocalDateTime())
 	     diff.toMinutes() === 0 //timezones could be a problem in unit tests
 	     
 	     val SRESULT = Some(GameResult(1,0,false))
 	     val GRESULT = Some(GameResult(1,0,true))
 	     val NOBET = Some(GameResult(0,0,false))
 	     
+	     setTimeFail(betPossible, createdUserToken, "only admin user can set time")
 	     setTime(betPossible, adminUserToken, "set time possible 1")
+	     Logger.debug(s"TIMES: now ${TimeHelper.log(BetterSettings.now)} =~= possible: ${TimeHelper.log(betPossible)} visible:${TimeHelper.log(betVisible)} forbidden: ${TimeHelper.log(betForbidden)} orig: ${TimeHelper.log(MexCam)}")
+	    
+     
 	     checkMexCameroon("createduser", createdUserToken, NOBET, "A possible createduser createduser no bet")
-	   //  checkMexCameroon("createduser", adminUserToken, None, "A possible adminuser createduser no bet")
-	   //  checkMexCameroon("admin", createdUserToken, None, "A possible createduser adminuser no bet")
+	     checkMexCameroon("createduser", adminUserToken, None, "A possible adminuser createduser no bet. not visible yet for other")
+	     checkMexCameroon("admin", createdUserToken, None, "A possible createduser adminuser no bet. not visible yet for other")
 	     checkMexCameroon("admin", adminUserToken, NOBET, "A possible adminuser adminuser no bet")
 	     setTime(betVisible, adminUserToken, "set time visible 1")
 	     checkMexCameroon("createduser", createdUserToken, NOBET, "B visible createduser createduser no bet")
@@ -162,14 +230,14 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     checkMexCameroon("admin", adminUserToken, NOBET, "B visible adminuser adminuser no bet")     
 	     setBetFail(adminUserToken, acam.copy(result=SRESULT), "C visible adminuser too late")
 	     setBetFail(createdUserToken, ucam.copy(result=SRESULT), "C visible createduser too late")
-         setTime(betPossible, adminUserToken, "set time possible 2")
+       setTime(betPossible, adminUserToken, "set time possible 2")
 	     setBet(adminUserToken, acam.copy(result=SRESULT), "D bettable adminuser")
-         setBet(createdUserToken, ucam.copy(result=SRESULT), "D bettable createduser")
+       setBet(createdUserToken, ucam.copy(result=SRESULT), "D bettable createduser")
 	     checkMexCameroon("createduser", createdUserToken, GRESULT, "D bettable  createduser createduser yes bet")
 	     checkMexCameroon("createduser", adminUserToken, None, "D bettable  adminuser createduser yes bet")
 	     checkMexCameroon("admin", createdUserToken, None, "D bettable createduser adminuser yes bet")
 	     checkMexCameroon("admin", adminUserToken, GRESULT, "D bettable adminuser adminuser yes bet")
-         setTime(betVisible, adminUserToken, "set time visible 3")
+       setTime(betVisible, adminUserToken, "set time visible 3")
 	     checkMexCameroon("createduser", createdUserToken, GRESULT, "E visible  createduser createduser yes bet")
 	     checkMexCameroon("createduser", adminUserToken, GRESULT, "E visible   adminuser createduser yes bet")
 	     checkMexCameroon("admin", createdUserToken, GRESULT, "E visible  createduser adminuser yes bet")
@@ -177,17 +245,17 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     
          
 	     val excelf = route(app, FakeRequest(method="GET", path="/em2016/api/statistics/excelAnon").withHeaders(("X-AUTH-TOKEN", createdUserToken))).get
-         val excel = Await.result(excelf, 1 second) //TODO: was 1 second why is it slower or blocking???
+       val excel = Await.result(excelf, 3 second) //TODO: was 1 second why is it slower or blocking???
   //     print(excel)
-         excel.body.contentLength.get must be_>(1000l)
+       excel.body.contentLength.get must be_>(1000l)
 	     
 	     
-         val out = route(app, FakeRequest(POST, "/em2016/api/logout").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
-         status(out) must equalTo(SEE_OTHER)
-         redirectLocation(out) must beSome.which(_ == "/")
+       val out = route(app, FakeRequest(POST, "/em2016/api/logout").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+       status(out) must equalTo(SEE_OTHER)
+       redirectLocation(out) must beSome.which(_ == "/")
        
-         val wou = route(app, FakeRequest(method="POST", path="/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
-         status(wou) must equalTo(UNAUTHORIZED)    
+       val wou = route(app, FakeRequest(method="POST", path="/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+       status(wou) must equalTo(UNAUTHORIZED)    
        
       
     }

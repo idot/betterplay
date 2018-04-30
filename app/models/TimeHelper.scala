@@ -12,9 +12,9 @@ import java.time.ZoneOffset
 object TimeHelper { 
   
   final val formatter = DateTimeFormatter.ofPattern( "yyyyMMddHHmm" ).withZone(BetterSettings.zoneId())
-  final val logformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(BetterSettings.zoneId())
+  final val logformatter = DateTimeFormatter.ISO_DATE_TIME.withZone(BetterSettings.zoneId())
   
-  
+  def log(time: OffsetDateTime): String = logformatter.format(time)
    
   implicit object OffsetDateTimeOrdering extends Ordering[OffsetDateTime] { def compare(o1: OffsetDateTime, o2: OffsetDateTime) = o1.compareTo(o2)}
   
@@ -37,7 +37,7 @@ object TimeHelper {
   final val secPerHour = 3600
   
   def durationToString(diff: Long): String = {
-      val s = diff / 1000
+      val s = diff / 1000l
       val days = s / secPerDay
       val sdays = s - (days * secPerDay)
       val hours =  sdays / secPerHour

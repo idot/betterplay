@@ -4,7 +4,6 @@ import org.junit.runner._
 import org.specs2.runner._
 import org.specs2._
 import org.specs2.Specification
-
 import org.junit.runner.RunWith
 
 @RunWith(classOf[JUnitRunner])
@@ -46,7 +45,7 @@ class TimeHelperHumanSpec extends Specification with org.specs2.specification.Ta
    0    !  0  !  5  ! 3  |
    0    !  23 !  9  ! 7  |
    4    !  12 !  17 ! 43 |
-  { (days, hours, minutes, seconds) => TimeHelper.durationToString((days * (24 * 60 * 60) + hours * (60 * 60) + minutes * 60 + seconds )) must_== s"$days days, $hours hours, $minutes minutes, $seconds seconds" }      
+  { (days, hours, minutes, seconds) => TimeHelper.durationToString((days * (24 * 60 * 60) + hours * (60 * 60) + minutes * 60 + seconds ) * 1000) must_== s"$days days, $hours hours, $minutes minutes, $seconds seconds" }      
  }
 """
 

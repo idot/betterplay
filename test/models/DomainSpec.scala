@@ -1,11 +1,9 @@
 package models
 
 import org.junit.runner._
-import java.time.OffsetDateTime
 import org.specs2.runner._
 import org.specs2._
 import org.specs2.Specification
-
 import org.junit.runner.RunWith
 
 @RunWith(classOf[JUnitRunner])
@@ -21,16 +19,14 @@ class DomainSpec extends Specification { def is =
 	def message = {
       val mess = "errormessage"
 		  val ex1 = AccessViolationException(mess)
-		  ex1.getMessage === mess
-		  
 		  val ex2 = ItemNotFoundException(mess)
-		  ex2.getMessage === mess
-		  
 		  val ex3 = ValidationException(mess)
+		  ex1.getMessage === mess and 	  
+		  ex2.getMessage === mess and 
 		  ex3.getMessage === mess
 	}
 
-  def testMail() = {//disabled just for debugging of mail settings
+  def testMail() = {//disabled this test is just for debugging of mail settings
     BetterSettings.setMailPassword("")
     val send = MailMessages.sendMail("subject", "body",  MailMessages.address("ido.tamir@vbcf.ac.at", "Ido Tamir"), true)
     send === "sent" 
@@ -39,13 +35,13 @@ class DomainSpec extends Specification { def is =
 
   def testViewableTime() = {
       val now = BetterSettings.now()
-      val before = now.minusMinutes(10)
-      DomainHelper.viewableTime(before, now, 9) === false 
-      DomainHelper.viewableTime(before, now, 10) === true 
-      DomainHelper.viewable(10, 3, before, now, 9) === false
-      DomainHelper.viewable(10, 3, before, now, 10) === true 
-      DomainHelper.viewable(3, 3, before, now, 9) === true //your own are alway visible!!!
-      DomainHelper.viewable(3, 3, before, now, 10) === true 
+      val futu = now.plusMinutes(10)
+      DomainHelper.viewableTime(futu, now, 9) === false and 
+      DomainHelper.viewableTime(futu, now, 11) === true and
+      DomainHelper.viewable(10, 3, futu, now, 9) === false and
+      DomainHelper.viewable(10, 3, futu, now, 11) === true and
+      DomainHelper.viewable(3, 3, futu, now, 9) === true and //your own are alway visible!!!
+      DomainHelper.viewable(3, 3, futu, now, 11) === true 
    }
   
    def mailGenerator() = {

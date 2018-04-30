@@ -1,6 +1,7 @@
 package models
 
 import java.time.OffsetDateTime
+import play.api.Logger
 
 trait BetterException 
 
@@ -23,69 +24,6 @@ case class AccessViolationException(message: String) extends RuntimeException(me
 case class ItemNotFoundException(message: String) extends RuntimeException(message) with BetterException
 case class ValidationException(message: String) extends RuntimeException(message) with BetterException
 
-object DomainHelper {
-  import org.jasypt.util.password.StrongPasswordEncryptor
-  import scravatar._
-  
-  type SpecialBets = Seq[(SpecialBetT,SpecialBetByUser)]
-  
-  val gts = Seq("monsterid", "identicon", "wavatar", "retro") 
-  
-  def encrypt(password: String): String = {
-      new StrongPasswordEncryptor().encryptPassword(password)
-  }
-  
-  def gravatarUrl(email: String, gravatartype: String): (String,String) = {
-	  val gt = DefaultImage(gravatartype)
-    val url = Gravatar(email).ssl(true).default(gt).maxRatedAs(G).avatarUrl  
-    (url, gravatartype)
-  }
-  
-  def randomGravatarUrl(email: String): (String,String) = {
-      val ri = new scala.util.Random().nextInt(gts.length)
-      gravatarUrl(email, gts(ri))
-  }
-  
-  def gameResultInit(): GameResult = GameResult(0,0,false)  
-  def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
-  
-  def filterSettings() = FilterSettings("all","all","all")
-  
-  /**
-   * admins had instructions!
-   */
-  def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
-	  val (u,t) = randomGravatarUrl(user.email)
-      User(None, user.username, user.firstName, user.lastName, user.institute, user.showName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, 0, 0, u, t, registeringUser, filterSettings() )
-  }
-
-  def userFromUPE(username: String, password: String, firstName: String, lastName: String, email: String, registeringUser: Option[Long]): User = {
-	    val (u,t) = randomGravatarUrl(email)
-      User(None, username, firstName, lastName, "", false, email, encrypt(password), false, false, false, true, 0, 0, u, t, registeringUser, filterSettings() )
-  }
- 
-  def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: OffsetDateTime, comment: String): BetLog = {
-      BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), game.serverStart, betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time, comment)
-  }
- 
-  /**
-   * its viewable AFTER the time!!!
-   */
-  def viewableTime(gameStart: OffsetDateTime, currentTime: OffsetDateTime, viewTimeToStart: Int): Boolean = {
-       val viewOpen = gameStart.minusMinutes(viewTimeToStart)
-       val open = currentTime.isAfter(viewOpen)
-       open
-  }
-  
-  def viewable(viewingUserId: Long, betUserId: Long, gameStart: OffsetDateTime, currentTime: OffsetDateTime, viewTimeToStart: Int): Boolean = {
-       if(viewingUserId == betUserId){
-         true
-       }else{
-         viewableTime(gameStart, currentTime, viewTimeToStart)
-       }
-  }
-  
-}
 
 
 
@@ -229,13 +167,7 @@ case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, po
  * 
  **/
 case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: OffsetDateTime, localtz: String, serverStart: OffsetDateTime, servertz: String, venue: String, group: String, nr: Int, viewMinutesToGame: Int, gameClosed: Boolean, nextGame: Boolean){
-  //     def GameResultPrettyPrint = if(calculated) GameResult.goalsTeam1+":"+GameResult.goalsTeam2 else "NA"
-	    	 
- //	     def datePrettyPrint = sdf.format(date.getTime)
 
-  //def closed(): Boolean = {
-    //compare with time
-  //}
   
 }
 
