@@ -37,13 +37,15 @@ object DomainHelper {
    * admins had instructions!
    */
   def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
-	  val (u,t) = randomGravatarUrl(user.email)
-      User(None, user.username, user.firstName, user.lastName, user.institute, user.showName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, 0, 0, u, t, registeringUser, filterSettings() )
+	    val (u,t) = randomGravatarUrl(user.email)
+	    val sendEmail = true
+      User(None, user.username, user.firstName, user.lastName, user.institute, user.showName, user.email, user.passwordHash, isAdmin,  isRegistrant, sendEmail, isAdmin, true, 0, 0, u, t, registeringUser, filterSettings() )
   }
 
   def userFromUPE(username: String, password: String, firstName: String, lastName: String, email: String, registeringUser: Option[Long]): User = {
 	    val (u,t) = randomGravatarUrl(email)
-      User(None, username, firstName, lastName, "", false, email, encrypt(password), false, false, false, true, 0, 0, u, t, registeringUser, filterSettings() )
+	    val sendEmail = true
+      User(None, username, firstName, lastName, "", false, email, encrypt(password), false, false, sendEmail, false, true, 0, 0, u, t, registeringUser, filterSettings() )
   }
  
   def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: OffsetDateTime, comment: String): BetLog = {

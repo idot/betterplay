@@ -185,6 +185,7 @@ trait BetterTables {
     def isRegistrant = column[Boolean]("isregistrant")
     def isAdmin = column[Boolean]("isadmin")
     def hadInstructions = column[Boolean]("instructions")
+    def sendEmail = column[Boolean]("sendemail")
     def canBet = column[Boolean]("canbet")
 	  def points = column[Int]("points")
     def iconurl = column[String]("iconurl")
@@ -201,7 +202,7 @@ trait BetterTables {
        
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id?) 
     
-    def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, hadInstructions, canBet, points, pointsSpecial, iconurl, icontype, registerby, filterSettings) <> (User.tupled, User.unapply)
+    def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, sendEmail, hadInstructions, canBet, points, pointsSpecial, iconurl, icontype, registerby, filterSettings) <> (User.tupled, User.unapply)
     def filterSettings = (filterBet, filterGame, filterLevel) <> (FilterSettings.tupled, FilterSettings.unapply)
     
   }

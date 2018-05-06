@@ -79,6 +79,7 @@ trait Security { self: AbstractController =>
   
   implicit val ec = defaultExecutionContext  
   
+  //TODO: check if cookie is necessary  
   def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest, AnyContent]{
       def refine[A](input: Request[A]) = Future.successful{
           val maybeToken = input.headers.get(AuthTokenHeader)

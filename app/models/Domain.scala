@@ -97,7 +97,7 @@ case class FilterSettings(bet: String, game: String, level: String)
  */
 case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, institute: String, 
       showName: Boolean, email: String, passwordHash: String,
-	    isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean,
+	    isAdmin: Boolean, isRegistrant: Boolean, sendEmail: Boolean, hadInstructions: Boolean, canBet: Boolean,
 			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long],
 			filterSettings: FilterSettings
 

@@ -8,12 +8,12 @@ object ObjectMother {
   
   def g(email: String): (String,String) = DomainHelper.randomGravatarUrl(email)
 
-  def adminUser(): User = User(None, "a1", "af1","al1", "", true, "emaila1", "pwa1", true, true, true, true, 3, 0, g("emaila1")._1, g("emaila1")._2, None, DomainHelper.filterSettings())   
+  def adminUser(): User = User(None, "a1", "af1","al1", "", true, "emaila1", "pwa1", true, true, true, true, true, 3, 0, g("emaila1")._1, g("emaila1")._2, None, DomainHelper.filterSettings())   
   
   def dummyUsers(): Seq[User] = (1 to 3).map{ nr => 
 	  val email =  s"f${nr}@betting.at"
 	  val (g,t) = DomainHelper.randomGravatarUrl(email)
-	  User(None, s"u$nr", s"f$nr", s"l$nr", "", true, email, s"$nr", true, true, true, true, 4 , 2, g, t, None, DomainHelper.filterSettings())
+	  User(None, s"u$nr", s"f$nr", s"l$nr", "", true, email, s"$nr", true, true, true, true, true, 4 , 2, g, t, None, DomainHelper.filterSettings())
   }
   
   val dummyTeams: Seq[Team] = (1 to 6).map{nr => Team(None, s"t$nr", s"t$nr", s"t$nr")}

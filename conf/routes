@@ -6,6 +6,20 @@
 GET     /                                  controllers.FrontendController.index()
 GET     /api/summary                       controllers.HomeController.appSummary
 
+# login logout
+POST    /api/login                      controllers.Application.login()
+PUT     /api/tokenPassword              controllers.Application.userByTokenPassword()
+POST    /api/logout                     controllers.Application.logout()
+GET     /api/ping                       controllers.Application.ping()
+
+
+# time
+GET     /api/time                       controllers.Application.time()
+# in debug mode its possible to set times
+POST    /api/time                       controllers.Application.setDebugTime()
+POST    /api/time/reset                 controllers.Application.resetTime()
+
+#####
 GET     /em2016/api/time                   controllers.Application.time()
 
 # in debug mode its possible to set times
