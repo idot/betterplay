@@ -102,7 +102,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
 	    val s2_2 = fifa2iso2.get(s3_2.toLowerCase).getOrElse("XX")
       val t1 = Team(None, items(4), s3_1, s2_1)
       val t2 = Team(None, items(7), s3_2, s2_2)
-      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos, BetterSettings.viewMinutesToGame(), false, false)
+      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
       (t1,t2,g)
   }
   

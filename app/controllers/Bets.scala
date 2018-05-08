@@ -28,16 +28,15 @@ class Bets @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, 
   			err => Future.successful(BadRequest(Json.obj("error" -> JsError.toJson(err)))),
   			bet => {
    		      val now = BetterSettings.now
-   		      val mtg = BetterSettings.closingMinutesToGame
   				  betterException{
-  				   betterDb.updateBetResult(bet.toBet, request.user, now, mtg).map{
+  				   betterDb.updateBetResult(bet.toBet, request.user, now).map{
   				     succ => succ match {  case(game, betold, betnew, log, errs) =>
-  				      val vtg = game.game.viewMinutesToGame
-  					   //TODO: add broadcast succ is (game,betold, betnew)
+  				                             val vtg = game.game.viewMinutesToGame
+  					                           //TODO: add broadcast succ is (game,betold, betnew)
                                        if(errs.length > 0){
                                               NotAcceptable(Json.obj("error" -> errs))       
-                                        }else{
-  				              Ok(Json.obj("game" -> game, "betold" -> betold.viewableBet(request.request.userId, game.game.serverStart, now, vtg), "betnew" -> betnew.viewableBet(request.request.userId, game.game.serverStart, now, vtg)))
+                                       }else{
+  				                                    Ok(Json.obj("game" -> game, "betold" -> betold.viewableBet(request.request.userId, game.game.serverStart, now, vtg), "betnew" -> betnew.viewableBet(request.request.userId, game.game.serverStart, now, vtg)))
                                          }
                                      }
   				 }}

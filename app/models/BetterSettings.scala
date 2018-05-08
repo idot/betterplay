@@ -22,7 +22,6 @@ object BetterSettings {
   private var _mailPassword = "" 
   private var _debugTime = now()
 	private var _debug = false  
-  private	var _viewMinutesToGame = 59
 	
   def setMailPassword(password: String){
        _mailPassword = password
@@ -74,15 +73,9 @@ object BetterSettings {
 	 * how many minutes before game starts the bets are visible to other ppl
 	 * 
 	 */
-	def viewMinutesToGame(): Int = _viewMinutesToGame
+	def viewMinutesToGame(): Int = 59
 	
-	/***
-	 * only for debugging
-	 * 
-	 */
-	def setViewMinutesToGame(minutes: Int){
-	     _viewMinutesToGame = minutes
-	}
+
 	
 	def randomToken(): String = {
 	   if(debug){

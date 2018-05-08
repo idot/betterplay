@@ -1,3 +1,13 @@
-<p>
-  user-bets works!
-</p>
+<div>
+  {{ (user$|async)?.user.username }}
+  hello
+<ul>
+   <li *ngFor="let gameBet of (user$|async)?.gameBets; let i = index">
+     {{i}} {{JSON.stringify(gameBet.bet)}} {{JSON.stringify(gameBet.game)}}
+   </li>
+</ul>
+
+
+
+
+</div>

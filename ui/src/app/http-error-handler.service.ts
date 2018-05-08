@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Observable ,  of } from 'rxjs';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { NGXLogger } from 'ngx-logger';
 
 //import { MessageService } from './message.service';
 
@@ -13,7 +13,7 @@ export type HandleError =
 /** Handles HttpClient errors */
 @Injectable()
 export class HttpErrorHandler {
-//  constructor(private messageService: MessageService) { }
+   constructor(private logger: NGXLogger) { }
 
   /** Create curried handleError function that already knows the service name */
   createHandleError = (serviceName = '') => <T>
@@ -30,12 +30,12 @@ export class HttpErrorHandler {
 
     return (error: HttpErrorResponse): Observable<T> => {
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      this.logger.error(error);
 
       const message = (error.error instanceof ErrorEvent) ?
-        error.error.message :
-       `server returned code ${error.status} with body "${error.error}"`;
+           error.error.message : `server returned code ${error.status} with body "${error.error}"`;
 
+      this.logger.error(message);
       // TODO: better job of transforming error for user consumption
   //    this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);
 

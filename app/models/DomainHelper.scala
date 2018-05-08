@@ -69,11 +69,12 @@ object DomainHelper {
    * 
    */
    def gameOpen(gameStart: OffsetDateTime, currentTime: OffsetDateTime, closingMinutesToGame: Int): Boolean = {
-       val gameClosing = gameStart.minusMinutes(closingMinutesToGame)
-       val open = currentTime.isBefore(gameClosing)
-       open
+       currentTime.isBefore(gameClosingTime(gameStart, closingMinutesToGame))
   }
   
+  def gameClosingTime(gameStart: OffsetDateTime, closingMinutesToGame: Int): OffsetDateTime = {
+      gameStart.minusMinutes(closingMinutesToGame)
+  }
   
   def viewable(viewingUserId: Long, betUserId: Long, gameStart: OffsetDateTime, currentTime: OffsetDateTime, viewTimeToStart: Int): Boolean = {
        val result = if(viewingUserId == betUserId){

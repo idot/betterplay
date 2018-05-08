@@ -1,61 +1,44 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { FormsModule }   from '@angular/forms';
 
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule }   from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+
+import { httpInterceptorProviders } from './http-interceptors';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { AppService } from './app.service';
-import { HttpClientModule } from '@angular/common/http';
-import { RouteExampleComponent } from './route-example/route-example.component';
 import { LoginComponent } from './login/login.component';
+import { UserBetsComponent } from './user-bets/user-bets.component';
 
-import { UserService} from './user/user.service';
-import { UserBetsComponent } from './user-bets/user-bets.component'
+import { BetterdbService } from 'src/app/betterdb.service';
+import { UserService } from './user/user.service';
+import { BetViewComponent } from './components/bet-view/bet-view.component';
 
-const routes: Routes = [
-  {
-    path: 'scala',
-    component: RouteExampleComponent,
-    data: {technology: 'Scala'}
-  },
-  {
-    path: 'play',
-    component: RouteExampleComponent,
-    data: {technology: 'Play'}
-  },
-  {
-    path: '/:username/bets',
-    component: UserBetsComponent
-  },
-  {
-    path: 'angular',
-    component: RouteExampleComponent,
-    data: {technology: 'Angular'}
-  },
-  {
-    path: '**',
-    redirectTo: '/play',
-    pathMatch: 'full'
-  }
-];
+
+
+//enable server side logging with serverLogginUrl
+//LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}),
 
 @NgModule({
   declarations: [
     AppComponent,
-    RouteExampleComponent,
     LoginComponent,
-    UserBetsComponent
+    UserBetsComponent,
+    BetViewComponent
   ],
   imports: [
     BrowserModule,
+    LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(routes)
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
-  providers: [AppService, UserService],
+  providers: [httpInterceptorProviders, UserService, BetterdbService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

@@ -4,13 +4,15 @@ import {
   HttpRequest, HttpResponse
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
-//import { MessageService } from '../message.service';
+
+import { NGXLogger } from 'ngx-logger';
+
 
 @Injectable()
 export class LoggingInterceptor implements HttpInterceptor {
-//  constructor(private messenger: MessageService) {}
+  constructor(private logger: NGXLogger) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const started = Date.now();
@@ -28,10 +30,12 @@ export class LoggingInterceptor implements HttpInterceptor {
         // Log when response observable either completes or errors
         finalize(() => {
           const elapsed = Date.now() - started;
-          const msg = `${req.method} "${req.urlWithParams}"
-             ${ok} in ${elapsed} ms.`;
-          console.log(msg);
-    //      this.messenger.add(msg);
+          const msg = `${req.method} "${req.urlWithParams}" ${ok} in ${elapsed} ms.`;
+          if(ok == "ok"){
+              this.logger.trace(msg);
+          }else{
+              this.logger.error(msg);
+          }
         })
       );
   }

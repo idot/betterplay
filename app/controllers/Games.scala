@@ -72,7 +72,7 @@ class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
 		    err =>  Future.successful(BadRequest(Json.obj("error" -> JsError.toJson(err)))),
 		  cg => {
 		    betterException{
-		     val game = Game(None, DomainHelper.gameResultInit, 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0, BetterSettings.viewMinutesToGame(), false, false)
+		     val game = Game(None, DomainHelper.gameResultInit, 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
 			       betterDb.insertGame(game, cg.team1, cg.team2, cg.level, request.admin)
 			        .flatMap{ gwt => 
 				           betterDb.createBetsForGamesForAllUsers(request.admin)

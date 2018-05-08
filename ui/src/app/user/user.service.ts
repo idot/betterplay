@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { of } from 'rxjs/observable/of';
+import { Observable ,  of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+
+import { NGXLogger } from 'ngx-logger';
 
 import { Environment } from '../model/environment';
 import { User } from '../model/user';
-import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,7 +21,7 @@ export class UserService {
   private authtoken = "";
 //  private a = environment.AUTHTOKEN;
 
-  constructor(private http: HttpClient) {}
+  constructor(private logger: NGXLogger, private http: HttpClient) {}
 
   getAuthorizationToken(): string {
      return this.authtoken;
@@ -45,12 +44,13 @@ export class UserService {
   login(username: string, password: string): User | null {
       this.http.post<any>(Environment.api("login"), { username: username, password: password })
          .pipe(
-            tap(_ => console.log(`fetching user with username ${username}`)),
-             catchError(this.handleError)
+            tap(_ => this.logger.debug(`fetching user with username ${username}`)),
+             catchError(this.handleError('login'))
          ).subscribe( data => {
-             console.log(data);
+             this.logger.debug(data);
              this.user = data['user'];
              this.authtoken = data[Environment.AUTHTOKEN];
+             localStorage.setItem(Environment.AUTHTOKEN, this.authtoken); //add expiry
            }
         )
        return this.user;
@@ -60,27 +60,31 @@ export class UserService {
 
 
   logout() {
-
+      localStorage.removeItem(Environment.AUTHTOKEN);
   }
 
   reauthenticate() {
     //in the previous version opening a new window led to a loss of login in the new window
   }
 
-  private handleError(error: HttpErrorResponse) {
-      if (error.error instanceof ErrorEvent) {
-        // A client-side or network error occurred. Handle it accordingly.
-        console.error('An error occurred:', error.error.message);
-      } else {
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong,
-        console.error(
-          `Backend returned code ${error.status}, ` +
-          `body was: ${error.error}`);
-      }
-      // return an ErrorObservable with a user-facing error message
-      return new ErrorObservable(
-        'Something bad happened; please try again later.');
- };
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      //console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.logger.error(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
 
 }

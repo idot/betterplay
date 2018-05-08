@@ -166,7 +166,7 @@ case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, po
  * startServer: start in server timezone
  * 
  **/
-case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: OffsetDateTime, localtz: String, serverStart: OffsetDateTime, servertz: String, venue: String, group: String, nr: Int, viewMinutesToGame: Int, gameClosed: Boolean, nextGame: Boolean){
+case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: OffsetDateTime, localtz: String, serverStart: OffsetDateTime, servertz: String, venue: String, group: String, nr: Int, viewMinutesToGame: Int, closingMinutesToGame: Int, gameClosed: Boolean, nextGame: Boolean){
 
   
 }

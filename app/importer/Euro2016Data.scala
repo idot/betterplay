@@ -88,7 +88,7 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
       }
       val t1 = toTeam(t1n)
       val t2 = toTeam(t2n)
-      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos+1, 59, false, false)
+      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos+1, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
       (t1,t2,g)
   }
   

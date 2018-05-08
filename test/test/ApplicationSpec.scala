@@ -57,27 +57,27 @@ class ApplicationSpec extends Specification with JsonMatchers {
       
     def setTime(time: OffsetDateTime, authToken: String, message: String) = {
        val nt = JsObject(Seq("serverTime" -> Json.toJson(time)))
-       val updt = route(app, FakeRequest(method="POST", path="/em2016/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
+       val updt = route(app, FakeRequest(method="POST", path="/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
        val res = Await.result(updt, 1 second)
        status(updt) must equalTo(OK).setMessage(message)
     }
     
     def setTimeFail(time: OffsetDateTime, authToken: String, message: String) = {
        val nt = JsObject(Seq("serverTime" -> Json.toJson(time)))
-       val updt = route(app, FakeRequest(method="POST", path="/em2016/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
+       val updt = route(app, FakeRequest(method="POST", path="/api/time").withHeaders(("X-AUTH-TOKEN", authToken)).withJsonBody(nt)).get
        val res = Await.result(updt, 1 second)
        status(updt) must equalTo(UNAUTHORIZED).setMessage(message)
     }
     
     def setBet(authToken: String, bet: ViewableBet, message: String) = {
        val pb = Json.toJson(bet)
-       val updatePB = route(app, FakeRequest(method="POST", path=s"/em2016/api/bet/${bet.id.get}").withJsonBody(pb).withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val updatePB = route(app, FakeRequest(method="POST", path=s"/api/bet/${bet.id.get}").withJsonBody(pb).withHeaders(("X-AUTH-TOKEN", authToken))).get
 	   	 status(updatePB) must equalTo(OK).setMessage(message)
     }
     
     def setBetFail(authToken: String, bet: ViewableBet, message: String) = {
        val pb = Json.toJson(bet)
-       val updatePB = route(app, FakeRequest(method="POST", path=s"/em2016/api/bet/${bet.id.get}").withJsonBody(pb).withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val updatePB = route(app, FakeRequest(method="POST", path=s"/api/bet/${bet.id.get}").withJsonBody(pb).withHeaders(("X-AUTH-TOKEN", authToken))).get
 	     contentAsString(updatePB) === """{"error":["game closed since 0 days, 0 hours, 2 minutes, 0 seconds"]}"""
        status(updatePB) must equalTo(406).setMessage(message)
     }
@@ -95,13 +95,13 @@ class ApplicationSpec extends Specification with JsonMatchers {
     
     
     def firstGameStart(token: String): OffsetDateTime = {
-        val firstGame = route(app, FakeRequest(method="GET", path="/em2016/api/game/1").withHeaders(("X-AUTH-TOKEN", token))).get
+        val firstGame = route(app, FakeRequest(method="GET", path="/api/game/1").withHeaders(("X-AUTH-TOKEN", token))).get
 	      val start = (Json.parse(contentAsString(firstGame)) \ "game" \ "game" \ "serverStart").as[OffsetDateTime]
 	      start
     }
     
     def getSpecialBet(username: String, token: String, row: Int): SpecialBetByUser = {
-         val specials =  route(app, FakeRequest(method="GET", path=s"/em2016/api/user/${username}/specialBets").withHeaders(("X-AUTH-TOKEN", token))).get
+         val specials =  route(app, FakeRequest(method="GET", path=s"/api/user/${username}/specialBets").withHeaders(("X-AUTH-TOKEN", token))).get
          val bets =  (Json.parse(contentAsString(specials)) \\ "templateBets" ).map(x => x.as[Seq[(SpecialBetT,SpecialBetByUser)]]).flatten //implemented in JsonHelper
          bets(row)._2
     }
@@ -109,7 +109,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
     def change1SpecialBet(username: String, token: String, row: Int, prediction: String, message: String) = {
         val bet = getSpecialBet(username, token, row)
         val changed = Json.toJson(bet.copy(prediction = prediction))
-        val updated = route(app, FakeRequest(method="POST", path=s"/em2016/api/specialBet").withJsonBody(changed).withHeaders(("X-AUTH-TOKEN", token))).get
+        val updated = route(app, FakeRequest(method="POST", path=s"/api/specialBet").withJsonBody(changed).withHeaders(("X-AUTH-TOKEN", token))).get
         status(updated) must equalTo(OK).setMessage(message) 
         contentAsString(updated) === s""""updated special bet with prediction $prediction""""
         val bet2 = getSpecialBet(username, token, row)
@@ -120,7 +120,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
     def change1SpecialBetFail(username: String, token: String, row: Int, prediction: String, message: String) = {
         val bet = getSpecialBet(username, token, row)
         val changed = Json.toJson(bet.copy(prediction = prediction))
-        val updated = route(app, FakeRequest(method="POST", path=s"/em2016/api/specialBet").withJsonBody(changed).withHeaders(("X-AUTH-TOKEN", token))).get
+        val updated = route(app, FakeRequest(method="POST", path=s"/api/specialBet").withJsonBody(changed).withHeaders(("X-AUTH-TOKEN", token))).get
         status(updated) must equalTo(406).setMessage(message) //NotAcceptable
         contentAsString(updated) === """{"error":"game closed since 0 days, 0 hours, 0 minutes, 0 seconds"}"""
         val bet2 = getSpecialBet(username, token, row)
@@ -129,7 +129,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
     
     def checkMexCameroon(username: String, authToken: String, should: Option[GameResult], message: String) = {
        Logger.debug(s"mexCam: $username $authToken $should $message")
-       val userBetsResult = route(app, FakeRequest(method="GET", path=s"/em2016/api/user/$username").withHeaders(("X-AUTH-TOKEN", authToken))).get
+       val userBetsResult = route(app, FakeRequest(method="GET", path=s"/api/user/$username").withHeaders(("X-AUTH-TOKEN", authToken))).get
        val userBets = contentAsString(userBetsResult)
        val (gwt, mexCam) = extractMexCameroon(userBets)
        mexCam.result must be_==(should).setMessage(message)
@@ -146,23 +146,23 @@ class ApplicationSpec extends Specification with JsonMatchers {
       
        val up = JsObject(Seq("username" -> JsString("admin"), "password" -> JsString("admin")))
        
-       val unau = route(app, FakeRequest("POST", "/em2016/api/createBetsForUsers")).get
+       val unau = route(app, FakeRequest("POST", "/api/createBetsForUsers")).get
        status(unau) must equalTo(UNAUTHORIZED)
                
-       val unau2 = route(app, FakeRequest("POST", "/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", "WRONGTOKEN"))).get
+       val unau2 = route(app, FakeRequest("POST", "/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", "WRONGTOKEN"))).get
        status(unau2) must equalTo(UNAUTHORIZED)
        
-       val res = route(app, FakeRequest(POST, "/em2016/api/login").withJsonBody(up)).get      
+       val res = route(app, FakeRequest(POST, "/api/login").withJsonBody(up)).get      
        val adminUserToken = extractToken(res).get 
 	   
-       val wau = route(app, FakeRequest(method="POST", path="/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+       val wau = route(app, FakeRequest(method="POST", path="/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
        status(wau) must equalTo(OK)
 	   
 	     val upd = JsObject(Seq("email" -> JsString("abcd@abcd.com"), "showname" -> JsBoolean(true), "institute" -> JsString("none"), "icontype" -> JsString("super")))
-	     val details = route(app, FakeRequest(method="POST", path="/em2016/api/user/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+	     val details = route(app, FakeRequest(method="POST", path="/api/user/details").withJsonBody(upd).withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
 	     status(details) must equalTo(OK)
 	          
-	     val userf = route(app, FakeRequest(method="GET", path="/em2016/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get	
+	     val userf = route(app, FakeRequest(method="GET", path="/api/userWithEmail").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get	
 	     val user = contentAsString(userf) 	  
 	     user must /("firstName" -> "admin")		  
 	     user must /("lastName" -> "admin")	
@@ -171,25 +171,25 @@ class ApplicationSpec extends Specification with JsonMatchers {
 		   user must /("showName" -> "true")
 			 
 		   val createUser = JsObject(Seq("username" -> JsString("createduser"), "firstname" -> JsString("Foo"), "lastname" -> JsString("lastName"), "email" -> JsString("email@email.com")))
-       val createdUser = route(app, FakeRequest(method="PUT", path="/em2016/api/user/create").withJsonBody(createUser).withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+       val createdUser = route(app, FakeRequest(method="PUT", path="/api/user/create").withJsonBody(createUser).withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
 	   	 val createdUserContent = contentAsString(createdUser)
 	   	 createdUserContent === "created user createduser mail not delivered"
 	      
 	     val token = models.BetterSettings.randomToken()
 	     val userTokenPass = JsObject(Seq("token" -> JsString(token), "password" -> JsString("mypassword")))
-	     val userByToken = route(app, FakeRequest(method="PUT", path="/em2016/api/tokenPassword").withJsonBody(userTokenPass)).get
+	     val userByToken = route(app, FakeRequest(method="PUT", path="/api/tokenPassword").withJsonBody(userTokenPass)).get
 	     val createdUserToken = extractToken(userByToken).get 
 	     val newUser = contentAsString(userByToken)
 	     newUser must /("user") */("firstName" -> "Foo") /("username" -> "createduser")
 	     
-	     val userBetsResult = route(app, FakeRequest(method="GET", path="/em2016/api/user/createduser").withHeaders(("X-AUTH-TOKEN", createdUserToken))).get
+	     val userBetsResult = route(app, FakeRequest(method="GET", path="/api/user/createduser").withHeaders(("X-AUTH-TOKEN", createdUserToken))).get
 	     val userBets = contentAsString(userBetsResult)
 	     userBets must /("user") */("username" -> "createduser") 
 	     userBets must /("specialBets") */("name" -> "topscorer")
 	     userBets must /("gameBets") */("goalsTeam1" -> "0.0")
 	     val (ugwt,ucam) = extractMexCameroon(userBets)
 	          
-	     val adminBetsResult = route(app, FakeRequest(method="GET", path="/em2016/api/user/admin").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+	     val adminBetsResult = route(app, FakeRequest(method="GET", path="/api/user/admin").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
 	     val adminBets = contentAsString(adminBetsResult)
 	     val (agwt,acam) = extractMexCameroon(adminBets)
 	    
@@ -244,17 +244,17 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     checkMexCameroon("admin", adminUserToken, GRESULT, "E visible  adminuser adminuser yes bet")
 	     
          
-	     val excelf = route(app, FakeRequest(method="GET", path="/em2016/api/statistics/excelAnon").withHeaders(("X-AUTH-TOKEN", createdUserToken))).get
+	     val excelf = route(app, FakeRequest(method="GET", path="/api/statistics/excelAnon").withHeaders(("X-AUTH-TOKEN", createdUserToken))).get
        val excel = Await.result(excelf, 3 second) //TODO: was 1 second why is it slower or blocking???
   //     print(excel)
        excel.body.contentLength.get must be_>(1000l)
 	     
 	     
-       val out = route(app, FakeRequest(POST, "/em2016/api/logout").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+       val out = route(app, FakeRequest(POST, "/api/logout").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
        status(out) must equalTo(SEE_OTHER)
        redirectLocation(out) must beSome.which(_ == "/")
        
-       val wou = route(app, FakeRequest(method="POST", path="/em2016/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
+       val wou = route(app, FakeRequest(method="POST", path="/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
        status(wou) must equalTo(UNAUTHORIZED)    
        
       

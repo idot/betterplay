@@ -193,7 +193,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
      /**
      * I am loading the special bet by id from the database and check if the user is the actual owner to make sure its not tampered with 
      * 
-     * 
+     * TODO: load template with closing time, compare to local time get rid of global closingMinutesToGame
      * 
      */
      def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
@@ -384,9 +384,8 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       * This happens at import where the timezone has to be specified
       */
      def isGameOpen(gameTimeStart: OffsetDateTime, currentTime: OffsetDateTime, closingMinutesToGame: Int): Validation[String,String] = {
-         val gameClosing = gameTimeStart.minusMinutes(closingMinutesToGame)
-         val open = currentTime.isBefore(gameClosing)
-         if(open) Success("valid time") else Failure(s"game closed since ${TimeHelper.compareTimeHuman(gameClosing, currentTime)}")
+         val open = DomainHelper.gameOpen(gameTimeStart, currentTime, closingMinutesToGame)
+         if(open) Success("valid time") else Failure(s"game closed since ${TimeHelper.compareTimeHuman(DomainHelper.gameClosingTime(gameTimeStart, closingMinutesToGame), currentTime)}")
      }
 
 
@@ -430,12 +429,12 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
       *  I have to execute the betlog database insert, so the application has to test for invalid bet insert request by checking the error string
       * 
       */
-     def updateBetResult(bet: Bet, submittingUser: User, currentTime: OffsetDateTime, closingMinutesToGame: Int): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
+     def updateBetResult(bet: Bet, submittingUser: User, currentTime: OffsetDateTime): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
           dbLogger.debug(s"updating bet result: $bet ${submittingUser.username}")
           val invalid = GameResult(-1,-1,true)
           val bg = (for{
              (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id).result.head
-             (upl, dbAction) <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, closingMinutesToGame).fold(
+             (upl, dbAction) <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, g.closingMinutesToGame).fold(
                        err => {
                         val errors = err.list.toList.mkString(";")
                         val updatedBet = b.copy(result=invalid)

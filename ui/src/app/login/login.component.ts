@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { NGXLogger } from 'ngx-logger';
+
 import { UserService } from '../user/user.service';
 
 
@@ -11,7 +15,7 @@ export class LoginComponent implements OnInit {
   username: string = "aa";
   password: string = "";
 
-  constructor(private userService: UserService) { }
+  constructor(private logger: NGXLogger, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
   }
@@ -21,9 +25,11 @@ export class LoginComponent implements OnInit {
   }
 
   login(username: string, password: string){
-      let result = this.userService.login(username, password);
+      const result = this.userService.login(username, password);
+      this.logger.debug(`fetched user at login: ${username}`, result);
       if(result){
-          
+        //  this.router.navigate([`/user/:username/bets`, { username: username }]);
+          this.router.navigate([`/user/${username}/bets`]);
       }
   }
 

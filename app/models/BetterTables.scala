@@ -132,6 +132,7 @@ trait BetterTables {
     def group = column[String]("group")
     def nr = column[Int]("nr")
     def viewMinutesToGame = column[Int]("viewminutestogame")
+    def closingMinutesToGame = column[Int]("closingminutestogame")
     def gameClosed = column[Boolean]("gameclosed")
     def nextGame = column[Boolean]("nextgame")
     
@@ -139,7 +140,7 @@ trait BetterTables {
     def team2 = foreignKey("GAME_TEAM2_FK", team2Id, teams)(_.id) 
     def level = foreignKey("GAME_LEVEL_FK", levelId, levels)(_.id) 
     
-    def * = (id.?, result, team1Id, team2Id, levelId, localStart, localtz, serverStart, servertz, venue, group, nr, viewMinutesToGame, gameClosed, nextGame) <> (Game.tupled, Game.unapply)
+    def * = (id.?, result, team1Id, team2Id, levelId, localStart, localtz, serverStart, servertz, venue, group, nr, viewMinutesToGame, closingMinutesToGame, gameClosed, nextGame) <> (Game.tupled, Game.unapply)
     def result = (goalsTeam1, goalsTeam2, isSet) <> (GameResult.tupled, GameResult.unapply)
 
   }

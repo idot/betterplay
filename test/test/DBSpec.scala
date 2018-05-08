@@ -284,7 +284,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
          
          //update the result in the database and check the return values; this bet is submitted by the wrong user and too late!
          AR(db.run(betterDb.betlogs.size.result)) === 0
-         val upD = AR(betterDb.updateBetResult(b1, users(0), firstStart, 60))
+         val upD = AR(betterDb.updateBetResult(b1, users(0), firstStart))
          AR(db.run(betterDb.betlogs.size.result)) === 1
          val timeDiff = java.time.Duration.between(gb1(0)._1.game.serverStart.toLocalTime, firstStart.toLocalTime())
          timeDiff.toMinutes === 0
@@ -293,7 +293,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
          Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, -1, 0, -1, firstStart, "user ids differ 2 1;game closed since 0 days, 1 hours, 0 minutes, 0 seconds")
     
          //update the result in the database and check the return values; this bet is submitted successfully; will be tendency points
-         val upD2 = AR(betterDb.updateBetResult(b1, users(1), firstStart.minusMinutes(61), 60))
+         val upD2 = AR(betterDb.updateBetResult(b1, users(1), firstStart.minusMinutes(61)))
          upD2._5 === Nil
        	 tl( betterDb.betlogs,2, "Bet2" )
          val q = betterDb.betlogs.sortBy(_.id.desc).result.head
@@ -308,7 +308,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
          //update the result for a different user; will be exact Points
          val (bet2,u) = AR(betterDb.betsWitUsersForGame(game)).filter{ case(b,u) => u == users(2) }.head
          val bet2u = bet2.copy(result=GameResult(1,3,false))
-         val upD3 = AR(betterDb.updateBetResult(bet2u, users(2), firstStart.minusMinutes(61), 60))
+         val upD3 = AR(betterDb.updateBetResult(bet2u, users(2), firstStart.minusMinutes(61)))
          upD3._2.result === GameResult(0,0,false)
          upD3._3.result === GameResult(1,3,true)   
          val betFromDb2 = AR(betterDb.betsWitUsersForGame(game)).filter{ case(b,u) => u == users(2) }.map{ case(b,u) => b }.head
@@ -415,7 +415,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
       def newGames(){
           val admin = getAdmin()
           val finalGameStart = firstStart.plusMinutes(100)
-          val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart.minusHours(5), "local", finalGameStart, "server",  "stadium", "groupC", 4, 59, false, false)
+          val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart.minusHours(5), "local", finalGameStart, "server",  "stadium", "groupC", 4, 59, 60, false, false)
           val teams = Await.result(betterDb.allTeams(), 1 seconds).sortBy(_.id)
           val level = Await.result(betterDb.allLevels, 1 seconds).sortBy(_.level).reverse.head
           val gwt = Await.result(betterDb.insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin), 1 seconds).toOption.get
@@ -428,7 +428,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
           //user 1 wins the final
           betsForGame.zipWithIndex.foreach{ case((b,u),i) =>
               val bWithR = b.copy(result=GameResult(3,i,false))
-              val (g,b1,b2,l, err) = AR(betterDb.updateBetResult(bWithR, u, finalGameStart.minusMinutes(100), 60))
+              val (g,b1,b2,l, err) = AR(betterDb.updateBetResult(bWithR, u, finalGameStart.minusMinutes(100)))
               b1.result === GameResult(0,0,false)
               b2.result === GameResult(3,i,true)
           }
