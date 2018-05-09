@@ -14,6 +14,7 @@ import javax.inject.{Inject, Provider, Singleton}
 import scala.concurrent.Future
 
 
+
 @Singleton
 class Levels @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
 

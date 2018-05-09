@@ -15,6 +15,7 @@ import play.api.i18n.MessagesApi
 import scala.concurrent.Future
 
 
+
 @Singleton
 class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
   

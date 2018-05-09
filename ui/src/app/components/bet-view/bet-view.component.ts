@@ -4,6 +4,7 @@ import range from 'lodash/range';
 
 import { BetterdbService } from '../../betterdb.service';
 import { Bet } from '../../model/bet';
+import { BetterTimerService } from '../../better-timer.service';
 
 @Component({
   selector: 'app-bet-view',
@@ -11,19 +12,20 @@ import { Bet } from '../../model/bet';
   styleUrls: ['./bet-view.component.css']
 })
 export class BetViewComponent implements OnInit {
-  @Input() bet: Bet;
-  enablePoints = true;
-  disableSave = true;
-  saveStyle = {};
+  @Input() bet: Bet
+  @Input() serverStart: Date
+  enablePoints = true
+  disableSave = true
+  saveStyle = {}
 
-  points = range(15);
+  points = range(15)
 
-  disabled(bet: Bet): boolean {
-   return false //  ! this.enablePoints && this.betterdb.canBet(bet);
+  disabled(): boolean {
+      return ! this.enablePoints && this.timerService.canBet(this.serverStart, this.bet)
   }
 
 
-  constructor(private betterdb: BetterdbService) { }
+  constructor(private betterdb: BetterdbService, private timerService: BetterTimerService) { }
 
   ngOnInit() {
   }

@@ -4,7 +4,6 @@
 
 # Home page
 GET     /                                  controllers.FrontendController.index()
-GET     /api/summary                       controllers.HomeController.appSummary
 
 # login logout
 POST    /api/login                      controllers.Application.login()

@@ -21,6 +21,7 @@ import models.JsonHelper._
 import javax.inject.{Inject, Provider, Singleton,Named}
 import play.api.libs.json.JsSuccess
 
+
 @Singleton
 class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
  

@@ -4,16 +4,14 @@ TODO:
 play/backend:
 -------------
 * throttler -> stream
-* add closingTime to games; remove from BetterSettings
-* remove minutesToView from BetterSettings
+* remove minutesToView from BetterSettings; currently used for importer
 * remove scalaz and use cats
-* use DomainHelper for gameOpen + add tests
 * disable betting for users that canBet = false
 * unit tests in backend for non-viewable bets  ????
 * actor sending unsent mails
 * view for unsent mails
 * validate Excel in DBSpec
-
+* multiple mail provider; when creating users or afterwards;
 
 
 UI:

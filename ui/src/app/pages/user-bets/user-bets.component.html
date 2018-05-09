@@ -1,0 +1,15 @@
+<div *ngIf="user$ | async as user; else loading">
+  <user-view [user]=user.user [full]=true>
+  </user-view>
+
+  <h1>stufffff</h1>
+  <ul>
+     <li *ngFor="let gameBet of user.gameBets; let i = index">
+       {{i}} {{JSON.stringify(gameBet.bet)}} {{JSON.stringify(gameBet.game)}}
+     </li>
+  </ul>
+</div>
+
+<ng-template #loading>
+  Loading stuff...
+</ng-template>

@@ -5,13 +5,13 @@ import { Observable, EMPTY } from 'rxjs';
 
 import { NGXLogger } from 'ngx-logger';
 
-import { BetterdbService } from '../betterdb.service';
-import { UserWithBets } from '../model/bet';
+import { BetterdbService } from '../../betterdb.service';
+import { UserWithBets } from '../../model/bet';
 
 
 
 @Component({
-  selector: 'app-user-bets',
+  selector: 'user-bets',
   templateUrl: './user-bets.component.html',
   styleUrls: ['./user-bets.component.css']
 })

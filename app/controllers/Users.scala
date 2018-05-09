@@ -28,6 +28,7 @@ import play.api.libs.ws._
 import scala.concurrent.duration._
 import TimeHelper._
 
+
 @Singleton
 class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, override val messagesApi: MessagesApi,
                   ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends AbstractController(cc) with Security with I18nSupport {

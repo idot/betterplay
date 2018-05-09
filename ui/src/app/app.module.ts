@@ -5,6 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule }   from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
+import {MatIconModule} from '@angular/material/icon';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatIconRegistry, MatButtonModule, MatCheckboxModule} from '@angular/material';
+
+
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { httpInterceptorProviders } from './http-interceptors';
@@ -17,6 +22,10 @@ import { UserBetsComponent } from './user-bets/user-bets.component';
 import { BetterdbService } from 'src/app/betterdb.service';
 import { UserService } from './user/user.service';
 import { BetViewComponent } from './components/bet-view/bet-view.component';
+import { GameViewComponent } from './components/game-view/game-view.component';
+import { UserViewComponent } from './components/user-view/user-view.component';
+import { FilterViewComponent } from './components/filter-view/filter-view.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 
 
@@ -28,12 +37,17 @@ import { BetViewComponent } from './components/bet-view/bet-view.component';
     AppComponent,
     LoginComponent,
     UserBetsComponent,
-    BetViewComponent
+    BetViewComponent,
+    GameViewComponent,
+    UserViewComponent,
+    FilterViewComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule,
+    MatIconModule, MatButtonModule, MatCheckboxModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule
@@ -41,4 +55,18 @@ import { BetViewComponent } from './components/bet-view/bet-view.component';
   providers: [httpInterceptorProviders, UserService, BetterdbService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+        'do_not_disturb',
+        sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
+        iconRegistry.addSvgIcon(
+              'thumbs-up',
+              sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
+
+  }
+
+
+
+}

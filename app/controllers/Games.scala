@@ -25,6 +25,7 @@ import javax.inject.{Inject, Provider, Singleton, Named}
 import scala.concurrent.Future
 
 
+
 @Singleton
 class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
   

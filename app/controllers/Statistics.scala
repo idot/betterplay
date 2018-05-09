@@ -12,6 +12,7 @@ import scala.concurrent.{Future,blocking}
 
 import javax.inject.{Inject, Provider, Singleton}
 
+
 @Singleton
 class Statistics @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, configuration: Configuration) extends AbstractController(cc) with Security {
 

@@ -1,10 +1,10 @@
-import { NgModule }              from '@angular/core';
-import { RouterModule, Routes }  from '@angular/router';
+import { NgModule }              from '@angular/core'
+import { RouterModule, Routes }  from '@angular/router'
 
-import { UserBetsComponent } from './user-bets/user-bets.component'
+import { UserBetsComponent } from './pages/user-bets/user-bets.component'
 
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { AppComponent } from './app.component'
+import { LoginComponent } from './pages/login/login.component'
 
 const routes: Routes = [
   {

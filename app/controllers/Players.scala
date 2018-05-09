@@ -10,6 +10,7 @@ import models.JsonHelper._
 
 import javax.inject.{Inject, Provider, Singleton}
 
+
 @Singleton
 class Players @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
  

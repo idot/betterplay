@@ -1,0 +1,18 @@
+
+<div class="userView">
+  <a [routerLink]="['/user/', user.username, 'bets']" preserveQueryParams preserveFragment>
+    <img src="{{ user.iconurl+'&s=25' }}" alt="{{user.username}}" class="md-avatar" *ngIf="user.iconurl" style="margin: 0px 2px 0px 10px; border-radius: 50%;"/>
+    {{user.username}}
+  </a>
+
+  <!--span>
+    <span class="badge-large {{badgecolor()}}">{{user.totalPoints}}</span>
+    <span class="badge-large badge-points">{{user.pointsGames}}</span>
+    <span class="badge-large badge-points">{{user.pointsSpecialBet}}</span>
+  </span-->
+  <mat-icon class="material-icons md-20 red" style="fill : red;" size="20" *ngIf="! user.canBet">do_not_disturb</mat-icon>
+  <mat-icon class="material-icons md-20 green" style="fill : green;" size="20" *ngIf="user.canBet">check_circle</mat-icon>
+  <button mat-fab color="accent" type="submit" value="Submit"  class="md-raised" title="Special Bets" [routerLink]="['/user/', user.username, 'specialbets']" *ngIf="full">
+     Special Bets
+  </button>
+</div>
