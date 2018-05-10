@@ -3,11 +3,12 @@ import { NgModule } from '@angular/core'
 
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule }   from '@angular/forms'
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
-import {MatIconRegistry, MatButtonModule, MatCheckboxModule} from '@angular/material'
+import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule} from '@angular/material'
 
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
@@ -46,8 +47,8 @@ import { MenuComponent } from './components/menu/menu.component'
   imports: [
     BrowserModule,
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
-    FormsModule,
-    MatIconModule, MatButtonModule, MatCheckboxModule,
+    FormsModule, FlexLayoutModule,
+    MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule

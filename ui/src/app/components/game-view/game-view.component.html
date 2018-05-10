@@ -1,3 +1,16 @@
-<p>
-  game-view works!
-</p>
+<div class="gameView">
+    <div>
+         <a [routerLink]="['/game/bets', gwt.game.nr]" preserveQueryParams preserveFragment>
+              <!--better-flag iso=gwt.team1.short2></better-flag><better-flag iso=gwt.team2.short2></better-flag-->  {{gwt.team1.name}} : {{gwt.team2.name}}
+         </a>
+         <mat-icon *ngIf="gwt.game.nextGame">whatshot</mat-icon>
+         <span *ngIf="! gameClosed()">  {{gwt.game.serverStart | date : DF}}, {{timeLeft(gwt.game.serverStart)}}</span>
+         <span *ngIf="gameClosed() && ! resultSet">closed, no result</span>
+         <span *ngIf="gameClosed() && resultSet">{{prettyResult()}}</span>
+         <!--game-bets-popup gwt="gwt"></game-bets-popup-->
+         <!--span *ngIf="expand" matBadge={{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}>&nbsp&nbsp{{gwt.level.name}}</span-->
+         <button *ngIf="allowEdit()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game/edit', gwt.game.nr]">
+              set result
+          </button>
+     </div>
+</div>

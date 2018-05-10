@@ -19,6 +19,19 @@ export class GameViewComponent implements OnInit {
 
   timeLeft = this.timerService.timeLeft
 
+  gameClosed(): boolean {
+    const start = this.gwt.game.serverStart
+    const starts = start.getMilliseconds()
+    return this.timerService.betClosed(starts)
+  }
+
+  prettyResult(): String {
+    return "TODO"
+  }
+//  allowEdit(): boolean {
+//
+//  }
+
   constructor(private betterdb: BetterdbService, private timerService: BetterTimerService) { }
 
 

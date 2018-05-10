@@ -2,10 +2,10 @@
   <user-view [user]=user.user [full]=true>
   </user-view>
 
-  <h1>stufffff</h1>
+  <h1>Bets</h1>
   <ul>
      <li *ngFor="let gameBet of user.gameBets; let i = index">
-       {{i}} {{JSON.stringify(gameBet.bet)}} {{JSON.stringify(gameBet.game)}}
+       {{i}} <game-view [gwt]=gameBet.game ></game-view> <bet-view [bet]=gameBet.bet [serverStart]=gameBet.game.game.serverStart [gameresult]=gameBet.game.game.result></bet-view>
      </li>
   </ul>
 </div>
