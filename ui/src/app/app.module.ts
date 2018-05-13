@@ -26,7 +26,8 @@ import { BetViewComponent } from './components/bet-view/bet-view.component'
 import { GameViewComponent } from './components/game-view/game-view.component'
 import { UserViewComponent } from './components/user-view/user-view.component'
 import { FilterViewComponent } from './components/filter-view/filter-view.component'
-import { MenuComponent } from './components/menu/menu.component'
+import { MenuComponent } from './components/menu/menu.component';
+import { MenubarComponent } from './components/menubar/menubar.component'
 
 
 
@@ -42,7 +43,8 @@ import { MenuComponent } from './components/menu/menu.component'
     GameViewComponent,
     UserViewComponent,
     FilterViewComponent,
-    MenuComponent
+    MenuComponent,
+    MenubarComponent
   ],
   imports: [
     BrowserModule,

@@ -5,9 +5,9 @@ import { Observable, of, pipe } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 import { Environment } from './model/environment';
-import { Bet, UserWithBets } from './model/bet';
+import { Bet, UserWithBets, Game } from './model/bet';
 import { User } from './model/user';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -18,15 +18,33 @@ export class BetterdbService {
 
   constructor(private logger: NGXLogger, private http: HttpClient) { }
 
-  canBet(serverStart, bet): boolean {
-  //  var diff = (serverStart - MSTOCLOSING) - vm.currentTime;
+
+  isDebug(): boolean {
     return true
+  }
+
+  /**
+  * converts json response date which are strings in Angular to Date
+  **/
+  gameMapper(game: Game): Game {
+     if(typeof(game.serverStart) === "string"){
+        game.serverStart = new Date(game.serverStart)
+     }
+     if(typeof(game.localStart) === "string"){
+        game.localStart = new Date(game.localStart)
+     }
+     return game
   }
 
   getBetsForUser(username: string): Observable<UserWithBets> {
     return this.http.get<UserWithBets>(Environment.api(`user/${username}`))
        .pipe(
           tap(_ => this.logger.debug(`fetching UserWithBets with username ${username}`)),
+          map(u => {
+              u.gameBets.forEach(gb => this.gameMapper(gb.game.game))
+              return u
+            }
+          ),
           catchError(this.handleError<UserWithBets>(`getBetsForUser ${username}`))
        );
   }

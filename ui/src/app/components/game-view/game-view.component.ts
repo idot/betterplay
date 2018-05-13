@@ -28,9 +28,9 @@ export class GameViewComponent implements OnInit {
   prettyResult(): String {
     return "TODO"
   }
-//  allowEdit(): boolean {
-//
-//  }
+  allowEdit(): boolean {
+    return true
+  }
 
   constructor(private betterdb: BetterdbService, private timerService: BetterTimerService) { }
 
