@@ -1,3 +1,54 @@
-<p>
-  menubar works!
-</p>
+<div fxLayoutAlign="center end"  fxLayout.gt-xs="row" fxLayout.xs="column">
+       <div *ngIf="this.userService.isLoggedIn()"  fxLayout.gt-xs="row" fxLayout.xs="column">
+           <a [routerLink]="['/user', this.userService.user.username , 'edit']">
+                  <img src="{{ this.userService.user.iconurl+'&s=37' }}" alt="{{this.userService.user.username}}"/>
+           </a>
+           <div>
+              <button mat-button color="accent" type="submit" value="bets" title="bets" ariaLabel="bets" [routerLink]="['/user/', this.userService.user.username, 'bets']" [disabled]="betsDisabled()">my bets</button>
+           </div>
+           <div>
+              <button mat-button type="submit" value="games" title="games" ariaLabel="games" [routerLink]="games" [disabled]="gamesDisabled()">games</button>
+           </div>
+           <div>
+              <button mat-button type="submit" value="users" title="users" ariaLabel="users" [routerLink]="users" [disabled]="usersDisabled()">users</button>
+           </div>
+           <div>
+               <button mat-button type="submit" value="Submit"  title="special bets" [routerLink]="['user', this.userService.loggedInUser.username, 'specialbets']" [disabled]="specialDisabled()">
+                 Special Bets
+               </button>
+           </div>
+           <div>
+               <button mat-button type="submit" value="Submit"  title="register user" [routerLink]="['admin/registerUser']" [disabled]="registerDisabled()" *ngIf="userService.loggedInUser.isAdmin">
+                  Register User
+               </button>
+           </div>
+           <div>
+               <button mat-button type="submit" value="Submit"  title="Logout" [routerLink]="logout">
+                   Logout
+               </button>
+           </div>
+           <div>
+              <button mat-button type="submit" value="plots"  title="plots" [routerLink]="statistics/plots" [disabled]="statsDisabled()">
+                 stats
+              </button>
+            </div>
+      </div>
+      <div *ngIf="! userService.isLoggedIn()" fxLayout.gt-xs="row" fxLayout.xs="column">
+           <div>
+              <button mat-button type="submit" value="plots"  title="plots" [routerLink]="statistics/plots" [disabled]="statsDisabled()">
+                  stats
+              </button>
+          </div>
+          <div>
+             <button mat-button type="submit" value="Submit"  title="Login" [routerLink]="['login']" [disabled]="loginDisabled()">
+                Login
+            </button>
+         </div>
+       </div>
+       <div>
+           {{ this.timerService.getTime() | date :  "HH:mm" }}
+       </div>
+      <div *ngIf="isDebug()">
+            &nbsp{{ this.timerService.getTime()  | date : "dd-MM-yy"}}
+      </div>
+</div>

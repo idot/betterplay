@@ -27,7 +27,20 @@ import { GameViewComponent } from './components/game-view/game-view.component'
 import { UserViewComponent } from './components/user-view/user-view.component'
 import { FilterViewComponent } from './components/filter-view/filter-view.component'
 import { MenuComponent } from './components/menu/menu.component';
-import { MenubarComponent } from './components/menubar/menubar.component'
+import { MenubarComponent } from './components/menubar/menubar.component';
+import { UserEditComponent } from './pages/user-edit/user-edit.component';
+import { SpecialbetPlayerComponent } from './pages/specialbet-player/specialbet-player.component';
+import { SpecialbetTeamComponent } from './pages/specialbet-team/specialbet-team.component';
+import { UserSpecialbetsComponent } from './pages/user-specialbets/user-specialbets.component';
+import { GamesComponent } from './pages/games/games.component';
+import { GameBetsComponent } from './pages/game-bets/game-bets.component';
+import { GameCreateComponent } from './pages/game-create/game-create.component';
+import { GameEditComponent } from './pages/game-edit/game-edit.component';
+import { MailComponent } from './pages/mail/mail.component';
+import { PasswordRequestComponent } from './pages/password-request/password-request.component';
+import { RegisterUserComponent } from './pages/register-user/register-user.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { StatisticsComponent } from './pages/statistics/statistics.component'
 
 
 
@@ -44,7 +57,20 @@ import { MenubarComponent } from './components/menubar/menubar.component'
     UserViewComponent,
     FilterViewComponent,
     MenuComponent,
-    MenubarComponent
+    MenubarComponent,
+    UserEditComponent,
+    SpecialbetPlayerComponent,
+    SpecialbetTeamComponent,
+    UserSpecialbetsComponent,
+    GamesComponent,
+    GameBetsComponent,
+    GameCreateComponent,
+    GameEditComponent,
+    MailComponent,
+    PasswordRequestComponent,
+    RegisterUserComponent,
+    SettingsComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

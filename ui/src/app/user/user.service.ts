@@ -21,7 +21,9 @@ export class UserService {
   private authtoken = "";
 //  private a = environment.AUTHTOKEN;
 
-  constructor(private logger: NGXLogger, private http: HttpClient) {}
+  constructor(private logger: NGXLogger, private http: HttpClient) {
+    console.trace("created user service")
+  }
 
   getAuthorizationToken(): string {
      return this.authtoken;
@@ -39,6 +41,9 @@ export class UserService {
     return this.user && this.user.isAdmin || false;
   }
 
+  isLoggedIn(): boolean {
+    return this.user != null
+  }
 
   //TODO: redirect if user did not have instructions
   login(username: string, password: string): User | null {
@@ -47,10 +52,12 @@ export class UserService {
             tap(_ => this.logger.debug(`fetching user with username ${username}`)),
              catchError(this.handleError('login'))
          ).subscribe( data => {
-             this.logger.debug(data);
+             this.logger.trace(data);
              this.user = data['user'];
              this.authtoken = data[Environment.AUTHTOKEN];
+
              localStorage.setItem(Environment.AUTHTOKEN, this.authtoken); //add expiry
+             this.logger.debug(`fetched user ${this.user}`)
            }
         )
        return this.user;

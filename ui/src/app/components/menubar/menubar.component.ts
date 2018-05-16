@@ -7,7 +7,7 @@ import { BetterTimerService } from '../../better-timer.service';
 import { UserService } from '../../user/user.service';
 
 @Component({
-  selector: 'app-menubar',
+  selector: 'menubar',
   templateUrl: './menubar.component.html',
   styleUrls: ['./menubar.component.css']
 })
