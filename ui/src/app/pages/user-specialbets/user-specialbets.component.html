@@ -1,12 +1,14 @@
 <div *ngIf="user$ | async as userWG; else loading">
   <div *ngIf="timeService.specialBetsOpen() && userService.isIdentical(userWG.user.username)">
      You can change these special bets <em>only until</em> ~ 1hr before start of the games time left: {{timeService.timeLeft(betterService.getGamesStart())}}
+
   </div>
   <div *ngIf="! userService.isIdentical(userWG.user.username)">
       Special Bets: <user-view [user]=userWG.user [full]=false></user-view>
   </div>
   <h1>Special Bets</h1>
 
+ <!--div>
     <table mat-table #table [dataSource]="userWG.user.specialBets">
 
         <ng-container matColumnDef="name">
@@ -14,7 +16,7 @@
          <td mat-cell *matCellDef="let element"> {{element.template.name}} </td>
        </ng-container>
 
-       <!-- Name Column -->
+       >
        <ng-container matColumnDef="name2">
          <th mat-header-cell *matHeaderCellDef> Name </th>
          <td mat-cell *matCellDef="let element"> {{element.bet.prediction}} </td>
@@ -24,10 +26,73 @@
 
        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
     </table>
+  </div-->
+
+    <div class="example-container mat-elevation-z8">
+   <table mat-table #table [dataSource]="userWG.specialBets">
+
+     <ng-container matColumnDef="description">
+       <th mat-header-cell *matHeaderCellDef>description</th>
+       <td mat-cell *matCellDef="let element"> {{element.template.description}} </td>
+     </ng-container>
+
+     <ng-container matColumnDef="reward">
+       <th mat-header-cell *matHeaderCellDef>reward</th>
+       <td mat-cell *matCellDef="let element"> {{element.template.points}} </td>
+     </ng-container>
+
+     <ng-container matColumnDef="result">
+       <th mat-header-cell *matHeaderCellDef>result</th>
+       <td mat-cell *matCellDef="let element"> {{element.template.result}} </td>
+     </ng-container>
+
+     <ng-container matColumnDef="setresult">
+       <th mat-header-cell *matHeaderCellDef>result</th>
+       <td mat-cell *matCellDef="let element">
+         <button mat-button color="accent" type="submit" value="set result" title="set result"
+                  (click)="setResult(element.bet)">set result
+         </button>
+       </td>
+     </ng-container>
+
+     <ng-container matColumnDef="setprediction">
+       <th mat-header-cell *matHeaderCellDef>prediction</th>
+       <td mat-cell *matCellDef="let element">
+         <button mat-button color="accent" type="submit" value="set prediction" title="set prediction"
+                  (click)="setPrediction(element.bet)">set prediction
+         </button>
+       </td>
+     </ng-container>
+
+     <ng-container matColumnDef="prediction">
+       <th mat-header-cell *matHeaderCellDef>prediction</th>
+       <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.bet.prediction != '';else show_set">{{element.bet.prediction}} </div>
+          <ng-template #show_set>
+            <button mat-button color="accent" type="submit" value="set prediction" title="set prediction"
+                     (click)="setPrediction(element.bet)">set prediction
+            </button>
+          </ng-template>
+       </td>
+     </ng-container>
+
+     <ng-container matColumnDef="points">
+       <th mat-header-cell *matHeaderCellDef>points</th>
+       <td mat-cell *matCellDef="let element"> {{element.bet.prediction}} </td>
+     </ng-container>
+
+
+     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+   </table>
+ </div>
 
 
 </div>
+
+
 
 <ng-template #loading>
   Loading stuff...

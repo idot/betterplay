@@ -46,7 +46,7 @@ export class UserService {
   }
 
   isLoggedIn(): boolean {
-    console.debug(`isloggedin ${this.user}`)
+    //console.debug(`isloggedin ${this.user}`)
     return this.user != null
   }
 

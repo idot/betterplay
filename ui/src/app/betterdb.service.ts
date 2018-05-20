@@ -19,7 +19,9 @@ export class BetterdbService {
   private settings: BetterSettings | null = null
 
 
-  constructor(private logger: NGXLogger, private http: HttpClient) { }
+  constructor(private logger: NGXLogger, private http: HttpClient) {
+     this.getSettings()
+  }
 
 
   init(){

@@ -11,7 +11,7 @@
   </div>
   <mat-icon class="material-icons md-20 red" *ngIf="! user.canBet">do_not_disturb</mat-icon>
   <mat-icon class="material-icons md-20 green" *ngIf="user.canBet">check_circle</mat-icon>
-  <button mat-button color="accent" type="submit" value="Submit" title="Special Bets" [routerLink]="['/user/', user.username, 'specialbets']" *ngIf="full">
-     Special Bets
+  <button mat-button color="accent" type="submit" value="Submit" title="special bets" [routerLink]="['/user/', user.username, 'specialbets']" *ngIf="full">
+     special bets
   </button>
 </div>
