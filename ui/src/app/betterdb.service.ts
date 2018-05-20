@@ -8,6 +8,7 @@ import { Environment } from './model/environment';
 import { Bet, UserWithBets, Game } from './model/bet';
 import { User } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
+import { BetterSettings } from './model/settings';
 
 
 @Injectable({
@@ -15,12 +16,22 @@ import { catchError, tap, map } from 'rxjs/operators';
 })
 export class BetterdbService {
 
+  private settings: BetterSettings | null = null
+
 
   constructor(private logger: NGXLogger, private http: HttpClient) { }
 
 
+  init(){
+    this.getSettings()
+  }
+
   isDebug(): boolean {
-    return true
+    return this.settings && this.settings.debug || false
+  }
+
+  getGamesStart(): Date {
+    return this.settings && this.settings.gamesStarts || new Date()
   }
 
   /**
@@ -46,7 +57,23 @@ export class BetterdbService {
             }
           ),
           catchError(this.handleError<UserWithBets>(`getBetsForUser ${username}`))
-       );
+       )
+  }
+
+  getSettings() {
+    this.http.get<BetterSettings>(Environment.api('settings'))
+      .pipe(
+        tap(_ => this.logger.debug(`fetching settings`),
+        catchError(this.handleError<BetterSettings>(`getSettings`))
+        ),
+        map(s => {
+            s.gamesStarts = new Date(s.gamesStarts)
+            return s
+          }
+        ))
+      .subscribe(s => {
+        this.settings = s
+      })
   }
 
 
@@ -61,7 +88,10 @@ export class BetterdbService {
         default:
             return "badge-points";
       }
-  };
+  }
+
+
+
 
   /**
    * Handle Http operation that failed.

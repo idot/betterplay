@@ -25,7 +25,7 @@ export class UserBetsComponent implements OnInit {
     this.user$ = this.route.paramMap.pipe(
         switchMap((params: ParamMap) => {
            const username = params.get('username');
-           this.logger.error(`extracted ${username}`)
+           this.logger.debug(`extracted ${username}`)
            if(username){
              return this.betterdb.getBetsForUser(username)
            } else {

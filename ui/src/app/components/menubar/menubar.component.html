@@ -1,10 +1,10 @@
 <div fxLayoutAlign="center end"  fxLayout.gt-xs="row" fxLayout.xs="column">
-       <div *ngIf="this.userService.isLoggedIn()"  fxLayout.gt-xs="row" fxLayout.xs="column">
-           <a [routerLink]="['/user', this.userService.user.username , 'edit']">
-                  <img src="{{ this.userService.user.iconurl+'&s=37' }}" alt="{{this.userService.user.username}}"/>
+       <div *ngIf="userService.getUser()"  fxLayout.gt-xs="row" fxLayout.xs="column">
+           <a [routerLink]="['/user', userService.getUser().username, 'edit']">
+                  <img src="{{ userService.getUser().iconurl+'&s=37' }}" alt="{{userService.getUser().username}}"/>
            </a>
            <div>
-              <button mat-button color="accent" type="submit" value="bets" title="bets" ariaLabel="bets" [routerLink]="['/user/', this.userService.user.username, 'bets']" [disabled]="betsDisabled()">my bets</button>
+              <button mat-button color="accent" type="submit" value="bets" title="bets" ariaLabel="bets" [routerLink]="['/user/', userService.getUser().username, 'bets']" [disabled]="betsDisabled()">my bets</button>
            </div>
            <div>
               <button mat-button type="submit" value="games" title="games" ariaLabel="games" [routerLink]="games" [disabled]="gamesDisabled()">games</button>
@@ -13,12 +13,12 @@
               <button mat-button type="submit" value="users" title="users" ariaLabel="users" [routerLink]="users" [disabled]="usersDisabled()">users</button>
            </div>
            <div>
-               <button mat-button type="submit" value="Submit"  title="special bets" [routerLink]="['user', this.userService.loggedInUser.username, 'specialbets']" [disabled]="specialDisabled()">
-                 Special Bets
+               <button mat-button type="submit" value="Submit"  title="special bets" [routerLink]="['user', userService.getUser().username, 'special']" [disabled]="specialDisabled()">
+                 special bets
                </button>
            </div>
            <div>
-               <button mat-button type="submit" value="Submit"  title="register user" [routerLink]="['admin/registerUser']" [disabled]="registerDisabled()" *ngIf="userService.loggedInUser.isAdmin">
+               <button mat-button type="submit" value="Submit"  title="register user" [routerLink]="['admin/registerUser']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
                   Register User
                </button>
            </div>

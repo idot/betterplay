@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
 import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule} from '@angular/material'
-
+import {MatTableModule} from '@angular/material/table';
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
 
@@ -77,6 +77,7 @@ import { StatisticsComponent } from './pages/statistics/statistics.component'
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule, FlexLayoutModule,
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule,
+    MatTableModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule

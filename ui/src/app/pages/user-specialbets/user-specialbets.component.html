@@ -1,3 +1,34 @@
-<p>
-  user-specialbets works!
-</p>
+<div *ngIf="user$ | async as userWG; else loading">
+  <div *ngIf="timeService.specialBetsOpen() && userService.isIdentical(userWG.user.username)">
+     You can change these special bets <em>only until</em> ~ 1hr before start of the games time left: {{timeService.timeLeft(betterService.getGamesStart())}}
+  </div>
+  <div *ngIf="! userService.isIdentical(userWG.user.username)">
+      Special Bets: <user-view [user]=userWG.user [full]=false></user-view>
+  </div>
+  <h1>Special Bets</h1>
+
+    <table mat-table #table [dataSource]="userWG.user.specialBets">
+
+        <ng-container matColumnDef="name">
+         <th mat-header-cell *matHeaderCellDef> No. </th>
+         <td mat-cell *matCellDef="let element"> {{element.template.name}} </td>
+       </ng-container>
+
+       <!-- Name Column -->
+       <ng-container matColumnDef="name2">
+         <th mat-header-cell *matHeaderCellDef> Name </th>
+         <td mat-cell *matCellDef="let element"> {{element.bet.prediction}} </td>
+       </ng-container>
+
+
+
+       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+</div>
+
+<ng-template #loading>
+  Loading stuff...
+</ng-template>

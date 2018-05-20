@@ -41,7 +41,12 @@ export class UserService {
     return this.user && this.user.isAdmin || false;
   }
 
+  getUser(): User | null {
+    return this.user
+  }
+
   isLoggedIn(): boolean {
+    console.debug(`isloggedin ${this.user}`)
     return this.user != null
   }
 
