@@ -6,8 +6,6 @@ import { tap, catchError } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { NGXLogger } from 'ngx-logger';
-import { UserService } from './user/user.service';
-
 
 import { Environment } from './model/environment';
 import { ServerTime } from './model/settings';
@@ -20,15 +18,12 @@ import { Bet } from './model/bet';
 export class BetterTimerService {
   private startupTime = new Date()
   private currentTime = new Date()
-  private gamesStarts = new Date()
 
   //should we fetch the time from the server or take the interactively set time
   private timeFromServer = true
   private DF = 'd/M HH:mm'
 
 
-  //time before game start that bet closes
-  private MSTOCLOSING = 60 * 60 * 1000 //in ms
 
   //time to update clock
   private UPDATEINTERVAL = 1000 * 5 //in ms
@@ -39,7 +34,7 @@ export class BetterTimerService {
   private timer = timer(this.UPDATEINTERVAL,this.UPDATEINTERVAL)
   private subscription: Subscription;
 
-  constructor(private logger: NGXLogger, private http: HttpClient, private userService: UserService) {
+  constructor(private logger: NGXLogger, private http: HttpClient) {
      this.init()
   }
 
@@ -62,41 +57,11 @@ export class BetterTimerService {
   }
 
   getTimeMillis(): number {
-    return this.getTime().getMilliseconds()
+    return this.getTime().getTime()
   }
 
   getDateFormatter(): string {
     return this.DF
-  }
-
-  diffToStart(serverStart: number): number {
-     return (serverStart - this.MSTOCLOSING) - this.getTimeMillis()
-  }
-
-  timeLeft(serverStart: number): string {
-     //boolean true add in/ago
-     //negative values = ago
-     //positive values = in
-     const s = moment.duration(this.diffToStart(serverStart), "milliseconds").humanize(false)
-     return s
-  }
-
-  specialBetOpen(bet: Bet): boolean {
-      return this.canBet(this.gamesStarts, bet)
-  }
-
-  specialBetsOpen(): boolean {
-     return ! this.betClosed(this.gamesStarts.getMilliseconds())
-  }
-
-  betClosed(serverStart: number): boolean {
-      return this.diffToStart(serverStart) < 0
-  }
-
-  canBet(serverStart, bet): boolean {
-      const diff = this.diffToStart(serverStart)
-      const owner = this.userService.isOwner(bet.userId)
-      return diff > 0 && owner
   }
 
 

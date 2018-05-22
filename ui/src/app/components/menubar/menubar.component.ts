@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BetterdbService } from '../../betterdb.service';
 import { BetterTimerService } from '../../better-timer.service';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'menubar',

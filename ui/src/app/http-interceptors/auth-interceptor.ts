@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 import { NGXLogger } from 'ngx-logger';
 
-import { UserService } from '../user/user.service';
+import { UserService } from '../service/user.service';
 import { Environment } from '../model/environment';
 
 

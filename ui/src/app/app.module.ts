@@ -10,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
 import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule} from '@angular/material'
 import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
 
@@ -21,7 +22,10 @@ import { LoginComponent } from './pages/login/login.component'
 import { UserBetsComponent } from './pages/user-bets/user-bets.component'
 
 import { BetterdbService } from 'src/app/betterdb.service'
-import { UserService } from './user/user.service'
+import { UserService } from './service/user.service'
+import { BetService } from './service/bet.service'
+import { BetterTimerService } from './better-timer.service';
+
 import { BetViewComponent } from './components/bet-view/bet-view.component'
 import { GameViewComponent } from './components/game-view/game-view.component'
 import { UserViewComponent } from './components/user-view/user-view.component'
@@ -77,12 +81,12 @@ import { StatisticsComponent } from './pages/statistics/statistics.component'
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule, FlexLayoutModule,
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule,
-    MatTableModule,
+    MatTableModule, MatSortModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule
   ],
-  providers: [httpInterceptorProviders, UserService, BetterdbService],
+  providers: [httpInterceptorProviders, UserService, BetterdbService, BetService, BetterTimerService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

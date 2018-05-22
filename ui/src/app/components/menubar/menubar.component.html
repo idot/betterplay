@@ -13,18 +13,18 @@
               <button mat-button type="submit" value="users" title="users" ariaLabel="users" [routerLink]="users" [disabled]="usersDisabled()">users</button>
            </div>
            <div>
-               <button mat-button type="submit" value="Submit"  title="special bets" [routerLink]="['user', userService.getUser().username, 'special']" [disabled]="specialDisabled()">
+               <button mat-button type="submit" value="submit"  title="special bets" [routerLink]="['user', userService.getUser().username, 'special']" [disabled]="specialDisabled()">
                  special bets
                </button>
            </div>
            <div>
-               <button mat-button type="submit" value="Submit"  title="register user" [routerLink]="['admin/registerUser']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
-                  Register User
+               <button mat-button type="submit" value="submit"  title="register user" [routerLink]="['admin/registerUser']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
+                  register user
                </button>
            </div>
            <div>
-               <button mat-button type="submit" value="Submit"  title="Logout" [routerLink]="logout">
-                   Logout
+               <button mat-button type="submit" value="submit"  title="logout" [routerLink]="logout">
+                   logout
                </button>
            </div>
            <div>
@@ -40,8 +40,8 @@
               </button>
           </div>
           <div>
-             <button mat-button type="submit" value="Submit"  title="Login" [routerLink]="['login']" [disabled]="loginDisabled()">
-                Login
+             <button mat-button type="submit" value="submit"  title="Login" [routerLink]="['login']" [disabled]="loginDisabled()">
+                login
             </button>
          </div>
        </div>

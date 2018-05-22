@@ -5,26 +5,23 @@
 # Home page
 GET     /                                  controllers.FrontendController.index()
 
-# login logout
+### login logout ###
 POST    /api/login                      controllers.Application.login()
 PUT     /api/tokenPassword              controllers.Application.userByTokenPassword()
 POST    /api/logout                     controllers.Application.logout()
 GET     /api/ping                       controllers.Application.ping()
+### login logout ###
 
-
-# time
+### time ###
 GET     /api/time                       controllers.Application.time()
 # in debug mode its possible to set times
 POST    /api/time                       controllers.Application.setDebugTime()
 POST    /api/time/reset                 controllers.Application.resetTime()
+### time ###
 
-#####
-GET     /api/time                   controllers.Application.time()
+GET    /api/settings                controllers.Application.settings()
 
-# in debug mode its possible to set times
-POST    /api/time					controllers.Application.setDebugTime()
-POST    /api/time/reset             controllers.Application.resetTime() 
- 
+### other routes ### 
 GET     /api/teams                  controllers.Teams.all()
 #GET    /api/team/:name             controllers.Teams.get(name: String)
 #POST    /api/team/:name             controllers.Teams.insert(name: String)
@@ -83,12 +80,8 @@ GET     /api/statistics/excel         controllers.Statistics.excel()
 GET     /api/statistics/game/:id      controllers.Statistics.game(id: Long)
 GET     /api/statistics/specialBet/:name   controllers.Statistics.specialBets(name: String)
 
-POST    /api/createMail                   controllers.Mail.createMail()
-POST    /api/sendUnsentMail                   controllers.Users.sendUnsentMail()
-
-
-
-GET    /api/settings				controllers.Application.settings()
+POST    /api/createMail                controllers.Mail.createMail()
+POST    /api/sendUnsentMail            controllers.Users.sendUnsentMail()
 
 
 GET    /routes                     controllers.Application.routes

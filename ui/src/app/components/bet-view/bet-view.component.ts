@@ -4,7 +4,7 @@ import range from 'lodash/range';
 
 import { BetterdbService } from '../../betterdb.service';
 import { Bet, Result } from '../../model/bet';
-import { BetterTimerService } from '../../better-timer.service';
+import { BetService } from '../../service/bet.service';
 
 interface MarkableBet extends Bet {
    marked: boolean
@@ -29,14 +29,14 @@ export class BetViewComponent implements OnInit {
 
 
   disabled(): boolean {
-      return ! this.enablePoints && this.timerService.canBet(this.serverStart, this.bet)
+      return ! this.enablePoints && this.betService.canBet(this.serverStart, this.bet)
   }
 
   markBet(bet: Bet){
   //  bet.mark = true
   }
 
-  constructor(private betterdb: BetterdbService, private timerService: BetterTimerService) { }
+  constructor(private betterdb: BetterdbService, private betService: BetService) { }
 
   ngOnInit() {
   }

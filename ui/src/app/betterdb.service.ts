@@ -5,21 +5,68 @@ import { Observable, of, pipe } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 import { Environment } from './model/environment';
-import { Bet, UserWithBets, Game } from './model/bet';
-import { User } from './model/user';
+import { Bet, UserWithBets, Game, Player, PlayerWithTeam } from './model/bet';
+import { User, UserWSpecialBets } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { BetterSettings } from './model/settings';
+import { BetterTimerService } from './better-timer.service';
+import { SpecialBet, SpBet } from './model/specialbet';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class BetterdbService {
+  private settings: BetterSettings = {
+    debug: false,
+    gamesStarts: new Date(),
+    recaptchasite: ""
+  }
 
-  private settings: BetterSettings | null = null
+  getSpecialBetForUser(user: User | null, betId: number): Observable<SpecialBet> {
+    if(user){
+      return this.http.get<UserWSpecialBets>(Environment.api(`user/${user.username}/specialBets`))
+         .pipe(
+            tap(_ => this.logger.debug(`fetching specialbets`)),
+            map( ubets => {
+              const filtered = ubets.templateBets.filter(bet => bet.bet.id == betId)
+              if(filtered.length == 1){
+                  this.logger.debug(`found one bet ${betId} for user ${user.username}`)
+                  return filtered[0]
+              } else {
+                  throw Error(`could not find bet ${betId} for user ${user.username}`)
+              }
+           }),
+          catchError(this.handleError<SpecialBet>(`getSpecialBetForUser`))
+        )
+    } else {
+       throw Error(`user not logged in`)
+    }
+  }
+
+  saveSpecialBetPrediction(user: User, sp: SpecialBet){
+      this.http.post<any>(Environment.api(`specialBet`), sp.bet).pipe(
+        catchError(this.handleError<any>(`saving special bet`))
+        ).subscribe( data => {
+            this.logger.log(data)
+            return data
+        }
+      )
+  }
+
+  saveSpecialBetResult(user: User, sp: SpecialBet){
+    this.http.post<any>(Environment.api(`specialBetResult`), sp.bet).pipe(
+      catchError(this.handleError<any>(`saving special bet`))
+      ).subscribe( data => {
+          this.logger.log(data)
+          return data
+      }
+    )
+  }
 
 
-  constructor(private logger: NGXLogger, private http: HttpClient) {
+
+  constructor(private logger: NGXLogger, private http: HttpClient, private timeService: BetterTimerService) {
      this.getSettings()
   }
 
@@ -34,6 +81,14 @@ export class BetterdbService {
 
   getGamesStart(): Date {
     return this.settings && this.settings.gamesStarts || new Date()
+  }
+
+  getPlayers(): Observable<PlayerWithTeam[]> {
+    return this.http.get<PlayerWithTeam[]>(Environment.api(`players`))
+       .pipe(
+          tap(_ => this.logger.debug(`fetching players`)),
+          catchError(this.handleError<PlayerWithTeam[]>(`getPlayers`))
+       )
   }
 
   /**

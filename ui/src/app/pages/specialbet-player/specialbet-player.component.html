@@ -1,3 +1,50 @@
-<p>
-  specialbet-player works!
-</p>
+<div *ngIf="specialBet$ | async as specialBet; else loading">
+   <div>
+    special bet {{specialBet.template.description}}
+    current prediction {{specialBet.bet.prediction}}
+   </div>
+
+
+
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+
+
+<table mat-table #table [dataSource]="pwts" matSort>
+
+  <ng-container matColumnDef="teamflag">
+    <th mat-header-cell *matHeaderCellDef>flag</th>
+    <td mat-cell *matCellDef="let pwt"> <span class="flag-icon flag-icon-{{pwt.team.short2}}"></span> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="country">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>country</th>
+    <td mat-cell *matCellDef="let pwt"> {{pwt.team.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>name</th>
+    <td mat-cell *matCellDef="let pwt"> {{pwt.player.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>select</th>
+    <td mat-cell *matCellDef="let pwt">
+      <button mat-button color="accent" type="submit" value="select" title="select"
+               (click)="select(pwt.player, specialBet)">select
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+</div>
+
+
+<ng-template #loading>
+  Loading stuff...
+</ng-template>

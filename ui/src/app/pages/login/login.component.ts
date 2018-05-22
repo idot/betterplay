@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { NGXLogger } from 'ngx-logger';
 
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../service/user.service';
 
 
 @Component({
