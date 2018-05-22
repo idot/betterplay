@@ -12,6 +12,7 @@ import { MatTableDataSource, MatSort } from '@angular/material';
 import { ViewChild } from '@angular/core';
 import { User } from '../../model/user';
 import { SpecialBet } from '../../model/specialbet';
+import { BetService } from '../../service/bet.service';
 
 
 
@@ -27,22 +28,24 @@ export class SpecialbetPlayerComponent implements OnInit {
   private betTemplateId: number = 0
   private result: boolean = false
 
-  constructor(private logger: NGXLogger, private userService: UserService, private betterdb: BetterdbService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private logger: NGXLogger, private userService: UserService, private betterdb: BetterdbService, private betService: BetService, private route: ActivatedRoute, private router: Router) { }
 
   displayedColumns = ['teamflag','country', 'name', 'select']
 
   @ViewChild(MatSort) sort: MatSort
 
   select(player: Player, specialBet: SpecialBet){
-    if(this.result){
-        const user = this.userService.getUser()
-        if(user){
-            specialBet.bet.prediction = player.name
-            this.betterdb.saveSpecialBetResult(user, specialBet)
-        }
-    } else {
-       //this.betterdb.setSpecialBetPrediction(this.userService.getUser, pwt.player.name, this.betTemplateId)
+    specialBet.bet.prediction = player.name
+    const user = this.userService.getUser()
+    if(user){
+       if(this.result){
+          this.betterdb.saveSpecialBetResult(user, specialBet)
+       } else {
+          this.betterdb.saveSpecialBetPrediction(user, specialBet)
+       }
     }
+    const un = user && user.username || ""
+    this.router.navigate([`user/${un}/special`])
   }
 
   sorter(pwt: PlayerWithTeam, header: string): string | number {

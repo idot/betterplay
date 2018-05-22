@@ -3,6 +3,7 @@
     special bet {{specialBet.template.description}}
     current prediction {{specialBet.bet.prediction}}
    </div>
+   <div *ngIf="userService.isAdmin() && ! this.betService.specialBetsOpen()">as admin you can set the result</div>
 
 
 

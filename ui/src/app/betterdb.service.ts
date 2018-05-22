@@ -5,7 +5,7 @@ import { Observable, of, pipe } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 import { Environment } from './model/environment';
-import { Bet, UserWithBets, Game, Player, PlayerWithTeam } from './model/bet';
+import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team } from './model/bet';
 import { User, UserWSpecialBets } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { BetterSettings } from './model/settings';
@@ -90,6 +90,15 @@ export class BetterdbService {
           catchError(this.handleError<PlayerWithTeam[]>(`getPlayers`))
        )
   }
+
+  getTeams(): Observable<Team[]> {
+    return this.http.get<Team[]>(Environment.api(`teams`))
+       .pipe(
+          tap(_ => this.logger.debug(`fetching teams`)),
+          catchError(this.handleError<Team[]>(`getTeams`))
+       )
+  }
+
 
   /**
   * converts json response date which are strings in Angular to Date
