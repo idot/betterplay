@@ -22,6 +22,6 @@ UI:
 * add individual games popup to stats view
 * add sync disabled in bets view
 
-
+* add page with rules
 
 

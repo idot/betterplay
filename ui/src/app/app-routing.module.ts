@@ -16,12 +16,17 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { RegisterUserComponent } from './pages/register-user/register-user.component';
 import { PasswordRequestComponent } from './pages/password-request/password-request.component';
+import { RulesComponent } from './pages/rules/rules.component';
+import { GameBetsComponent } from './pages/game-bets/game-bets.component';
+import { UsersComponent } from './pages/users/users.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'loout', component: LoginComponent },
-  { path: 'user/register', component: RegisterUserComponent},
+  { path: 'logout', component: LoginComponent },
+  { path: 'admin/register', component: RegisterUserComponent},
+  { path: 'admin/mail', component: MailComponent},
+  { path: 'admin/settings', component: SettingsComponent},
   { path: 'user/:username/bets', component: UserBetsComponent},
   { path: 'user/:username/edit', component: UserEditComponent},
   { path: 'user/:username/special/player/:id', component: SpecialbetPlayerComponent},
@@ -30,12 +35,13 @@ const routes: Routes = [
   { path: 'user/:username', component: UserBetsComponent}, //??
   { path: 'game/:gamenr/edit', component: GameEditComponent},
   { path: 'game/:gamenr/create', component: GameCreateComponent},
-  { path: 'game/:gamenr/bets', component: GamesComponent},
-  { path: 'game/:gamenr', component: GamesComponent}, //??
-  { path: 'mail', component: MailComponent},
-  { path: 'settings', component: SettingsComponent},
+  { path: 'game/:gamenr/bets', component: GameBetsComponent},
+  { path: 'game/:gamenr', component: GameBetsComponent},
+  { path: 'games', component: GamesComponent },
+  { path: 'users', component: UsersComponent },
   { path: 'statistics', component: StatisticsComponent},
   { path: 'password', component: PasswordRequestComponent},
+  { path: 'rules', component: RulesComponent },
   {
     path: '**',  //TODO: redirect to login if not loggedin and wrong, otherwise users home page
     redirectTo: '/',
@@ -49,7 +55,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(
       routes,
-      { enableTracing: true } // <-- debugging purposes only
+      { enableTracing: false } // <-- debugging purposes only
     )
   ],
   exports: [

@@ -24,11 +24,17 @@ export class LoginComponent implements OnInit {
     this.login(this.username, this.password)
   }
 
+
   login(username: string, password: string){
       const result = this.userService.login(username, password);
       this.logger.debug(`fetched user at login: ${username}`, result);
       if(result){
-          this.router.navigate([`/user/${username}/bets`]);
+
+          //TODO: check if all specialbets have value => set hadInstructions
+          this.router.navigate([`/user/${username}/bets`])
+          //else{
+          //this.router.navigate([`/user/${username}/specialbets`])
+          //}
       }
   }
 

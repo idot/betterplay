@@ -18,7 +18,7 @@
                </button>
            </div>
            <div>
-               <button mat-button type="submit" value="submit"  title="register user" [routerLink]="['admin/registerUser']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
+               <button mat-button type="submit" value="submit"  title="register user" [routerLink]="['admin/register']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
                   register user
                </button>
            </div>
@@ -44,6 +44,11 @@
                 login
             </button>
          </div>
+       </div>
+       <div>
+         <button mat-button type="submit" value="rules"  title="rules" [routerLink]="['rules']">
+             rules
+         </button>
        </div>
        <div>
            {{ this.timerService.getTime() | date :  "HH:mm" }}

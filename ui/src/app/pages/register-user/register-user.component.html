@@ -1,3 +1,39 @@
-<p>
-  register-user works!
-</p>
+
+
+<div>
+  <form (ngSubmit)="register()" [formGroup]="registerForm">
+  <div class="registerfield">
+    <mat-form-field>
+      <input matInput placeholder="username" formControlName="username" required>
+      <!--mat-error *ngIf="username.invalid">{{getErrorMessage()}}</mat-error-->
+    </mat-form-field>
+  </div>
+
+  <div class="registerfield">
+    <mat-form-field>
+      <input matInput placeholder="first name" formControlName="firstname" required>
+      <!--mat-error *ngIf="username.invalid">{{getErrorMessage()}}</mat-error-->
+    </mat-form-field>
+  </div>
+
+  <div class="registerfield">
+    <mat-form-field>
+      <input matInput placeholder="last name" formControlName="lastname" required>
+      <!--mat-error *ngIf="username.invalid">{{getErrorMessage()}}</mat-error-->
+    </mat-form-field>
+  </div>
+
+  <div class="registerfield">
+    <mat-form-field>
+      <input matInput placeholder="email" formControlName="email" required>
+      <!--mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error-->
+    </mat-form-field>
+  </div>
+
+
+
+  <button mat-button type="submit" value="submit" title="submit" [disabled]="!registerForm.valid">
+      submit
+  </button>
+ </form>
+</div>

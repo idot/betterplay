@@ -44,6 +44,14 @@ export class BetterdbService {
     }
   }
 
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(Environment.api(`users`))
+      .pipe(
+        tap(_ => this.logger.debug(`fetching users`)),
+        catchError(this.handleError<User[]>(`getUsers`))
+      )
+  }
+
   saveSpecialBetPrediction(user: User, sp: SpecialBet){
       this.http.post<any>(Environment.api(`specialBet`), sp.bet).pipe(
         catchError(this.handleError<any>(`saving special bet`))
@@ -64,7 +72,15 @@ export class BetterdbService {
     )
   }
 
-
+  createUser(details: {}){
+    this.http.put<any>(Environment.api(`user/create`), details).pipe(
+      catchError(this.handleError<any>(`creating user`))
+      ).subscribe( data => {
+          this.logger.log(data)
+          return data
+      }
+    )
+  }
 
   constructor(private logger: NGXLogger, private http: HttpClient, private timeService: BetterTimerService) {
      this.getSettings()

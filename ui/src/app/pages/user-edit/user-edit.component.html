@@ -1,3 +1,38 @@
-<p>
-  user-edit works!
-</p>
+<div>
+  <form (ngSubmit)="submit()" [formGroup]="editForm">
+  <div class="registerfield">
+    <mat-form-field>
+      <input matInput placeholder="username" formControlName="username" required>
+      <!--mat-error *ngIf="username.invalid">{{getErrorMessage()}}</mat-error-->
+    </mat-form-field>
+  </div>
+
+  <div formGroupName="passwords">
+      <div class="registerfield">
+        <mat-form-field>
+          <input matInput placeholder="password" formControlName="password" required>
+          <!--mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error-->
+        </mat-form-field>
+      </div>
+      <div class="registerfield">
+        <mat-form-field>
+          <input matInput placeholder="confirm password" formControlName="confirm_password" required>
+          <!--mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error-->
+        </mat-form-field>
+      </div>
+  </div>
+
+  <div class="registerfield">
+    <mat-form-field>
+      <input matInput placeholder="email" formControlName="email" required>
+      <!--mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error-->
+    </mat-form-field>
+  </div>
+
+
+
+  <button mat-button type="submit" value="submit" title="submit" [disabled]="!editForm.valid">
+      submit
+  </button>
+ </form>
+</div>

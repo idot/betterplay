@@ -1,0 +1,14 @@
+<div *ngIf="users$ | async as users; else loading">
+
+
+  <h1>Users</h1>
+  <ul>
+     <li *ngFor="let user of users; let i = index">
+       {{i}} <user-view [user]=user [full]=true></user-view>
+     </li>
+  </ul>
+</div>
+
+<ng-template #loading>
+  Loading stuff...
+</ng-template>

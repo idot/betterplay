@@ -44,7 +44,10 @@ import { MailComponent } from './pages/mail/mail.component';
 import { PasswordRequestComponent } from './pages/password-request/password-request.component';
 import { RegisterUserComponent } from './pages/register-user/register-user.component';
 import { SettingsComponent } from './pages/settings/settings.component';
-import { StatisticsComponent } from './pages/statistics/statistics.component'
+import { StatisticsComponent } from './pages/statistics/statistics.component';
+import { RulesComponent } from './pages/rules/rules.component'
+import { ReactiveFormsModule } from '@angular/forms';
+import { UsersComponent } from './pages/users/users.component';
 
 
 
@@ -74,12 +77,14 @@ import { StatisticsComponent } from './pages/statistics/statistics.component'
     PasswordRequestComponent,
     RegisterUserComponent,
     SettingsComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    RulesComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
-    FormsModule, FlexLayoutModule,
+    FormsModule, ReactiveFormsModule, FlexLayoutModule,
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule,
     MatTableModule, MatSortModule,
     HttpClientModule,
@@ -92,12 +97,6 @@ import { StatisticsComponent } from './pages/statistics/statistics.component'
 export class AppModule {
 
   constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(
-        'do_not_disturb',
-        sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
-        iconRegistry.addSvgIcon(
-              'thumbs-up',
-              sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
 
   }
 
