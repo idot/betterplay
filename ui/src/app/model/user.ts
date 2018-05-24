@@ -1,5 +1,6 @@
 import { Environment } from './environment'
 import { SpecialBet } from './specialbet'
+import { GameWithTeams, Bet } from './bet';
 
 
 
@@ -41,4 +42,14 @@ export interface UserResponse {
 export interface UserWSpecialBets {
     user: User
     templateBets: SpecialBet[]
+}
+
+export interface BetsUsers {
+    bet: Bet
+    user: User
+}
+
+export interface GameWithBetsUsers {
+     game: GameWithTeams
+     betsUsers: BetsUsers[]
 }

@@ -1,6 +1,6 @@
 <div class="gameView">
     <div>
-         <a [routerLink]="['/game/bets', gwt.game.nr]">
+         <a [routerLink]="['/game', gwt.game.nr, 'bets']">
            <span class="flag-icon flag-icon-{{gwt.team1.short2}}"></span><span class="flag-icon flag-icon-{{gwt.team2.short2}}"></span>  {{gwt.team1.name}} : {{gwt.team2.name}}
          </a>
          <mat-icon class="material-icons md-20 red" *ngIf="gwt.game.nextGame">whatshot</mat-icon>
@@ -9,7 +9,7 @@
          <span *ngIf="gameClosed() && resultSet">{{prettyResult()}}</span>
          <!--game-bets-popup gwt="gwt"></game-bets-popup-->
          <!--span *ngIf="expand" matBadge={{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}>&nbsp&nbsp{{gwt.level.name}}</span-->
-         <button *ngIf="allowEdit()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game/edit', gwt.game.nr]">
+         <button *ngIf="allowEdit()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game', gwt.game.nr, 'edit']">
               set result
          </button>
      </div>

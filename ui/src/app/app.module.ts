@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
-import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule} from '@angular/material'
+import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material'
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 
@@ -48,6 +48,7 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { RulesComponent } from './pages/rules/rules.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { UsersComponent } from './pages/users/users.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 
 
@@ -79,24 +80,31 @@ import { UsersComponent } from './pages/users/users.component';
     SettingsComponent,
     StatisticsComponent,
     RulesComponent,
-    UsersComponent
+    UsersComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule, ReactiveFormsModule, FlexLayoutModule,
-    MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule,
+    MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule,
     MatTableModule, MatSortModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule
   ],
-  providers: [httpInterceptorProviders, UserService, BetterdbService, BetService, BetterTimerService],
+  entryComponents: [
+      ToastComponent
+  ],
+  providers: [httpInterceptorProviders, UserService, BetterdbService, BetService, BetterTimerService, {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }}],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule {
 
   constructor(private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
+
 
   }
 
