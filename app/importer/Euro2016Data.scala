@@ -33,7 +33,8 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
       val items = line.split("\t")
 	    val country = items(0)
 	    val name = items(2)
- 	    (Player(None, name, "", "", -1, DBImage("","")), country)  
+	    val sortname = if(items.length > 3) items(3) else name
+ 	    (Player(None, name, "", "", -1, DBImage("",""), sortname), country)  
   }  
     
    //T1, T2, Group

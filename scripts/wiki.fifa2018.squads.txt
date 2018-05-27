@@ -1,0 +1,1277 @@
+{{pp-vandalism|expiry=18:18, 4 August 2018|small=yes}}
+{{Use dmy dates|date=May 2018}}
+The [[2018 FIFA World Cup]] is an international [[association football|football]] tournament that will be held in Russia from 14 June to 15 July 2018. The 32 national teams involved in the tournament are required to register a squad of 23 players, including three goalkeepers. Only players in these squads are eligible to take part in the tournament.<ref name="regulations">{{cite web |url=http://resources.fifa.com/mm/document/tournament/competition/02/84/35/19/regulationsfwc2018en_neutral.pdf |title=Regulations – 2018 FIFA World Cup Russia |website=FIFA.com |publisher=Fédération Internationale de Football Association |format=PDF |year=2015 |access-date=14 May 2018 |dead-url=no |archive-url=https://web.archive.org/web/20170712134322/http://resources.fifa.com/mm/document/tournament/competition/02/84/35/19/regulationsfwc2018en_neutral.pdf |archive-date=12 July 2017}}</ref>
+
+A provisional list of 35 players per national team was submitted to FIFA by 14 May 2018, one month prior to the opening match of the tournament.<ref name="update">{{cite news |url=http://www.fifa.com/worldcup/news/y=2018/m=2/news=organising-committee-for-fifa-competitions-updates-on-the-fifa-world-cuptm-and-w.html |title=Organising Committee for FIFA Competitions: Updates on the FIFA World Cup and women's tournaments |website=FIFA.com |publisher=Fédération Internationale de Football Association |date=8 February 2018 |access-date=9 April 2018}}</ref> The final list of 23 players per national team will be submitted to FIFA by 4 June 2018, 10 days prior to the opening match of the tournament.<ref name="update"/><!-- FIFA published the final lists with squad numbers on their website on DD June 2018.--> Teams are permitted to make late replacements in the event of serious injury, at any time up to 24 hours before their first game.<ref name="regulations"/>
+
+The age listed for each player is on 14 June 2018, the first day of the tournament. The number of caps and goals listed for each player does not include any matches played after the start of 2018 FIFA World Cup. The club listed is the club for which the player last played a competitive match prior to the tournament. The nationality for each club reflects the national association (not the league) to which the club is affiliated. A flag is included for coaches that are of a different nationality than the national team for which they manage.
+
+==Group A==
+
+===Egypt===
+Coach: {{flagicon|ARG}} [[Héctor Cúper]]
+
+A 29-man preliminary squad was announced on 13 May 2018.<ref>{{cite web |publisher=[[ESPN]] |url=http://www.espn.com/soccer/egypt/story/3497502/mohamed-salah-mohamed-elneny-make-egypts-29-man-world-cup-squad |title=Mohamed Salah, Mohamed Elneny make Egypt's 29-man World Cup squad |date=14 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Essam El-Hadary]]|sortname=Hadary, Essam El-|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1973|1|15}}|caps=156|goals=0|club=[[Al-Taawoun FC|Al Taawoun]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=GK|name=[[Sherif Ekramy]]|sortname=Ekramy, Sherif|age={{Birth date and age2|df=yes|2018|6|14|1983|7|1}}|caps=22|goals=0|club=[[Al Ahly SC|Al Ahly]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=GK|name=[[Mohamed Awad]]|sortname=Awad, Mohamed|age={{Birth date and age2|df=yes|2018|6|14|1992|7|6}}|caps=3|goals=0|club=[[Ismaily SC|Ismaily]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=GK|name=[[Mohamed El-Shenawy]]|sortname=Shenawy, Mohamed|age={{Birth date and age2|df=yes|2018|6|14|1988|12|18}}|caps=1|goals=0|club=[[Al Ahly SC|Al Ahly]]|clubnat=EGY}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Ahmed Fathy]]|sortname=Fathy, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1984|11|10}}|caps=124|goals=3|club=[[Al Ahly SC|Al Ahly]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=DF|name=[[Ahmed Elmohamady]]|sortname=Elmohamady, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1987|9|9}}|caps=76|goals=2|club=[[Aston Villa F.C.|Aston Villa]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Mohamed Abdel-Shafy]]|sortname=Abdel-Shafy, Mohamed|age={{Birth date and age2|df=yes|2018|6|14|1985|7|1}}|caps=49|goals=1|club=[[Al-Fateh SC|Al Fateh]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Ahmed Hegazi (footballer)|Ahmed Hegazi]]|sortname=Hegazi, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1991|1|25}}|caps=43|goals=1|club=[[West Bromwich Albion F.C.|West Bromwich Albion]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Omar Gaber]]|sortname=Gaber, Omar|age={{Birth date and age2|df=yes|2018|6|14|1992|1|30}}|caps=23|goals=0|club=[[Los Angeles FC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Ali Gabr]]|sortname=Gabr, Ali|age={{Birth date and age2|df=yes|2018|6|14|1989|1|10}}|caps=20|goals=1|club=[[West Bromwich Albion F.C.|West Bromwich Albion]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Saad Samir]]|sortname=Samir, Saad|age={{Birth date and age2|df=yes|2018|6|14|1989|4|1}}|caps=10|goals=0|club=[[Al Ahly SC|Al Ahly]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=DF|name=[[Karim Hafez]]|sortname=Hafez, Karim|age={{Birth date and age2|df=yes|2018|6|14|1996|3|12}}|caps=5|goals=0|club=[[RC Lens|Lens]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Ayman Ashraf]]|sortname=Ashraf, Ayman|age={{Birth date and age2|df=yes|2018|6|14|1991|4|9}}|caps=4|goals=0|club=[[Al Ahly SC|Al Ahly]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=DF|name=[[Amro Tarek]]|sortname=Tarek, Amro|age={{Birth date and age2|df=yes|2018|6|14|1992|5|17}}|caps=1|goals=0|club=[[Orlando City SC|Orlando City]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Mahmoud Hamdy]]|sortname=Hamdy, Mahmoud|age={{Birth date and age2|df=yes|2018|6|14|1995|6|1}}|caps=0|goals=0|club=[[Zamalek SC|Zamalek]]|clubnat=EGY}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Mohamed Elneny]]|sortname=Elneny, Mohamed|age={{Birth date and age2|df=yes|2018|6|14|1992|7|11}}|caps=60|goals=5|club=[[Arsenal F.C.|Arsenal]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Abdallah Said]]|sortname=Said, Abdallah|age={{Birth date and age2|df=yes|2018|6|14|1985|7|13}}|caps=34|goals=6|club=[[Kuopion Palloseura|KuPS]]|clubnat=FIN}}
+{{nat fs g player|no=|pos=MF|name=[[Shikabala]]|sortname=Shikabala|age={{Birth date and age2|df=yes|2018|6|14|1986|3|5}}|caps=28|goals=2|club=[[Al-Raed FC|Al Raed]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Mahmoud Hassan (footballer)|Trézéguet]]|sortname=Trezeguet|age={{Birth date and age2|df=yes|2018|6|14|1994|10|1}}|caps=22|goals=2|club=[[Kasımpaşa S.K.|Kasımpaşa]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=MF|name=[[Ramadan Sobhi]]|sortname=Sobhi, Ramadan|age={{Birth date and age2|df=yes|2018|6|14|1997|1|23}}|caps=21|goals=1|club=[[Stoke City F.C.|Stoke City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Tarek Hamed]]|sortname=Hamed, Tarek|age={{Birth date and age2|df=yes|2018|6|14|1988|10|24}}|caps=19|goals=0|club=[[Zamalek SC|Zamalek]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=MF|name=[[Kahraba (footballer)|Kahraba]]|sortname=Kahraba|age={{Birth date and age2|df=yes|2018|6|14|1994|4|13}}|caps=17|goals=3|club=[[Al-Ittihad Club (Jeddah)|Al-Ittihad]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Amr Warda]]|sortname=Warda, Amr|age={{Birth date and age2|df=yes|2018|6|14|1993|9|13}}|caps=14|goals=0|club=[[Atromitos F.C.|Atromitos]]|clubnat=GRE}}
+{{nat fs g player|no=|pos=MF|name=[[Sam Morsy]]|sortname=Morsy, Sam|age={{Birth date and age2|df=yes|2018|6|14|1991|9|10}}|caps=3|goals=0|club=[[Wigan Athletic F.C.|Wigan Athletic]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Mahmoud Abdel Aziz (footballer)|Mahmoud Abdel Aziz]]|sortname=Abdel Aziz, Mahmoud|age={{Birth date and age2|df=yes|2018|6|14|1990|7|27}}|caps=0|goals=0|club=[[Zamalek SC|Zamalek]]|clubnat=EGY}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Mohamed Salah]]|sortname=Salah, Mohamed|age={{Birth date and age2|df=yes|2018|6|14|1992|6|15}}|caps=57|goals=33|club=[[Liverpool F.C.|Liverpool]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Marwan Mohsen]]|sortname=Mohsen, Marwan|age={{Birth date and age2|df=yes|2018|6|14|1989|2|26}}|caps=22|goals=4|club=[[Al Ahly SC|Al Ahly]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=FW|name=[[Ahmed Hassan Mahgoub|Ahmed Hassan Kouka]]|sortname=Hassan, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1993|3|5}}|caps=15|goals=5|club=[[S.C. Braga|Braga]]|clubnat=POR}}
+{{nat fs g player|no=|pos=FW|name=[[Ahmed Gomaa]]|sortname=Gomaa, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1988|8|16}}|caps=1|goals=0|club=[[Al-Masry SC|Al Masry]]|clubnat=EGY}}
+{{nat fs end}}
+
+===Russia===
+Coach: [[Stanislav Cherchesov]]
+
+A 28-man preliminary squad was announced on 11 May 2018.<ref>{{cite web |publisher=[[Russian Football Union]] |url=https://www.rfs.ru/news/206751 |title=Расширенный состав для подготовки к Чемпионату мира |language=Russian |date=11 May 2018}}</ref> Injured [[Ruslan Kambolov]] was replaced by [[Sergei Ignashevich]] on 14 May 2018.<ref>{{cite web |publisher=[[Russian Football Union]] |url=https://www.rfs.ru/news/206781 |title="Готов помочь сборной на Чемпионате мира" |language=Russian |date=14 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Igor Akinfeev]]|sortname=Akinfeev, Igor|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1986|4|8}}|caps=104|goals=0|club=[[PFC CSKA Moscow|CSKA Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=GK|name=[[Vladimir Gabulov]]|sortname=Gabulov, Vladimir|age={{Birth date and age2|df=yes|2018|6|14|1983|10|19}}|caps=10|goals=0|club=[[Club Brugge KV|Club Brugge]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=GK|name=[[Andrey Lunyov]]|sortname=Lunyov, Andrey|age={{Birth date and age2|df=yes|2018|6|14|1991|11|13}}|caps=3|goals=0|club=[[FC Zenit Saint Petersburg|Zenit Saint Petersburg]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=GK|name=[[Soslan Dzhanayev]]|sortname=Dzhanayev, Soslan|age={{Birth date and age2|df=yes|2018|6|14|1987|3|13}}|caps=1|goals=0|club=[[FC Rubin Kazan|Rubin Kazan]]|clubnat=RUS}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Sergei Ignashevich]]|sortname=Ignashevich, Sergei|age={{Birth date and age2|df=yes|2018|6|14|1979|7|14}}|caps=120|goals=8|club=[[PFC CSKA Moscow|CSKA Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Igor Smolnikov]]|sortname=Smolnikov, Igor|age={{Birth date and age2|df=yes|2018|6|14|1988|8|8}}|caps=25|goals=0|club=[[FC Zenit Saint Petersburg|Zenit Saint Petersburg]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Fyodor Kudryashov]]|sortname=Kudryashov, Fyodor|age={{Birth date and age2|df=yes|2018|6|14|1987|4|5}}|caps=17|goals=0|club=[[FC Rubin Kazan|Rubin Kazan]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Vladimir Granat]]|sortname=Granat, Vladimir|age={{Birth date and age2|df=yes|2018|6|14|1987|5|22}}|caps=11|goals=1|club=[[FC Rubin Kazan|Rubin Kazan]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Roman Neustädter]]|sortname=Neustadter, Roman|age={{Birth date and age2|df=yes|2018|6|14|1988|2|18}}|caps=6|goals=0|club=[[Fenerbahçe S.K. (football)|Fenerbahçe]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Andrei Sergeyevich Semyonov|Andrei Semyonov]]|sortname=Semyonov, Andrei Sergeyevich|age={{Birth date and age2|df=yes|2018|6|14|1989|3|24}}|caps=6|goals=0|club=[[FC Akhmat Grozny|Akhmat Grozny]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Ilya Kutepov]]|sortname=Kutepov, Ilya|age={{Birth date and age2|df=yes|2018|6|14|1993|7|29}}|caps=6|goals=0|club=[[FC Spartak Moscow|Spartak Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Konstantin Rausch]]|sortname=Rausch, Konstantin|age={{Birth date and age2|df=yes|2018|6|14|1990|3|15}}|caps=5|goals=0|club=[[FC Dynamo Moscow|Dynamo Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Mário Figueira Fernandes|Mário Fernandes]]|sortname=Fernandes, Mario|age={{Birth date and age2|df=yes|2018|6|14|1990|9|19}}|caps=3|goals=0|club=[[PFC CSKA Moscow|CSKA Moscow]]|clubnat=RUS}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Yuri Zhirkov]]|sortname=Zhirkov, Yuri|age={{Birth date and age2|df=yes|2018|6|14|1983|8|20}}|caps=82|goals=2|club=[[FC Zenit Saint Petersburg|Zenit Saint Petersburg]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Alan Dzagoev]]|sortname=Dzagoev, Alan|age={{Birth date and age2|df=yes|2018|6|14|1990|6|17}}|caps=55|goals=9|club=[[PFC CSKA Moscow|CSKA Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Aleksandr Samedov]]|sortname=Samedov, Aleksandr|age={{Birth date and age2|df=yes|2018|6|14|1984|7|19}}|caps=46|goals=6|club=[[FC Spartak Moscow|Spartak Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Aleksandr Golovin (footballer)|Aleksandr Golovin]]|sortname=Golovin, Aleksandr|age={{Birth date and age2|df=yes|2018|6|14|1996|5|30}}|caps=17|goals=2|club=[[PFC CSKA Moscow|CSKA Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Aleksandr Yerokhin]]|sortname=Yerokhin, Aleksandr|age={{Birth date and age2|df=yes|2018|6|14|1989|10|13}}|caps=17|goals=0|club=[[FC Zenit Saint Petersburg|Zenit Saint Petersburg]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Denis Cheryshev]]|sortname=Cheryshev, Denis|age={{Birth date and age2|df=yes|2018|6|14|1990|12|26}}|caps=10|goals=0|club=[[Villarreal CF|Villarreal]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Roman Zobnin]]|sortname=Zobnin, Roman|age={{Birth date and age2|df=yes|2018|6|14|1994|2|11}}|caps=10|goals=0|club=[[FC Spartak Moscow|Spartak Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Yury Gazinsky]]|sortname=Gazinsky, Yury|age={{Birth date and age2|df=yes|2018|6|14|1989|7|20}}|caps=5|goals=0|club=[[FC Krasnodar|Krasnodar]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Daler Kuzyayev]]|sortname=Kuzyayev, Daler|age={{Birth date and age2|df=yes|2018|6|14|1993|1|15}}|caps=4|goals=0|club=[[FC Zenit Saint Petersburg|Zenit Saint Petersburg]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Anton Miranchuk]]|sortname=Miranchuk, Anton|age={{Birth date and age2|df=yes|2018|6|14|1995|10|17}}|caps=4|goals=0|club=[[FC Lokomotiv Moscow|Lokomotiv Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Aleksandr Tashayev]]|sortname=Tashayev, Aleksandr|age={{Birth date and age2|df=yes|2018|6|14|1994|6|23}}|caps=0|goals=0|club=[[FC Dynamo Moscow|Dynamo Moscow]]|clubnat=RUS}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Fyodor Smolov]]|sortname=Smolov, Fyodor|age={{Birth date and age2|df=yes|2018|6|14|1990|2|5}}|caps=30|goals=12|club=[[FC Krasnodar|Krasnodar]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=FW|name=[[Artem Dzyuba]]|sortname=Dzyuba, Artem|age={{Birth date and age2|df=yes|2018|6|14|1988|8|22}}|caps=22|goals=11|club=[[FC Arsenal Tula|Arsenal Tula]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=FW|name=[[Aleksei Miranchuk]]|sortname=Miranchuk, Aleksei|age={{Birth date and age2|df=yes|2018|6|14|1995|10|17}}|caps=16|goals=4|club=[[FC Lokomotiv Moscow|Lokomotiv Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=FW|name=[[Fyodor Chalov]]|sortname=Chalov, Fyodor|age={{Birth date and age2|df=yes|2018|6|14|1998|4|10}}|caps=0|goals=0|club=[[PFC CSKA Moscow|CSKA Moscow]]|clubnat=RUS}}
+{{nat fs end}}
+
+===Saudi Arabia===
+Coach: {{flagicon|ESP}} [[Juan Antonio Pizzi]]
+
+A 28-man preliminary squad was announced on 17 May 2018.<ref>{{cite news |url=http://www.fifa.com/worldcup/news/saudi-arabia-name-squad-for-pre-world-cup-camp |title=Saudi Arabia name squad for pre-World Cup camp |website=FIFA.com |publisher=Fédération Internationale de Football Association |date=18 May 2018 |access-date=18 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Yasser Al Mosailem]]|sortname=Mosailem, Yasser|age={{Birth date and age2|df=yes|2018|6|14|1984|2|27}}|caps=32|goals=0|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=GK|name=[[Assaf Al-Qarni]]|sortname=Qarni, Assaf|age={{Birth date and age2|df=yes|2018|6|14|1984|4|2}}|caps=11|goals=0|club=[[Al-Ittihad Club (Jeddah)|Al-Ittihad]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=GK|name=[[Abdullah Al-Mayouf]]|sortname=Mayouf, Abdullah|age={{Birth date and age2|df=yes|2018|6|14|1987|1|23}}|caps=9|goals=0|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=GK|name=[[Mohammed Al-Owais]]|sortname=Owais, Mohammed|age={{Birth date and age2|df=yes|2018|6|14|1991|10|10}}|caps=5|goals=0|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Osama Hawsawi]]|sortname=Hawsawi, Osama|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1984|3|31}}|caps=133|goals=7|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Omar Hawsawi]]|sortname=Hawsawi, Omar|age={{Birth date and age2|df=yes|2018|6|14|1985|9|27}}|caps=40|goals=3|club=[[Al-Nassr FC|Al-Nassr]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Mansoor Al-Harbi]]|sortname=Harbi, Mansoor|age={{Birth date and age2|df=yes|2018|6|14|1987|10|19}}|caps=37|goals=1|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Yasser Al-Shahrani]]|sortname=Shahrani, Yasser|age={{Birth date and age2|df=yes|2018|6|14|1992|5|25}}|caps=34|goals=0|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Motaz Hawsawi]]|sortname=Hawsawi, Motaz|age={{Birth date and age2|df=yes|2018|6|14|1992|2|17}}|caps=15|goals=0|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Saeed Al Mowalad]]|sortname=Mowalad, Saeed|age={{Birth date and age2|df=yes|2018|6|14|1991|3|9}}|caps=13|goals=0|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Mohammed Al-Breik]]|sortname=Breik, Mohammed|age={{Birth date and age2|df=yes|2018|6|14|1992|9|15}}|caps=9|goals=1|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Mohammed Jahfali]]|sortname=Jahfali, Mohammed|age={{Birth date and age2|df=yes|2018|6|14|1990|10|24}}|caps=2|goals=0|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=DF|name=[[Ali Al Bulaihi]]|sortname=Bulaihi, Ali|age={{Birth date and age2|df=yes|2018|6|14|1989|11|21}}|caps=1|goals=0|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Taisir Al-Jassim]]|sortname=Jassim, Taisim|age={{Birth date and age2|df=yes|2018|6|14|1984|7|25}}|caps=129|goals=18|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Yahya Al-Shehri]]|sortname=Shehri, Yahya|age={{Birth date and age2|df=yes|2018|6|14|1990|6|26}}|caps=55|goals=7|club=[[CD Leganés|Leganés]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Nawaf Al Abed|Nawaf Al-Abed]]|sortname=Abed, Nawaf Al-|age={{Birth date and age2|df=yes|2018|6|14|1990|1|26}}|caps=43|goals=8|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Salman Al-Faraj]]|sortname=Faraj, Salman Al-|age={{Birth date and age2|df=yes|2018|6|14|1989|8|1}}|caps=40|goals=3|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Abdulmalek Al-Khaibri]]|sortname=Khaibri, Abdulmalek Al-|age={{Birth date and age2|df=yes|2018|6|14|1986|3|13}}|caps=35|goals=0|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Salem Al-Dawsari]]|sortname=Dawsari, Salem|age={{Birth date and age2|df=yes|2018|6|14|1991|8|19}}|caps=30|goals=4|club=[[Villarreal CF|Villarreal]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Housain Al-Mogahwi]]|sortname=Mogahwi, Housain|age={{Birth date and age2|df=yes|2018|6|14|1988|1|28}}|caps=15|goals=1|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Abdullah Otayf]]|sortname=Otayf, Abdullah|age={{Birth date and age2|df=yes|2018|6|14|1992|8|3}}|caps=14|goals=1|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Mohamed Kanno]]|sortname=Kanno, Mohamed|age={{Birth date and age2|df=yes|2018|6|14|1994|9|22}}|caps=5|goals=1|club=[[Al-Hilal FC|Al-Hilal]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Mohammed Al-Kwikbi]]|sortname=Kwikbi, Mohammed|age={{Birth date and age2|df=yes|2018|6|14|1994|8|8}}|caps=4|goals=0|club=[[Ettifaq FC|Al-Ettifaq]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Abdullah Al-Khaibari]]|sortname=Khaibari, Abdullah|age={{Birth date and age2|df=yes|2018|6|14|1996|8|16}}|caps=3|goals=0|club=[[Al-Shabab FC (Riyadh)|Al-Shabab]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Hattan Bahebri]]|sortname=Bahebri, Hattan|age={{Birth date and age2|df=yes|2018|6|14|1992|7|16}}|caps=3|goals=0|club=[[Al-Shabab FC (Riyadh)|Al-Shabab]]|clubnat=KSA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Fahad Al-Muwallad]]|sortname=Muwallad, Fahad Al-|age={{Birth date and age2|df=yes|2018|6|14|1994|9|14}}|caps=42|goals=10|club=[[Levante UD|Levante]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Mohammad Al-Sahlawi]]|sortname=Sahlawi, Mohammad|age={{Birth date and age2|df=yes|2018|6|14|1987|1|10}}|caps=38|goals=28|club=[[Al-Nassr FC|Al-Nassr]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=FW|name=[[Muhannad Assiri]]|sortname=Assiri, Muhannad|age={{Birth date and age2|df=yes|2018|6|14|1986|10|14}}|caps=17|goals=4|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs end}}
+
+===Uruguay===
+Coach: [[Óscar Tabárez]]
+
+A 26-man preliminary squad was announced on 15 May 2018.<ref>{{cite news |url=http://espndeportes.espn.com/futbol/mundial/nota/_/id/4309332/dos-mexicanos-en-la-lista-de-uruguay-para-rusia-2018 |title=Dos 'mexicanos' en la lista de Uruguay para Rusia 2018 |work=ESPN.com |date=15 May 2018 |access-date=15 May 2018 |language=Spanish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Fernando Muslera]]|sortname=Muslera, Fernando Nestor|age={{Birth date and age2|df=yes|2018|6|14|1986|6|16}}|caps=96|goals=0|club=[[Galatasaray S.K. (football)|Galatasaray]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=GK|name=[[Martín Silva]]|sortname=Silva, Martin|age={{Birth date and age2|df=yes|2018|6|14|1983|3|23}}|caps=11|goals=0|club=[[CR Vasco da Gama|Vasco da Gama]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=GK|name=[[Martín Campaña]]|sortname=Campana, Martin|age={{Birth date and age2|df=yes|2018|6|14|1989|5|29}}|caps=1|goals=0|club=[[Club Atlético Independiente|Independiente]]|clubnat=ARG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Maxi Pereira]]|sortname=Pereira, Maxi|age={{Birth date and age2|df=yes|2018|6|14|1984|6|8}}|caps=124|goals=3|club=[[FC Porto|Porto]]|clubnat=POR}}
+{{nat fs g player|no=|pos=DF|name=[[Diego Godín]]|sortname=Godin, Diego|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1986|2|16}}|caps=115|goals=8|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Martín Cáceres]]|sortname=Caceres, Martin|age={{Birth date and age2|df=yes|2018|6|14|1987|4|7}}|caps=75|goals=4|club=[[S.S. Lazio|Lazio]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[José Giménez]]|sortname=Gimenez, Jose|age={{Birth date and age2|df=yes|2018|6|14|1995|1|20}}|caps=41|goals=4|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Sebastián Coates]]|sortname=Coates, Sebastian|age={{Birth date and age2|df=yes|2018|6|14|1990|10|7}}|caps=30|goals=1|club=[[Sporting CP]]|clubnat=POR}}
+{{nat fs g player|no=|pos=DF|name=[[Gastón Silva]]|sortname=Silva, Gaston|age={{Birth date and age2|df=yes|2018|6|14|1994|3|5}}|caps=17|goals=0|club=[[Club Atlético Independiente|Independiente]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=DF|name=[[Guillermo Varela]]|sortname=Varela, Guillermo|age={{Birth date and age2|df=yes|2018|6|14|1993|3|24}}|caps=3|goals=0|club=[[Peñarol]]|clubnat=URU}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Cristian Rodríguez]]|sortname=Rodriguez, Cristian|age={{Birth date and age2|df=yes|2018|6|14|1985|9|30}}|caps=104|goals=11|club=[[Peñarol]]|clubnat=URU}}
+{{nat fs g player|no=|pos=MF|name=[[Nicolás Lodeiro]]|sortname=Lodeiro, Nicolas|age={{Birth date and age2|df=yes|2018|6|14|1989|3|21}}|caps=53|goals=4|club=[[Seattle Sounders FC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=MF|name=[[Gastón Ramírez]]|sortname=Ramirez, Gaston|age={{Birth date and age2|df=yes|2018|6|14|1990|12|2}}|caps=43|goals=0|club=[[U.C. Sampdoria|Sampdoria]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Carlos Andrés Sánchez|Carlos Sánchez]]|sortname=Sanchez, Carlos|age={{Birth date and age2|df=yes|2018|6|14|1984|12|2}}|caps=35|goals=1|club=[[C.F. Monterrey|Monterrey]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Matías Vecino]]|sortname=Vecino, Matias|age={{Birth date and age2|df=yes|2018|6|14|1991|8|24}}|caps=21|goals=1|club=[[Inter Milan|Internazionale]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Giorgian De Arrascaeta]]|sortname=Arrascaeta, Giorgian De|age={{Birth date and age2|df=yes|2018|6|14|1994|5|1}}|caps=13|goals=1|club=[[Cruzeiro Esporte Clube|Cruzeiro]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=MF|name=[[Nahitan Nández]]|sortname=Nandez, Nahitan|age={{Birth date and age2|df=yes|2018|6|14|1995|12|28}}|caps=11|goals=0|club=[[Boca Juniors]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=MF|name=[[Rodrigo Bentancur]]|sortname=Bentancur, Rodrigo|age={{Birth date and age2|df=yes|2018|6|14|1997|6|5}}|caps=6|goals=0|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Diego Laxalt]]|sortname=Laxalt, Diego|age={{Birth date and age2|df=yes|2018|6|14|1993|2|7}}|caps=5|goals=0|club=[[Genoa C.F.C.|Genoa]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Federico Valverde]]|sortname=Valverde, Federico|age={{Birth date and age2|df=yes|2018|6|14|1998|7|22}}|caps=4|goals=1|club=[[Deportivo de La Coruña|Deportivo La Coruña]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Jonathan Urretaviscaya]]|sortname=Urretaviscaya, Jonathan|age={{Birth date and age2|df=yes|2018|6|14|1990|3|19}}|caps=4|goals=0|club=[[C.F. Monterrey|Monterrey]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Lucas Torreira]]|sortname=Torreira, Lucas|age={{Birth date and age2|df=yes|2018|6|14|1996|2|11}}|caps=2|goals=0|club=[[U.C. Sampdoria|Sampdoria]]|clubnat=ITA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Edinson Cavani]]|sortname=Cavani, Edinson|age={{Birth date and age2|df=yes|2018|6|14|1987|2|14}}|caps=100|goals=42|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Luis Suárez]]|sortname=Suarez, Luis|age={{Birth date and age2|df=yes|2018|6|14|1987|1|24}}|caps=97|goals=50|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Cristhian Stuani]]|sortname=Stuani, Cristhian|age={{Birth date and age2|df=yes|2018|6|14|1986|12|10}}|caps=40|goals=5|club=[[Girona FC|Girona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Maxi Gómez]]|sortname=Gomez, Maxi|age={{Birth date and age2|df=yes|2018|6|14|1996|8|14}}|caps=4|goals=0|club=[[Celta de Vigo|Celta Vigo]]|clubnat=ESP}}
+{{nat fs end}}
+
+==Group B==
+
+===Iran===
+Coach: {{flagicon|POR}} [[Carlos Queiroz]]
+
+A 35-man preliminary squad was announced on 13 May 2018.<ref>{{Cite news |url=http://www.ffiri.ir/en/news/detail/IRAN-National-Team-35-players-List-for-The-World-Cup-2018/171706/news.aspx |title=Iran National 35 players list for the World Cup was announced |date=13 May 2018 |work=ffiri.ir |access-date=13 May 2018}}</ref> The squad was reduced to 24 players on 20 May 2018.<ref>{{Cite web |url=http://ifpnews.com/exclusive/carlos-queiroz-names-provisional-iran-squad-for-fifa-world-cup-2018/ |title=Carlos Queiroz Names Provisional Iran Squad for FIFA World Cup 2018 |website=IFPNews.com}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Alireza Beiranvand]]|sortname=Beiranvand, Alireza|age={{Birth date and age2|df=yes|2018|6|14|1992|9|21}}|caps=20|goals=0|club=[[Persepolis F.C.|Persepolis]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=GK|name=[[Mohammad Rashid Mazaheri]]|sortname=Mazaheri, Mohammad Rashid|age={{Birth date and age2|df=yes|2018|6|14|1989|5|18}}|caps=3|goals=0|club=[[Zob Ahan Esfahan F.C.|Zob Ahan Esfahan]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=GK|name=[[Amir Abedzadeh]]|sortname=Abedzadeh, Amir|age={{Birth date and age2|df=yes|2018|6|14|1993|4|26}}|caps=1|goals=0|club=[[C.S. Marítimo|Marítimo]]|clubnat=POR}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Pejman Montazeri]]|sortname=Montazeri, Pejman|age={{Birth date and age2|df=yes|2018|6|14|1983|9|6}}|caps=46|goals=1|club=[[Esteghlal F.C.|Esteghlal]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=DF|name=[[Ramin Rezaeian]]|sortname=Rezaeian, Ramin|age={{Birth date and age2|df=yes|2018|6|14|1990|3|21}}|caps=26|goals=2|club=[[K.V. Oostende|Oostende]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=DF|name=[[Morteza Pouraliganji]]|sortname=Pouraliganji, Morteza|age={{Birth date and age2|df=yes|2018|6|14|1992|4|19}}|caps=25|goals=2|club=[[Al Sadd SC|Al-Sadd]]|clubnat=QAT}}
+{{nat fs g player|no=|pos=DF|name=[[Milad Mohammadi]]|sortname=Mohammadi, Milad|age={{Birth date and age2|df=yes|2018|6|14|1993|9|29}}|caps=17|goals=0|club=[[FC Akhmat Grozny|Akhmat Grozny]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Mohammad Reza Khanzadeh]]|sortname=Khanzadeh, Mohammadreza|age={{Birth date and age2|df=yes|2018|6|14|1991|5|11}}|caps=11|goals=1|club=[[Padideh F.C.|Padideh]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=DF|name=[[Rouzbeh Cheshmi]]|sortname=Cheshmi, Rouzbeh|age={{Birth date and age2|df=yes|2018|6|14|1993|7|24}}|caps=8|goals=1|club=[[Esteghlal F.C.|Esteghlal]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=DF|name=[[Majid Hosseini]]|sortname=Hosseini, Majid|age={{Birth date and age2|df=yes|2018|6|14|1996|6|20}}|caps=1|goals=0|club=[[Esteghlal F.C.|Esteghlal]]|clubnat=IRN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Ehsan Hajsafi]]|sortname=Hajysafi, Ehsan|age={{Birth date and age2|df=yes|2018|6|14|1990|2|25}}|caps=92|goals=6|club=[[Olympiacos F.C.|Olympiacos]]|clubnat=GRE}}
+{{nat fs g player|no=|pos=MF|name=[[Masoud Shojaei]]|sortname=Shojaei, Masoud|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1984|6|9}}|caps=72|goals=8|club=[[AEK Athens F.C.|AEK Athens]]|clubnat=GRE}}
+{{nat fs g player|no=|pos=MF|name=[[Ashkan Dejagah]]|sortname=Dejagah, Ashkan|age={{Birth date and age2|df=yes|2018|6|14|1986|6|5}}|caps=44|goals=8|club=[[Nottingham Forest F.C.|Nottingham Forest]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Vahid Amiri]]|sortname=Amiri, Vahid|age={{Birth date and age2|df=yes|2018|6|14|1988|4|2}}|caps=34|goals=1|club=[[Persepolis F.C.|Persepolis]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=MF|name=[[Omid Ebrahimi]]|sortname=Ebrahimi, Omid|age={{Birth date and age2|df=yes|2018|6|14|1987|9|16}}|caps=28|goals=0|club=[[Esteghlal F.C.|Esteghlal]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=MF|name=[[Saeid Ezatolahi]]|sortname=Ezatolahi, Saeid|age={{Birth date and age2|df=yes|2018|6|14|1996|10|1}}|caps=25|goals=1|club=[[FC Amkar Perm|Amkar Perm]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Mehdi Torabi]]|sortname=Torabi, Mehdi|age={{Birth date and age2|df=yes|2018|6|14|1994|9|10}}|caps=15|goals=4|club=[[Saipa F.C.|Saipa]]|clubnat=IRN}}
+{{nat fs g player|no=|pos=MF|name=[[Saman Ghoddos]]|sortname=Ghoddos, Saman|age={{Birth date and age2|df=yes|2018|6|14|1993|9|6}}|caps=6|goals=1|club=[[Östersunds FK|Östersund]]|clubnat=SWE}}
+{{nat fs g player|no=|pos=MF|name=[[Ali Gholizadeh]]|sortname=Gholizadeh, Ali|age={{Birth date and age2|df=yes|2018|6|14|1996|3|10}}|caps=2|goals=2|club=[[Saipa F.C.|Saipa]]|clubnat=IRN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Karim Ansarifard]]|sortname=Ansarifard, Karim|age={{Birth date and age2|df=yes|2018|6|14|1990|4|3}}|caps=62|goals=16|club=[[Olympiacos F.C.|Olympiacos]]|clubnat=GRE}}
+{{nat fs g player|no=|pos=FW|name=[[Reza Ghoochannejhad]]|sortname=Ghoochannejhad, Reza|age={{Birth date and age2|df=yes|2018|6|14|1987|9|20}}|caps=41|goals=17|club=[[SC Heerenveen|Heerenveen]]|clubnat=NED}}
+{{nat fs g player|no=|pos=FW|name=[[Alireza Jahanbakhsh]]|sortname=Jahanbakhsh, Alireza|age={{Birth date and age2|df=yes|2018|6|14|1993|8|11}}|caps=36|goals=4|club=[[AZ Alkmaar|AZ]]|clubnat=NED}}
+{{nat fs g player|no=|pos=FW|name=[[Sardar Azmoun]]|sortname=Azmoun, Sardar|age={{Birth date and age2|df=yes|2018|6|14|1995|1|1}}|caps=31|goals=23|club=[[FC Rubin Kazan|Rubin Kazan]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=FW|name=[[Mehdi Taremi]]|sortname=Taremi, Mehdi|age={{Birth date and age2|df=yes|2018|6|14|1992|7|18}}|caps=24|goals=11|club=[[Al-Gharafa SC|Al-Gharafa]]|clubnat=QAT}}
+{{nat fs end}}
+
+===Morocco===
+Coach: {{flagicon|FRA}} [[Hervé Renard]]
+
+The final squad was announced on 17 May 2018.<ref>{{Cite news |url=http://telquel.ma/2018/05/17/mondial-2018-voici-liste_1592508 |title=Mondial 2018: Voici la liste des 23 joueurs sélectionnes par Hervé Renard |date=17 May 2018 |work=Telquel.ma |access-date=17 May 2018 |language=fr-FR}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Munir Mohand Mohamedi|Munir Mohamedi]]|sortname=Munir Mohand Mohamedi|age={{Birth date and age2|df=yes|2018|6|14|1989|5|10}}|caps=25|goals=0|club=[[CD Numancia|Numancia]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=GK|name=[[Yassine Bounou]]|sortname=Bounou, Yassine|age={{Birth date and age2|df=yes|2018|6|14|1991|4|5}}|caps=10|goals=0|club=[[Girona FC|Girona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=GK|name=[[Ahmed Reda Tagnaouti]]|sortname=Tagnaouti, Ahmed Reda|age={{Birth date and age2|df=yes|2018|6|14|1996|4|5}}|caps=2|goals=0|club=[[Ittihad Tanger|IR Tanger]]|clubnat=MAR}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Medhi Benatia]]|sortname=Benatia, Medhi|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1987|4|17}}|caps=54|goals=2|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Nabil Dirar]]|sortname=Dirar, Nabil|age={{Birth date and age2|df=yes|2018|6|14|1986|2|25}}|caps=34|goals=3|club=[[Fenerbahçe S.K. (football)|Fenerbahçe]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Manuel da Costa (footballer)|Manuel da Costa]]|sortname=Costa, Manuel da|age={{Birth date and age2|df=yes|2018|6|14|1986|5|6}}|caps=25|goals=1|club=[[İstanbul Başakşehir F.K.|İstanbul Başakşehir]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Romain Saïss]]|sortname=Saiss, Romain|age={{Birth date and age2|df=yes|2018|6|14|1990|3|26}}|caps=21|goals=1|club=[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Hamza Mendyl]]|sortname=Mendyl, Hamza|age={{Birth date and age2|df=yes|2018|6|14|1997|10|21}}|caps=11|goals=0|club=[[Lille OSC|Lille]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Badr Banoun]]|sortname=Banoun, Badr|age={{Birth date and age2|df=yes|2018|6|14|1993|9|30}}|caps=9|goals=1|club=[[Raja Casablanca]]|clubnat=MAR}}
+{{nat fs g player|no=|pos=DF|name=[[Achraf Hakimi]]|sortname=Hakimi, Achraf|age={{Birth date and age2|df=yes|2018|6|14|1998|11|4}}|caps=7|goals=1|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Mbark Boussoufa]]|sortname=Boussoufa, Mbark|age={{Birth date and age2|df=yes|2018|6|14|1984|8|15}}|caps=56|goals=7|club=[[Al Jazira Club|Al-Jazira]]|clubnat=UAE}}
+{{nat fs g player|no=|pos=MF|name=[[Karim El Ahmadi]]|sortname=Ahmadi, Karim|age={{Birth date and age2|df=yes|2018|6|14|1985|1|27}}|caps=48|goals=1|club=[[Feyenoord]]|clubnat=NED}}
+{{nat fs g player|no=|pos=MF|name=[[Younès Belhanda]]|sortname=Belhanda, Younes|age={{Birth date and age2|df=yes|2018|6|14|1990|2|25}}|caps=44|goals=3|club=[[Galatasaray S.K. (football)|Galatasaray]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=MF|name=[[Nordin Amrabat]]|sortname=Amrabat, Nordin|age={{Birth date and age2|df=yes|2018|6|14|1987|3|31}}|caps=41|goals=4|club=[[CD Leganés|Leganés]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Fayçal Fajr]]|sortname=Fajr, Faycal|age={{Birth date and age2|df=yes|2018|6|14|1988|8|1}}|caps=21|goals=2|club=[[Getafe CF|Getafe]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Hakim Ziyech]]|sortname=Ziyech, Hakim|age={{Birth date and age2|df=yes|2018|6|14|1993|3|19}}|caps=15|goals=8|club=[[AFC Ajax|Ajax]]|clubnat=NED}}
+{{nat fs g player|no=|pos=MF|name=[[Youssef Aït Bennasser]]|sortname=Ait Bennasser, Youssef|age={{Birth date and age2|df=yes|2018|6|14|1996|7|7}}|caps=11|goals=0|club=[[Stade Malherbe Caen|Caen]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Mehdi Carcela]]|sortname=Carcela-Gonzalez, Mehdi|age={{Birth date and age2|df=yes|2018|6|14|1989|7|1}}|caps=19|goals=1|club=[[Standard Liège]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=MF|name=[[Sofyan Amrabat]]|sortname=Amrabat, Sofyan|age={{Birth date and age2|df=yes|2018|6|14|1996|8|21}}|caps=4|goals=0|club=[[Feyenoord]]|clubnat=NED}}
+{{nat fs g player|no=|pos=MF|name=[[Amine Harit]]|sortname=Harit, Amine|age={{Birth date and age2|df=yes|2018|6|14|1997|6|18}}|caps=3|goals=0|club=[[FC Schalke 04|Schalke 04]]|clubnat=GER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Khalid Boutaïb]]|sortname=Boutaib, Khalid|age={{Birth date and age2|df=yes|2018|6|14|1987|4|24}}|caps=15|goals=7|club=[[Yeni Malatyaspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=FW|name=[[Aziz Bouhaddouz]]|sortname=Bouhaddouz, Aziz|age={{Birth date and age2|df=yes|2018|6|14|1987|1|29}}|caps=13|goals=3|club=[[FC St. Pauli]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Ayoub El Kaabi]]|sortname=Kaabi, Ayoub|age={{Birth date and age2|df=yes|2018|6|14|1993|6|26}}|caps=8|goals=10|club=[[Renaissance Sportive de Berkane|RS Berkane]]|clubnat=MAR}}
+{{nat fs end}}
+
+===Portugal===
+Coach: [[Fernando Santos (Portuguese footballer)|Fernando Santos]]
+
+A 35-man preliminary squad was announced on 14 May 2018.<ref>{{cite web |url=http://www.goal.com/en/news/renato-sanches-left-out-of-portugals-preliminary-world-cup/1cu31kkyhkftt1qjdmbwxbdhgk |title=Renato Sanches left out of Portugal's preliminary World Cup squad |publisher=Goal.com |date=14 May 2018 |access-date=14 May 2018}}</ref> The final squad was announced on 17 May 2018.<ref>{{cite news |last=Marques |first=David |url=http://www.maisfutebol.iol.pt/selecao-portuguesa/selecao/mundial-2018-estes-sao-os-23-de-portugal |title=Mundial 2018: estes são os 23 de Portugal |trans-title=2018 World Cup: these are the 23 players of Portugal |website=maisfutebol.iol.pt |publisher=Maisfutebol |date=17 May 2018 |access-date=17 May 2018 |language=Portuguese}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Rui Patrício]]|sortname=Patricio, Rui|age={{Birth date and age2|df=yes|2018|6|14|1988|2|15}}|caps=68|goals=0|club=[[Sporting CP]]|clubnat=POR}}
+{{nat fs g player|no=|pos=GK|name=[[Beto (footballer, born 1982)|Beto]]|sortname=Beto|age={{Birth date and age2|df=yes|2018|6|14|1982|6|1}}|caps=13|goals=0|club=[[Göztepe S.K.|Göztepe]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=GK|name=[[Anthony Lopes]]|sortname=Lopes, Anthony|age={{Birth date and age2|df=yes|2018|6|14|1990|10|1}}|caps=6|goals=0|club=[[Olympique Lyonnais|Lyon]]|clubnat=FRA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Cédric Soares|Cédric]]|sortname=Soares, Cedric|age={{Birth date and age2|df=yes|2018|6|14|1991|8|31}}|caps=26|goals=1|club=[[Southampton F.C.|Southampton]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Ricardo Pereira (footballer)|Ricardo Pereira]]|sortname=Ricardo Pereira|age={{Birth date and age2|df=yes|2018|6|14|1993|10|6}}|caps=3|goals=0|club=[[FC Porto|Porto]]|clubnat=POR}}
+{{nat fs g player|no=|pos=DF|name=[[Pepe (footballer, born 1983)|Pepe]]|sortname=Pepe|age={{Birth date and age2|df=yes|2018|6|14|1983|2|26}}|caps=92|goals=5|club=[[Beşiktaş J.K.|Beşiktaş]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[José Fonte]]|sortname=Fonte, Jose|age={{Birth date and age2|df=yes|2018|6|14|1983|12|22}}|caps=28|goals=0|club=[[Dalian Yifang F.C.|Dalian Yifang]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=DF|name=[[Bruno Alves]]|sortname=Alves, Bruno|age={{Birth date and age2|df=yes|2018|6|14|1981|11|27}}|caps=95|goals=11|club=[[Rangers F.C.|Rangers]]|clubnat=SCO}}
+{{nat fs g player|no=|pos=DF|name=[[Rúben Dias]]|sortname=Dias, Ruben|age={{Birth date and age2|df=yes|2018|6|14|1997|5|14}}|caps=0|goals=0|club=[[S.L. Benfica|Benfica]]|clubnat=POR}}
+{{nat fs g player|no=|pos=DF|name=[[Raphaël Guerreiro]]|sortname=Guerreiro, Raphael|age={{Birth date and age2|df=yes|2018|6|14|1993|12|22}}|caps=21|goals=2|club=[[Borussia Dortmund]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Mário Rui]]|sortname=Mario Rui|age={{Birth date and age2|df=yes|2018|6|14|1991|5|27}}|caps=1|goals=0|club=[[S.S.C. Napoli|Napoli]]|clubnat=ITA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[João Moutinho]]|sortname=Moutinho, Joao|age={{Birth date and age2|df=yes|2018|6|14|1986|9|8}}|caps=107|goals=7|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[William Carvalho]]|sortname=Carvalho, William|age={{Birth date and age2|df=yes|2018|6|14|1992|4|7}}|caps=40|goals=2|club=[[Sporting CP]]|clubnat=POR}}
+{{nat fs g player|no=|pos=MF|name=[[João Mário (Portuguese footballer)|João Mário]]|sortname=Joao Mario|age={{Birth date and age2|df=yes|2018|6|14|1993|1|19}}|caps=33|goals=1|club=[[West Ham United F.C.|West Ham United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Manuel Fernandes (footballer, born 1986)|Manuel Fernandes]]|sortname=Fernandes, Manuel|age={{Birth date and age2|df=yes|2018|6|14|1986|2|5}}|caps=12|goals=3|club=[[FC Lokomotiv Moscow|Lokomotiv Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Adrien Silva]]|sortname=Silva, Adrien|age={{Birth date and age2|df=yes|2018|6|14|1989|3|15}}|caps=21|goals=1|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Bruno Fernandes (footballer, born 1994)|Bruno Fernandes]]|sortname=Fernandes, Bruno|age={{Birth date and age2|df=yes|2018|6|14|1994|9|8}}|caps=4|goals=0|club=[[Sporting CP]]|clubnat=POR}}
+{{nat fs g player|no=|pos=MF|name=[[Bernardo Silva]]|sortname=Silva, Bernardo|age={{Birth date and age2|df=yes|2018|6|14|1994|8|10}}|caps=22|goals=2|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[André Silva (footballer, born 1995)|André Silva]]|sortname=Silva, Andre|age={{Birth date and age2|df=yes|2018|6|14|1995|11|6}}|caps=20|goals=11|club=[[A.C. Milan|Milan]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Gonçalo Guedes]]|sortname=Guedes, Goncalo|age={{Birth date and age2|df=yes|2018|6|14|1996|11|29}}|caps=7|goals=1|club=[[Valencia CF|Valencia]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Gelson Martins]]|sortname=Martins, Gelson|age={{Birth date and age2|df=yes|2018|6|14|1995|5|11}}|caps=17|goals=0|club=[[Sporting CP]]|clubnat=POR}}
+{{nat fs g player|no=|pos=FW|name=[[Ricardo Quaresma]]|sortname=Quaresma, Ricardo|age={{Birth date and age2|df=yes|2018|6|14|1983|9|26}}|caps=74|goals=9|club=[[Beşiktaş J.K.|Beşiktaş]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=FW|name=[[Cristiano Ronaldo]]|sortname=Ronaldo, Cristiano|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1985|2|5}}|caps=149|goals=81|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs end}}
+
+===Spain===
+Coach: [[Julen Lopetegui]]
+
+The final squad was announced on 21 May 2018.<ref>{{cite web |publisher=[[ESPN]] |url=http://www.espn.com/soccer/spain/story/3506199/spain-leave-cesc-fabregas-and-alvaro-morata-and-marcos-alonso-out-of-world-cup-squad |title=Spain leave Cesc Fabregas, Alvaro Morata, Marcos Alonso out of World Cup squad |date=21 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[David de Gea]]|sortname=De Gea, David|age={{Birth date and age2|df=yes|2018|6|14|1990|11|7}}|caps=27|goals=0|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Pepe Reina]]|sortname=Reina, Pepe|age={{Birth date and age2|df=yes|2018|6|14|1982|8|31}}|caps=36|goals=0|club=[[S.S.C. Napoli|Napoli]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=GK|name=[[Kepa Arrizabalaga]]|sortname=Arrizabalaga, Kepa|age={{Birth date and age2|df=yes|2018|6|14|1994|10|3}}|caps=1|goals=0|club=[[Athletic Bilbao]]|clubnat=ESP}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Sergio Ramos]]|sortname=Ramos, Sergio|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1986|3|30}}|caps=151|goals=13|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Gerard Piqué]]|sortname=Pique, Gerard|age={{Birth date and age2|df=yes|2018|6|14|1987|2|2}}|caps=96|goals=5|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Jordi Alba]]|sortname=Alba, Jordi|age={{Birth date and age2|df=yes|2018|6|14|1989|3|21}}|caps=60|goals=8|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[César Azpilicueta]]|sortname=Azpilicueta, Cesar|age={{Birth date and age2|df=yes|2018|6|14|1989|8|28}}|caps=21|goals=0|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Dani Carvajal]]|sortname=Carvajal, Dani|age={{Birth date and age2|df=yes|2018|6|14|1992|1|11}}|caps=15|goals=0|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Nacho (footballer, born 1990)|Nacho]]|sortname=Nacho|age={{Birth date and age2|df=yes|2018|6|14|1990|1|18}}|caps=15|goals=0|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Álvaro Odriozola]]|sortname=Odriozola, Alvaro|age={{Birth date and age2|df=yes|2018|6|14|1995|12|14}}|caps=2|goals=0|club=[[Real Sociedad]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Nacho Monreal]]|sortname=Monreal, Nacho|age={{Birth date and age2|df=yes|2018|6|14|1986|2|26}}|caps=21|goals=1|club=[[Arsenal F.C.|Arsenal]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Andrés Iniesta]]|sortname=Iniesta, Andres|age={{Birth date and age2|df=yes|2018|6|14|1984|5|11}}|caps=125|goals=14|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Koke (footballer, born 1992)|Koke]]|sortname=Koke|age={{Birth date and age2|df=yes|2018|6|14|1992|1|8}}|caps=38|goals=0|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Isco]]|sortname=Isco|age={{Birth date and age2|df=yes|2018|6|14|1992|4|21}}|caps=27|goals=10|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Thiago Alcântara|Thiago]]|sortname=Thiago Alcantara|age={{Birth date and age2|df=yes|2018|6|14|1991|4|11}}|caps=27|goals=2|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Marco Asensio]]|sortname=Asensio, Marco|age={{Birth date and age2|df=yes|2018|6|14|1996|1|21}}|caps=10|goals=0|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Saúl Ñíguez|Saúl]]|sortname=Saul Niguez|age={{Birth date and age2|df=yes|2018|6|14|1994|11|21}}|caps=9|goals=0|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[David Silva]]|sortname=Silva, David|age={{Birth date and age2|df=yes|2018|6|14|1986|1|8}}|caps=119|goals=35|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Sergio Busquets]]|sortname=Busquets, Sergio|age={{Birth date and age2|df=yes|2018|6|14|1988|7|16}}|caps=102|goals=2|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Diego Costa]]|sortname=Costa, Diego|age={{Birth date and age2|df=yes|2018|6|14|1988|10|7}}|caps=18|goals=7|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Iago Aspas]]|sortname=Aspas, Iago|age={{Birth date and age2|df=yes|2018|6|14|1987|8|1}}|caps=8|goals=4|club=[[Celta de Vigo|Celta Vigo]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Lucas Vázquez]]|sortname=Vazquez, Lucas|age={{Birth date and age2|df=yes|2018|6|14|1991|7|1}}|caps=5|goals=0|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Rodrigo (footballer, born 1991)|Rodrigo]]|sortname=Rodrigo|age={{Birth date and age2|df=yes|2018|6|14|1991|3|6}}|caps=4|goals=2|club=[[Valencia CF|Valencia]]|clubnat=ESP}}
+{{nat fs end}}
+
+==Group C==
+
+===Australia===
+Coach: {{flagicon|NED}} [[Bert van Marwijk]]
+
+A 32-man preliminary squad was announced on 6 May 2018.<ref>{{Cite news |url=http://www.espn.com/soccer/fifa-world-cup/story/3487741/australias-provisional-world-cup-squad-includes-tim-cahill-daniel-arzani |title=Australia's provisional World Cup squad includes Tim Cahill, Daniel Arzani |last=ESPN.com |date=6 May 2018 |work=ESPN.com |access-date=10 May 2018}}</ref> The squad was reduced to 26 players on 14 May 2018.<ref>{{Cite news |url=https://www.myfootball.com.au/news/26-man-caltex-socceroos-squad-named-ahead-turkey-training-camp |title=26-man Caltex Socceroos squad named ahead of Turkey training camp |last=[[Football Federation Australia|myfootball.com.au]] |date=14 May 2018 |access-date=14 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Mathew Ryan]]|sortname=Ryan, Mathew|age={{Birth date and age2|df=yes|2018|6|14|1992|4|8}}|caps=42|goals=0|club=[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Brad Jones (footballer)|Brad Jones]]|sortname=Jones, Brad|age={{Birth date and age2|df=yes|2018|6|14|1982|3|19}}|caps=5|goals=0|club=[[Feyenoord]]|clubnat=NED}}
+{{nat fs g player|no=|pos=GK|name=[[Danny Vukovic]]|sortname=Vukovic, Danny|age={{Birth date and age2|df=yes|2018|6|14|1985|3|27}}|caps=1|goals=0|club=[[K.R.C. Genk|Genk]]|clubnat=BEL}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Trent Sainsbury]]|sortname=Sainsbury, Trent|age={{Birth date and age2|df=yes|2018|6|14|1992|1|5}}|caps=33|goals=3|club=[[Grasshopper Club Zürich|Grasshoppers]]|clubnat=SUI}}
+{{nat fs g player|no=|pos=DF|name=[[Aziz Behich]]|sortname=Behich, Aziz|age={{Birth date and age2|df=yes|2018|6|14|1990|10|16}}|caps=21|goals=2|club=[[Bursaspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Milos Degenek]]|sortname=Degenek, Milos|age={{Birth date and age2|df=yes|2018|6|14|1994|4|28}}|caps=17|goals=0|club=[[Yokohama F. Marinos]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=DF|name=[[Josh Risdon]]|sortname=Risdon, Joshua|age={{Birth date and age2|df=yes|2018|6|14|1992|7|27}}|caps=6|goals=0|club=[[Western Sydney Wanderers FC|Western Sydney Wanderers]]|clubnat=AUS}}
+{{nat fs g player|no=|pos=DF|name=[[Matthew Jurman]]|sortname=Jurman, Matthew|age={{Birth date and age2|df=yes|2018|6|14|1989|12|8}}|caps=4|goals=0|club=[[Suwon Samsung Bluewings]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[James Meredith (footballer)|James Meredith]]|sortname=Meredith, James|age={{Birth date and age2|df=yes|2018|6|14|1988|4|4}}|caps=2|goals=0|club=[[Millwall F.C.|Millwall]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Fran Karačić]]|sortname=Karacic, Fran|age={{Birth date and age2|df=yes|2018|6|14|1996|5|12}}|caps=0|goals=0|club=[[NK Lokomotiva|Lokomotiva]]|clubnat=CRO}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Mile Jedinak]]|sortname=Jedinak, Mile|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1984|8|3}}|caps=75|goals=18|club=[[Aston Villa F.C.|Aston Villa]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Mark Milligan]]|sortname=Milligan, Mark|age={{Birth date and age2|df=yes|2018|6|14|1985|8|4}}|caps=69|goals=6|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[James Troisi]]|sortname=Troisi, James|age={{Birth date and age2|df=yes|2018|6|14|1988|7|3}}|caps=37|goals=5|club=[[Melbourne Victory FC|Melbourne Victory]]|clubnat=AUS}}
+{{nat fs g player|no=|pos=MF|name=[[Tom Rogic]]|sortname=Rogic, Tom|age={{Birth date and age2|df=yes|2018|6|14|1992|12|16}}|caps=35|goals=7|club=[[Celtic F.C.|Celtic]]|clubnat=SCO}}
+{{nat fs g player|no=|pos=MF|name=[[Massimo Luongo]]|sortname=Luongo, Massimo|age={{Birth date and age2|df=yes|2018|6|14|1992|9|25}}|caps=34|goals=5|club=[[Queens Park Rangers F.C.|Queens Park Rangers]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Aaron Mooy]]|sortname=Mooy, Aaron|age={{Birth date and age2|df=yes|2018|6|14|1990|9|15}}|caps=32|goals=5|club=[[Huddersfield Town A.F.C.|Huddersfield Town]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Jackson Irvine]]|sortname=Irvine, Jackson|age={{Birth date and age2|df=yes|2018|6|14|1993|3|7}}|caps=17|goals=2|club=[[Hull City A.F.C.|Hull City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Joshua Brillante]]|sortname=Brillante, Joshua|age={{Birth date and age2|df=yes|2018|6|14|1993|3|25}}|caps=5|goals=0|club=[[Sydney FC]]|clubnat=AUS}}
+{{nat fs g player|no=|pos=MF|name=[[Dimitri Petratos]]|sortname=Petratos, Dimitri|age={{Birth date and age2|df=yes|2018|6|14|1992|11|10}}|caps=1|goals=0|club=[[Newcastle Jets FC|Newcastle Jets]]|clubnat=AUS}}
+{{nat fs g player|no=|pos=MF|name=[[Daniel Arzani]]|sortname=Arzani, Daniel|age={{Birth date and age2|df=yes|2018|6|14|1999|1|4}}|caps=0|goals=0|club=[[Melbourne City FC|Melbourne City]]|clubnat=AUS}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Tim Cahill]]|sortname=Cahill, Tim|age={{Birth date and age2|df=yes|2018|6|14|1979|12|6}}|caps=105|goals=50|club=[[Millwall F.C.|Millwall]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Robbie Kruse]]|sortname=Kruse, Robbie|age={{Birth date and age2|df=yes|2018|6|14|1988|10|5}}|caps=62|goals=5|club=[[VfL Bochum]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Mathew Leckie]]|sortname=Leckie, Mathew|age={{Birth date and age2|df=yes|2018|6|14|1991|2|4}}|caps=51|goals=6|club=[[Hertha BSC]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Tomi Juric]]|sortname=Juric, Tomi|age={{Birth date and age2|df=yes|2018|6|14|1991|7|22}}|caps=34|goals=8|club=[[FC Luzern|Luzern]]|clubnat=SUI}}
+{{nat fs g player|no=|pos=FW|name=[[Nikita Rukavytsya]]|sortname=Rukavytsya, Nikita|age={{Birth date and age2|df=yes|2018|6|14|1987|6|22}}|caps=18|goals=1|club=[[Maccabi Haifa F.C.|Maccabi Haifa]]|clubnat=ISR}}
+{{nat fs g player|no=|pos=FW|name=[[Andrew Nabbout]]|sortname=Nabbout, Andrew|age={{Birth date and age2|df=yes|2018|6|14|1992|12|17}}|caps=2|goals=0|club=[[Urawa Red Diamonds]]|clubnat=JPN}}
+{{nat fs end}}
+
+===Denmark===
+Coach: {{flagicon|NOR}} [[Åge Hareide]]
+
+A 35-man preliminary squad was announced on 14 May 2018.<ref>{{cite news |url=https://www.dr.dk/sporten/fifavm2018/landstraener-aage-hareide-har-udtaget-danmarks-vm-bruttotrup |title=Landstræner Åge Hareide har udtaget Danmarks VM-bruttotrup |trans-title=National coach Åge Hareide has announced Denmark's World Cup squad |website=dr.dk |publisher=[[DR (broadcaster)|DR]] |date=14 May 2018 |access-date=14 May 2018 |language=Danish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Kasper Schmeichel]]|sortname=Schmeichel, Kasper|age={{Birth date and age2|df=yes|2018|6|14|1986|11|5}}|caps=33|goals=0|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Frederik Rønnow]]|sortname=Ronnow, Frederik|age={{Birth date and age2|df=yes|2018|6|14|1992|8|4}}|caps=6|goals=0|club=[[Brøndby IF|Brøndby]]|clubnat=DEN}}
+{{nat fs g player|no=|pos=GK|name=[[Jonas Lössl]]|sortname=Lossl, Jonas|age={{Birth date and age2|df=yes|2018|6|14|1989|2|1}}|caps=1|goals=0|club=[[Huddersfield Town A.F.C.|Huddersfield Town]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Jesper Hansen]]|sortname=Hansen, Jesper|age={{Birth date and age2|df=yes|2018|6|14|1985|3|31}}|caps=0|goals=0|club=[[FC Midtjylland|Midtjylland]]|clubnat=DEN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Simon Kjær]]|sortname=Kjaer, Simon|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1989|3|26}}|caps=76|goals=3|club=[[Sevilla FC|Sevilla]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Riza Durmisi]]|sortname=Durmisi, Riza|age={{Birth date and age2|df=yes|2018|6|14|1994|1|8}}|caps=23|goals=0|club=[[Real Betis]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Peter Ankersen]]|sortname=Ankersen, Peter|age={{Birth date and age2|df=yes|2018|6|14|1990|9|22}}|caps=21|goals=1|club=[[F.C. Copenhagen|Copenhagen]]|clubnat=DEN}}
+{{nat fs g player|no=|pos=DF|name=[[Nicolai Boilesen]]|sortname=Boilesen, Nicolai|age={{Birth date and age2|df=yes|2018|6|14|1992|2|16}}|caps=17|goals=1|club=[[F.C. Copenhagen|Copenhagen]]|clubnat=DEN}}
+{{nat fs g player|no=|pos=DF|name=[[Mathias Jørgensen]]|sortname=Jorgensen, Mathias|age={{Birth date and age2|df=yes|2018|6|14|1990|4|23}}|caps=12|goals=0|club=[[Huddersfield Town A.F.C.|Huddersfield Town]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Jens Stryger Larsen]]|sortname=Larsen, Jens Stryger|age={{Birth date and age2|df=yes|2018|6|14|1991|2|21}}|caps=11|goals=1|club=[[Udinese Calcio|Udinese]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Jonas Knudsen]]|sortname=Knudsen, Jonas|age={{Birth date and age2|df=yes|2018|6|14|1992|9|16}}|caps=3|goals=0|club=[[Ipswich Town F.C.|Ipswich Town]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Andreas Bjelland]]|sortname=Bjelland, Andreas|age={{Birth date and age2|df=yes|2018|6|14|1988|7|11}}|caps=28|goals=2|club=[[Brentford F.C.|Brentford]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Jannik Vestergaard]]|sortname=Vestergaard, Jannik|age={{Birth date and age2|df=yes|2018|6|14|1992|8|3}}|caps=15|goals=1|club=[[Borussia Mönchengladbach]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Andreas Christensen]]|sortname=Christensen, Andreas|age={{Birth date and age2|df=yes|2018|6|14|1996|4|10}}|caps=14|goals=1|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Henrik Dalsgaard]]|sortname=Dalsgaard, Henrik|age={{Birth date and age2|df=yes|2018|6|14|1989|7|27}}|caps=9|goals=0|club=[[Brentford F.C.|Brentford]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[William Kvist]]|sortname=Kvist, William|age={{Birth date and age2|df=yes|2018|6|14|1985|2|24}}|caps=78|goals=2|club=[[F.C. Copenhagen|Copenhagen]]|clubnat=DEN}}
+{{nat fs g player|no=|pos=MF|name=[[Christian Eriksen]]|sortname=Eriksen, Christian|age={{Birth date and age2|df=yes|2018|6|14|1992|2|14}}|caps=77|goals=21|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Lasse Schöne]]|sortname=Schone, Lasse|age={{Birth date and age2|df=yes|2018|6|14|1986|5|27}}|caps=34|goals=3|club=[[AFC Ajax|Ajax]]|clubnat=NED}}
+{{nat fs g player|no=|pos=MF|name=[[Thomas Delaney]]|sortname=Delaney, Thomas|age={{Birth date and age2|df=yes|2018|6|14|1991|9|3}}|caps=25|goals=4|club=[[SV Werder Bremen|Werder Bremen]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Pione Sisto]]|sortname=Sisto, Pione|age={{Birth date and age2|df=yes|2018|6|14|1995|2|4}}|caps=12|goals=1|club=[[Celta de Vigo|Celta Vigo]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Mike Jensen]]|sortname=Jensen, Mike|age={{Birth date and age2|df=yes|2018|6|14|1988|2|19}}|caps=6|goals=0|club=[[Rosenborg BK|Rosenborg]]|clubnat=NOR}}
+{{nat fs g player|no=|pos=MF|name=[[Lukas Lerager]]|sortname=Lerager, Lukas|age={{Birth date and age2|df=yes|2018|6|14|1993|7|12}}|caps=3|goals=0|club=[[FC Girondins de Bordeaux|Bordeaux]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Michael Krohn-Dehli]]|sortname=Krohn-Dehli, Michael|age={{Birth date and age2|df=yes|2018|6|14|1983|6|6}}|caps=57|goals=6|club=[[Deportivo de La Coruña|Deportivo La Coruña]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Pierre-Emile Højbjerg]]|sortname=Hojbjerg, Pierre-Emile|age={{Birth date and age2|df=yes|2018|6|14|1995|8|5}}|caps=17|goals=1|club=[[Southampton F.C.|Southampton]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Daniel Wass]]|sortname=Wass, Daniel|age={{Birth date and age2|df=yes|2018|6|14|1989|5|31}}|caps=16|goals=0|club=[[Celta de Vigo|Celta Vigo]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Mathias Jensen]]|sortname=Jensen, Mathias|age={{Birth date and age2|df=yes|2018|6|14|1996|1|1}}|caps=0|goals=0|club=[[FC Nordsjælland|Nordsjælland]]|clubnat=DEN}}
+{{nat fs g player|no=|pos=MF|name=[[Robert Skov]]|sortname=Skov, Robert|age={{Birth date and age2|df=yes|2018|6|14|1996|5|20}}|caps=0|goals=0|club=[[F.C. Copenhagen|Copenhagen]]|clubnat=DEN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Nicklas Bendtner]]|sortname=Bendtner, Nicklas|age={{Birth date and age2|df=yes|2018|6|14|1988|1|16}}|caps=81|goals=30|club=[[Rosenborg BK|Rosenborg]]|clubnat=NOR}}
+{{nat fs g player|no=|pos=FW|name=[[Nicolai Jørgensen]]|sortname=Jorgensen, Nicolai|age={{Birth date and age2|df=yes|2018|6|14|1991|1|15}}|caps=29|goals=8|club=[[Feyenoord]]|clubnat=NED}}
+{{nat fs g player|no=|pos=FW|name=[[Yussuf Poulsen]]|sortname=Poulsen, Yussuf|age={{Birth date and age2|df=yes|2018|6|14|1994|6|15}}|caps=26|goals=3|club=[[RB Leipzig]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Andreas Cornelius]]|sortname=Cornelius, Andreas|age={{Birth date and age2|df=yes|2018|6|14|1993|3|16}}|caps=18|goals=4|club=[[Atalanta B.C.|Atalanta]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Martin Braithwaite]]|sortname=Braithwaite, Martin|age={{Birth date and age2|df=yes|2018|6|14|1991|6|5}}|caps=18|goals=1|club=[[FC Girondins de Bordeaux|Bordeaux]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Viktor Fischer]]|sortname=Fischer, Viktor|age={{Birth date and age2|df=yes|2018|6|14|1994|6|9}}|caps=17|goals=3|club=[[F.C. Copenhagen|Copenhagen]]|clubnat=DEN}}
+{{nat fs g player|no=|pos=FW|name=[[Kasper Dolberg]]|sortname=Dolberg, Kasper|age={{Birth date and age2|df=yes|2018|6|14|1997|10|6}}|caps=4|goals=1|club=[[AFC Ajax|Ajax]]|clubnat=NED}}
+{{nat fs g player|no=|pos=FW|name=[[Kenneth Zohore]]|sortname=Zohore, Kenneth|age={{Birth date and age2|df=yes|2018|6|14|1994|1|31}}|caps=0|goals=0|club=[[Cardiff City F.C.|Cardiff City]]|clubnat=WAL}}
+{{nat fs end}}
+
+===France===
+Coach: [[Didier Deschamps]]
+
+The final squad was announced on 17 May 2018.<ref>{{cite web |url=https://www.fff.fr/equipes-de-france/1/france-a/derniere-selection |title=Dernière sélection |work=[[French Football Federation]] |date=16 March 2018 |access-date=16 March 2018 |language=French}}</ref><ref>{{cite web |url=https://www.vivaronews.com/france-confirm-world-cup-squad-numbers |title=France confirm World Cup squad numbers |website=vivaronews.com |publisher=VNews |date=24 May 2018 |access-date=24 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=1|pos=GK|name=[[Hugo Lloris]]|sortname=Lloris, Hugo|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1986|12|26}}|caps=96|goals=0|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=2|pos=DF|name=[[Benjamin Pavard]]|sortname=Pavard, Benjamin|age={{Birth date and age2|df=yes|2018|6|14|1996|3|28}}|caps=3|goals=0|club=[[VfB Stuttgart]]|clubnat=GER}}
+{{nat fs g player|no=3|pos=DF|name=[[Presnel Kimpembe]]|sortname=Kimpembe, Presnel|age={{Birth date and age2|df=yes|2018|6|14|1995|8|13}}|caps=1|goals=0|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=4|pos=DF|name=[[Raphaël Varane]]|sortname=Varane, Raphael|age={{Birth date and age2|df=yes|2018|6|14|1993|4|25}}|caps=41|goals=2|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=5|pos=DF|name=[[Samuel Umtiti]]|sortname=Umtiti, Samuel|age={{Birth date and age2|df=yes|2018|6|14|1993|11|14}}|caps=16|goals=1|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=6|pos=MF|name=[[Paul Pogba]]|sortname=Pogba, Paul|age={{Birth date and age2|df=yes|2018|6|14|1993|3|15}}|caps=51|goals=9|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=7|pos=FW|name=[[Antoine Griezmann]]|sortname=Griezmann, Antoine|age={{Birth date and age2|df=yes|2018|6|14|1991|3|21}}|caps=51|goals=19|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=8|pos=FW|name=[[Thomas Lemar]]|sortname=Lemar, Thomas|age={{Birth date and age2|df=yes|2018|6|14|1995|11|12}}|caps=10|goals=3|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=9|pos=FW|name=[[Olivier Giroud]]|sortname=Giroud, Olivier|age={{Birth date and age2|df=yes|2018|6|14|1986|9|30}}|caps=71|goals=30|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=10|pos=FW|name=[[Kylian Mbappé]]|sortname=Mbappe, Kylian|age={{Birth date and age2|df=yes|2018|6|14|1998|12|20}}|caps=12|goals=3|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=11|pos=FW|name=[[Ousmane Dembélé]]|sortname=Dembele, Ousmane|age={{Birth date and age2|df=yes|2018|6|14|1997|5|15}}|caps=9|goals=1|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=12|pos=MF|name=[[Corentin Tolisso]]|sortname=Tolisso, Corentin|age={{Birth date and age2|df=yes|2018|6|14|1994|8|3}}|caps=6|goals=0|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=13|pos=MF|name=[[N'Golo Kanté]]|sortname=Kante, NGolo|age={{Birth date and age2|df=yes|2018|6|14|1991|3|29}}|caps=22|goals=1|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=14|pos=MF|name=[[Blaise Matuidi]]|sortname=Matuidi, Blaise|age={{Birth date and age2|df=yes|2018|6|14|1987|4|9}}|caps=64|goals=9|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=15|pos=MF|name=[[Steven Nzonzi]]|sortname=Nzonzi, Steven|age={{Birth date and age2|df=yes|2018|6|14|1988|12|15}}|caps=2|goals=0|club=[[Sevilla FC|Sevilla]]|clubnat=ESP}}
+{{nat fs g player|no=16|pos=GK|name=[[Steve Mandanda]]|sortname=Mandanda, Steve|age={{Birth date and age2|df=yes|2018|6|14|1985|3|28}}|caps=26|goals=0|club=[[Olympique de Marseille|Marseille]]|clubnat=FRA}}
+{{nat fs g player|no=17|pos=DF|name=[[Adil Rami]]|sortname=Rami, Adil|age={{Birth date and age2|df=yes|2018|6|14|1985|12|27}}|caps=33|goals=1|club=[[Olympique de Marseille|Marseille]]|clubnat=FRA}}
+{{nat fs g player|no=18|pos=FW|name=[[Nabil Fekir]]|sortname=Fekir, Nabil|age={{Birth date and age2|df=yes|2018|6|14|1993|7|18}}|caps=10|goals=1|club=[[Olympique Lyonnais|Lyon]]|clubnat=FRA}}
+{{nat fs g player|no=19|pos=DF|name=[[Djibril Sidibé (footballer, born 1992)|Djibril Sidibé]]|sortname=Sidibe, Djibril|age={{Birth date and age2|df=yes|2018|6|14|1992|7|29}}|caps=15|goals=1|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=20|pos=FW|name=[[Florian Thauvin]]|sortname=Thauvin, Florian|age={{Birth date and age2|df=yes|2018|6|14|1993|1|26}}|caps=3|goals=0|club=[[Olympique de Marseille|Marseille]]|clubnat=FRA}}
+{{nat fs g player|no=21|pos=DF|name=[[Lucas Hernández]]|sortname=Hernandez, Lucas|age={{Birth date and age2|df=yes|2018|6|14|1996|2|14}}|caps=2|goals=0|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=22|pos=DF|name=[[Benjamin Mendy]]|sortname=Mendy, Benjamin|age={{Birth date and age2|df=yes|2018|6|14|1994|7|17}}|caps=4|goals=0|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=23|pos=GK|name=[[Alphonse Areola]]|sortname=Areola, Alphonse|age={{Birth date and age2|df=yes|2018|6|14|1993|2|27}}|caps=0|goals=0|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs end}}
+
+===Peru===
+Coach: {{flagicon|ARG}} [[Ricardo Gareca]]
+
+A 24-man preliminary squad was announced on 16 May 2018.<ref>{{cite news |url=http://es.fifa.com/worldcup/news/peru-anuncia-su-nomina-provisional-de-24-jugadores |title=Perú anuncia su nómina provisional de 24 jugadores |trans-title=Peru announces its provisional list of 24 players |website=FIFA.com |publisher=Fédération Internationale de Football Association |date=16 May 2018 |access-date=17 May 2018 |language=Spanish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Pedro Gallese]]|sortname=Gallese, Pedro|age={{Birth date and age2|df=yes|2018|6|14|1990|4|23}}|caps=36|goals=0|club=[[Tiburones Rojos de Veracruz|Veracruz]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=GK|name=[[José Carvallo]]|sortname=Carvallo, Jose|age={{Birth date and age2|df=yes|2018|6|14|1986|3|1}}|caps=5|goals=0|club=[[Universidad Técnica de Cajamarca|UTC]]|clubnat=PER}}
+{{nat fs g player|no=|pos=GK|name=[[Carlos Cáceda]]|sortname=Caceda, Carlos|age={{Birth date and age2|df=yes|2018|6|14|1991|9|27}}|caps=4|goals=0|club=[[Deportivo Municipal]]|clubnat=PER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Luis Abram]]|sortname=Abram, Luis|age={{Birth date and age2|df=yes|2018|6|14|1996|2|27}}|caps=4|goals=0|club=[[Club Atlético Vélez Sarsfield|Vélez Sarsfield]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=DF|name=[[Luis Advíncula]]|sortname=Advincula, Luis|age={{Birth date and age2|df=yes|2018|6|14|1990|3|2}}|caps=62|goals=0|club=[[Lobos BUAP]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Miguel Araujo]]|sortname=Araujo, Miguel|age={{Birth date and age2|df=yes|2018|6|14|1994|10|24}}|caps=2|goals=0|club=[[Alianza Lima]]|clubnat=PER}}
+{{nat fs g player|no=|pos=DF|name=[[Aldo Corzo]]|sortname=Corzo, Aldo|age={{Birth date and age2|df=yes|2018|6|14|1989|5|20}}|caps=23|goals=0|club=[[Club Universitario de Deportes|Universitario]]|clubnat=PER}}
+{{nat fs g player|no=|pos=DF|name=[[Nilson Loyola]]|sortname=Loyola, Nilson|age={{Birth date and age2|df=yes|2018|6|14|1994|10|26}}|caps=3|goals=0|club=[[FBC Melgar]]|clubnat=PER}}
+{{nat fs g player|no=|pos=DF|name=[[Christian Ramos]]|sortname=Ramos, Christian|age={{Birth date and age2|df=yes|2018|6|14|1988|11|4}}|caps=63|goals=3|club=[[Tiburones Rojos de Veracruz|Veracruz]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Alberto Junior Rodríguez|Alberto Rodríguez]]|sortname=Rodriguez, Alberto Junior|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1984|5|31}}|caps=57|goals=0|club=[[Sporting Cristal]]|clubnat=PER}}
+{{nat fs g player|no=|pos=DF|name=[[Anderson Santamaría]]|sortname=Santamaria, Anderson|age={{Birth date and age2|df=yes|2018|6|14|1992|1|10}}|caps=2|goals=0|club=[[Club Puebla|Puebla]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Miguel Trauco]]|sortname=Trauco, Miguel|age={{Birth date and age2|df=yes|2018|6|14|1992|8|25}}|caps=24|goals=0|club=[[Clube de Regatas do Flamengo|Flamengo]]|clubnat=BRA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Pedro Aquino]]|sortname=Aquino, Pedro|age={{Birth date and age2|df=yes|2018|6|14|1995|4|13}}|caps=10|goals=0|club=[[Lobos BUAP]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Wilder Cartagena]]|sortname=Cartagena, Wilder|age={{Birth date and age2|df=yes|2018|6|14|1994|9|23}}|caps=2|goals=0|club=[[Tiburones Rojos de Veracruz|Veracruz]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Christian Cueva]]|sortname=Cueva, Christian|age={{Birth date and age2|df=yes|2018|6|14|1991|11|23}}|caps=41|goals=7|club=[[São Paulo FC|São Paulo]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=MF|name=[[Edison Flores]]|sortname=Flores, Edison|age={{Birth date and age2|df=yes|2018|6|14|1994|5|14}}|caps=26|goals=9|club=[[AaB Fodbold|AaB]]|clubnat=DEN}}
+{{nat fs g player|no=|pos=MF|name=[[Sergio Peña (Peruvian footballer)|Sergio Peña]]|sortname=Pena, Sergio|age={{Birth date and age2|df=yes|2018|6|14|1995|9|28}}|caps=5|goals=0|club=[[Granada CF|Granada]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Renato Tapia]]|sortname=Tapia, Renato|age={{Birth date and age2|df=yes|2018|6|14|1995|7|28}}|caps=20|goals=1|club=[[Feyenoord]]|clubnat=NED}}
+{{nat fs g player|no=|pos=MF|name=[[Yoshimar Yotún]]|sortname=Yotun, Yoshimar|age={{Birth date and age2|df=yes|2018|6|14|1990|4|7}}|caps=70|goals=2|club=[[Orlando City SC|Orlando City]]|clubnat=USA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Paolo Hurtado]]|sortname=Hurtado, Paolo|age={{Birth date and age2|df=yes|2018|6|14|1990|7|27}}|caps=29|goals=3|club=[[Vitória S.C.|Vitória de Guimarães]]|clubnat=POR}}
+{{nat fs g player|no=|pos=FW|name=[[Andy Polo]]|sortname=Polo, Andy|age={{Birth date and age2|df=yes|2018|6|14|1994|9|29}}|caps=15|goals=1|club=[[Portland Timbers]]|clubnat=USA}}
+{{nat fs g player|no=|pos=FW|name=[[André Carrillo]]|sortname=Carrillo, Andre|age={{Birth date and age2|df=yes|2018|6|14|1991|6|14}}|caps=42|goals=4|club=[[Watford F.C.|Watford]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Raúl Ruidíaz]]|sortname=Ruidiaz, Raul|age={{Birth date and age2|df=yes|2018|6|14|1990|7|25}}|caps=29|goals=4|club=[[Monarcas Morelia|Morelia]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=FW|name=[[Jefferson Farfán]]|sortname=Farfan, Jefferson|age={{Birth date and age2|df=yes|2018|6|14|1984|10|26}}|caps=81|goals=24|club=[[FC Lokomotiv Moscow|Lokomotiv Moscow]]|clubnat=RUS}}
+{{nat fs end}}
+
+==Group D==
+
+===Argentina===
+Coach: [[Jorge Sampaoli]]
+
+A 35-man preliminary squad was announced on 14 May 2018.<ref>{{Cite news |url=http://www.goal.com/en-us/news/icardi-named-in-argentinas-35-man-provisional/1hwj01ivyaqjv14nch7p85jrt2 |title=Icardi named in Argentina's 35-man World Cup squad |date=13 May 2018 |website=goal.com |access-date=14 May 2018}}</ref> The final squad was announced on 21 May 2018.<ref>{{cite news |url=http://www.goal.com/en/news/icardi-cut-from-argentinas-23-man-world-cup-squad/lo0f6fig55ih1jh7w9v4enau6 |title=Icardi cut from Argentina's 23-man World Cup squad |website=[[Goal (website)|Goal]] |publisher=[[Perform Group]] |date=21 May 2018 |access-date=21 May 2018}}</ref> Injured [[Sergio Romero]] was replaced by [[Nahuel Guzmán]] on 23 May 2018.<ref>{{cite web |publisher=Argentine Football Association |url=http://www.afa.com.ar/9749/nahuel-guzman-reemplazara-a-sergio-romero |title=Nahuel Guzmán reemplazará a Sergio Romero |language=Spanish}}</ref><ref>{{cite news |url=http://www.goal.com/es/noticias/los-numeros-de-argentina-estos-son-los-dorsales-de-la/a3jbb58nz7it1q0cxdn8hf4wy |title=Los números de Argentina: estos son los dorsales de la Selección para el Mundial de Rusia 2018 |trans-title=The squad numbers of Argentina: these are the numbers of the selection for the 2018 World Cup of Russia |website=[[Goal (website)|Goal]] |publisher=[[Perform Group]] |date=25 May 2018 |access-date=25 May 2018 |language=Spanish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=1|pos=GK|name=[[Nahuel Guzmán]]|sortname=Guzman, Nahuel|age={{Birth date and age2|df=yes|2018|6|14|1986|2|10}}|caps=6|goals=0|club=[[Tigres UANL|UANL]]|clubnat=MEX}}
+{{nat fs g player|no=2|pos=DF|name=[[Gabriel Mercado]]|sortname=Mercado, Gabriel|age={{Birth date and age2|df=yes|2018|6|14|1987|3|18}}|caps=20|goals=3|club=[[Sevilla FC|Sevilla]]|clubnat=ESP}}
+{{nat fs g player|no=3|pos=DF|name=[[Nicolás Tagliafico]]|sortname=Tagliafico, Nicolas|age={{Birth date and age2|df=yes|2018|6|14|1992|8|31}}|caps=3|goals=0|club=[[AFC Ajax|Ajax]]|clubnat=NED}}
+{{nat fs g player|no=4|pos=DF|name=[[Cristian Ansaldi]]|sortname=Ansaldi, Cristian|age={{Birth date and age2|df=yes|2018|6|14|1986|9|20}}|caps=5|goals=0|club=[[Torino F.C.|Torino]]|clubnat=ITA}}
+{{nat fs g player|no=5|pos=MF|name=[[Lucas Biglia]]|sortname=Biglia, Lucas|age={{Birth date and age2|df=yes|2018|6|14|1986|1|30}}|caps=36|goals=1|club=[[A.C. Milan|Milan]]|clubnat=ITA}}
+{{nat fs g player|no=6|pos=DF|name=[[Federico Fazio]]|sortname=Fazio, Federico|age={{Birth date and age2|df=yes|2018|6|14|1987|1|30}}|caps=8|goals=1|club=[[A.S. Roma|Roma]]|clubnat=ITA}}
+{{nat fs g player|no=7|pos=MF|name=[[Éver Banega]]|sortname=Banega, Ever|age={{Birth date and age2|df=yes|2018|6|14|1988|6|29}}|caps=61|goals=6|club=[[Sevilla FC|Sevilla]]|clubnat=ESP}}
+{{nat fs g player|no=8|pos=DF|name=[[Marcos Acuña]]|sortname=Acuna, Marcos|age={{Birth date and age2|df=yes|2018|6|14|1991|10|28}}|caps=9|goals=0|club=[[Sporting CP]]|clubnat=POR}}
+{{nat fs g player|no=9|pos=FW|name=[[Gonzalo Higuaín]]|sortname=Higuain, Gonzalo|age={{Birth date and age2|df=yes|2018|6|14|1987|12|10}}|caps=70|goals=31|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=10|pos=FW|name=[[Lionel Messi]]|sortname=Messi, Lionel|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1987|6|24}}|caps=123|goals=61|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=11|pos=MF|name=[[Ángel Di María]]|sortname=Di Maria, Angel|age={{Birth date and age2|df=yes|2018|6|14|1988|5|21}}|caps=93|goals=19|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=12|pos=GK|name=[[Franco Armani]]|sortname=Armani, Franco|age={{Birth date and age2|df=yes|2018|6|14|1986|10|16}}|caps=0|goals=0|club=[[Club Atlético River Plate|River Plate]]|clubnat=ARG}}
+{{nat fs g player|no=13|pos=MF|name=[[Maximiliano Meza]]|sortname=Meza, Maximiliano|age={{Birth date and age2|df=yes|2018|6|14|1992|1|15}}|caps=1|goals=0|club=[[Club Atlético Independiente|Independiente]]|clubnat=ARG}}
+{{nat fs g player|no=14|pos=MF|name=[[Javier Mascherano]]|sortname=Mascherano, Javier|age={{Birth date and age2|df=yes|2018|6|14|1984|6|8}}|caps=142|goals=3|club=[[Hebei China Fortune F.C.|Hebei China Fortune]]|clubnat=CHN}}
+{{nat fs g player|no=15|pos=MF|name=[[Manuel Lanzini]]|sortname=Lanzini, Manuel|age={{Birth date and age2|df=yes|2018|6|14|1993|2|13}}|caps=3|goals=1|club=[[West Ham United F.C.|West Ham United]]|clubnat=ENG}}
+{{nat fs g player|no=16|pos=DF|name=[[Marcos Rojo]]|sortname=Rojo, Marcos|age={{Birth date and age2|df=yes|2018|6|14|1990|11|28}}|caps=55|goals=2|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=17|pos=DF|name=[[Nicolás Otamendi]]|sortname=Otamendi, Nicolas|age={{Birth date and age2|df=yes|2018|6|14|1988|7|5}}|caps=53|goals=4|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=18|pos=MF|name=[[Eduardo Salvio]]|sortname=Salvio, Eduardo|age={{Birth date and age2|df=yes|2018|6|14|1990|7|13}}|caps=8|goals=0|club=[[S.L. Benfica|Benfica]]|clubnat=POR}}
+{{nat fs g player|no=19|pos=FW|name=[[Sergio Agüero]]|sortname=Aguero, Sergio|age={{Birth date and age2|df=yes|2018|6|14|1988|6|2}}|caps=84|goals=36|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=20|pos=MF|name=[[Giovani Lo Celso]]|sortname=Lo Celso, Giovani|age={{Birth date and age2|df=yes|2018|6|14|1996|4|9}}|caps=4|goals=0|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=21|pos=FW|name=[[Paulo Dybala]]|sortname=Dybala, Paulo|age={{Birth date and age2|df=yes|2018|6|14|1993|11|15}}|caps=12|goals=0|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=22|pos=MF|name=[[Cristian Pavón]]|sortname=Pavon, Cristian|age={{Birth date and age2|df=yes|2018|6|14|1996|1|21}}|caps=4|goals=0|club=[[Boca Juniors]]|clubnat=ARG}}
+{{nat fs g player|no=23|pos=GK|name=[[Willy Caballero]]|sortname=Caballero, Willy|age={{Birth date and age2|df=yes|2018|6|14|1981|9|28}}|caps=2|goals=0|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs end}}
+
+===Croatia===
+Coach: [[Zlatko Dalić]]
+
+A 32-man preliminary squad was announced on 14 May 2018.<ref>{{Cite news |url=http://hns-cff.hr/news/18000/dalic-klupski-trofeji-su-dokaz-kvalitete-nase-reprezentacije/ |title=Izbornik hrvatske reprezentacije Zlatko Dalić objavio je danas širi popis od 32 igrača koji kandidiraju za nastup na FIFA Svjetskom prvenstvu u Rusiji ovoga ljeta. |last=hns-cff.hr |date=14 May 2018 |work=hns-cff.hr |access-date=14 May 2018 |language=Croatian}}</ref> The squad was reduced to 24 players on 21 May 2018.<ref>{{cite news |url=http://hns-cff.hr/en/news/18052/head-coach-dalic-presents-24-man-croatia-squad/ |title=Head coach Dalić presents 24-man Croatia squad |website=hns-cff.hr |publisher=Croatian Football Federation |date=21 May 2018 |access-date=21 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Danijel Subašić]]|sortname=Subasic, Danijel|age={{Birth date and age2|df=yes|2018|6|14|1984|10|27}}|caps=36|goals=0|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=GK|name=[[Lovre Kalinić]]|sortname=Kalinic, Lovre|age={{Birth date and age2|df=yes|2018|6|14|1990|4|3}}|caps=10|goals=0|club=[[K.A.A. Gent|Gent]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=GK|name=[[Dominik Livaković]]|sortname=Livakovic, Dominik|age={{Birth date and age2|df=yes|2018|6|14|1995|1|9}}|caps=1|goals=0|club=[[GNK Dinamo Zagreb|Dinamo Zagreb]]|clubnat=CRO}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Vedran Ćorluka]]|sortname=Corluka, Vedran|age={{Birth date and age2|df=yes|2018|6|14|1986|2|5}}|caps=97|goals=4|club=[[FC Lokomotiv Moscow|Lokomotiv Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Domagoj Vida]]|sortname=Vida, Domagoj|age={{Birth date and age2|df=yes|2018|6|14|1989|4|29}}|caps=57|goals=2|club=[[Beşiktaş J.K.|Beşiktaş]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Ivan Strinić]]|sortname=Strinic, Ivan|age={{Birth date and age2|df=yes|2018|6|14|1987|7|17}}|caps=42|goals=0|club=[[U.C. Sampdoria|Sampdoria]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Dejan Lovren]]|sortname=Lovren, Dejan|age={{Birth date and age2|df=yes|2018|6|14|1989|7|5}}|caps=37|goals=2|club=[[Liverpool F.C.|Liverpool]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Šime Vrsaljko]]|sortname=Vrsaljko, Sime|age={{Birth date and age2|df=yes|2018|6|14|1992|1|10}}|caps=34|goals=0|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Josip Pivarić]]|sortname=Pivaric, Josip|age={{Birth date and age2|df=yes|2018|6|14|1989|1|30}}|caps=19|goals=0|club=[[FC Dynamo Kyiv|Dynamo Kyiv]]|clubnat=UKR}}
+{{nat fs g player|no=|pos=DF|name=[[Tin Jedvaj]]|sortname=Jedvaj, Tin|age={{Birth date and age2|df=yes|2018|6|14|1995|11|28}}|caps=10|goals=0|club=[[Bayer 04 Leverkusen|Bayer Leverkusen]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Matej Mitrović]]|sortname=Mitrovic, Matej|age={{Birth date and age2|df=yes|2018|6|14|1993|11|10}}|caps=9|goals=1|club=[[Club Brugge KV|Club Brugge]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=DF|name=[[Duje Ćaleta-Car]]|sortname=Caleta-Car, Duje|age={{Birth date and age2|df=yes|2018|6|14|1996|9|17}}|caps=0|goals=0|club=[[FC Red Bull Salzburg|Red Bull Salzburg]]|clubnat=AUT}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Luka Modrić]]|sortname=Modric, Luka|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1985|9|9}}|caps=104|goals=12|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Ivan Rakitić]]|sortname=Rakitic, Ivan|age={{Birth date and age2|df=yes|2018|6|14|1988|3|10}}|caps=90|goals=14|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Mateo Kovačić]]|sortname=Kovacic, Mateo|age={{Birth date and age2|df=yes|2018|6|14|1994|5|6}}|caps=39|goals=1|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Milan Badelj]]|sortname=Badelj, Milan|age={{Birth date and age2|df=yes|2018|6|14|1989|2|25}}|caps=36|goals=1|club=[[ACF Fiorentina|Fiorentina]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Marcelo Brozović]]|sortname=Brozovic, Marcelo|age={{Birth date and age2|df=yes|2018|6|14|1992|11|16}}|caps=33|goals=6|club=[[Inter Milan|Internazionale]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Filip Bradarić]]|sortname=Bradaric, Filip|age={{Birth date and age2|df=yes|2018|6|14|1992|1|11}}|caps=3|goals=0|club=[[HNK Rijeka|Rijeka]]|clubnat=CRO}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Mario Mandžukić]]|sortname=Mandzukic, Mario|age={{Birth date and age2|df=yes|2018|6|14|1986|5|21}}|caps=82|goals=30|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Ivan Perišić]]|sortname=Perisic, Ivan|age={{Birth date and age2|df=yes|2018|6|14|1989|2|2}}|caps=64|goals=17|club=[[Inter Milan|Internazionale]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Nikola Kalinić]]|sortname=Kalinic, Nikola|age={{Birth date and age2|df=yes|2018|6|14|1988|1|5}}|caps=41|goals=15|club=[[A.C. Milan|Milan]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Andrej Kramarić]]|sortname=Kramaric, Andrej|age={{Birth date and age2|df=yes|2018|6|14|1991|6|19}}|caps=29|goals=8|club=[[TSG 1899 Hoffenheim|1899 Hoffenheim]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Marko Pjaca]]|sortname=Pjaca, Marko|age={{Birth date and age2|df=yes|2018|6|14|1995|5|6}}|caps=15|goals=1|club=[[FC Schalke 04|Schalke 04]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Ante Rebić]]|sortname=Rebic, Ante|age={{Birth date and age2|df=yes|2018|6|14|1993|9|21}}|caps=14|goals=1|club=[[Eintracht Frankfurt]]|clubnat=GER}}
+{{nat fs g end}}
+
+===Iceland===
+Coach: [[Heimir Hallgrímsson]]
+
+The final squad was announced on 11 May 2018.<ref>{{cite web |title=HM hópur Íslands: Albert, Frederik og Samúel valdir |url=http://www.fotbolti.net/news/11-05-2018/b-hm-hopur-islands-b-albert-fredrik-og-samuel-valdir |publisher=Fotbolti.net |access-date=11 May 2018 |language=Icelandic}}</ref><ref>{{cite web |title=Treyjunúmer landsliðsmannanna klár |url=http://www.ruv.is/frett/treyjunumer-landslidsmannanna-klar |publisher=ruv.is |access-date=18 May 2018 |language=Icelandic}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=1|pos=GK|name=[[Hannes Þór Halldórsson]]|sortname=Halldorsson, Hannes|age={{Birth date and age2|df=yes|2018|6|14|1984|4|27}}|caps=48|goals=0|club=[[Randers FC|Randers]]|clubnat=DEN}}
+{{nat fs g player|no=2|pos=DF|name=[[Birkir Már Sævarsson]]|sortname=Birkir Mar Saevarsson|age={{Birth date and age2|df=yes|2018|6|14|1984|11|11}}|caps=78|goals=1|club=[[Valur]]|clubnat=ISL}}
+{{nat fs g player|no=3|pos=DF|name=[[Samúel Friðjónsson]]|sortname=Fridjonsson, Samuel|age={{Birth date and age2|df=yes|2018|6|14|1996|2|22}}|caps=3|goals=0|club=[[Vålerenga Fotball|Vålerenga]]|clubnat=NOR}}
+{{nat fs g player|no=4|pos=FW|name=[[Albert Guðmundsson (footballer, born 1997)|Albert Guðmundsson]]|sortname=Gudmundsson, Albert|age={{Birth date and age2|df=yes|2018|6|14|1997|6|15}}|caps=4|goals=3|club=[[PSV Eindhoven]]|clubnat=NED}}
+{{nat fs g player|no=5|pos=DF|name=[[Sverrir Ingi Ingason]]|sortname=Ingason, Sverrir Ingi|age={{Birth date and age2|df=yes|2018|6|14|1993|8|5}}|caps=18|goals=3|club=[[FC Rostov|Rostov]]|clubnat=RUS}}
+{{nat fs g player|no=6|pos=DF|name=[[Ragnar Sigurðsson]]|sortname=Ragnar Sigurdsson|age={{Birth date and age2|df=yes|2018|6|14|1986|6|19}}|caps=75|goals=3|club=[[FC Rostov|Rostov]]|clubnat=RUS}}
+{{nat fs g player|no=7|pos=MF|name=[[Jóhann Berg Guðmundsson]]|sortname=Gudmundsson, Johann Berg|age={{Birth date and age2|df=yes|2018|6|14|1990|10|27}}|caps=65|goals=7|club=[[Burnley F.C.|Burnley]]|clubnat=ENG}}
+{{nat fs g player|no=8|pos=MF|name=[[Birkir Bjarnason]]|sortname=Bjarnason, Birkir|age={{Birth date and age2|df=yes|2018|6|14|1988|5|27}}|caps=65|goals=9|club=[[Aston Villa F.C.|Aston Villa]]|clubnat=ENG}}
+{{nat fs g player|no=9|pos=FW|name=[[Björn Bergmann Sigurðarson]]|sortname=Sigurdarson, Bjorn Bergmann|age={{Birth date and age2|df=yes|2018|6|14|1991|2|26}}|caps=10|goals=1|club=[[FC Rostov|Rostov]]|clubnat=RUS}}
+{{nat fs g player|no=10|pos=MF|name=[[Gylfi Sigurðsson]]|sortname=Sigurdsson, Gylfi|age={{Birth date and age2|df=yes|2018|6|14|1989|9|8}}|caps=55|goals=18|club=[[Everton F.C.|Everton]]|clubnat=ENG}}
+{{nat fs g player|no=11|pos=FW|name=[[Alfreð Finnbogason]]|sortname=Finnbogason, Alfred|age={{Birth date and age2|df=yes|2018|6|14|1989|2|1}}|caps=45|goals=11|club=[[FC Augsburg]]|clubnat=GER}}
+{{nat fs g player|no=12|pos=GK|name=[[Frederik Schram]]|sortname=Schram, Frederik|age={{Birth date and age2|df=yes|2018|6|14|1995|1|19}}|caps=3|goals=0|club=[[FC Roskilde|Roskilde]]|clubnat=DEN}}
+{{nat fs g player|no=13|pos=GK|name=[[Rúnar Alex Rúnarsson]]|sortname=Runarsson, Runar|age={{Birth date and age2|df=yes|2018|6|14|1995|2|18}}|caps=3|goals=0|club=[[FC Nordsjælland|Nordsjælland]]|clubnat=DEN}}
+{{nat fs g player|no=14|pos=DF|name=[[Kári Árnason]]|sortname=Arnason, Kari|age={{Birth date and age2|df=yes|2018|6|14|1982|10|13}}|caps=65|goals=4|club=[[Aberdeen F.C.|Aberdeen]]|clubnat=SCO}}
+{{nat fs g player|no=15|pos=DF|name=[[Hólmar Örn Eyjólfsson]]|sortname=Eyjolfsson, Holmar Orn|age={{Birth date and age2|df=yes|2018|6|14|1990|8|6}}|caps=9|goals=1|club=[[PFC Levski Sofia|Levski Sofia]]|clubnat=BUL}}
+{{nat fs g player|no=16|pos=MF|name=[[Ólafur Ingi Skúlason]]|sortname=Olafur Ingi Skulason|age={{Birth date and age2|df=yes|2018|6|14|1983|4|1}}|caps=35|goals=1|club=[[Kardemir Karabükspor]]|clubnat=TUR}}
+{{nat fs g player|no=17|pos=MF|name=[[Aron Gunnarsson]]|sortname=Gunnarsson, Aron|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1989|4|22}}|caps=77|goals=2|club=[[Cardiff City F.C.|Cardiff City]]|clubnat=WAL}}
+{{nat fs g player|no=18|pos=DF|name=[[Hörður Björgvin Magnússon]]|sortname=Magnusson, Hordur Bjorgvin|age={{Birth date and age2|df=yes|2018|6|14|1993|2|11}}|caps=15|goals=2|club=[[Bristol City F.C.|Bristol City]]|clubnat=ENG}}
+{{nat fs g player|no=19|pos=MF|name=[[Rúrik Gíslason]]|sortname=Rurik Gislason|age={{Birth date and age2|df=yes|2018|6|14|1988|2|25}}|caps=45|goals=3|club=[[SV Sandhausen]]|clubnat=GER}}
+{{nat fs g player|no=20|pos=MF|name=[[Emil Hallfreðsson]]|sortname=Hallfredsson, Emil|age={{Birth date and age2|df=yes|2018|6|14|1984|6|29}}|caps=62|goals=1|club=[[Udinese Calcio|Udinese]]|clubnat=ITA}}
+{{nat fs g player|no=21|pos=MF|name=[[Arnór Ingvi Traustason]]|sortname=Traustasonm, Arnor Ingvi|age={{Birth date and age2|df=yes|2018|6|14|1993|4|30}}|caps=18|goals=5|club=[[Malmö FF|Malmö]]|clubnat=SWE}}
+{{nat fs g player|no=22|pos=FW|name=[[Jón Daði Böðvarsson]]|sortname=Bodvarsson, Jon Dadi|age={{Birth date and age2|df=yes|2018|6|14|1992|5|25}}|caps=36|goals=2|club=[[Reading F.C.|Reading]]|clubnat=ENG}}
+{{nat fs g player|no=23|pos=DF|name=[[Ari Freyr Skúlason]]|sortname=Skulason, Ari Freyr|age={{Birth date and age2|df=yes|2018|6|14|1987|5|14}}|caps=54|goals=0|club=[[K.S.C. Lokeren Oost-Vlaanderen|Lokeren]]|clubnat=BEL}}
+{{nat fs end}}
+
+===Nigeria===
+Coach: {{flagicon|GER}} [[Gernot Rohr]]
+
+A 30-man preliminary squad was announced on 14 May 2018.<ref>{{cite news |url=https://www.soccerladuma.co.za/news/articles/international/categories/world-news/nigeria-announce-provisional-world-cup-squad/295000 |title=Nigeria Announce Provisional World Cup Squad |website=soccerladuma.co.za |publisher=Soccer Laduma |date=14 May 2018 |access-date=14 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Ikechukwu Ezenwa]]|sortname=Ezenwa, Ikechukwu|age={{Birth date and age2|df=yes|2018|6|14|1988|10|16}}|caps=24|goals=0|club=[[Enyimba International F.C.|Enyimba]]|clubnat=NGA}}
+{{nat fs g player|no=|pos=GK|name=[[Daniel Akpeyi]]|sortname=Akpeyi, Daniel|age={{Birth date and age2|df=yes|2018|6|14|1986|8|3}}|caps=7|goals=0|club=[[Chippa United F.C.|Chippa United]]|clubnat=RSA}}
+{{nat fs g player|no=|pos=GK|name=[[Francis Uzoho]]|sortname=Uzoho, Francis|age={{Birth date and age2|df=yes|2018|6|14|1998|10|28}}|caps=3|goals=0|club=[[Deportivo Fabril]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=GK|name=[[Dele Ajiboye]]|sortname=Ajiboye, Dele|age={{Birth date and age2|df=yes|2018|6|14|1990|8|7}}|caps=3|goals=0|club=[[Plateau United F.C.|Plateau United]]|clubnat=NGA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[William Troost-Ekong]]|sortname=Troost-Ekong, William|age={{Birth date and age2|df=yes|2018|6|14|1993|9|1}}|caps=19|goals=0|club=[[Bursaspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Leon Balogun]]|sortname=Balogun, Leon|age={{Birth date and age2|df=yes|2018|6|14|1988|6|28}}|caps=16|goals=0|club=[[1. FSV Mainz 05|Mainz 05]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Ola Aina]]|sortname=Aina, Ola|age={{Birth date and age2|df=yes|2018|6|14|1996|10|8}}|caps=4|goals=0|club=[[Hull City A.F.C.|Hull City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Kenneth Omeruo]]|sortname=Omeruo, Kenneth|age={{Birth date and age2|df=yes|2018|6|14|1993|10|17}}|caps=37|goals=0|club=[[Kasımpaşa S.K.|Kasımpaşa]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Brian Idowu]]|sortname=Idowu, Brian|age={{Birth date and age2|df=yes|2018|6|14|1992|5|18}}|caps=3|goals=1|club=[[FC Amkar Perm|Amkar Perm]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Chidozie Awaziem]]|sortname=Awaziem, Chidozie|age={{Birth date and age2|df=yes|2018|6|14|1997|1|1}}|caps=4|goals=0|club=[[FC Nantes|Nantes]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Shehu Abdullahi]]|sortname=Abdullahi, Shehu|age={{Birth date and age2|df=yes|2018|6|14|1993|3|12}}|caps=22|goals=0|club=[[Bursaspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Elderson Echiéjilé]]|sortname=Echiejile, Elderson|age={{Birth date and age2|df=yes|2018|6|14|1988|1|20}}|caps=60|goals=3|club=[[Cercle Brugge K.S.V.|Cercle Brugge]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=DF|name=[[Tyronne Ebuehi]]|sortname=Ebuehi, Tyronne|age={{Birth date and age2|df=yes|2018|6|14|1995|12|16}}|caps=4|goals=0|club=[[ADO Den Haag]]|clubnat=NED}}
+{{nat fs g player|no=|pos=DF|name=[[Stephen Eze]]|sortname=Eze, Stephen|age={{Birth date and age2|df=yes|2018|6|14|1994|3|8}}|caps=13|goals=0|club=[[PFC Lokomotiv Plovdiv|Lokomotiv Plovdiv]]|clubnat=BUL}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[John Obi Mikel]]|sortname=Mikel, John Obi|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1987|4|22}}|caps=83|goals=6|club=[[Tianjin TEDA F.C.|Tianjin TEDA]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=MF|name=[[Ogenyi Onazi]]|sortname=Onazi, Ogenyi|age={{Birth date and age2|df=yes|2018|6|14|1992|12|25}}|caps=50|goals=1|club=[[Trabzonspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=MF|name=[[John Ogu]]|sortname=Ogu, John|age={{Birth date and age2|df=yes|2018|6|14|1988|4|20}}|caps=18|goals=2|club=[[Hapoel Be'er Sheva F.C.|Hapoel Be'er Sheva]]|clubnat=ISR}}
+{{nat fs g player|no=|pos=MF|name=[[Wilfred Ndidi]]|sortname=Ndidi, Wilfred|age={{Birth date and age2|df=yes|2018|6|14|1996|12|16}}|caps=16|goals=0|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Uche Henry Agbo]]|sortname=Uche Henry Agbo|age={{Birth date and age2|df=yes|2018|6|14|1995|12|4}}|caps=1|goals=0|club=[[Standard Liège]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=MF|name=[[Victor Moses]]|sortname=Moses, Victor|age={{Birth date and age2|df=yes|2018|6|14|1990|12|12}}|caps=32|goals=11|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Alex Iwobi]]|sortname=Iwobi, Alex|age={{Birth date and age2|df=yes|2018|6|14|1996|5|3}}|caps=16|goals=4|club=[[Arsenal F.C.|Arsenal]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Oghenekaro Etebo]]|sortname=Etebo, Oghenekaro|age={{Birth date and age2|df=yes|2018|6|14|1995|11|9}}|caps=12|goals=1|club=[[UD Las Palmas|Las Palmas]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Joel Obi]]|sortname=Obi, Joel|age={{Birth date and age2|df=yes|2018|6|14|1991|5|22}}|caps=15|goals=0|club=[[Torino F.C.|Torino]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Mikel Agu]]|sortname=Agu, Mikel|age={{Birth date and age2|df=yes|2018|6|14|1993|5|27}}|caps=5|goals=0|club=[[Bursaspor]]|clubnat=TUR}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Odion Ighalo]]|sortname=Ighalo, Odion|age={{Birth date and age2|df=yes|2018|6|14|1989|6|16}}|caps=17|goals=4|club=[[Changchun Yatai F.C.|Changchun Yatai]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=FW|name=[[Ahmed Musa (footballer)|Ahmed Musa]]|sortname=Musa, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1992|10|14}}|caps=69|goals=13|club=[[PFC CSKA Moscow|CSKA Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=FW|name=[[Kelechi Iheanacho]]|sortname=Iheanacho, Kelechi|age={{Birth date and age2|df=yes|2018|6|14|1996|10|3}}|caps=15|goals=8|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Moses Simon]]|sortname=Simion, Moses Daddy|age={{Birth date and age2|df=yes|2018|6|14|1995|7|12}}|caps=21|goals=4|club=[[K.A.A. Gent|Gent]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=FW|name=[[Junior Lokosa]]|sortname=Lokosa, Junior|age={{Birth date and age2|df=yes|2018|6|14|1993|8|23}}|caps=0|goals=0|club=[[Kano Pillars F.C.|Kano Pillars]]|clubnat=NGA}}
+{{nat fs g player|no=|pos=FW|name=[[Simeon Nwankwo]]|sortname=Nwankwo, Simeon Tochukwu|age={{Birth date and age2|df=yes|2018|6|14|1992|5|7}}|caps=0|goals=0|club=[[F.C. Crotone|Crotone]]|clubnat=ITA}}
+{{nat fs end}}
+
+==Group E==
+
+===Brazil===
+Coach: [[Tite (football manager)|Tite]]
+
+The final squad was announced on 14 May 2018.<ref>{{cite news |url=https://selecao.cbf.com.br/noticias/selecao-masculina/selecao-brasileira-e-convocada-para-copa-do-mundo |title=Seleção Brasileira é convocada para Copa do Mundo |trans-title=Brazilian team called for World Cup |website=CBF.com.br |publisher=Brazilian Football Confederation |date=14 May 2018 |access-date=14 May 2018 |language=Portuguese}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Alisson Becker|Alisson]]|sortname=Alisson Becker|age={{Birth date and age2|df=yes|2018|6|14|1992|10|2}}|caps=24|goals=0|club=[[A.S. Roma|Roma]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=GK|name=[[Cássio Ramos|Cássio]]|sortname=Cassio Ramos|age={{Birth date and age2|df=yes|2018|6|14|1987|6|6}}|caps=1|goals=0|club=[[Sport Club Corinthians Paulista|Corinthians]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=GK|name=[[Ederson Moraes|Ederson]]|sortname=Ederson Moraes|age={{Birth date and age2|df=yes|2018|6|14|1993|8|17}}|caps=1|goals=0|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Danilo (footballer, born July 1991)|Danilo]]|sortname=Danilo Luiz Da Silva|age={{Birth date and age2|df=yes|2018|6|14|1991|7|15}}|caps=16|goals=0|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Fagner Conserva Lemos|Fagner]]|sortname=Fagner|age={{Birth date and age2|df=yes|2018|6|14|1989|6|11}}|caps=4|goals=0|club=[[Sport Club Corinthians Paulista|Corinthians]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=DF|name=[[Filipe Luís]]|sortname=Filipe Luis|age={{Birth date and age2|df=yes|2018|6|14|1985|8|9}}|caps=31|goals=2|club=[[Atlético Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Pedro Geromel]]|sortname=Geromel, Pedro|age={{Birth date and age2|df=yes|2018|6|14|1985|9|21}}|caps=2|goals=0|club=[[Grêmio Foot-Ball Porto Alegrense|Grêmio]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=DF|name=[[Marcelo (footballer, born 1988)|Marcelo]]|sortname=Marcelo Vieira|age={{Birth date and age2|df=yes|2018|6|14|1988|5|12}}|caps=52|goals=6|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Marquinhos]]|sortname=Marquinhos|age={{Birth date and age2|df=yes|2018|6|14|1994|5|14}}|caps=24|goals=0|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Miranda (footballer)|Miranda]]|sortname=Miranda|age={{Birth date and age2|df=yes|2018|6|14|1984|9|7}}|caps=45|goals=2|club=[[Inter Milan|Internazionale]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Thiago Silva]]|sortname=Silva, Thiago|age={{Birth date and age2|df=yes|2018|6|14|1984|9|22}}|caps=69|goals=5|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Casemiro]]|sortname=Casemiro|age={{Birth date and age2|df=yes|2018|6|14|1992|2|23}}|caps=22|goals=0|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Philippe Coutinho]]|sortname=Coutinho, Philippe|age={{Birth date and age2|df=yes|2018|6|14|1992|6|12}}|caps=35|goals=9|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Fernandinho (footballer)|Fernandinho]]|sortname=Fernandinho|age={{Birth date and age2|df=yes|2018|6|14|1985|5|4}}|caps=42|goals=2|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Fred (footballer, born 1993)|Fred]]|sortname=Fred|age={{Birth date and age2|df=yes|2018|6|14|1993|3|5}}|caps=7|goals=0|club=[[FC Shakhtar Donetsk|Shakhtar Donetsk]]|clubnat=UKR}}
+{{nat fs g player|no=|pos=MF|name=[[Paulinho (footballer)|Paulinho]]|sortname=Paulinho|age={{Birth date and age2|df=yes|2018|6|14|1988|7|25}}|caps=48|goals=12|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Renato Augusto]]|sortname=Renato Augusto|age={{Birth date and age2|df=yes|2018|6|14|1988|2|8}}|caps=28|goals=5|club=[[Beijing Sinobo Guoan F.C.|Beijing Sinobo Guoan]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=MF|name=[[Willian (footballer, born 1988)|Willian]]|sortname=Willian|age={{Birth date and age2|df=yes|2018|6|14|1988|8|9}}|caps=55|goals=8|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Douglas Costa]]|sortname=Costa, Douglas|age={{Birth date and age2|df=yes|2018|6|14|1990|9|14}}|caps=24|goals=3|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Roberto Firmino]]|sortname=Firmino, Roberto|age={{Birth date and age2|df=yes|2018|6|14|1991|10|2}}|caps=19|goals=5|club=[[Liverpool F.C.|Liverpool]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Gabriel Jesus]]|sortname=Jesus, Gabriel|age={{Birth date and age2|df=yes|2018|6|14|1997|4|3}}|caps=15|goals=9|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Neymar]]|sortname=Neymar|age={{Birth date and age2|df=yes|2018|6|14|1992|2|5}}|caps=83|goals=53|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Taison]]|sortname=Taison|age={{Birth date and age2|df=yes|2018|6|14|1988|1|13}}|caps=6|goals=1|club=[[FC Shakhtar Donetsk|Shakhtar Donetsk]]|clubnat=UKR}}
+{{nat fs end}}
+
+===Costa Rica===
+Coach: [[Óscar Ramírez (footballer)|Óscar Ramírez]]
+
+The final squad was announced on 14 May 2018.<ref>{{cite news |url=https://bolavip.com/mundial/Costa-Rica-presento-su-lista-definitiva-para-el-Mundial-20180514-0040.html |title=Costa Rica presentó su lista definitiva para el Mundial |trans-title=Costa Rica presented its final list for the World Cup |website=bolavip.com |publisher=BolaVip |date=14 May 2018 |access-date=14 May 2018 |language=Spanish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Keylor Navas]]|sortname=Navas, Keylor|age={{Birth date and age2|df=yes|2018|6|14|1986|12|15}}|caps=78|goals=0|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=GK|name=[[Patrick Pemberton]]|sortname=Pemberton, Patrick|age={{Birth date and age2|df=yes|2018|6|14|1982|5|24}}|caps=39|goals=0|club=[[Liga Deportiva Alajuelense|Alajuelense]]|clubnat=CRC}}
+{{nat fs g player|no=|pos=GK|name=[[Leonel Moreira]]|sortname=Moreira, Leonel|age={{Birth date and age2|df=yes|2018|6|14|1990|4|2}}|caps=8|goals=0|club=[[C.S. Herediano|Herediano]]|clubnat=CRC}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Giancarlo González]]|sortname=Gonzalez, Giancarlo|age={{Birth date and age2|df=yes|2018|6|14|1988|2|8}}|caps=67|goals=2|club=[[Bologna F.C. 1909|Bologna]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Johnny Acosta]]|sortname=Acosta, Johnny|age={{Birth date and age2|df=yes|2018|6|14|1983|7|21}}|caps=67|goals=2|club=[[Rionegro Águilas|Águilas Doradas]]|clubnat=COL}}
+{{nat fs g player|no=|pos=DF|name=[[Cristian Gamboa]]|sortname=Gamboa, Cristian|age={{Birth date and age2|df=yes|2018|6|14|1989|10|24}}|caps=65|goals=3|club=[[Celtic F.C.|Celtic]]|clubnat=SCO}}
+{{nat fs g player|no=|pos=DF|name=[[Bryan Oviedo]]|sortname=Oviedo, Bryan|age={{Birth date and age2|df=yes|2018|6|14|1990|2|18}}|caps=41|goals=1|club=[[Sunderland A.F.C.|Sunderland]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Óscar Duarte (Costa Rican footballer)|Óscar Duarte]]|sortname=Duarte, Oscar|age={{Birth date and age2|df=yes|2018|6|14|1989|6|3}}|caps=37|goals=2|club=[[RCD Espanyol|Espanyol]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Francisco Calvo]]|sortname=Calvo, Francisco|age={{Birth date and age2|df=yes|2018|6|14|1992|7|8}}|caps=35|goals=3|club=[[Minnesota United FC|Minnesota United]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Kendall Waston]]|sortname=Waston, Kendall|age={{Birth date and age2|df=yes|2018|6|14|1988|1|1}}|caps=24|goals=3|club=[[Vancouver Whitecaps FC]]|clubnat=CAN}}
+{{nat fs g player|no=|pos=DF|name=[[Rónald Matarrita]]|sortname=Matarrita, Ronald|age={{Birth date and age2|df=yes|2018|6|14|1994|7|9}}|caps=21|goals=2|club=[[New York City FC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Ian Smith (footballer, born 1998)|Ian Smith]]|sortname=Smith, Ian|age={{Birth date and age2|df=yes|2018|6|14|1998|3|6}}|caps=1|goals=0|club=[[IFK Norrköping|Norrköping]]|clubnat=SWE}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Celso Borges]]|sortname=Borges, Celso|age={{Birth date and age2|df=yes|2018|6|14|1988|5|27}}|caps=110|goals=21|club=[[Deportivo de La Coruña|Deportivo La Coruña]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Christian Bolaños]]|sortname=Bolanos, Christian|age={{Birth date and age2|df=yes|2018|6|14|1984|5|30}}|caps=79|goals=6|club=[[Deportivo Saprissa|Saprissa]]|clubnat=CRC}}
+{{nat fs g player|no=|pos=MF|name=[[Randall Azofeifa]]|sortname=Azofeifa, Randall|age={{Birth date and age2|df=yes|2018|6|14|1984|12|30}}|caps=57|goals=3|club=[[C.S. Herediano|Herediano]]|clubnat=CRC}}
+{{nat fs g player|no=|pos=MF|name=[[Yeltsin Tejeda]]|sortname=Tejeda, Yeltsin|age={{Birth date and age2|df=yes|2018|6|14|1992|3|17}}|caps=48|goals=0|club=[[FC Lausanne-Sport|Lausanne]]|clubnat=SUI}}
+{{nat fs g player|no=|pos=MF|name=[[David Guzmán]]|sortname=Guzman, David|age={{Birth date and age2|df=yes|2018|6|14|1990|2|18}}|caps=40|goals=0|club=[[Portland Timbers]]|clubnat=USA}}
+{{nat fs g player|no=|pos=MF|name=[[Rodney Wallace (footballer)|Rodney Wallace]]|sortname=Wallace, Rodney|age={{Birth date and age2|df=yes|2018|6|14|1988|6|17}}|caps=30|goals=4|club=[[New York City FC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=MF|name=[[Daniel Colindres]]|sortname=Colindres, Daniel|age={{Birth date and age2|df=yes|2018|6|14|1985|5|28}}|caps=10|goals=0|club=[[Deportivo Saprissa|Saprissa]]|clubnat=CRC}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Bryan Ruiz]]|sortname=Ruiz, Bryan|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1985|8|18}}|caps=109|goals=23|club=[[Sporting CP]]|clubnat=POR}}
+{{nat fs g player|no=|pos=FW|name=[[Joel Campbell]]|sortname=Campbell, Joel|age={{Birth date and age2|df=yes|2018|6|14|1992|6|26}}|caps=76|goals=14|club=[[Real Betis]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Marco Ureña]]|sortname=Urena, Marco|age={{Birth date and age2|df=yes|2018|6|14|1990|3|5}}|caps=62|goals=15|club=[[Los Angeles FC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=FW|name=[[Johan Venegas]]|sortname=Venegas, Johan|age={{Birth date and age2|df=yes|2018|6|14|1988|11|27}}|caps=44|goals=9|club=[[Deportivo Saprissa|Saprissa]]|clubnat=CRC}}
+{{nat fs end}}
+
+===Serbia===
+Coach: [[Mladen Krstajić]]
+
+A 27-man preliminary squad was announced on 24 May 2018.<ref>{{cite news |url=http://www.fss.rs/index.php?id=2021&aid=13898 |title=Један тим, срцем свим – Младен Крстајић одабрао |trans-title=One team, with all their hearts – Mladen Krstajić selects |website=FSS.rs |publisher=[[Football Association of Serbia]] |date=24 May 2018 |access-date=24 May 2018 |language=Serbian}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Vladimir Stojković]]|sortname=Stojkovic, Vladimir|age={{Birth date and age2|df=yes|2018|6|14|1983|7|28}}|caps=79|goals=0|club=[[FK Partizan|Partizan]]|clubnat=SRB}}
+{{nat fs g player|no=|pos=GK|name=[[Predrag Rajković]]|sortname=Rajkovic, Predrag|age={{Birth date and age2|df=yes|2018|6|14|1995|10|31}}|caps=7|goals=0|club=[[Maccabi Tel Aviv F.C.|Maccabi Tel Aviv]]|clubnat=ISR}}
+{{nat fs g player|no=|pos=GK|name=[[Marko Dmitrović]]|sortname=Dmitrovic, Marko|age={{Birth date and age2|df=yes|2018|6|14|1992|1|24}}|caps=2|goals=0|club=[[SD Eibar|Eibar]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=GK|name=[[Aleksandar Jovanović (footballer, born 1992)|Aleksandar Jovanović]]|sortname=Jovanovic, Aleksandar|age={{Birth date and age2|df=yes|2018|6|14|1992|12|6}}|caps=1|goals=0|club=[[Aarhus Gymnastikforening|AGF]]|clubnat=DEN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Branislav Ivanović]]|sortname=Ivanovic, Branislav|age={{Birth date and age2|df=yes|2018|6|14|1984|2|22}}|caps=102|goals=12|club=[[FC Zenit Saint Petersburg|Zenit Saint Petersburg]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=DF|name=[[Aleksandar Kolarov]]|sortname=Kolarov, Aleksandar|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1985|11|10}}|caps=74|goals=10|club=[[A.S. Roma|Roma]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Antonio Rukavina]]|sortname=Rukavina, Antonio|age={{Birth date and age2|df=yes|2018|6|14|1984|1|26}}|caps=45|goals=0|club=[[Villarreal CF|Villarreal]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Matija Nastasić]]|sortname=Nastasic, Matija|age={{Birth date and age2|df=yes|2018|6|14|1993|3|28}}|caps=27|goals=0|club=[[FC Schalke 04|Schalke 04]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Duško Tošić]]|sortname=Tosic, Dusko|age={{Birth date and age2|df=yes|2018|6|14|1985|1|19}}|caps=22|goals=1|club=[[Beşiktaş J.K.|Beşiktaş]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Uroš Spajić]]|sortname=Spajic, Uros|age={{Birth date and age2|df=yes|2018|6|14|1993|2|13}}|caps=5|goals=0|club=[[R.S.C. Anderlecht|Anderlecht]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=DF|name=[[Miloš Veljković]]|sortname=Veljkovic, Milos|age={{Birth date and age2|df=yes|2018|6|14|1995|9|26}}|caps=2|goals=0|club=[[SV Werder Bremen|Werder Bremen]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Nikola Milenković]]|sortname=Milenkovic, Nikola|age={{Birth date and age2|df=yes|2018|6|14|1997|10|12}}|caps=1|goals=0|club=[[ACF Fiorentina|Fiorentina]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Milan Rodić]]|sortname=Rodic, Milan|age={{Birth date and age2|df=yes|2018|6|14|1991|4|2}}|caps=0|goals=0|club=[[Red Star Belgrade]]|clubnat=SRB}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Dušan Tadić]]|sortname=Tadic, Dusan|age={{Birth date and age2|df=yes|2018|6|14|1988|11|20}}|caps=51|goals=13|club=[[Southampton F.C.|Southampton]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Nemanja Matić]]|sortname=Matic, Nemanja|age={{Birth date and age2|df=yes|2018|6|14|1988|8|1}}|caps=38|goals=2|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Adem Ljajić]]|sortname=Ljajic, Adem|age={{Birth date and age2|df=yes|2018|6|14|1991|9|29}}|caps=27|goals=5|club=[[Torino F.C.|Torino]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Luka Milivojević]]|sortname=Milivojevic, Luka|age={{Birth date and age2|df=yes|2018|6|14|1991|4|7}}|caps=26|goals=1|club=[[Crystal Palace F.C.|Crystal Palace]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Filip Kostić]]|sortname=Kostic, Filip|age={{Birth date and age2|df=yes|2018|6|14|1992|11|1}}|caps=21|goals=2|club=[[Hamburger SV]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Andrija Živković]]|sortname=Zivkovic, Andrija|age={{Birth date and age2|df=yes|2018|6|14|1996|7|11}}|caps=9|goals=0|club=[[S.L. Benfica|Benfica]]|clubnat=POR}}
+{{nat fs g player|no=|pos=MF|name=[[Mijat Gaćinović]]|sortname=Gacinovic, Mijat|age={{Birth date and age2|df=yes|2018|6|14|1995|2|8}}|caps=7|goals=2|club=[[Eintracht Frankfurt]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Marko Grujić]]|sortname=Grujic, Marko|age={{Birth date and age2|df=yes|2018|6|14|1996|4|13}}|caps=6|goals=0|club=[[Cardiff City F.C.|Cardiff City]]|clubnat=WAL}}
+{{nat fs g player|no=|pos=MF|name=[[Nemanja Maksimović]]|sortname=Maksimovic, Nemanja|age={{Birth date and age2|df=yes|2018|6|14|1995|1|26}}|caps=5|goals=0|club=[[Valencia CF|Valencia]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Sergej Milinković-Savić]]|sortname=Milinkovic-Savic, Sergej|age={{Birth date and age2|df=yes|2018|6|14|1995|2|27}}|caps=2|goals=0|club=[[S.S. Lazio|Lazio]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Nemanja Radonjić]]|sortname=Radonjic, Nemanja|age={{Birth date and age2|df=yes|2018|6|14|1996|2|15}}|caps=1|goals=0|club=[[Red Star Belgrade]]|clubnat=SRB}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Aleksandar Mitrović (footballer)|Aleksandar Mitrović]]|sortname=Mitrovic, Aleksandar|age={{Birth date and age2|df=yes|2018|6|14|1994|9|16}}|caps=35|goals=13|club=[[Fulham F.C.|Fulham]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Aleksandar Prijović]]|sortname=Prijovic, Aleksandar|age={{Birth date and age2|df=yes|2018|6|14|1990|4|21}}|caps=8|goals=1|club=[[PAOK FC|PAOK]]|clubnat=GRE}}
+{{nat fs g player|no=|pos=FW|name=[[Luka Jović]]|sortname=Jovic, Luka|age={{Birth date and age2|df=yes|2018|6|14|1997|12|23}}|caps=0|goals=0|club=[[Eintracht Frankfurt]]|clubnat=GER}}
+{{nat fs end}}
+
+===Switzerland===
+Coach: {{flagicon|BIH}} [[Vladimir Petković]]
+
+A 26-man preliminary squad was announced on 25 May 2018.<ref>{{cite news |url=https://www.tagesanzeiger.ch/sport/fussball/Mehmedi-verzichtet-auf-die-WM/story/27607043 |title=Mehmedi verzichtet auf die WM |trans-title=Mehmedi omitted from the World Cup |website=tagesanzeiger.ch |publisher=[[Tages-Anzeiger]] |date=25 May 2018 |access-date=25 May 2018 |language=German}}</ref> The final squad will be announced on 4 June 2018.<ref>{{cite news |last=Raz |first=Florian |url=https://www.tagesanzeiger.ch/sport/fussball/Petkovic-hat-noch-zwei-WM-Plaetze-frei/story/17603467 |title=Petkovic hat noch zwei WM-Plätze frei |trans-title=Petković has two more World Cup spots available |website=tagesanzeiger.ch |publisher=[[Tages-Anzeiger]] |date=23 May 2018 |access-date=23 May 2018 |language=German}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Yann Sommer]]|sortname=Sommer, Yann|age={{Birth date and age2|df=yes|2018|6|14|1988|12|17}}|caps=34|goals=0|club=[[Borussia Mönchengladbach]]|clubnat=GER}}
+{{nat fs g player|no=|pos=GK|name=[[Roman Bürki]]|sortname=Burki, Roman|age={{Birth date and age2|df=yes|2018|6|14|1990|11|14}}|caps=8|goals=0|club=[[Borussia Dortmund]]|clubnat=GER}}
+{{nat fs g player|no=|pos=GK|name=[[Gregor Kobel]]|sortname=Kobel, Gregor|age={{Birth date and age2|df=yes|2018|6|14|1997|12|6}}|caps=0|goals=0|club=[[TSG 1899 Hoffenheim|1899 Hoffenheim]]|clubnat=GER}}
+{{nat fs g player|no=|pos=GK|name=[[Yvon Mvogo]]|sortname=Mvogo, Yann|age={{Birth date and age2|df=yes|2018|6|14|1994|6|6}}|caps=0|goals=0|club=[[RB Leipzig]]|clubnat=GER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Stephan Lichtsteiner]]|sortname=Lichtsteiner, Stephan|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1984|1|16}}|caps=98|goals=8|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Johan Djourou]]|sortname=Djourou, Johan|age={{Birth date and age2|df=yes|2018|6|14|1987|1|18}}|caps=73|goals=2|club=[[Antalyaspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Ricardo Rodríguez (footballer)|Ricardo Rodríguez]]|sortname=Rodriguez, Ricardo|age={{Birth date and age2|df=yes|2018|6|14|1992|8|25}}|caps=51|goals=3|club=[[A.C. Milan|Milan]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Fabian Schär]]|sortname=Schar, Fabian|age={{Birth date and age2|df=yes|2018|6|14|1991|12|20}}|caps=37|goals=7|club=[[Deportivo de La Coruña|Deportivo La Coruña]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Michael Lang (footballer)|Michael Lang]]|sortname=Lang, Michael|age={{Birth date and age2|df=yes|2018|6|14|1991|2|8}}|caps=23|goals=2|club=[[FC Basel|Basel]]|clubnat=SUI}}
+{{nat fs g player|no=|pos=DF|name=[[François Moubandje]]|sortname=Moubandje, Francois|age={{Birth date and age2|df=yes|2018|6|14|1990|6|21}}|caps=16|goals=0|club=[[Toulouse FC|Toulouse]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Silvan Widmer]]|sortname=Widmer, Silvan|age={{Birth date and age2|df=yes|2018|6|14|1993|3|5}}|caps=9|goals=0|club=[[Udinese Calcio|Udinese]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Manuel Akanji]]|sortname=Akanji, Manuel|age={{Birth date and age2|df=yes|2018|6|14|1995|7|19}}|caps=5|goals=0|club=[[Borussia Dortmund]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Nico Elvedi]]|sortname=Elvedi, Nico|age={{Birth date and age2|df=yes|2018|6|14|1996|9|30}}|caps=5|goals=0|club=[[Borussia Mönchengladbach]]|clubnat=GER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Valon Behrami]]|sortname=Behrami, Valon|age={{Birth date and age2|df=yes|2018|6|14|1985|4|19}}|caps=77|goals=2|club=[[Udinese Calcio|Udinese]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Xherdan Shaqiri]]|sortname=Shaqiri, Xherdan|age={{Birth date and age2|df=yes|2018|6|14|1991|10|10}}|caps=68|goals=20|club=[[Stoke City F.C.|Stoke City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Gelson Fernandes]]|sortname=Fernandes, Gelson|age={{Birth date and age2|df=yes|2018|6|14|1986|9|2}}|caps=66|goals=2|club=[[Eintracht Frankfurt]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Blerim Džemaili]]|sortname=Dzemaili, Blerim|age={{Birth date and age2|df=yes|2018|6|14|1986|4|12}}|caps=63|goals=9|club=[[Bologna F.C. 1909|Bologna]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Granit Xhaka]]|sortname=Xhaka, Granit|age={{Birth date and age2|df=yes|2018|6|14|1992|9|27}}|caps=61|goals=9|club=[[Arsenal F.C.|Arsenal]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Steven Zuber]]|sortname=Zuber, Steven|age={{Birth date and age2|df=yes|2018|6|14|1991|8|17}}|caps=10|goals=3|club=[[TSG 1899 Hoffenheim|1899 Hoffenheim]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Remo Freuler]]|sortname=Freuler, Remo|age={{Birth date and age2|df=yes|2018|6|14|1992|4|15}}|caps=9|goals=0|club=[[Atalanta B.C.|Atalanta]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Denis Zakaria]]|sortname=Zakaria, Denis|age={{Birth date and age2|df=yes|2018|6|14|1996|11|20}}|caps=9|goals=0|club=[[Borussia Mönchengladbach]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Edimilson Fernandes]]|sortname=Fernandes, Edimilson|age={{Birth date and age2|df=yes|2018|6|14|1996|4|15}}|caps=3|goals=0|club=[[West Ham United F.C.|West Ham United]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Haris Seferović]]|sortname=Seferovic, Haris|age={{Birth date and age2|df=yes|2018|6|14|1992|2|22}}|caps=49|goals=11|club=[[S.L. Benfica|Benfica]]|clubnat=POR}}
+{{nat fs g player|no=|pos=FW|name=[[Josip Drmić]]|sortname=Drmic, Josip|age={{Birth date and age2|df=yes|2018|6|14|1992|8|8}}|caps=27|goals=9|club=[[Borussia Mönchengladbach]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Breel Embolo]]|sortname=Embolo, Breel|age={{Birth date and age2|df=yes|2018|6|14|1997|2|14}}|caps=23|goals=3|club=[[FC Schalke 04|Schalke 04]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Mario Gavranović]]|sortname=Gavranovic, Mario|age={{Birth date and age2|df=yes|2018|6|14|1989|11|24}}|caps=13|goals=5|club=[[GNK Dinamo Zagreb|Dinamo Zagreb]]|clubnat=CRO}}
+{{nat fs end}}
+
+==Group F==
+
+===Germany===
+Coach: [[Joachim Löw]]
+
+A 27-man preliminary squad was announced on 15 May 2018.<ref>{{cite news |url=http://www.kicker.de/news/fussball/nationalelf/723909/artikel_mit-neuer-ohne-goetze_loews-vorlaeufiger-wm-kader.html |title=Mit Neuer, ohne Götze: Löws vorläufiger WM-Kader |trans-title=With Neuer, without Götze: Löw's preliminary World Cup squad |website=kicker.de |publisher=[[Kicker (sports magazine)|kicker-sportmagazin]] |date=15 May 2018 |access-date=15 May 2018 |language=German}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Bernd Leno]]|sortname=Leno, Bernd|age={{Birth date and age2|df=yes|2018|6|14|1992|3|4}}|caps=6|goals=0|club=[[Bayer 04 Leverkusen|Bayer Leverkusen]]|clubnat=GER}}
+{{nat fs g player|no=|pos=GK|name=[[Manuel Neuer]]|sortname=Neuer, Manuel|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1986|3|27}}|caps=74|goals=0|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=GK|name=[[Marc-André ter Stegen]]|sortname=Ter Stegen, Marc-Andre|age={{Birth date and age2|df=yes|2018|6|14|1992|4|30}}|caps=19|goals=0|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=GK|name=[[Kevin Trapp]]|sortname=Trapp, Kevin|age={{Birth date and age2|df=yes|2018|6|14|1990|7|8}}|caps=3|goals=0|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Jérôme Boateng]]|sortname=Boateng, Jerome|age={{Birth date and age2|df=yes|2018|6|14|1988|9|3}}|caps=70|goals=1|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Matthias Ginter]]|sortname=Ginter, Matthias|age={{Birth date and age2|df=yes|2018|6|14|1994|1|19}}|caps=17|goals=0|club=[[Borussia Mönchengladbach]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Jonas Hector]]|sortname=Hector, Jonas|age={{Birth date and age2|df=yes|2018|6|14|1990|5|27}}|caps=36|goals=3|club=[[1. FC Köln]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Mats Hummels]]|sortname=Hummels, Mats|age={{Birth date and age2|df=yes|2018|6|14|1988|12|16}}|caps=63|goals=5|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Joshua Kimmich]]|sortname=Kimmich, Joshua|age={{Birth date and age2|df=yes|2018|6|14|1995|2|8}}|caps=27|goals=3|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Marvin Plattenhardt]]|sortname=Plattenhardt, Marvin|age={{Birth date and age2|df=yes|2018|6|14|1992|1|26}}|caps=6|goals=0|club=[[Hertha BSC]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Antonio Rüdiger]]|sortname=Rudiger, Antonio|age={{Birth date and age2|df=yes|2018|6|14|1993|3|3}}|caps=23|goals=1|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Niklas Süle]]|sortname=Sule, Niklas|age={{Birth date and age2|df=yes|2018|6|14|1995|9|3}}|caps=9|goals=0|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Jonathan Tah]]|sortname=Tah, Jonathan|age={{Birth date and age2|df=yes|2018|6|14|1996|2|11}}|caps=3|goals=0|club=[[Bayer 04 Leverkusen|Bayer Leverkusen]]|clubnat=GER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Julian Brandt]]|sortname=Brandt, Julian|age={{Birth date and age2|df=yes|2018|6|14|1996|5|2}}|caps=14|goals=1|club=[[Bayer 04 Leverkusen|Bayer Leverkusen]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Julian Draxler]]|sortname=Draxler, Julian|age={{Birth date and age2|df=yes|2018|6|14|1993|9|20}}|caps=42|goals=6|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Leon Goretzka]]|sortname=Goretzka, Leon|age={{Birth date and age2|df=yes|2018|6|14|1995|2|6}}|caps=14|goals=6|club=[[FC Schalke 04|Schalke 04]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[İlkay Gündoğan]]|sortname=Gundogan, Ilkay|age={{Birth date and age2|df=yes|2018|6|14|1990|10|24}}|caps=24|goals=4|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Sami Khedira]]|sortname=Khedira, Sami|age={{Birth date and age2|df=yes|2018|6|14|1987|4|4}}|caps=73|goals=7|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Toni Kroos]]|sortname=Kroos, Toni|age={{Birth date and age2|df=yes|2018|6|14|1990|1|4}}|caps=82|goals=12|club=[[Real Madrid C.F.|Real Madrid]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Mesut Özil]]|sortname=Ozil, Mesut|age={{Birth date and age2|df=yes|2018|6|14|1988|10|15}}|caps=89|goals=22|club=[[Arsenal F.C.|Arsenal]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Marco Reus]]|sortname=Reus, Marco|age={{Birth date and age2|df=yes|2018|6|14|1989|5|31}}|caps=29|goals=9|club=[[Borussia Dortmund]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Sebastian Rudy]]|sortname=Rudy, Sebastian|age={{Birth date and age2|df=yes|2018|6|14|1990|2|28}}|caps=24|goals=1|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Leroy Sané]]|sortname=Sane, Leroy|age={{Birth date and age2|df=yes|2018|6|14|1996|1|11}}|caps=11|goals=0|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Mario Gómez]]|sortname=Gomez, Mario|age={{Birth date and age2|df=yes|2018|6|14|1985|7|10}}|caps=73|goals=31|club=[[VfB Stuttgart]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Thomas Müller]]|sortname=Muller, Thomas|age={{Birth date and age2|df=yes|2018|6|14|1989|9|13}}|caps=90|goals=38|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Nils Petersen]]|sortname=Petersen, Nils|age={{Birth date and age2|df=yes|2018|6|14|1988|12|6}}|caps=0|goals=0|club=[[SC Freiburg]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Timo Werner]]|sortname=Werner, Timo|age={{Birth date and age2|df=yes|2018|6|14|1996|3|6}}|caps=12|goals=7|club=[[RB Leipzig]]|clubnat=GER}}
+{{nat fs end}}
+
+===Mexico===
+Coach: {{flagicon|COL}} [[Juan Carlos Osorio]]
+
+A 28-man preliminary squad was announced on 14 May 2018.<ref>{{cite news |first=Tom |last=Marshall |url=http://www.espn.com/soccer/mexico/story/3498297/rafa-marquez-makes-mexicos-preliminary-world-cup-squad |title=Rafa Marquez makes Mexico's preliminary World Cup squad |website=ESPN FC |publisher=ESPN Inc. |date=14 May 2018 |access-date=14 May 2018}}</ref> The squad was reduced to 27 players on 23 May 2018 due to an injury.<ref>{{cite news |first=Tom |last=Marshall |url=http://www.espn.com/soccer/mexico/story/3508347/santos-lagunas-nestor-araujo-out-of-mexicos-world-cup-squad |title=Santos Laguna's Nestor Araujo out of Mexico's World Cup squad |website=ESPN FC |publisher=ESPN Inc. |date=23 May 2018 |access-date=23 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Guillermo Ochoa]]|sortname=Ochoa, Guillermo|age={{Birth date and age2|df=yes|2018|6|14|1985|7|13}}|caps=92|goals=0|club=[[Standard Liège]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=GK|name=[[José de Jesús Corona]]|sortname=Corona, Jesus|age={{Birth date and age2|df=yes|2018|6|14|1981|1|28}}|caps=51|goals=0|club=[[Cruz Azul]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=GK|name=[[Alfredo Talavera]]|sortname=Talavera, Alfredo|age={{Birth date and age2|df=yes|2018|6|14|1982|9|18}}|caps=27|goals=0|club=[[Deportivo Toluca F.C.|Toluca]]|clubnat=MEX}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Héctor Moreno]]|sortname=Moreno, Hector|age={{Birth date and age2|df=yes|2018|6|14|1988|1|17}}|caps=91|goals=3|club=[[Real Sociedad]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Miguel Layún]]|sortname=Layun, Miguel|age={{Birth date and age2|df=yes|2018|6|14|1988|6|25}}|caps=62|goals=6|club=[[Sevilla FC|Sevilla]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Diego Antonio Reyes|Diego Reyes]]|sortname=Reyes, Diego Antonio|age={{Birth date and age2|df=yes|2018|6|14|1992|9|19}}|caps=55|goals=1|club=[[FC Porto|Porto]]|clubnat=POR}}
+{{nat fs g player|no=|pos=DF|name=[[Hugo Ayala]]|sortname=Ayala, Hugo|age={{Birth date and age2|df=yes|2018|6|14|1987|3|31}}|caps=40|goals=1|club=[[Tigres UANL|UANL]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Oswaldo Alanís]]|sortname=Alanis, Oswaldo|age={{Birth date and age2|df=yes|2018|6|14|1989|3|18}}|caps=21|goals=2|club=[[C.D. Guadalajara|Guadalajara]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Jesús Gallardo]]|sortname=Gallardo, Jesus|age={{Birth date and age2|df=yes|2018|6|14|1994|8|14}}|caps=20|goals=0|club=[[Club Universidad Nacional|UNAM]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Carlos Salcedo]]|sortname=Salcedo, Carlos|age={{Birth date and age2|df=yes|2018|6|14|1993|9|29}}|caps=18|goals=0|club=[[Eintracht Frankfurt]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Edson Álvarez]]|sortname=Alvarez, Edson|age={{Birth date and age2|df=yes|2018|6|14|1997|10|24}}|caps=10|goals=1|club=[[Club América|América]]|clubnat=MEX}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Andrés Guardado]]|sortname=Guardado, Andres|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1986|9|28}}|caps=144|goals=25|club=[[Real Betis]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Marco Fabián]]|sortname=Fabian, Marco|age={{Birth date and age2|df=yes|2018|6|14|1989|7|21}}|caps=36|goals=9|club=[[Eintracht Frankfurt]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Héctor Herrera]]|sortname=Herrera, Hector|age={{Birth date and age2|df=yes|2018|6|14|1990|4|19}}|caps=63|goals=5|club=[[FC Porto|Porto]]|clubnat=POR}}
+{{nat fs g player|no=|pos=MF|name=[[Rafael Márquez]]|sortname=Marquez, Rafael|age={{Birth date and age2|df=yes|2018|6|14|1979|2|13}}|caps=143|goals=18|club=[[Club Atlas|Atlas]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Jesús Molina]]|sortname=Molina, Jesus|age={{Birth date and age2|df=yes|2018|6|14|1988|3|29}}|caps=31|goals=0|club=[[C.F. Monterrey|Monterrey]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Jonathan dos Santos]]|sortname=Santos, Jonathan dos|age={{Birth date and age2|df=yes|2018|6|14|1990|4|26}}|caps=29|goals=0|club=[[LA Galaxy]]|clubnat=USA}}
+{{nat fs g player|no=|pos=MF|name=[[Giovani dos Santos]]|sortname=Santos dos, Giovani|age={{Birth date and age2|df=yes|2018|6|14|1989|5|11}}|caps=102|goals=18|club=[[LA Galaxy]]|clubnat=USA}}
+{{nat fs g player|no=|pos=MF|name=[[Érick Gutiérrez]]|sortname=Gutierrez, Erick|age={{Birth date and age2|df=yes|2018|6|14|1995|6|17}}|caps=9|goals=0|club=[[C.F. Pachuca|Pachuca]]|clubnat=MEX}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Javier Aquino]]|sortname=Aquino, Javier|age={{Birth date and age2|df=yes|2018|6|14|1990|2|11}}|caps=51|goals=0|club=[[Tigres UANL|UANL]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=FW|name=[[Javier Hernández]]|sortname=Hernandez, Javier|age={{Birth date and age2|df=yes|2018|6|14|1988|6|1}}|caps=100|goals=49|club=[[West Ham United F.C.|West Ham United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Carlos Vela]]|sortname=Vela, Carlos|age={{Birth date and age2|df=yes|2018|6|14|1989|3|1}}|caps=67|goals=18|club=[[Los Angeles FC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=FW|name=[[Oribe Peralta]]|sortname=Peralta, Oribe|age={{Birth date and age2|df=yes|2018|6|14|1984|1|12}}|caps=64|goals=26|club=[[Club América|América]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=FW|name=[[Raúl Jiménez]]|sortname=Jimenez, Raul|age={{Birth date and age2|df=yes|2018|6|14|1991|5|5}}|caps=62|goals=13|club=[[S.L. Benfica|Benfica]]|clubnat=POR}}
+{{nat fs g player|no=|pos=FW|name=[[Jesús Manuel Corona]]|sortname=Corona, Jesus|age={{Birth date and age2|df=yes|2018|6|14|1993|1|6}}|caps=33|goals=7|club=[[FC Porto|Porto]]|clubnat=POR}}
+{{nat fs g player|no=|pos=FW|name=[[Hirving Lozano]]|sortname=Lozano, Hirving|age={{Birth date and age2|df=yes|2018|6|14|1995|7|30}}|caps=26|goals=7|club=[[PSV Eindhoven]]|clubnat=NED}}
+{{nat fs g player|no=|pos=FW|name=[[Jürgen Damm]]|sortname=Damm, Jurgen|age={{Birth date and age2|df=yes|2018|6|14|1992|11|7}}|caps=9|goals=1|club=[[Tigres UANL|UANL]]|clubnat=MEX}}
+{{nat fs end}}
+
+===South Korea===
+Coach: [[Shin Tae-yong]]
+
+A 28-man preliminary squad was announced on 14 May 2018.<ref>{{cite web |publisher=[[ESPN]] |url=http://www.espn.com/soccer/fifa-world-cup/story/3497629/south-koreas-preliminary-world-cup-squad-includes-lee-seung-woo-son-heung-min |title=South Korea's preliminary World Cup squad includes Lee Seung-woo, Son Heung-min |date=14 May 2018}}</ref> The squad was reduced to 26 players on 22 May 2018 due to injuries.<ref>{{cite news |url=http://english.yonhapnews.co.kr/culturesports/2018/05/22/0702000000AEN20180522001451315.html |title=(LEAD) Veteran forward ruled out of World Cup with knee injury |website=yonhapnews.co.kr |publisher=[[Yonhap]] |date=22 May 2018 |access-date=22 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Kim Seung-gyu]]|sortname=Kim, Seung-gyu|age={{Birth date and age2|df=yes|2018|6|14|1990|9|30}}|caps=31|goals=0|club=[[Vissel Kobe]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=GK|name=[[Kim Jin-hyeon]]|sortname=Kim, Jin-hyeon|age={{Birth date and age2|df=yes|2018|6|14|1987|7|6}}|caps=14|goals=0|club=[[Cerezo Osaka]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=GK|name=[[Cho Hyun-woo]]|sortname=Cho, Hyun-Woo|age={{Birth date and age2|df=yes|2018|6|14|1991|9|25}}|caps=4|goals=0|club=[[Daegu FC]]|clubnat=KOR}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Kim Young-gwon]]|sortname=Kim, Young-gwon|age={{Birth date and age2|df=yes|2018|6|14|1990|2|27}}|caps=50|goals=2|club=[[Guangzhou Evergrande Taobao F.C.|Guangzhou Evergrande]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=DF|name=[[Jang Hyun-soo]]|sortname=Jang, Hyun-soo|age={{Birth date and age2|df=yes|2018|6|14|1991|9|28}}|caps=49|goals=3|club=[[FC Tokyo]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=DF|name=[[Park Joo-ho]]|sortname=Park, Joo-ho|age={{Birth date and age2|df=yes|2018|6|14|1987|1|16}}|caps=34|goals=0|club=[[Ulsan Hyundai FC|Ulsan Hyundai]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[Kim Jin-su]]|sortname=Kim, Jin-su|age={{Birth date and age2|df=yes|2018|6|14|1992|6|13}}|caps=34|goals=0|club=[[Jeonbuk Hyundai Motors FC|Jeonbuk Hyundai Motors]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[Lee Yong (footballer, born 1986)|Lee Yong]]|sortname=Lee, Yong|age={{Birth date and age2|df=yes|2018|6|14|1986|12|24}}|caps=24|goals=0|club=[[Jeonbuk Hyundai Motors FC|Jeonbuk Hyundai Motors]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[Go Yo-han]]|sortname=Go, Yo-Han|age={{Birth date and age2|df=yes|2018|6|14|1988|3|10}}|caps=18|goals=0|club=[[FC Seoul]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[Kim Min-woo (footballer)|Kim Min-woo]]|sortname=Kim, Min-woo|age={{Birth date and age2|df=yes|2018|6|14|1990|2|25}}|caps=16|goals=1|club=[[Sangju Sangmu FC|Sangju Sangmu]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[Hong Chul]]|sortname=Hong, Chul|age={{Birth date and age2|df=yes|2018|6|14|1990|9|17}}|caps=13|goals=0|club=[[Sangju Sangmu FC|Sangju Sangmu]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[Yun Young-sun]]|sortname=Yun, Young-sun|age={{Birth date and age2|df=yes|2018|6|14|1988|10|4}}|caps=4|goals=0|club=[[Seongnam FC]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=DF|name=[[Kwon Kyung-won]]|sortname=Kwon, Kyung-Won|age={{Birth date and age2|df=yes|2018|6|14|1992|1|31}}|caps=4|goals=1|club=[[Tianjin Quanjian F.C.|Tianjin Quanjian]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=DF|name=[[Jung Seung-hyun]]|sortname=Jung, Seung-hyun|age={{Birth date and age2|df=yes|2018|6|14|1994|4|3}}|caps=4|goals=0|club=[[Sagan Tosu]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=DF|name=[[Oh Ban-suk]]|sortname=Oh, Ban-Suk|age={{Birth date and age2|df=yes|2018|6|14|1988|5|20}}|caps=0|goals=0|club=[[Jeju United FC|Jeju United]]|clubnat=KOR}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Ki Sung-yueng]]|sortname=Ki, Sung-Yueng|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1989|1|24}}|caps=99|goals=10|club=[[Swansea City A.F.C.|Swansea City]]|clubnat=WAL}}
+{{nat fs g player|no=|pos=MF|name=[[Lee Chung-yong]]|sortname=Lee, Chung-yong|age={{Birth date and age2|df=yes|2018|6|14|1988|7|2}}|caps=78|goals=8|club=[[Crystal Palace F.C.|Crystal Palace]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Koo Ja-cheol]]|sortname=Koo, Ja-cheol|age={{Birth date and age2|df=yes|2018|6|14|1989|2|27}}|caps=65|goals=19|club=[[FC Augsburg]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Lee Jae-sung (footballer, born 1992)|Lee Jae-sung]]|sortname=Lee, Jae-sung|age={{Birth date and age2|df=yes|2018|6|14|1992|8|10}}|caps=32|goals=5|club=[[Jeonbuk Hyundai Motors FC|Jeonbuk Hyundai Motors]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=MF|name=[[Jung Woo-young]]|sortname=Jung, Woo-young|age={{Birth date and age2|df=yes|2018|6|14|1989|12|14}}|caps=26|goals=1|club=[[Vissel Kobe]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=MF|name=[[Ju Se-jong]]|sortname=Ju, Se-jong|age={{Birth date and age2|df=yes|2018|6|14|1990|10|30}}|caps=8|goals=1|club=[[Asan Mugunghwa FC|Asan Mugunghwa]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=MF|name=[[Lee Seung-woo]]|sortname=Lee, Seung-woo|age={{Birth date and age2|df=yes|2018|6|14|1998|1|6}}|caps=0|goals=0|club=[[Hellas Verona F.C.|Hellas Verona]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Moon Seon-min]]|sortname=Moon, Seon-min|age={{Birth date and age2|df=yes|2018|6|14|1992|6|9}}|caps=0|goals=0|club=[[Incheon United FC|Incheon United]]|clubnat=KOR}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Son Heung-min]]|sortname=Son, Heung-Min|age={{Birth date and age2|df=yes|2018|6|14|1992|7|8}}|caps=63|goals=20|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Kim Shin-wook]]|sortname=Kim, Shin-wook|age={{Birth date and age2|df=yes|2018|6|14|1988|4|14}}|caps=46|goals=10|club=[[Jeonbuk Hyundai Motors FC|Jeonbuk Hyundai Motors]]|clubnat=KOR}}
+{{nat fs g player|no=|pos=FW|name=[[Hwang Hee-chan]]|sortname=Hwang, Hee-Chan|age={{Birth date and age2|df=yes|2018|6|14|1996|1|26}}|caps=11|goals=2|club=[[FC Red Bull Salzburg|Red Bull Salzburg]]|clubnat=AUT}}
+{{nat fs end}}
+
+===Sweden===
+Coach: [[Janne Andersson]]
+
+The final squad was announced on 15 May 2018.<ref>{{cite news |url=https://svenskfotboll.se/landslag/herrar/arkiv/landslag/2018/05/anderssons-vm-trupp/ |title=Anderssons VM-trupp spikad |website=svenskfotboll.se |publisher=Swedish Football Association |date=15 May 2018 |access-date=18 May 2018 |language=Swedish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=1|pos=GK|name=[[Robin Olsen]]|sortname=Olsen, Robin|age={{Birth date and age2|df=yes|2018|6|14|1990|1|8}}|caps=16|goals=0|club=[[F.C. Copenhagen|Copenhagen]]|clubnat=DEN}}
+{{nat fs g player|no=2|pos=DF|name=[[Mikael Lustig]]|sortname=Lustig, Mikael|age={{Birth date and age2|df=yes|2018|6|14|1986|12|13}}|caps=64|goals=6|club=[[Celtic F.C.|Celtic]]|clubnat=SCO}}
+{{nat fs g player|no=3|pos=DF|name=[[Victor Lindelöf]]|sortname=Lindelof, Victor|age={{Birth date and age2|df=yes|2018|6|14|1994|7|17}}|caps=19|goals=1|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=4|pos=DF|name=[[Andreas Granqvist]]|sortname=Granqvist, Andreas Asterio|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1985|4|16}}|caps=70|goals=6|club=[[FC Krasnodar|Krasnodar]]|clubnat=RUS}}
+{{nat fs g player|no=5|pos=DF|name=[[Martin Olsson]]|sortname=Olsson, Martin|age={{Birth date and age2|df=yes|2018|6|14|1988|5|17}}|caps=42|goals=5|club=[[Swansea City A.F.C.|Swansea City]]|clubnat=WAL}}
+{{nat fs g player|no=6|pos=DF|name=[[Ludwig Augustinsson]]|sortname=Augustinsson, Ludwig|age={{Birth date and age2|df=yes|2018|6|14|1994|4|21}}|caps=14|goals=0|club=[[SV Werder Bremen|Werder Bremen]]|clubnat=GER}}
+{{nat fs g player|no=7|pos=MF|name=[[Sebastian Larsson]]|sortname=Larsson, Sebastian|age={{Birth date and age2|df=yes|2018|6|14|1985|6|6}}|caps=98|goals=6|club=[[Hull City A.F.C.|Hull City]]|clubnat=ENG}}
+{{nat fs g player|no=8|pos=MF|name=[[Albin Ekdal]]|sortname=Ekdal, Albin|age={{Birth date and age2|df=yes|2018|6|14|1989|7|28}}|caps=32|goals=0|club=[[Hamburger SV]]|clubnat=GER}}
+{{nat fs g player|no=9|pos=FW|name=[[Marcus Berg]]|sortname=Berg, Marcus|age={{Birth date and age2|df=yes|2018|6|14|1986|8|17}}|caps=55|goals=18|club=[[Al Ain FC|Al Ain]]|clubnat=UAE}}
+{{nat fs g player|no=10|pos=MF|name=[[Emil Forsberg]]|sortname=Forsberg, Emil|age={{Birth date and age2|df=yes|2018|6|14|1991|10|23}}|caps=34|goals=6|club=[[RB Leipzig]]|clubnat=GER}}
+{{nat fs g player|no=11|pos=FW|name=[[John Guidetti]]|sortname=Guidetti, John|age={{Birth date and age2|df=yes|2018|6|14|1992|4|15}}|caps=20|goals=1|club=[[Deportivo Alavés|Alavés]]|clubnat=ESP}}
+{{nat fs g player|no=12|pos=GK|name=[[Karl-Johan Johnsson]]|sortname=Johnsson, Karl-Johan|age={{Birth date and age2|df=yes|2018|6|14|1990|1|28}}|caps=5|goals=0|club=[[En Avant de Guingamp|Guingamp]]|clubnat=FRA}}
+{{nat fs g player|no=13|pos=MF|name=[[Gustav Svensson]]|sortname=Svensson, Gustav|age={{Birth date and age2|df=yes|2018|6|14|1987|2|7}}|caps=11|goals=0|club=[[Seattle Sounders FC]]|clubnat=USA}}
+{{nat fs g player|no=14|pos=DF|name=[[Filip Helander]]|sortname=Helander, Filip|age={{Birth date and age2|df=yes|2018|6|14|1993|4|22}}|caps=4|goals=0|club=[[Bologna F.C. 1909|Bologna]]|clubnat=ITA}}
+{{nat fs g player|no=15|pos=MF|name=[[Oscar Hiljemark]]|sortname=Hiljemark, Oscar|age={{Birth date and age2|df=yes|2018|6|14|1992|6|28}}|caps=20|goals=2|club=[[Genoa C.F.C.|Genoa]]|clubnat=ITA}}
+{{nat fs g player|no=16|pos=DF|name=[[Emil Krafth]]|sortname=Krafth, Emil|age={{Birth date and age2|df=yes|2018|6|14|1994|8|2}}|caps=11|goals=0|club=[[Bologna F.C. 1909|Bologna]]|clubnat=ITA}}
+{{nat fs g player|no=17|pos=MF|name=[[Viktor Claesson]]|sortname=Claesson, Viktor|age={{Birth date and age2|df=yes|2018|6|14|1992|1|2}}|caps=21|goals=3|club=[[FC Krasnodar|Krasnodar]]|clubnat=RUS}}
+{{nat fs g player|no=18|pos=DF|name=[[Pontus Jansson]]|sortname=Jansson, Pontus|age={{Birth date and age2|df=yes|2018|6|14|1991|2|13}}|caps=14|goals=0|club=[[Leeds United F.C.|Leeds United]]|clubnat=ENG}}
+{{nat fs g player|no=19|pos=MF|name=[[Marcus Rohdén]]|sortname=Rohden, Marcus|age={{Birth date and age2|df=yes|2018|6|14|1991|5|11}}|caps=10|goals=1|club=[[F.C. Crotone|Crotone]]|clubnat=ITA}}
+{{nat fs g player|no=20|pos=FW|name=[[Ola Toivonen]]|sortname=Toivonen, Ola|age={{Birth date and age2|df=yes|2018|6|14|1986|7|3}}|caps=57|goals=13|club=[[Toulouse FC|Toulouse]]|clubnat=FRA}}
+{{nat fs g player|no=21|pos=MF|name=[[Jimmy Durmaz]]|sortname=Durmaz, Jimmy|age={{Birth date and age2|df=yes|2018|6|14|1989|3|22}}|caps=44|goals=3|club=[[Toulouse FC|Toulouse]]|clubnat=FRA}}
+{{nat fs g player|no=22|pos=FW|name=[[Isaac Kiese Thelin]]|sortname=Thelin, Isaac|age={{Birth date and age2|df=yes|2018|6|14|1992|6|24}}|caps=18|goals=2|club=[[Waasland-Beveren]]|clubnat=BEL}}
+{{nat fs g player|no=23|pos=GK|name=[[Kristoffer Nordfeldt]]|sortname=Nordfeldt, Kristoffer|age={{Birth date and age2|df=yes|2018|6|14|1989|6|23}}|caps=8|goals=0|club=[[Swansea City A.F.C.|Swansea City]]|clubnat=WAL}}
+{{nat fs end}}
+
+==Group G==
+
+===Belgium===
+Coach: {{flagicon|ESP}} [[Roberto Martínez]]
+
+A 28-man preliminary squad was announced on 21 May 2018.<ref>{{cite web |publisher=Goal |url=http://www.goal.com/en/news/nainggolan-left-out-of-star-studded-belgium-world-cup-squad/1mhvxftsnauyi18fjhiwdz44og |title=Nainggolan left out of star-studded Belgium World Cup squad}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Thibaut Courtois]]|sortname=Courtois, Thibaut|age={{Birth date and age2|df=yes|2018|6|14|1992|5|11}}|caps=55|goals=0|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Matz Sels]]|sortname=Sels, Matz|age={{Birth date and age2|df=yes|2018|6|14|1992|2|26}}|caps=0|goals=0|club=[[R.S.C. Anderlecht|Anderlecht]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=GK|name=[[Simon Mignolet]]|sortname=Mignolet, Simon|age={{Birth date and age2|df=yes|2018|6|14|1988|3|6}}|caps=21|goals=0|club=[[Liverpool F.C.|Liverpool]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Koen Casteels]]|sortname=Casteels, Koen|age={{Birth date and age2|df=yes|2018|6|14|1992|6|25}}|caps=0|goals=0|club=[[VfL Wolfsburg]]|clubnat=GER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Toby Alderweireld]]|sortname=Alderweireld, Toby|age={{Birth date and age2|df=yes|2018|6|14|1989|3|2}}|caps=71|goals=3|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Vincent Kompany]]|sortname=Kompany, Vincent|age={{Birth date and age2|df=yes|2018|6|14|1986|4|10}}|caps=73|goals=4|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Jan Vertonghen]]|sortname=Vertonghen, Jan|age={{Birth date and age2|df=yes|2018|6|14|1987|4|24}}|caps=99|goals=8|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Thomas Meunier]]|sortname=Meunier, Thomas|age={{Birth date and age2|df=yes|2018|6|14|1991|9|12}}|caps=22|goals=5|club=[[Paris Saint-Germain F.C.|Paris Saint-Germain]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Thomas Vermaelen]]|sortname=Vermaelen, Thomas|age={{Birth date and age2|df=yes|2018|6|14|1985|11|14}}|caps=64|goals=1|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Jordan Lukaku]]|sortname=Lukaku, Jordan|age={{Birth date and age2|df=yes|2018|6|14|1994|7|25}}|caps=8|goals=0|club=[[S.S. Lazio|Lazio]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Christian Kabasele]]|sortname=Kabasele, Christian|age={{Birth date and age2|df=yes|2018|6|14|1991|2|24}}|caps=2|goals=0|club=[[Watford F.C.|Watford]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Laurent Ciman]]|sortname=Ciman, Laurent|age={{Birth date and age2|df=yes|2018|6|14|1985|8|5}}|caps=19|goals=1|club=[[Los Angeles FC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Dedryck Boyata]]|sortname=Boyata, Dedryck|age={{Birth date and age2|df=yes|2018|6|14|1990|11|28}}|caps=4|goals=0|club=[[Celtic F.C.|Celtic]]|clubnat=SCO}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Axel Witsel]]|sortname=Witsel, Axel|age={{Birth date and age2|df=yes|2018|6|14|1989|1|12}}|caps=85|goals=9|club=[[Tianjin Quanjian F.C.|Tianjin Quanjian]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=MF|name=[[Kevin De Bruyne]]|sortname=De Bruyne, Kevin|age={{Birth date and age2|df=yes|2018|6|14|1991|6|28}}|caps=56|goals=13|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Marouane Fellaini]]|sortname=Fellaini, Marouane|age={{Birth date and age2|df=yes|2018|6|14|1987|11|22}}|caps=78|goals=16|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Adnan Januzaj]]|sortname=Januzaj, Adnan|age={{Birth date and age2|df=yes|2018|6|14|1995|2|5}}|caps=6|goals=0|club=[[Real Sociedad]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Mousa Dembélé (Belgian footballer)|Mousa Dembélé]]|sortname=Dembele, Mousa|age={{Birth date and age2|df=yes|2018|6|14|1987|7|16}}|caps=73|goals=5|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Youri Tielemans]]|sortname=Tielemans, Youri|age={{Birth date and age2|df=yes|2018|6|14|1997|5|7}}|caps=7|goals=0|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Yannick Ferreira Carrasco|Yannick Carrasco]]|sortname=Ferreira Carrasco, Yannick|age={{Birth date and age2|df=yes|2018|6|14|1993|9|4}}|caps=22|goals=5|club=[[Dalian Yifang F.C.|Dalian Yifang]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=MF|name=[[Leander Dendoncker]]|sortname=Dendoncker, Leander|age={{Birth date and age2|df=yes|2018|6|14|1995|4|15}}|caps=4|goals=0|club=[[R.S.C. Anderlecht|Anderlecht]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=MF|name=[[Nacer Chadli]]|sortname=Chadli, Nacer|age={{Birth date and age2|df=yes|2018|6|14|1989|8|2}}|caps=40|goals=4|club=[[West Bromwich Albion F.C.|West Bromwich Albion]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Eden Hazard]]|sortname=Hazard, Eden|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1991|1|7}}|caps=81|goals=21|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Thorgan Hazard]]|sortname=Hazard, Thorgan|age={{Birth date and age2|df=yes|2018|6|14|1993|3|29}}|caps=7|goals=1|club=[[Borussia Mönchengladbach]]|clubnat=GER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Romelu Lukaku]]|sortname=Lukaku, Romelu|age={{Birth date and age2|df=yes|2018|6|14|1993|5|13}}|caps=63|goals=30|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Christian Benteke]]|sortname=Benteke, Christian|age={{Birth date and age2|df=yes|2018|6|14|1990|12|3}}|caps=31|goals=11|club=[[Crystal Palace F.C.|Crystal Palace]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Dries Mertens]]|sortname=Mertens, Dries|age={{Birth date and age2|df=yes|2018|6|14|1987|5|6}}|caps=64|goals=13|club=[[S.S.C. Napoli|Napoli]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Michy Batshuayi]]|sortname=Batshuayi, Michy|age={{Birth date and age2|df=yes|2018|6|14|1993|10|2}}|caps=13|goals=5|club=[[Borussia Dortmund]]|clubnat=GER}}
+{{nat fs end}}
+
+===England===
+Coach: [[Gareth Southgate]]
+
+The final squad was announced on 16 May 2018.<ref>{{cite news |url=https://www.bbc.com/sport/football/44138600 |title=England World Cup squad: Liverpool's Trent Alexander-Arnold in Gareth Southgate's squad |website=BBC Sport |publisher=British Broadcasting Corporation |date=16 May 2018 |access-date=16 May 2018}}</ref><ref>{{cite web |title=England squad |url=http://www.thefa.com/england/mens-seniors/squad |publisher=The Football Association |access-date=16 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Jack Butland]]|sortname=Butland, Jack|age={{Birth date and age2|df=yes|2018|6|14|1993|3|10}}|caps=7|goals=0|club=[[Stoke City F.C.|Stoke City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Jordan Pickford]]|sortname=Pickford, Jordan|age={{Birth date and age2|df=yes|2018|6|14|1994|3|7}}|caps=2|goals=0|club=[[Everton F.C.|Everton]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Nick Pope (footballer)|Nick Pope]]|sortname=Pope, Nick|age={{Birth date and age2|df=yes|2018|6|14|1992|4|19}}|caps=0|goals=0|club=[[Burnley F.C.|Burnley]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Trent Alexander-Arnold]]|sortname=Alexander-Arnold, Trent|age={{Birth date and age2|df=yes|2018|6|14|1998|10|7}}|caps=0|goals=0|club=[[Liverpool F.C.|Liverpool]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Gary Cahill]]|sortname=Cahill, Gary|age={{Birth date and age2|df=yes|2018|6|14|1985|12|19}}|caps=58|goals=4|club=[[Chelsea F.C.|Chelsea]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Fabian Delph]]|sortname=Delph, Fabian|age={{Birth date and age2|df=yes|2018|6|14|1989|11|21}}|caps=9|goals=0|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Phil Jones (footballer, born 1992)|Phil Jones]]|sortname=Jones, Phil|age={{Birth date and age2|df=yes|2018|6|14|1992|2|21}}|caps=24|goals=0|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Harry Maguire]]|sortname=Maguire, Harry|age={{Birth date and age2|df=yes|2018|6|14|1993|3|5}}|caps=4|goals=0|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Danny Rose (footballer, born 1990)|Danny Rose]]|sortname=Rose, Danny|age={{Birth date and age2|df=yes|2018|6|14|1990|7|2}}|caps=16|goals=0|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[John Stones]]|sortname=Stones, John|age={{Birth date and age2|df=yes|2018|6|14|1994|5|28}}|caps=24|goals=0|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Kieran Trippier]]|sortname=Trippier, Kieran|age={{Birth date and age2|df=yes|2018|6|14|1990|9|19}}|caps=5|goals=0|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Kyle Walker]]|sortname=Walker, Kyle|age={{Birth date and age2|df=yes|2018|6|14|1990|5|28}}|caps=34|goals=0|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Ashley Young]]|sortname=Young, Ashley|age={{Birth date and age2|df=yes|2018|6|14|1985|7|9}}|caps=33|goals=7|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Dele Alli]]|sortname=Alli, Dele|age={{Birth date and age2|df=yes|2018|6|14|1996|4|11}}|caps=23|goals=2|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Eric Dier]]|sortname=Dier, Eric|age={{Birth date and age2|df=yes|2018|6|14|1994|1|15}}|caps=25|goals=3|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Jordan Henderson]]|sortname=Henderson, Jordan|age={{Birth date and age2|df=yes|2018|6|14|1990|6|17}}|caps=38|goals=0|club=[[Liverpool F.C.|Liverpool]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Jesse Lingard]]|sortname=Lingard, Jesse|age={{Birth date and age2|df=yes|2018|6|14|1992|12|15}}|caps=10|goals=1|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Ruben Loftus-Cheek]]|sortname=Loftus-Cheek, Ruben|age={{Birth date and age2|df=yes|2018|6|14|1996|1|23}}|caps=2|goals=0|club=[[Crystal Palace F.C.|Crystal Palace]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Harry Kane]]|sortname=Kane, Harry|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1993|7|28}}|caps=23|goals=12|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Marcus Rashford]]|sortname=Rashford, Marcus|age={{Birth date and age2|df=yes|2018|6|14|1997|10|31}}|caps=17|goals=2|club=[[Manchester United F.C.|Manchester United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Raheem Sterling]]|sortname=Sterling, Raheem|age={{Birth date and age2|df=yes|2018|6|14|1994|12|8}}|caps=37|goals=2|club=[[Manchester City F.C.|Manchester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Jamie Vardy]]|sortname=Vardy, Jamie|age={{Birth date and age2|df=yes|2018|6|14|1987|1|11}}|caps=21|goals=7|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Danny Welbeck]]|sortname=Welbeck, Danny|age={{Birth date and age2|df=yes|2018|6|14|1990|11|26}}|caps=37|goals=15|club=[[Arsenal F.C.|Arsenal]]|clubnat=ENG}}
+{{nat fs end}}
+
+===Panama===
+Coach: {{flagicon|COL}} [[Hernán Darío Gómez]]
+
+A 35-man preliminary squad was announced on 14 May 2018.<ref>{{cite news |url=https://es.fifa.com/worldcup/news/panama-anuncia-su-lista-provisional-rusia-2018 |title=Panamá anuncia su lista provisional |trans-title=Panama announces its provisional list |website=FIFA.com |publisher=Fédération Internationale de Football Association |date=14 May 2018 |access-date=15 May 2018 |language=Spanish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[José Calderón (Panamanian footballer)|José Calderón]]|sortname=Calderon, Jose|age={{Birth date and age2|df=yes|2018|6|14|1985|8|14}}|caps=30|goals=0|club=[[Unión Deportivo Universitario|Chorrillo]]|clubnat=PAN}}
+{{nat fs g player|no=|pos=GK|name=[[Jaime Penedo]]|sortname=Penedo, Jaime|age={{Birth date and age2|df=yes|2018|6|14|1981|9|26}}|caps=130|goals=0|club=[[FC Dinamo București|Dinamo București]]|clubnat=ROU}}
+{{nat fs g player|no=|pos=GK|name=[[Álex Rodríguez (Panamanian footballer)|Álex Rodríguez]]|sortname=Rodriguez, Alex|age={{Birth date and age2|df=yes|2018|6|14|1990|8|5}}|caps=6|goals=0|club=[[San Francisco F.C.|San Francisco]]|clubnat=PAN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Azmahar Ariano]]|sortname=Ariano, Azmahar|age={{Birth date and age2|df=yes|2018|6|14|1991|1|14}}|caps=3|goals=0|club=[[Patriotas Boyacá|Patriotas]]|clubnat=COL}}
+{{nat fs g player|no=|pos=DF|name=[[Felipe Baloy]]|sortname=Baloy, Felipe|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1981|2|24}}|caps=101|goals=3|club=[[C.S.D. Municipal|Municipal]]|clubnat=GUA}}
+{{nat fs g player|no=|pos=DF|name=[[Harold Cummings]]|sortname=Cummings, Harold|age={{Birth date and age2|df=yes|2018|6|14|1992|3|1}}|caps=51|goals=0|club=[[San Jose Earthquakes]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Erick Davis]]|sortname=Davis, Erick|age={{Birth date and age2|df=yes|2018|6|14|1991|3|31}}|caps=37|goals=0|club=[[FC DAC 1904 Dunajská Streda|Dunajská Streda]]|clubnat=SVK}}
+{{nat fs g player|no=|pos=DF|name=[[Fidel Escobar]]|sortname=Escobar, Fidel|age={{Birth date and age2|df=yes|2018|6|14|1995|1|9}}|caps=21|goals=1|club=[[New York Red Bulls]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Adolfo Machado]]|sortname=Machado, Adolfo|age={{Birth date and age2|df=yes|2018|6|14|1985|2|14}}|caps=74|goals=1|club=[[Houston Dynamo]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Michael Amir Murillo]]|sortname=Murillo, Michael Amir|age={{Birth date and age2|df=yes|2018|6|14|1996|2|15}}|caps=21|goals=2|club=[[New York Red Bulls]]|clubnat=USA}}
+{{nat fs g player|no=|pos=DF|name=[[Luis Ovalle]]|sortname=Ovalle, Luis|age={{Birth date and age2|df=yes|2018|6|14|1988|9|7}}|caps=24|goals=0|club=[[Club Deportivo Olimpia|CD Olimpia]]|clubnat=HON}}
+{{nat fs g player|no=|pos=DF|name=[[Francisco Palacios Alleyne|Francisco Palacios]]|sortname=Palacios, Francisco|age={{Birth date and age2|df=yes|2018|6|14|1990|12|10}}|caps=1|goals=0|club=[[San Francisco F.C.|San Francisco]]|clubnat=PAN}}
+{{nat fs g player|no=|pos=DF|name=[[Richard Peralta]]|sortname=Peralta, Richard|age={{Birth date and age2|df=yes|2018|6|14|1993|9|20}}|caps=7|goals=0|club=[[Alianza F.C. (Panama)|Alianza]]|clubnat=PAN}}
+{{nat fs g player|no=|pos=DF|name=[[Román Torres]]|sortname=Torres, Roman|age={{Birth date and age2|df=yes|2018|6|14|1986|3|20}}|caps=109|goals=10|club=[[Seattle Sounders FC]]|clubnat=USA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Ricardo Ávila]]|sortname=Avila, Ricardo|age={{Birth date and age2|df=yes|2018|6|14|1997|1|4}}|caps=4|goals=0|club=[[K.A.A. Gent|Gent]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=MF|name=[[Édgar Joel Bárcenas|Édgar Bárcenas]]|sortname=Barcenas, Edgar Joel|age={{Birth date and age2|df=yes|2018|6|14|1993|10|23}}|caps=27|goals=0|club=[[Cafetaleros de Tapachula|Tapachula]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Ricardo Buitrago]]|sortname=Buitrago, Ricardo|age={{Birth date and age2|df=yes|2018|6|14|1985|3|10}}|caps=27|goals=3|club=[[Deportivo Municipal]]|clubnat=PER}}
+{{nat fs g player|no=|pos=MF|name=[[Miguel Camargo]]|sortname=Camargo, Miguel|age={{Birth date and age2|df=yes|2018|6|14|1993|9|5}}|caps=18|goals=2|club=[[Club Deportivo Universidad de San Martín de Porres|Universidad San Martín]]|clubnat=PER}}
+{{nat fs g player|no=|pos=MF|name=[[Adalberto Carrasquilla]]|sortname=Carrasquilla, Adalberto|age={{Birth date and age2|df=yes|2018|6|14|1998|11|28}}|caps=0|goals=0|club=[[Tauro F.C.|Tauro]]|clubnat=PAN}}
+{{nat fs g player|no=|pos=MF|name=[[Armando Cooper]]|sortname=Cooper, Armando|age={{Birth date and age2|df=yes|2018|6|14|1987|11|26}}|caps=96|goals=7|club=[[Club Universidad de Chile|Universidad de Chile]]|clubnat=CHI}}
+{{nat fs g player|no=|pos=MF|name=[[Aníbal Godoy]]|sortname=Godoy, Anibal|age={{Birth date and age2|df=yes|2018|6|14|1990|2|10}}|caps=87|goals=2|club=[[San Jose Earthquakes]]|clubnat=USA}}
+{{nat fs g player|no=|pos=MF|name=[[Gabriel Enrique Gómez|Gabriel Gómez]]|sortname=Gomez, Gabriel Enrique|age={{Birth date and age2|df=yes|2018|6|14|1984|5|29}}|caps=142|goals=12|club=[[Atlético Bucaramanga]]|clubnat=COL}}
+{{nat fs g player|no=|pos=MF|name=[[José González Joly]]|sortname=Gonzalez Joly, Jose|age={{Birth date and age2|df=yes|2018|6|14|1991|5|5}}|caps=9|goals=0|club=[[Unión Comercio]]|clubnat=PER}}
+{{nat fs g player|no=|pos=MF|name=[[Cristian Martínez (Panamanian footballer)|Cristian Martínez]]|sortname=Martinez, Cristian|age={{Birth date and age2|df=yes|2018|6|14|1997|2|6}}|caps=2|goals=0|club=[[Columbus Crew SC]]|clubnat=USA}}
+{{nat fs g player|no=|pos=MF|name=[[Valentín Pimentel]]|sortname=Pimentel, Valentin|age={{Birth date and age2|df=yes|2018|6|14|1991|5|30}}|caps=21|goals=1|club=[[C.D. Plaza Amador|Plaza Amador]]|clubnat=PAN}}
+{{nat fs g player|no=|pos=MF|name=[[Alberto Quintero Medina|Alberto Quintero]]|sortname=Quintero Medina, Alberto|age={{Birth date and age2|df=yes|2018|6|14|1987|12|18}}|caps=89|goals=5|club=[[Club Universitario de Deportes|Universitario]]|clubnat=PER}}
+{{nat fs g player|no=|pos=MF|name=[[José Luis Rodríguez (footballer, born 1998)|José Luis Rodríguez]]|sortname=Rodriguez, Jose Luis|age={{Birth date and age2|df=yes|2018|6|14|1998|6|19}}|caps=0|goals=0|club=[[K.A.A. Gent|Gent]]|clubnat=BEL}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Abdiel Arroyo]]|sortname=Arroyo, Abdiel|age={{Birth date and age2|df=yes|2018|6|14|1993|12|13}}|caps=33|goals=5|club=[[Liga Deportiva Alajuelense|Alajuelense]]|clubnat=CRC}}
+{{nat fs g player|no=|pos=FW|name=[[Rolando Blackburn]]|sortname=Blackburn, Rolando|age={{Birth date and age2|df=yes|2018|6|14|1990|1|9}}|caps=26|goals=4|club=[[Unión Deportivo Universitario|Chorrillo]]|clubnat=PAN}}
+{{nat fs g player|no=|pos=FW|name=[[Ismael Díaz (Panamanian footballer)|Ismael Díaz]]|sortname=Diaz, Ismael|age={{Birth date and age2|df=yes|2018|6|14|1997|5|12}}|caps=10|goals=2|club=[[Deportivo Fabril]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[José Fajardo (footballer)|José Fajardo]]|sortname=Fajardo, Jose|age={{Birth date and age2|df=yes|2018|6|14|1993|8|18}}|caps=2|goals=0|club=[[Independiente F.C.|Independiente Chorrera]]|clubnat=PAN}}
+{{nat fs g player|no=|pos=FW|name=[[Roberto Nurse]]|sortname=Nurse, Roberto|age={{Birth date and age2|df=yes|2018|6|14|1983|12|16}}|caps=20|goals=3|club=[[Mineros de Zacatecas|Zacatecas]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=FW|name=[[Blas Pérez]]|sortname=Perez, Blas|age={{Birth date and age2|df=yes|2018|6|14|1981|3|13}}|caps=116|goals=43|club=[[C.S.D. Municipal|Municipal]]|clubnat=GUA}}
+{{nat fs g player|no=|pos=FW|name=[[Luis Tejada]]|sortname=Tejada, Luis|age={{Birth date and age2|df=yes|2018|6|14|1982|3|28}}|caps=104|goals=43|club=[[Sport Boys]]|clubnat=PER}}
+{{nat fs g player|no=|pos=FW|name=[[Gabriel Torres]]|sortname=Torres, Gabriel|age={{Birth date and age2|df=yes|2018|6|14|1988|10|31}}|caps=71|goals=14|club=[[Huachipato]]|clubnat=CHI}}
+{{nat fs end}}
+
+===Tunisia===
+Coach: [[Nabil Maâloul]]
+
+A 29-man preliminary squad was announced on 14 May 2018.<ref>{{cite news |url=http://www.fifa.com/worldcup/news/maaloul-reveals-preliminary-tunisia-squad |title=Maaloul reveals preliminary Tunisia squad |website=FIFA.com |publisher=Fédération Internationale de Football Association |date=14 May 2018 |access-date=14 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Aymen Mathlouthi]]|sortname=Mathlouthi, Aymen|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1984|9|14}}|caps=69|goals=0|club=[[Al-Batin F.C.|Al-Batin]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=GK|name=[[Moez Ben Cherifia]]|sortname=Ben Chrifia, Moez|age={{Birth date and age2|df=yes|2018|6|14|1991|6|24}}|caps=18|goals=0|club=[[Espérance Sportive de Tunis|Espérance]]|clubnat=TUN}}
+{{nat fs g player|no=|pos=GK|name=[[Farouk Ben Mustapha]]|sortname=Ben Mustapha, Farouk|age={{Birth date and age2|df=yes|2018|6|14|1989|7|1}}|caps=15|goals=0|club=[[Al-Shabab FC (Riyadh)|Al-Shabab]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=GK|name=[[Mouez Hassen]]|sortname=Hassen, Mouez|age={{Birth date and age2|df=yes|2018|6|14|1995|3|5}}|caps=1|goals=0|club=[[LB Châteauroux|Châteauroux]]|clubnat=FRA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Hamdi Nagguez]]|sortname=Nagguez, Hamdi|age={{Birth date and age2|df=yes|2018|6|14|1992|10|28}}|caps=13|goals=0|club=[[Zamalek SC|Zamalek]]|clubnat=EGY}}
+{{nat fs g player|no=|pos=DF|name=[[Dylan Bronn]]|sortname=Bronn, Dylan|age={{Birth date and age2|df=yes|2018|6|14|1995|6|19}}|caps=3|goals=0|club=[[K.A.A. Gent|Gent]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=DF|name=[[Rami Bedoui]]|sortname=Bedoui, Rami|age={{Birth date and age2|df=yes|2018|6|14|1990|1|19}}|caps=8|goals=0|club=[[Étoile Sportive du Sahel|Étoile du Sahel]]|clubnat=TUN}}
+{{nat fs g player|no=|pos=DF|name=[[Yohan Benalouane]]|sortname=Benalouane, Yohan|age={{Birth date and age2|df=yes|2018|6|14|1987|3|28}}|caps=2|goals=0|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Syam Ben Youssef]]|sortname=Ben Youssef, Syam|age={{Birth date and age2|df=yes|2018|6|14|1989|3|31}}|caps=40|goals=1|club=[[Kasımpaşa S.K.|Kasımpaşa]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Yassine Meriah]]|sortname=Meriah, Yassine|age={{Birth date and age2|df=yes|2018|6|14|1993|7|2}}|caps=13|goals=1|club=[[CS Sfaxien]]|clubnat=TUN}}
+{{nat fs g player|no=|pos=DF|name=[[Bilel Mohsni]]|sortname=Mohsni, Bilel|age={{Birth date and age2|df=yes|2018|6|14|1987|7|21}}|caps=6|goals=0|club=[[Dundee United F.C.|Dundee United]]|clubnat=SCO}}
+{{nat fs g player|no=|pos=DF|name=[[Khalil Chemmam]]|sortname=Chemmam, Khalil|age={{Birth date and age2|df=yes|2018|6|14|1987|7|24}}|caps=21|goals=0|club=[[Espérance Sportive de Tunis|Espérance]]|clubnat=TUN}}
+{{nat fs g player|no=|pos=DF|name=[[Oussama Haddadi]]|sortname=Haddadi, Oussama|age={{Birth date and age2|df=yes|2018|6|14|1992|1|28}}|caps=6|goals=0|club=[[Dijon FCO|Dijon]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Ali Maâloul]]|sortname=Maaloul, Ali|age={{Birth date and age2|df=yes|2018|6|14|1990|1|1}}|caps=43|goals=0|club=[[Al Ahly SC|Al Ahly]]|clubnat=EGY}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Ellyes Skhiri]]|sortname=Skhiri, Ellyes|age={{Birth date and age2|df=yes|2018|6|14|1995|5|10}}|caps=2|goals=0|club=[[Montpellier HSC|Montpellier]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Mohamed Amine Ben Amor]]|sortname=Ben Amor, Mohamed Amine|age={{Birth date and age2|df=yes|2018|6|14|1992|1|1}}|caps=24|goals=1|club=[[Al-Ahli Saudi FC|Al-Ahli]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Ghailene Chaalali]]|sortname=Chaalali, Ghailene|age={{Birth date and age2|df=yes|2018|6|14|1994|2|28}}|caps=4|goals=1|club=[[Espérance Sportive de Tunis|Espérance]]|clubnat=TUN}}
+{{nat fs g player|no=|pos=MF|name=[[Karim Laribi]]|sortname=Laribi, Karim|age={{Birth date and age2|df=yes|2018|6|14|1991|4|20}}|caps=1|goals=0|club=[[A.C. Cesena|Cesena]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Ferjani Sassi]]|sortname=Sassi, Ferjani|age={{Birth date and age2|df=yes|2018|6|14|1992|3|18}}|caps=36|goals=2|club=[[Al-Nassr FC|Al-Nassr]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=MF|name=[[Ahmed Khalil (footballer, born 1994)|Ahmed Khalil]]|sortname=Khalil, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1994|12|21}}|caps=3|goals=0|club=[[Club Africain]]|clubnat=TUN}}
+{{nat fs g player|no=|pos=MF|name=[[Saîf-Eddine Khaoui]]|sortname=Khaoui, Saif-Eddine|age={{Birth date and age2|df=yes|2018|6|14|1995|4|27}}|caps=2|goals=0|club=[[Troyes AC|Troyes]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Mohamed Larbi]]|sortname=Larbi, Mohamed|age={{Birth date and age2|df=yes|2018|6|14|1987|9|2}}|caps=4|goals=0|club=[[Tours FC|Tours]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Naïm Sliti]]|sortname=Sliti, Naim|age={{Birth date and age2|df=yes|2018|6|14|1992|7|27}}|caps=14|goals=3|club=[[Dijon FCO|Dijon]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=MF|name=[[Bassem Srarfi]]|sortname=Srarfi, Bassem|age={{Birth date and age2|df=yes|2018|6|14|1997|6|25}}|caps=2|goals=0|club=[[OGC Nice|Nice]]|clubnat=FRA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Fakhreddine Ben Youssef]]|sortname=Youssef, Fakhreddine|age={{Birth date and age2|df=yes|2018|6|14|1991|6|21}}|caps=31|goals=4|club=[[Ettifaq FC|Al-Ettifaq]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=FW|name=[[Anice Badri]]|sortname=Badri, Anice|age={{Birth date and age2|df=yes|2018|6|14|1990|8|18}}|caps=4|goals=0|club=[[Espérance Sportive de Tunis|Espérance]]|clubnat=TUN}}
+{{nat fs g player|no=|pos=FW|name=[[Ahmed Akaïchi]]|sortname=Akaichi, Ahmed|age={{Birth date and age2|df=yes|2018|6|14|1989|2|23}}|caps=29|goals=9|club=[[Al-Ittihad Club (Jeddah)|Al-Ittihad]]|clubnat=KSA}}
+{{nat fs g player|no=|pos=FW|name=[[Wahbi Khazri]]|sortname=Khazri, Wahbi|age={{Birth date and age2|df=yes|2018|6|14|1991|2|8}}|caps=35|goals=12|club=[[Stade Rennais F.C.|Rennes]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Saber Khalifa]]|sortname=Khalifa, Saber|age={{Birth date and age2|df=yes|2018|6|14|1986|10|14}}|caps=41|goals=7|club=[[Club Africain]]|clubnat=TUN}}
+{{nat fs end}}
+
+==Group H==
+
+===Colombia===
+Coach: {{flagicon|ARG}} [[José Pékerman]]
+
+A 35-man preliminary squad was announced on 14 May 2018.<ref>{{cite news |url=http://www.goal.com/en/news/falcao-and-james-lead-colombias-provisional-world-cup-squad/1oibhhx2efwef12iuyiflycte9 |title=Falcao and James lead Colombia's provisional World Cup squad |website=[[Goal (website)|Goal]] |publisher=[[Perform Group]] |date=14 May 2018 |access-date=15 May 2018}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[David Ospina]]|sortname=Ospina, David|age={{Birth date and age2|df=yes|2018|6|14|1988|8|31}}|caps=85|goals=0|club=[[Arsenal F.C.|Arsenal]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Camilo Vargas]]|sortname=Vargas, Camilo|age={{Birth date and age2|df=yes|2018|6|14|1989|3|9}}|caps=5|goals=0|club=[[Deportivo Cali]]|clubnat=COL}}
+{{nat fs g player|no=|pos=GK|name=[[Iván Arboleda]]|sortname=Arboleda, Ivan|age={{Birth date and age2|df=yes|2018|6|14|1996|4|21}}|caps=0|goals=0|club=[[Club Atlético Banfield|Banfield]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=GK|name=[[José Fernando Cuadrado]]|sortname=Cuadrado, Jose Fernando|age={{Birth date and age2|df=yes|2018|6|14|1985|6|1}}|caps=1|goals=0|club=[[Once Caldas]]|clubnat=COL}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Cristián Zapata]]|sortname=Zapata, Cristian|age={{Birth date and age2|df=yes|2018|6|14|1986|9|30}}|caps=55|goals=2|club=[[A.C. Milan|Milan]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Dávinson Sánchez]]|sortname=Sanchez, Davinson|age={{Birth date and age2|df=yes|2018|6|14|1996|5|12}}|caps=8|goals=0|club=[[Tottenham Hotspur F.C.|Tottenham Hotspur]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Santiago Arias]]|sortname=Arias, Santiago|age={{Birth date and age2|df=yes|2018|6|14|1992|1|13}}|caps=40|goals=0|club=[[PSV Eindhoven]]|clubnat=NED}}
+{{nat fs g player|no=|pos=DF|name=[[Óscar Murillo]]|sortname=Murillo, Oscar|age={{Birth date and age2|df=yes|2018|6|14|1988|4|18}}|caps=12|goals=0|club=[[C.F. Pachuca|Pachuca]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Frank Fabra]]|sortname=Fabra, Frank|age={{Birth date and age2|df=yes|2018|6|14|1991|2|22}}|caps=18|goals=1|club=[[Boca Juniors]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=DF|name=[[Johan Mojica]]|sortname=Mojica, Johan Andres|age={{Birth date and age2|df=yes|2018|6|14|1991|8|21}}|caps=3|goals=1|club=[[Girona FC|Girona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Yerry Mina]]|sortname=Mina, Yerry|age={{Birth date and age2|df=yes|2018|6|14|1994|9|23}}|caps=11|goals=3|club=[[FC Barcelona|Barcelona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[William Tesillo]]|sortname=Tesillo, Mina|age={{Birth date and age2|df=yes|2018|6|14|1990|2|2}}|caps=3|goals=0|club=[[Club León]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Bernardo Espinosa]]|sortname=Bernardo|age={{Birth date and age2|df=yes|2018|6|14|1989|7|11}}|caps=0|goals=0|club=[[Girona FC|Girona]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=DF|name=[[Stefan Medina]]|sortname=Medina, Stefan|age={{Birth date and age2|df=yes|2018|6|14|1992|6|14}}|caps=11|goals=0|club=[[C.F. Monterrey|Monterrey]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=DF|name=[[Farid Díaz]]|sortname=Diaz, Farid|age={{Birth date and age2|df=yes|2018|6|14|1983|7|20}}|caps=13|goals=0|club=[[Club Olimpia|Olimpia]]|clubnat=PAR}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Wílmar Barrios]]|sortname=Barrios, Wilmar|age={{Birth date and age2|df=yes|2018|6|14|1993|10|16}}|caps=10|goals=0|club=[[Boca Juniors]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=MF|name=[[Carlos Sánchez Moreno|Carlos Sánchez]]|sortname=Sanchez, Carlos|age={{Birth date and age2|df=yes|2018|6|14|1986|2|6}}|caps=84|goals=0|club=[[RCD Espanyol|Espanyol]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Jefferson Lerma]]|sortname=Lerma, Jefferson|age={{Birth date and age2|df=yes|2018|6|14|1994|10|25}}|caps=4|goals=0|club=[[Levante UD|Levante]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[José Izquierdo (footballer, born 1992)|José Izquierdo]]|sortname=Izquierdo, Jose|age={{Birth date and age2|df=yes|2018|6|14|1992|7|7}}|caps=4|goals=1|club=[[Brighton & Hove Albion F.C.|Brighton & Hove Albion]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[James Rodríguez]]|sortname=Rodriguez, James|age={{Birth date and age2|df=yes|2018|6|14|1991|7|12}}|caps=62|goals=21|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Giovanni Moreno]]|sortname=Moreno, Giovanni|age={{Birth date and age2|df=yes|2018|6|14|1986|7|1}}|caps=21|goals=3|club=[[Shanghai Greenland Shenhua F.C.|Shanghai Greenland Shenhua]]|clubnat=CHN}}
+{{nat fs g player|no=|pos=MF|name=[[Abel Aguilar]]|sortname=Aguilar, Abel|age={{Birth date and age2|df=yes|2018|6|14|1985|1|6}}|caps=70|goals=7|club=[[Deportivo Cali]]|clubnat=COL}}
+{{nat fs g player|no=|pos=MF|name=[[Mateus Uribe]]|sortname=Uribe, Mateus|age={{Birth date and age2|df=yes|2018|6|14|1991|3|21}}|caps=7|goals=0|club=[[Club América|América]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Yimmi Chará]]|sortname=Chara, Yimmi|age={{Birth date and age2|df=yes|2018|6|14|1991|4|2}}|caps=7|goals=0|club=[[Atlético Junior|Junior]]|clubnat=COL}}
+{{nat fs g player|no=|pos=MF|name=[[Juan Fernando Quintero]]|sortname=Quintero, Juan Fernando|age={{Birth date and age2|df=yes|2018|6|14|1993|1|18}}|caps=14|goals=2|club=[[Club Atlético River Plate|River Plate]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=MF|name=[[Edwin Cardona]]|sortname=Cardona, Edwin|age={{Birth date and age2|df=yes|2018|6|14|1992|12|8}}|caps=31|goals=5|club=[[Boca Juniors]]|clubnat=ARG}}
+{{nat fs g player|no=|pos=MF|name=[[Juan Cuadrado]]|sortname=Cuadrado, Juan|age={{Birth date and age2|df=yes|2018|6|14|1988|5|26}}|caps=69|goals=7|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Gustavo Cuéllar]]|sortname=Cuellar, Gustavo|age={{Birth date and age2|df=yes|2018|6|14|1992|10|14}}|caps=3|goals=0|club=[[Clube de Regatas do Flamengo|Flamengo]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=MF|name=[[Sebastián Pérez Cardona]]|sortname=Perez, Sebastian|age={{Birth date and age2|df=yes|2018|6|14|1993|3|29}}|caps=8|goals=1|club=[[Boca Juniors]]|clubnat=ARG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Radamel Falcao]]|sortname=Falcao, Radamel|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1986|2|10}}|caps=72|goals=29|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Duván Zapata]]|sortname=Zapata, Duvan|age={{Birth date and age2|df=yes|2018|6|14|1991|4|1}}|caps=5|goals=0|club=[[U.C. Sampdoria|Sampdoria]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Miguel Borja]]|sortname=Borja, Miguel|age={{Birth date and age2|df=yes|2018|6|14|1993|1|26}}|caps=6|goals=2|club=[[Sociedade Esportiva Palmeiras|Palmeiras]]|clubnat=BRA}}
+{{nat fs g player|no=|pos=FW|name=[[Carlos Bacca]]|sortname=Bacca, Carlos|age={{Birth date and age2|df=yes|2018|6|14|1986|9|8}}|caps=44|goals=14|club=[[Villarreal CF|Villarreal]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Luis Muriel]]|sortname=Muriel, Luis|age={{Birth date and age2|df=yes|2018|6|14|1991|4|16}}|caps=18|goals=2|club=[[Sevilla FC|Sevilla]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=FW|name=[[Teófilo Gutiérrez]]|sortname=Gutierrez, Teofilo|age={{Birth date and age2|df=yes|2018|6|14|1985|5|17}}|caps=51|goals=15|club=[[Atlético Junior|Junior]]|clubnat=COL}}
+{{nat fs end}}
+
+===Japan===
+Coach: [[Akira Nishino (footballer)|Akira Nishino]]
+
+A 27-man preliminary squad was announced on 18 May 2018.<ref>{{cite web |url=http://www.jfa.jp/samuraiblue/20180530/news/00017547/ |title=SAMURAI BLUE（日本代表）メンバー発表記者会見のインターネットライブ配信が決定【キリンチャレンジカップ 2018 ガーナ代表（5/30） |publisher=JFA |language=Japanese |date=18 May 2018 |access-date=18 May 2018}}</ref> The final squad will be announced on 31 May 2018.
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Eiji Kawashima]]|sortname=Kawashima, Eiji|age={{Birth date and age2|df=yes|2018|6|14|1983|3|20}}|caps=82|goals=0|club=[[FC Metz|Metz]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=GK|name=[[Masaaki Higashiguchi]]|sortname=Higashiguchi, Masaaki|age={{Birth date and age2|df=yes|2018|6|14|1986|5|12}}|caps=4|goals=0|club=[[Gamba Osaka]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=GK|name=[[Kosuke Nakamura]]|sortname=Nakamura, Kosuke|age={{Birth date and age2|df=yes|2018|6|14|1995|2|27}}|caps=3|goals=0|club=[[Kashiwa Reysol]]|clubnat=JPN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Yuto Nagatomo]]|sortname=Nagatomo, Yuto|age={{Birth date and age2|df=yes|2018|6|14|1986|9|12}}|caps=103|goals=3|club=[[Galatasaray S.K. (football)|Galatasaray]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Tomoaki Makino]]|sortname=Makino, Tomoaki|age={{Birth date and age2|df=yes|2018|6|14|1987|5|11}}|caps=30|goals=4|club=[[Urawa Red Diamonds]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=DF|name=[[Maya Yoshida]]|sortname=Yoshida, Maya|age={{Birth date and age2|df=yes|2018|6|14|1988|8|24}}|caps=80|goals=10|club=[[Southampton F.C.|Southampton]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Hiroki Sakai]]|sortname=Sakai, Hiroki|age={{Birth date and age2|df=yes|2018|6|14|1990|4|12}}|caps=41|goals=0|club=[[Olympique de Marseille|Marseille]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Gōtoku Sakai]]|sortname=Sakai, Gotoku|age={{Birth date and age2|df=yes|2018|6|14|1991|3|14}}|caps=38|goals=0|club=[[Hamburger SV]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Gen Shoji]]|sortname=Shoji, Gen|age={{Birth date and age2|df=yes|2018|6|14|1992|12|11}}|caps=10|goals=1|club=[[Kashima Antlers]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=DF|name=[[Wataru Endo]]|sortname=Endo, Wataru|age={{Birth date and age2|df=yes|2018|6|14|1993|2|9}}|caps=11|goals=0|club=[[Urawa Red Diamonds]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=DF|name=[[Naomichi Ueda]]|sortname=Ueda, Naomichi|age={{Birth date and age2|df=yes|2018|6|14|1994|10|24}}|caps=3|goals=0|club=[[Kashima Antlers]]|clubnat=JPN}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Makoto Hasebe]]|sortname=Hasebe, Makoto|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1984|1|18}}|caps=108|goals=2|club=[[Eintracht Frankfurt]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Toshihiro Aoyama]]|sortname=Aoyama, Toshihiro|age={{Birth date and age2|df=yes|2018|6|14|1986|2|22}}|caps=8|goals=1|club=[[Sanfrecce Hiroshima]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=MF|name=[[Keisuke Honda]]|sortname=Honda, Keisuke|age={{Birth date and age2|df=yes|2018|6|14|1986|6|13}}|caps=93|goals=36|club=[[C.F. Pachuca|Pachuca]]|clubnat=MEX}}
+{{nat fs g player|no=|pos=MF|name=[[Takashi Inui]]|sortname=Inui, Takashi|age={{Birth date and age2|df=yes|2018|6|14|1988|6|2}}|caps=25|goals=2|club=[[SD Eibar|Eibar]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Shinji Kagawa]]|sortname=Kagawa, Shinji|age={{Birth date and age2|df=yes|2018|6|14|1989|3|17}}|caps=89|goals=29|club=[[Borussia Dortmund]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Hotaru Yamaguchi]]|sortname=Yamaguchi, Hotaru|age={{Birth date and age2|df=yes|2018|6|14|1990|10|6}}|caps=40|goals=2|club=[[Cerezo Osaka]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=MF|name=[[Genki Haraguchi]]|sortname=Haraguchi, Genki|age={{Birth date and age2|df=yes|2018|6|14|1991|5|9}}|caps=30|goals=6|club=[[Fortuna Düsseldorf]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Takashi Usami]]|sortname=Usami, Takashi|age={{Birth date and age2|df=yes|2018|6|14|1992|5|6}}|caps=21|goals=3|club=[[Fortuna Düsseldorf]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Gaku Shibasaki]]|sortname=Shibasaki, Gaku|age={{Birth date and age2|df=yes|2018|6|14|1992|5|28}}|caps=15|goals=3|club=[[Getafe CF|Getafe]]|clubnat=ESP}}
+{{nat fs g player|no=|pos=MF|name=[[Ryota Oshima]]|sortname=Oshima, Ryota|age={{Birth date and age2|df=yes|2018|6|14|1993|1|23}}|caps=3|goals=0|club=[[Kawasaki Frontale]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=MF|name=[[Kento Misao]]|sortname=Misao, Kento|age={{Birth date and age2|df=yes|2018|6|14|1996|4|16}}|caps=3|goals=0|club=[[Kashima Antlers]]|clubnat=JPN}}
+{{nat fs g player|no=|pos=MF|name=[[Yosuke Ideguchi]]|sortname=Ideguchi, Yosuke|age={{Birth date and age2|df=yes|2018|6|14|1996|8|23}}|caps=11|goals=2|club=[[Cultural y Deportiva Leonesa|Cultural Leonesa]]|clubnat=ESP}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Shinji Okazaki]]|sortname=Okazaki, Shinji|age={{Birth date and age2|df=yes|2018|6|14|1986|4|16}}|caps=111|goals=50|club=[[Leicester City F.C.|Leicester City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Yuya Osako]]|sortname=Osako, Yuya|age={{Birth date and age2|df=yes|2018|6|14|1990|5|18}}|caps=26|goals=7|club=[[1. FC Köln]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Yoshinori Mutō]]|sortname=Muto, Yoshinori|age={{Birth date and age2|df=yes|2018|6|14|1992|7|15}}|caps=21|goals=2|club=[[1. FSV Mainz 05|Mainz 05]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Takuma Asano]]|sortname=Asano, Takuma|age={{Birth date and age2|df=yes|2018|6|14|1994|11|10}}|caps=17|goals=3|club=[[VfB Stuttgart]]|clubnat=GER}}
+{{nat fs end}}
+
+===Poland===
+Coach: [[Adam Nawałka]]
+
+A 35-man preliminary squad was announced on 11 May 2018.<ref>{{cite news |url=https://www.pzpn.pl/reprezentacje/reprezentacja-a/aktualnosci/2018-05-11/szeroki-sklad-reprezentacji-polski-na-mistrzostwa-swiata-2018 |title=Szeroki skład reprezentacji Polski na mistrzostwa świata 2018 |trans-title=A wide composition of the Polish national team for the 2018 World Cup |website=PZPN.pl |publisher=Polish Football Association |date=11 May 2018 |access-date=14 May 2018 |language=Polish}}</ref> The squad was reduced to 32 players on 18 May 2018.<ref>{{cite news |url=https://sport.onet.pl/mundial-2018/reprezentacja-polski/mundial-2018-sklad-kadry-reprezentacji-polski-na-zgrupowanie-przed-ms/2bz4yx2 |title=Adam Nawałka skreślił trzy nazwiska. Znamy skład kadry na zgrupowanie |trans-title=Adam Nawałka has crossed out three names. We know the composition of the team for the training camp |website=[[Onet.pl]] |date=18 May 2018 |access-date=23 May 2018 |language=Polish}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Bartosz Białkowski]]|sortname=Bialkowski, Bartosz|age={{Birth date and age2|df=yes|2018|6|14|1987|7|6}}|caps=1|goals=0|club=[[Ipswich Town F.C.|Ipswich Town]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=GK|name=[[Łukasz Fabiański]]|sortname=Fabianski, Lukasz|age={{Birth date and age2|df=yes|2018|6|14|1985|4|18}}|caps=43|goals=0|club=[[Swansea City A.F.C.|Swansea City]]|clubnat=WAL}}
+{{nat fs g player|no=|pos=GK|name=[[Łukasz Skorupski]]|sortname=Skorupski, Lukasz|age={{Birth date and age2|df=yes|2018|6|14|1991|5|5}}|caps=2|goals=0|club=[[A.S. Roma|Roma]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=GK|name=[[Wojciech Szczęsny]]|sortname=Szczesny, Wojciech|age={{Birth date and age2|df=yes|2018|6|14|1990|4|18}}|caps=33|goals=0|club=[[Juventus F.C.|Juventus]]|clubnat=ITA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Jan Bednarek (footballer)|Jan Bednarek]]|sortname=Bednarek, Jan|age={{Birth date and age2|df=yes|2018|6|14|1996|4|12}}|caps=1|goals=0|club=[[Southampton F.C.|Southampton]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=DF|name=[[Bartosz Bereszyński]]|sortname=Bereszynski, Bartosz|age={{Birth date and age2|df=yes|2018|6|14|1992|7|12}}|caps=6|goals=0|club=[[U.C. Sampdoria|Sampdoria]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Thiago Cionek]]|sortname=Cionek, Thiago|age={{Birth date and age2|df=yes|2018|6|14|1986|4|21}}|caps=17|goals=0|club=[[S.P.A.L. 2013|SPAL]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Kamil Glik]]|sortname=Glik, Kamil|age={{Birth date and age2|df=yes|2018|6|14|1988|2|3}}|caps=57|goals=4|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Artur Jędrzejczyk]]|sortname=Jedrzejczyk, Artur|age={{Birth date and age2|df=yes|2018|6|14|1987|11|4}}|caps=35|goals=3|club=[[Legia Warsaw]]|clubnat=POL}}
+{{nat fs g player|no=|pos=DF|name=[[Marcin Kamiński]]|sortname=Kaminski, Marcin|age={{Birth date and age2|df=yes|2018|6|14|1992|1|15}}|caps=5|goals=0|club=[[VfB Stuttgart]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Tomasz Kędziora]]|sortname=Kedziora, Tomasz|age={{Birth date and age2|df=yes|2018|6|14|1994|6|11}}|caps=3|goals=0|club=[[FC Dynamo Kyiv|Dynamo Kyiv]]|clubnat=UKR}}
+{{nat fs g player|no=|pos=DF|name=[[Michał Pazdan]]|sortname=Pazdan, Michal|age={{Birth date and age2|df=yes|2018|6|14|1987|9|21}}|caps=31|goals=0|club=[[Legia Warsaw]]|clubnat=POL}}
+{{nat fs g player|no=|pos=DF|name=[[Łukasz Piszczek]]|sortname=Piszczek, Lukasz|age={{Birth date and age2|df=yes|2018|6|14|1985|6|3}}|caps=61|goals=3|club=[[Borussia Dortmund]]|clubnat=GER}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Jakub Błaszczykowski]]|sortname=Blaszczykowski, Jakub|age={{Birth date and age2|df=yes|2018|6|14|1985|12|14}}|caps=97|goals=19|club=[[VfL Wolfsburg]]|clubnat=GER}}
+{{nat fs g player|no=|pos=MF|name=[[Paweł Dawidowicz]]|sortname=Dawidowicz, Pawel|age={{Birth date and age2|df=yes|2018|6|14|1995|5|20}}|caps=1|goals=0|club=[[U.S. Città di Palermo|Palermo]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Przemysław Frankowski]]|sortname=Frankowski, Przemyslaw|age={{Birth date and age2|df=yes|2018|6|14|1995|4|12}}|caps=1|goals=0|club=[[Jagiellonia Białystok]]|clubnat=POL}}
+{{nat fs g player|no=|pos=MF|name=[[Jacek Góralski]]|sortname=Goralski, Jacek|age={{Birth date and age2|df=yes|2018|6|14|1992|9|21}}|caps=3|goals=0|club=[[PFC Ludogorets Razgrad|Ludogorets Razgrad]]|clubnat=BUL}}
+{{nat fs g player|no=|pos=MF|name=[[Kamil Grosicki]]|sortname=Grosicki, Kamil|age={{Birth date and age2|df=yes|2018|6|14|1988|6|8}}|caps=56|goals=12|club=[[Hull City A.F.C.|Hull City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Grzegorz Krychowiak]]|sortname=Krychowiak, Grzegorz|age={{Birth date and age2|df=yes|2018|6|14|1990|1|29}}|caps=49|goals=2|club=[[West Bromwich Albion F.C.|West Bromwich Albion]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Rafał Kurzawa]]|sortname=Kurzawa, Rafal|age={{Birth date and age2|df=yes|2018|6|14|1993|1|29}}|caps=3|goals=0|club=[[Górnik Zabrze]]|clubnat=POL}}
+{{nat fs g player|no=|pos=MF|name=[[Karol Linetty]]|sortname=Linetty, Karol|age={{Birth date and age2|df=yes|2018|6|14|1995|2|2}}|caps=19|goals=1|club=[[U.C. Sampdoria|Sampdoria]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Krzysztof Mączyński]]|sortname=Maczynski, Krzysztof|age={{Birth date and age2|df=yes|2018|6|14|1987|5|23}}|caps=31|goals=2|club=[[Legia Warsaw]]|clubnat=POL}}
+{{nat fs g player|no=|pos=MF|name=[[Sławomir Peszko]]|sortname=Peszko, Slawomir|age={{Birth date and age2|df=yes|2018|6|14|1985|2|19}}|caps=43|goals=2|club=[[Lechia Gdańsk]]|clubnat=POL}}
+{{nat fs g player|no=|pos=MF|name=[[Maciej Rybus]]|sortname=Rybus, Maciej|age={{Birth date and age2|df=yes|2018|6|14|1989|8|19}}|caps=49|goals=2|club=[[FC Lokomotiv Moscow|Lokomotiv Moscow]]|clubnat=RUS}}
+{{nat fs g player|no=|pos=MF|name=[[Sebastian Szymański]]|sortname=Szymanski, Sebastian|age={{Birth date and age2|df=yes|2018|6|14|1999|5|10}}|caps=0|goals=0|club=[[Legia Warsaw]]|clubnat=POL}}
+{{nat fs g player|no=|pos=MF|name=[[Piotr Zieliński]]|sortname=Zielinski, Piotr|age={{Birth date and age2|df=yes|2018|6|14|1994|5|20}}|caps=31|goals=4|club=[[S.S.C. Napoli|Napoli]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=MF|name=[[Szymon Żurkowski]]|sortname=Zurkowski, Szymon|age={{Birth date and age2|df=yes|2018|6|14|1997|9|25}}|caps=0|goals=0|club=[[Górnik Zabrze]]|clubnat=POL}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Dawid Kownacki]]|sortname=Kownacki, Dawid|age={{Birth date and age2|df=yes|2018|6|14|1997|3|14}}|caps=1|goals=0|club=[[U.C. Sampdoria|Sampdoria]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Robert Lewandowski]]|sortname=Lewandowski, Robert|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1988|8|21}}|caps=93|goals=52|club=[[FC Bayern Munich|Bayern Munich]]|clubnat=GER}}
+{{nat fs g player|no=|pos=FW|name=[[Arkadiusz Milik]]|sortname=Milik, Arkadiusz|age={{Birth date and age2|df=yes|2018|6|14|1994|2|28}}|caps=38|goals=12|club=[[S.S.C. Napoli|Napoli]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=FW|name=[[Łukasz Teodorczyk]]|sortname=Teodorczyk, Lukasz|age={{Birth date and age2|df=yes|2018|6|14|1991|6|3}}|caps=15|goals=4|club=[[R.S.C. Anderlecht|Anderlecht]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=FW|name=[[Kamil Wilczek]]|sortname=Wilczek, Kamil|age={{Birth date and age2|df=yes|2018|6|14|1988|1|14}}|caps=3|goals=0|club=[[Brøndby IF|Brøndby]]|clubnat=DEN}}
+{{nat fs end}}
+
+===Senegal===
+Coach: [[Aliou Cissé]]
+
+The final squad was announced on 17 May 2018.<ref>{{cite web |title=Russie 2018 : La liste des 23 lions publiée |url=http://www.fsfoot.sn/fr/actualite/russie-2018-la-liste-des-23-lions-publiee/ |publisher=fsfoot.sn |access-date=20 May 2018 |language=French}}</ref>
+
+{{nat fs g start}}
+{{nat fs g player|no=|pos=GK|name=[[Khadim N'Diaye]]|sortname=Ndiaye, Khadim|age={{Birth date and age2|df=yes|2018|6|14|1984|11|30}}|caps=24|goals=0|club=[[Horoya AC|Horoya]]|clubnat=GUI}}
+{{nat fs g player|no=|pos=GK|name=[[Abdoulaye Diallo]]|sortname=Diallo, Abdoulaye|age={{Birth date and age2|df=yes|2018|6|14|1992|3|30}}|caps=16|goals=0|club=[[Stade Rennais F.C.|Rennes]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=GK|name=[[Alfred Gomis]]|sortname=Gomis, Alfred|age={{Birth date and age2|df=yes|2018|6|14|1993|9|5}}|caps=1|goals=0|club=[[S.P.A.L. 2013|SPAL]]|clubnat=ITA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=DF|name=[[Kara Mbodji]]|sortname=Mbodji, Kara|age={{Birth date and age2|df=yes|2018|6|14|1989|11|11}}|caps=51|goals=5|club=[[R.S.C. Anderlecht|Anderlecht]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=DF|name=[[Lamine Gassama]]|sortname=Gassama, Lamine|age={{Birth date and age2|df=yes|2018|6|14|1989|10|20}}|caps=34|goals=0|club=[[Alanyaspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=DF|name=[[Kalidou Koulibaly]]|sortname=Koulibaly, Kalidou|age={{Birth date and age2|df=yes|2018|6|14|1991|6|20}}|caps=23|goals=0|club=[[S.S.C. Napoli|Napoli]]|clubnat=ITA}}
+{{nat fs g player|no=|pos=DF|name=[[Salif Sané]]|sortname=Sane, Salif|age={{Birth date and age2|df=yes|2018|6|14|1990|8|25}}|caps=19|goals=0|club=[[Hannover 96]]|clubnat=GER}}
+{{nat fs g player|no=|pos=DF|name=[[Saliou Ciss]]|sortname=Ciss, Saliou|age={{Birth date and age2|df=yes|2018|6|14|1989|9|15}}|caps=17|goals=0|club=[[Valenciennes FC|Valenciennes]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=DF|name=[[Moussa Wagué]]|sortname=Wague, Moussa|age={{Birth date and age2|df=yes|2018|6|14|1998|10|4}}|caps=8|goals=0|club=[[K.A.S. Eupen|Eupen]]|clubnat=BEL}}
+{{nat fs g player|no=|pos=DF|name=[[Youssouf Sabaly]]|sortname=Sabaly, Youssouf|age={{Birth date and age2|df=yes|2018|6|14|1993|3|5}}|caps=3|goals=0|club=[[FC Girondins de Bordeaux|Bordeaux]]|clubnat=FRA}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=MF|name=[[Idrissa Gueye]]|sortname=Gueye, Idrissa|age={{Birth date and age2|df=yes|2018|6|14|1989|9|26}}|caps=58|goals=1|club=[[Everton F.C.|Everton]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Cheikhou Kouyaté]]|sortname=Kayoute, Cheikhou|other=[[Captain (association football)|captain]]|age={{Birth date and age2|df=yes|2018|6|14|1989|12|21}}|caps=46|goals=2|club=[[West Ham United F.C.|West Ham United]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Cheikh N'Doye]]|sortname=Ndoye, Cheikh|age={{Birth date and age2|df=yes|2018|6|14|1986|3|29}}|caps=23|goals=3|club=[[Birmingham City F.C.|Birmingham City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Alfred N'Diaye]]|sortname=Ndiaye, Alfred|age={{Birth date and age2|df=yes|2018|6|14|1990|3|6}}|caps=18|goals=0|club=[[Wolverhampton Wanderers F.C.|Wolverhampton Wanderers]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=MF|name=[[Badou Ndiaye]]|sortname=Ndiaye, Badou|age={{Birth date and age2|df=yes|2018|6|14|1990|10|27}}|caps=17|goals=1|club=[[Stoke City F.C.|Stoke City]]|clubnat=ENG}}
+{{nat fs break}}
+{{nat fs g player|no=|pos=FW|name=[[Sadio Mané]]|sortname=Mane, Sadio|age={{Birth date and age2|df=yes|2018|6|14|1992|4|10}}|caps=51|goals=14|club=[[Liverpool F.C.|Liverpool]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Moussa Sow]]|sortname=Sow, Moussa|age={{Birth date and age2|df=yes|2018|6|14|1986|1|19}}|caps=50|goals=18|club=[[Bursaspor]]|clubnat=TUR}}
+{{nat fs g player|no=|pos=FW|name=[[Mame Biram Diouf]]|sortname=Diouf, Mame Biram|age={{Birth date and age2|df=yes|2018|6|14|1987|12|16}}|caps=46|goals=10|club=[[Stoke City F.C.|Stoke City]]|clubnat=ENG}}
+{{nat fs g player|no=|pos=FW|name=[[Moussa Konaté (footballer)|Moussa Konaté]]|sortname=Konate, Moussa|age={{Birth date and age2|df=yes|2018|6|14|1993|4|3}}|caps=26|goals=9|club=[[Amiens SC|Amiens]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Keita Baldé]]|sortname=Balde Diao, Keita|age={{Birth date and age2|df=yes|2018|6|14|1995|3|8}}|caps=16|goals=3|club=[[AS Monaco FC|Monaco]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Ismaïla Sarr]]|sortname=Sarr, Ismaila|age={{Birth date and age2|df=yes|2018|6|14|1998|2|25}}|caps=13|goals=2|club=[[Stade Rennais F.C.|Rennes]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[Diafra Sakho]]|sortname=Sakho, Diafra|age={{Birth date and age2|df=yes|2018|6|14|1989|12|24}}|caps=9|goals=3|club=[[Stade Rennais F.C.|Rennes]]|clubnat=FRA}}
+{{nat fs g player|no=|pos=FW|name=[[M'Baye Niang]]|sortname=Niang, MBaye|age={{Birth date and age2|df=yes|2018|6|14|1994|12|19}}|caps=4|goals=0|club=[[Torino F.C.|Torino]]|clubnat=ITA}}
+{{nat fs end}}
+
+==Statistics==
+
+===Coaches representation by country===
+Coaches in '''bold''' represent their own country.
+
+{| class="wikitable"
+|-
+!Number!!Country!!Coaches
+|-
+|4||{{flagicon|ARG}} Argentina||[[Héctor Cúper]] (Egypt), [[Ricardo Gareca]] (Peru), '''[[Jorge Sampaoli]]''', [[José Pékerman]] (Colombia)
+|-
+|3||{{flagicon|ESP}} Spain||'''[[Julen Lopetegui]]''', [[Roberto Martínez]] (Belgium), [[Juan Antonio Pizzi]] (Saudi Arabia)
+|-
+|rowspan="4"|2||{{flagicon|COL}} Colombia||[[Juan Carlos Osorio]] (Mexico), [[Hernán Darío Gómez]] (Panama)
+|-
+|{{flagicon|FRA}} France||'''[[Didier Deschamps]]''', [[Hervé Renard]] (Morocco)
+|-
+|{{flagicon|GER}} Germany||'''[[Joachim Löw]]''', [[Gernot Rohr]] (Nigeria)
+|-
+|{{flagicon|POR}} Portugal||[[Carlos Queiroz]] (Iran), '''[[Fernando Santos (Portuguese footballer)|Fernando Santos]]'''
+|-
+|rowspan="17"|1||{{flagicon|BIH}} Bosnia and Herzegovina||[[Vladimir Petković]] (Switzerland)
+|-
+|{{flagicon|BRA}} Brazil||'''[[Tite (football manager)|Tite]]'''
+|-
+|{{flagicon|CRC}} Costa Rica||'''[[Óscar Ramírez (footballer)|Óscar Ramírez]]'''
+|-
+|{{flagicon|CRO}} Croatia||'''[[Zlatko Dalić]]'''
+|-
+|{{flagicon|ENG}} England||'''[[Gareth Southgate]]'''
+|-
+|{{flagicon|ISL}} Iceland||'''[[Heimir Hallgrímsson]]'''
+|-
+|{{flagicon|JPN}} Japan||'''[[Akira Nishino (footballer)|Akira Nishino]]'''
+|-
+|{{flagicon|NED}} Netherlands||[[Bert van Marwijk]] (Australia)
+|-
+|{{flagicon|NOR}} Norway||[[Åge Hareide]] (Denmark)
+|-
+|{{flagicon|POL}} Poland||'''[[Adam Nawałka]]'''
+|-
+|{{flagicon|RUS}} Russia||'''[[Stanislav Cherchesov]]'''
+|-
+|{{flagicon|SEN}} Senegal||'''[[Aliou Cissé]]'''
+|-
+|{{flagicon|SRB}} Serbia||'''[[Mladen Krstajić]]'''
+|-
+|{{flagicon|KOR}} South Korea||'''[[Shin Tae-yong]]'''
+|-
+|{{flagicon|SWE}} Sweden||'''[[Janne Andersson]]'''
+|-
+|{{flagicon|TUN}} Tunisia||'''[[Nabil Maâloul]]'''
+|-
+|{{flagicon|URU}} Uruguay||'''[[Óscar Tabárez]]'''
+|}
+
+==References==
+{{reflist}}
+
+==External links==
+*{{Official website|https://www.fifa.com/worldcup/index.html}}
+
+{{2018 FIFA World Cup}}
+{{FIFA World Cup}}
+
+[[Category:2018 FIFA World Cup|Squads]]
+

@@ -54,9 +54,10 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   
   
   def parsePlayer(line: String): (Player,String) = {
-      val items = line.split("\t")
+    val items = line.split("\t")
 	  val country = items(2)
- 	  (Player(None, items(0), items(1), items(3), -1, DBImage("","")), country)  
+	  val sortname = items(0)
+ 	  (Player(None, items(0), items(1), items(3), -1, DBImage("",""), sortname), country)  
   }  
     
  

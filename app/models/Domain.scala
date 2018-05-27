@@ -47,7 +47,7 @@ case class DBImage(format: String, image: String) //unsure of base64 string or a
 
 case class Team(id: Option[Long] = None, name: String, short3: String, short2: String)
 
-case class Player(id: Option[Long] = None, name: String, role: String, club: String, teamId: Long,  dbimage: DBImage)
+case class Player(id: Option[Long] = None, name: String, role: String, club: String, teamId: Long,  dbimage: DBImage, sortname: String)
 
 case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId: Long, userId: Long){ 
 //unique: user/bet game/bet one bet for each user per game 
