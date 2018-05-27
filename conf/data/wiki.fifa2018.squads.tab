@@ -1,0 +1,770 @@
+country	name	sortname	position	club
+Brazil	Alisson BeckerAlisson	Alisson Becker	GK	A.S. Roma
+Brazil	Cássio RamosCássio	Cassio Ramos	GK	Sport Club Corinthians Paulista
+Brazil	Ederson MoraesEderson	Ederson Moraes	GK	Manchester City F.C.
+Brazil	Danilo Danilo	Danilo Luiz Da Silva	DF	Manchester City F.C.
+Brazil	Fagner Conserva LemosFagner	Fagner	DF	Sport Club Corinthians Paulista
+Brazil	Filipe Luís	Filipe Luis	DF	Atlético Madrid
+Brazil	Pedro Geromel	Geromel, Pedro	DF	Grêmio Foot-Ball Porto Alegrense
+Brazil	Marcelo Marcelo	Marcelo Vieira	DF	Real Madrid C.F.
+Brazil	Marquinhos	Marquinhos	DF	Paris Saint-Germain F.C.
+Brazil	Miranda Miranda	Miranda	DF	Inter Milan
+Brazil	Thiago Silva	Silva, Thiago	DF	Paris Saint-Germain F.C.
+Brazil	Casemiro	Casemiro	MF	Real Madrid C.F.
+Brazil	Philippe Coutinho	Coutinho, Philippe	MF	FC Barcelona
+Brazil	Fernandinho Fernandinho	Fernandinho	MF	Manchester City F.C.
+Brazil	Fred Fred	Fred	MF	FC Shakhtar Donetsk
+Brazil	Paulinho Paulinho	Paulinho	MF	FC Barcelona
+Brazil	Renato Augusto	Renato Augusto	MF	Beijing Sinobo Guoan F.C.
+Brazil	Willian Willian	Willian	MF	Chelsea F.C.
+Brazil	Douglas Costa	Costa, Douglas	FW	Juventus F.C.
+Brazil	Roberto Firmino	Firmino, Roberto	FW	Liverpool F.C.
+Brazil	Gabriel Jesus	Jesus, Gabriel	FW	Manchester City F.C.
+Brazil	Neymar	Neymar	FW	Paris Saint-Germain F.C.
+Brazil	Taison	Taison	FW	FC Shakhtar Donetsk
+Panama	José Calderón José Calderón	Calderon, Jose	GK	Unión Deportivo Universitario
+Panama	Jaime Penedo	Penedo, Jaime	GK	FC Dinamo București
+Panama	Álex Rodríguez Álex Rodríguez	Rodriguez, Alex	GK	San Francisco F.C.
+Panama	Azmahar Ariano	Ariano, Azmahar	DF	Patriotas Boyacá
+Panama	Felipe Baloy	Baloy, Felipe	DF	C.S.D. Municipal
+Panama	Harold Cummings	Cummings, Harold	DF	San Jose Earthquakes
+Panama	Erick Davis	Davis, Erick	DF	FC DAC 1904 Dunajská Streda
+Panama	Fidel Escobar	Escobar, Fidel	DF	New York Red Bulls
+Panama	Adolfo Machado	Machado, Adolfo	DF	Houston Dynamo
+Panama	Michael Amir Murillo	Murillo, Michael Amir	DF	New York Red Bulls
+Panama	Luis Ovalle	Ovalle, Luis	DF	Club Deportivo Olimpia
+Panama	Francisco Palacios AlleyneFrancisco Palacios	Palacios, Francisco	DF	San Francisco F.C.
+Panama	Richard Peralta	Peralta, Richard	DF	Alianza F.C. (Panama)
+Panama	Román Torres	Torres, Roman	DF	Seattle Sounders FC
+Panama	Ricardo Ávila	Avila, Ricardo	MF	K.A.A. Gent
+Panama	Édgar Joel BárcenasÉdgar Bárcenas	Barcenas, Edgar Joel	MF	Cafetaleros de Tapachula
+Panama	Ricardo Buitrago	Buitrago, Ricardo	MF	Deportivo Municipal
+Panama	Miguel Camargo	Camargo, Miguel	MF	Club Deportivo Universidad de San Martín de Porres
+Panama	Adalberto Carrasquilla	Carrasquilla, Adalberto	MF	Tauro F.C.
+Panama	Armando Cooper	Cooper, Armando	MF	Club Universidad de Chile
+Panama	Aníbal Godoy	Godoy, Anibal	MF	San Jose Earthquakes
+Panama	Gabriel Enrique GómezGabriel Gómez	Gomez, Gabriel Enrique	MF	Atlético Bucaramanga
+Panama	José González Joly	Gonzalez Joly, Jose	MF	Unión Comercio
+Panama	Cristian Martínez Cristian Martínez	Martinez, Cristian	MF	Columbus Crew SC
+Panama	Valentín Pimentel	Pimentel, Valentin	MF	C.D. Plaza Amador
+Panama	Alberto Quintero MedinaAlberto Quintero	Quintero Medina, Alberto	MF	Club Universitario de Deportes
+Panama	José Luis Rodríguez José Luis Rodríguez	Rodriguez, Jose Luis	MF	K.A.A. Gent
+Panama	Abdiel Arroyo	Arroyo, Abdiel	FW	Liga Deportiva Alajuelense
+Panama	Rolando Blackburn	Blackburn, Rolando	FW	Unión Deportivo Universitario
+Panama	Ismael Díaz Ismael Díaz	Diaz, Ismael	FW	Deportivo Fabril
+Panama	José Fajardo José Fajardo	Fajardo, Jose	FW	Independiente F.C.
+Panama	Roberto Nurse	Nurse, Roberto	FW	Mineros de Zacatecas
+Panama	Blas Pérez	Perez, Blas	FW	C.S.D. Municipal
+Panama	Luis Tejada	Tejada, Luis	FW	Sport Boys
+Panama	Gabriel Torres	Torres, Gabriel	FW	Huachipato
+France	Hugo Lloris	Lloris, Hugo	GK	Tottenham Hotspur F.C.
+France	Benjamin Pavard	Pavard, Benjamin	DF	VfB Stuttgart
+France	Presnel Kimpembe	Kimpembe, Presnel	DF	Paris Saint-Germain F.C.
+France	Raphaël Varane	Varane, Raphael	DF	Real Madrid C.F.
+France	Samuel Umtiti	Umtiti, Samuel	DF	FC Barcelona
+France	Paul Pogba	Pogba, Paul	MF	Manchester United F.C.
+France	Antoine Griezmann	Griezmann, Antoine	FW	Atlético Madrid
+France	Thomas Lemar	Lemar, Thomas	FW	AS Monaco FC
+France	Olivier Giroud	Giroud, Olivier	FW	Chelsea F.C.
+France	Kylian Mbappé	Mbappe, Kylian	FW	Paris Saint-Germain F.C.
+France	Ousmane Dembélé	Dembele, Ousmane	FW	FC Barcelona
+France	Corentin Tolisso	Tolisso, Corentin	MF	FC Bayern Munich
+France	N'Golo Kanté	Kante, NGolo	MF	Chelsea F.C.
+France	Blaise Matuidi	Matuidi, Blaise	MF	Juventus F.C.
+France	Steven Nzonzi	Nzonzi, Steven	MF	Sevilla FC
+France	Steve Mandanda	Mandanda, Steve	GK	Olympique de Marseille
+France	Adil Rami	Rami, Adil	DF	Olympique de Marseille
+France	Nabil Fekir	Fekir, Nabil	FW	Olympique Lyonnais
+France	Djibril Sidibé Djibril Sidibé	Sidibe, Djibril	DF	AS Monaco FC
+France	Florian Thauvin	Thauvin, Florian	FW	Olympique de Marseille
+France	Lucas Hernández	Hernandez, Lucas	DF	Atlético Madrid
+France	Benjamin Mendy	Mendy, Benjamin	DF	Manchester City F.C.
+France	Alphonse Areola	Areola, Alphonse	GK	Paris Saint-Germain F.C.
+Peru	Pedro Gallese	Gallese, Pedro	GK	Tiburones Rojos de Veracruz
+Peru	José Carvallo	Carvallo, Jose	GK	Universidad Técnica de Cajamarca
+Peru	Carlos Cáceda	Caceda, Carlos	GK	Deportivo Municipal
+Peru	Luis Abram	Abram, Luis	DF	Club Atlético Vélez Sarsfield
+Peru	Luis Advíncula	Advincula, Luis	DF	Lobos BUAP
+Peru	Miguel Araujo	Araujo, Miguel	DF	Alianza Lima
+Peru	Aldo Corzo	Corzo, Aldo	DF	Club Universitario de Deportes
+Peru	Nilson Loyola	Loyola, Nilson	DF	FBC Melgar
+Peru	Christian Ramos	Ramos, Christian	DF	Tiburones Rojos de Veracruz
+Peru	Alberto Junior RodríguezAlberto Rodríguez	Rodriguez, Alberto Junior	DF	Sporting Cristal
+Peru	Anderson Santamaría	Santamaria, Anderson	DF	Club Puebla
+Peru	Miguel Trauco	Trauco, Miguel	DF	Clube de Regatas do Flamengo
+Peru	Pedro Aquino	Aquino, Pedro	MF	Lobos BUAP
+Peru	Wilder Cartagena	Cartagena, Wilder	MF	Tiburones Rojos de Veracruz
+Peru	Christian Cueva	Cueva, Christian	MF	São Paulo FC
+Peru	Edison Flores	Flores, Edison	MF	AaB Fodbold
+Peru	Sergio Peña Sergio Peña	Pena, Sergio	MF	Granada CF
+Peru	Renato Tapia	Tapia, Renato	MF	Feyenoord
+Peru	Yoshimar Yotún	Yotun, Yoshimar	MF	Orlando City SC
+Peru	Paolo Hurtado	Hurtado, Paolo	FW	Vitória S.C.
+Peru	Andy Polo	Polo, Andy	FW	Portland Timbers
+Peru	André Carrillo	Carrillo, Andre	FW	Watford F.C.
+Peru	Raúl Ruidíaz	Ruidiaz, Raul	FW	Monarcas Morelia
+Peru	Jefferson Farfán	Farfan, Jefferson	FW	FC Lokomotiv Moscow
+Argentina	Nahuel Guzmán	Guzman, Nahuel	GK	Tigres UANL
+Argentina	Gabriel Mercado	Mercado, Gabriel	DF	Sevilla FC
+Argentina	Nicolás Tagliafico	Tagliafico, Nicolas	DF	AFC Ajax
+Argentina	Cristian Ansaldi	Ansaldi, Cristian	DF	Torino F.C.
+Argentina	Lucas Biglia	Biglia, Lucas	MF	A.C. Milan
+Argentina	Federico Fazio	Fazio, Federico	DF	A.S. Roma
+Argentina	Éver Banega	Banega, Ever	MF	Sevilla FC
+Argentina	Marcos Acuña	Acuna, Marcos	DF	Sporting CP
+Argentina	Gonzalo Higuaín	Higuain, Gonzalo	FW	Juventus F.C.
+Argentina	Lionel Messi	Messi, Lionel	FW	FC Barcelona
+Argentina	Ángel Di María	Di Maria, Angel	MF	Paris Saint-Germain F.C.
+Argentina	Franco Armani	Armani, Franco	GK	Club Atlético River Plate
+Argentina	Maximiliano Meza	Meza, Maximiliano	MF	Club Atlético Independiente
+Argentina	Javier Mascherano	Mascherano, Javier	MF	Hebei China Fortune F.C.
+Argentina	Manuel Lanzini	Lanzini, Manuel	MF	West Ham United F.C.
+Argentina	Marcos Rojo	Rojo, Marcos	DF	Manchester United F.C.
+Argentina	Nicolás Otamendi	Otamendi, Nicolas	DF	Manchester City F.C.
+Argentina	Eduardo Salvio	Salvio, Eduardo	MF	S.L. Benfica
+Argentina	Sergio Agüero	Aguero, Sergio	FW	Manchester City F.C.
+Argentina	Giovani Lo Celso	Lo Celso, Giovani	MF	Paris Saint-Germain F.C.
+Argentina	Paulo Dybala	Dybala, Paulo	FW	Juventus F.C.
+Argentina	Cristian Pavón	Pavon, Cristian	MF	Boca Juniors
+Argentina	Willy Caballero	Caballero, Willy	GK	Chelsea F.C.
+Nigeria	Ikechukwu Ezenwa	Ezenwa, Ikechukwu	GK	Enyimba International F.C.
+Nigeria	Daniel Akpeyi	Akpeyi, Daniel	GK	Chippa United F.C.
+Nigeria	Francis Uzoho	Uzoho, Francis	GK	Deportivo Fabril
+Nigeria	Dele Ajiboye	Ajiboye, Dele	GK	Plateau United F.C.
+Nigeria	William Troost-Ekong	Troost	DF	Bursaspor
+Nigeria	Leon Balogun	Balogun, Leon	DF	1. FSV Mainz 05
+Nigeria	Ola Aina	Aina, Ola	DF	Hull City A.F.C.
+Nigeria	Kenneth Omeruo	Omeruo, Kenneth	DF	Kasımpaşa S.K.
+Nigeria	Brian Idowu	Idowu, Brian	DF	FC Amkar Perm
+Nigeria	Chidozie Awaziem	Awaziem, Chidozie	DF	FC Nantes
+Nigeria	Shehu Abdullahi	Abdullahi, Shehu	DF	Bursaspor
+Nigeria	Elderson Echiéjilé	Echiejile, Elderson	DF	Cercle Brugge K.S.V.
+Nigeria	Tyronne Ebuehi	Ebuehi, Tyronne	DF	ADO Den Haag
+Nigeria	Stephen Eze	Eze, Stephen	DF	PFC Lokomotiv Plovdiv
+Nigeria	John Obi Mikel	Mikel, John Obi	MF	Tianjin TEDA F.C.
+Nigeria	Ogenyi Onazi	Onazi, Ogenyi	MF	Trabzonspor
+Nigeria	John Ogu	Ogu, John	MF	Hapoel Be'er Sheva F.C.
+Nigeria	Wilfred Ndidi	Ndidi, Wilfred	MF	Leicester City F.C.
+Nigeria	Uche Henry Agbo	Uche Henry Agbo	MF	Standard Liège
+Nigeria	Victor Moses	Moses, Victor	MF	Chelsea F.C.
+Nigeria	Alex Iwobi	Iwobi, Alex	MF	Arsenal F.C.
+Nigeria	Oghenekaro Etebo	Etebo, Oghenekaro	MF	UD Las Palmas
+Nigeria	Joel Obi	Obi, Joel	MF	Torino F.C.
+Nigeria	Mikel Agu	Agu, Mikel	MF	Bursaspor
+Nigeria	Odion Ighalo	Ighalo, Odion	FW	Changchun Yatai F.C.
+Nigeria	Ahmed Musa Ahmed Musa	Musa, Ahmed	FW	PFC CSKA Moscow
+Nigeria	Kelechi Iheanacho	Iheanacho, Kelechi	FW	Leicester City F.C.
+Nigeria	Moses Simon	Simion, Moses Daddy	FW	K.A.A. Gent
+Nigeria	Junior Lokosa	Lokosa, Junior	FW	Kano Pillars F.C.
+Nigeria	Simeon Nwankwo	Nwankwo, Simeon Tochukwu	FW	F.C. Crotone
+Australia	Mathew Ryan	Ryan, Mathew	GK	Brighton & Hove Albion F.C.
+Australia	Brad Jones Brad Jones	Jones, Brad	GK	Feyenoord
+Australia	Danny Vukovic	Vukovic, Danny	GK	K.R.C. Genk
+Australia	Trent Sainsbury	Sainsbury, Trent	DF	Grasshopper Club Zürich
+Australia	Aziz Behich	Behich, Aziz	DF	Bursaspor
+Australia	Milos Degenek	Degenek, Milos	DF	Yokohama F. Marinos
+Australia	Josh Risdon	Risdon, Joshua	DF	Western Sydney Wanderers FC
+Australia	Matthew Jurman	Jurman, Matthew	DF	Suwon Samsung Bluewings
+Australia	James Meredith James Meredith	Meredith, James	DF	Millwall F.C.
+Australia	Fran Karačić	Karacic, Fran	DF	NK Lokomotiva
+Australia	Mile Jedinak	Jedinak, Mile	MF	Aston Villa F.C.
+Australia	Mark Milligan	Milligan, Mark	MF	Al-Ahli Saudi FC
+Australia	James Troisi	Troisi, James	MF	Melbourne Victory FC
+Australia	Tom Rogic	Rogic, Tom	MF	Celtic F.C.
+Australia	Massimo Luongo	Luongo, Massimo	MF	Queens Park Rangers F.C.
+Australia	Aaron Mooy	Mooy, Aaron	MF	Huddersfield Town A.F.C.
+Australia	Jackson Irvine	Irvine, Jackson	MF	Hull City A.F.C.
+Australia	Joshua Brillante	Brillante, Joshua	MF	Sydney FC
+Australia	Dimitri Petratos	Petratos, Dimitri	MF	Newcastle Jets FC
+Australia	Daniel Arzani	Arzani, Daniel	MF	Melbourne City FC
+Australia	Tim Cahill	Cahill, Tim	FW	Millwall F.C.
+Australia	Robbie Kruse	Kruse, Robbie	FW	VfL Bochum
+Australia	Mathew Leckie	Leckie, Mathew	FW	Hertha BSC
+Australia	Tomi Juric	Juric, Tomi	FW	FC Luzern
+Australia	Nikita Rukavytsya	Rukavytsya, Nikita	FW	Maccabi Haifa F.C.
+Australia	Andrew Nabbout	Nabbout, Andrew	FW	Urawa Red Diamonds
+Iran	Alireza Beiranvand	Beiranvand, Alireza	GK	Persepolis F.C.
+Iran	Mohammad Rashid Mazaheri	Mazaheri, Mohammad Rashid	GK	Zob Ahan Esfahan F.C.
+Iran	Amir Abedzadeh	Abedzadeh, Amir	GK	C.S. Marítimo
+Iran	Pejman Montazeri	Montazeri, Pejman	DF	Esteghlal F.C.
+Iran	Ramin Rezaeian	Rezaeian, Ramin	DF	K.V. Oostende
+Iran	Morteza Pouraliganji	Pouraliganji, Morteza	DF	Al Sadd SC
+Iran	Milad Mohammadi	Mohammadi, Milad	DF	FC Akhmat Grozny
+Iran	Mohammad Reza Khanzadeh	Khanzadeh, Mohammadreza	DF	Padideh F.C.
+Iran	Rouzbeh Cheshmi	Cheshmi, Rouzbeh	DF	Esteghlal F.C.
+Iran	Majid Hosseini	Hosseini, Majid	DF	Esteghlal F.C.
+Iran	Ehsan Hajsafi	Hajysafi, Ehsan	MF	Olympiacos F.C.
+Iran	Masoud Shojaei	Shojaei, Masoud	MF	AEK Athens F.C.
+Iran	Ashkan Dejagah	Dejagah, Ashkan	MF	Nottingham Forest F.C.
+Iran	Vahid Amiri	Amiri, Vahid	MF	Persepolis F.C.
+Iran	Omid Ebrahimi	Ebrahimi, Omid	MF	Esteghlal F.C.
+Iran	Saeid Ezatolahi	Ezatolahi, Saeid	MF	FC Amkar Perm
+Iran	Mehdi Torabi	Torabi, Mehdi	MF	Saipa F.C.
+Iran	Saman Ghoddos	Ghoddos, Saman	MF	Östersunds FK
+Iran	Ali Gholizadeh	Gholizadeh, Ali	MF	Saipa F.C.
+Iran	Karim Ansarifard	Ansarifard, Karim	FW	Olympiacos F.C.
+Iran	Reza Ghoochannejhad	Ghoochannejhad, Reza	FW	SC Heerenveen
+Iran	Alireza Jahanbakhsh	Jahanbakhsh, Alireza	FW	AZ Alkmaar
+Iran	Sardar Azmoun	Azmoun, Sardar	FW	FC Rubin Kazan
+Iran	Mehdi Taremi	Taremi, Mehdi	FW	Al-Gharafa SC
+Iceland	Hannes Þór Halldórsson	Halldorsson, Hannes	GK	Randers FC
+Iceland	Birkir Már Sævarsson	Birkir Mar Saevarsson	DF	Valur
+Iceland	Samúel Friðjónsson	Fridjonsson, Samuel	DF	Vålerenga Fotball
+Iceland	Albert Guðmundsson Albert Guðmundsson	Gudmundsson, Albert	FW	PSV Eindhoven
+Iceland	Sverrir Ingi Ingason	Ingason, Sverrir Ingi	DF	FC Rostov
+Iceland	Ragnar Sigurðsson	Ragnar Sigurdsson	DF	FC Rostov
+Iceland	Jóhann Berg Guðmundsson	Gudmundsson, Johann Berg	MF	Burnley F.C.
+Iceland	Birkir Bjarnason	Bjarnason, Birkir	MF	Aston Villa F.C.
+Iceland	Björn Bergmann Sigurðarson	Sigurdarson, Bjorn Bergmann	FW	FC Rostov
+Iceland	Gylfi Sigurðsson	Sigurdsson, Gylfi	MF	Everton F.C.
+Iceland	Alfreð Finnbogason	Finnbogason, Alfred	FW	FC Augsburg
+Iceland	Frederik Schram	Schram, Frederik	GK	FC Roskilde
+Iceland	Rúnar Alex Rúnarsson	Runarsson, Runar	GK	FC Nordsjælland
+Iceland	Kári Árnason	Arnason, Kari	DF	Aberdeen F.C.
+Iceland	Hólmar Örn Eyjólfsson	Eyjolfsson, Holmar Orn	DF	PFC Levski Sofia
+Iceland	Ólafur Ingi Skúlason	Olafur Ingi Skulason	MF	Kardemir Karabükspor
+Iceland	Aron Gunnarsson	Gunnarsson, Aron	MF	Cardiff City F.C.
+Iceland	Hörður Björgvin Magnússon	Magnusson, Hordur Bjorgvin	DF	Bristol City F.C.
+Iceland	Rúrik Gíslason	Rurik Gislason	MF	SV Sandhausen
+Iceland	Emil Hallfreðsson	Hallfredsson, Emil	MF	Udinese Calcio
+Iceland	Arnór Ingvi Traustason	Traustasonm, Arnor Ingvi	MF	Malmö FF
+Iceland	Jón Daði Böðvarsson	Bodvarsson, Jon Dadi	FW	Reading F.C.
+Iceland	Ari Freyr Skúlason	Skulason, Ari Freyr	DF	K.S.C. Lokeren Oost-Vlaanderen
+Germany	Bernd Leno	Leno, Bernd	GK	Bayer 04 Leverkusen
+Germany	Manuel Neuer	Neuer, Manuel	GK	FC Bayern Munich
+Germany	Marc-André ter Stegen	Ter Stegen, Marc	GK	FC Barcelona
+Germany	Kevin Trapp	Trapp, Kevin	GK	Paris Saint-Germain F.C.
+Germany	Jérôme Boateng	Boateng, Jerome	DF	FC Bayern Munich
+Germany	Matthias Ginter	Ginter, Matthias	DF	Borussia Mönchengladbach
+Germany	Jonas Hector	Hector, Jonas	DF	1. FC Köln
+Germany	Mats Hummels	Hummels, Mats	DF	FC Bayern Munich
+Germany	Joshua Kimmich	Kimmich, Joshua	DF	FC Bayern Munich
+Germany	Marvin Plattenhardt	Plattenhardt, Marvin	DF	Hertha BSC
+Germany	Antonio Rüdiger	Rudiger, Antonio	DF	Chelsea F.C.
+Germany	Niklas Süle	Sule, Niklas	DF	FC Bayern Munich
+Germany	Jonathan Tah	Tah, Jonathan	DF	Bayer 04 Leverkusen
+Germany	Julian Brandt	Brandt, Julian	MF	Bayer 04 Leverkusen
+Germany	Julian Draxler	Draxler, Julian	MF	Paris Saint-Germain F.C.
+Germany	Leon Goretzka	Goretzka, Leon	MF	FC Schalke 04
+Germany	İlkay Gündoğan	Gundogan, Ilkay	MF	Manchester City F.C.
+Germany	Sami Khedira	Khedira, Sami	MF	Juventus F.C.
+Germany	Toni Kroos	Kroos, Toni	MF	Real Madrid C.F.
+Germany	Mesut Özil	Ozil, Mesut	MF	Arsenal F.C.
+Germany	Marco Reus	Reus, Marco	MF	Borussia Dortmund
+Germany	Sebastian Rudy	Rudy, Sebastian	MF	FC Bayern Munich
+Germany	Leroy Sané	Sane, Leroy	MF	Manchester City F.C.
+Germany	Mario Gómez	Gomez, Mario	FW	VfB Stuttgart
+Germany	Thomas Müller	Muller, Thomas	FW	FC Bayern Munich
+Germany	Nils Petersen	Petersen, Nils	FW	SC Freiburg
+Germany	Timo Werner	Werner, Timo	FW	RB Leipzig
+Belgium	Thibaut Courtois	Courtois, Thibaut	GK	Chelsea F.C.
+Belgium	Matz Sels	Sels, Matz	GK	R.S.C. Anderlecht
+Belgium	Simon Mignolet	Mignolet, Simon	GK	Liverpool F.C.
+Belgium	Koen Casteels	Casteels, Koen	GK	VfL Wolfsburg
+Belgium	Toby Alderweireld	Alderweireld, Toby	DF	Tottenham Hotspur F.C.
+Belgium	Vincent Kompany	Kompany, Vincent	DF	Manchester City F.C.
+Belgium	Jan Vertonghen	Vertonghen, Jan	DF	Tottenham Hotspur F.C.
+Belgium	Thomas Meunier	Meunier, Thomas	DF	Paris Saint-Germain F.C.
+Belgium	Thomas Vermaelen	Vermaelen, Thomas	DF	FC Barcelona
+Belgium	Jordan Lukaku	Lukaku, Jordan	DF	S.S. Lazio
+Belgium	Christian Kabasele	Kabasele, Christian	DF	Watford F.C.
+Belgium	Laurent Ciman	Ciman, Laurent	DF	Los Angeles FC
+Belgium	Dedryck Boyata	Boyata, Dedryck	DF	Celtic F.C.
+Belgium	Axel Witsel	Witsel, Axel	MF	Tianjin Quanjian F.C.
+Belgium	Kevin De Bruyne	De Bruyne, Kevin	MF	Manchester City F.C.
+Belgium	Marouane Fellaini	Fellaini, Marouane	MF	Manchester United F.C.
+Belgium	Adnan Januzaj	Januzaj, Adnan	MF	Real Sociedad
+Belgium	Mousa Dembélé Mousa Dembélé	Dembele, Mousa	MF	Tottenham Hotspur F.C.
+Belgium	Youri Tielemans	Tielemans, Youri	MF	AS Monaco FC
+Belgium	Yannick Ferreira CarrascoYannick Carrasco	Ferreira Carrasco, Yannick	MF	Dalian Yifang F.C.
+Belgium	Leander Dendoncker	Dendoncker, Leander	MF	R.S.C. Anderlecht
+Belgium	Nacer Chadli	Chadli, Nacer	MF	West Bromwich Albion F.C.
+Belgium	Eden Hazard	Hazard, Eden	MF	Chelsea F.C.
+Belgium	Thorgan Hazard	Hazard, Thorgan	MF	Borussia Mönchengladbach
+Belgium	Romelu Lukaku	Lukaku, Romelu	FW	Manchester United F.C.
+Belgium	Christian Benteke	Benteke, Christian	FW	Crystal Palace F.C.
+Belgium	Dries Mertens	Mertens, Dries	FW	S.S.C. Napoli
+Belgium	Michy Batshuayi	Batshuayi, Michy	FW	Borussia Dortmund
+Spain	David de Gea	De Gea, David	GK	Manchester United F.C.
+Spain	Pepe Reina	Reina, Pepe	GK	S.S.C. Napoli
+Spain	Kepa Arrizabalaga	Arrizabalaga, Kepa	GK	Athletic Bilbao
+Spain	Sergio Ramos	Ramos, Sergio	DF	Real Madrid C.F.
+Spain	Gerard Piqué	Pique, Gerard	DF	FC Barcelona
+Spain	Jordi Alba	Alba, Jordi	DF	FC Barcelona
+Spain	César Azpilicueta	Azpilicueta, Cesar	DF	Chelsea F.C.
+Spain	Dani Carvajal	Carvajal, Dani	DF	Real Madrid C.F.
+Spain	Nacho Nacho	Nacho	DF	Real Madrid C.F.
+Spain	Álvaro Odriozola	Odriozola, Alvaro	DF	Real Sociedad
+Spain	Nacho Monreal	Monreal, Nacho	DF	Arsenal F.C.
+Spain	Andrés Iniesta	Iniesta, Andres	MF	FC Barcelona
+Spain	Koke Koke	Koke	MF	Atlético Madrid
+Spain	Isco	Isco	MF	Real Madrid C.F.
+Spain	Thiago AlcântaraThiago	Thiago Alcantara	MF	FC Bayern Munich
+Spain	Marco Asensio	Asensio, Marco	MF	Real Madrid C.F.
+Spain	Saúl ÑíguezSaúl	Saul Niguez	MF	Atlético Madrid
+Spain	David Silva	Silva, David	MF	Manchester City F.C.
+Spain	Sergio Busquets	Busquets, Sergio	MF	FC Barcelona
+Spain	Diego Costa	Costa, Diego	FW	Atlético Madrid
+Spain	Iago Aspas	Aspas, Iago	FW	Celta de Vigo
+Spain	Lucas Vázquez	Vazquez, Lucas	FW	Real Madrid C.F.
+Spain	Rodrigo Rodrigo	Rodrigo	FW	Valencia CF
+Denmark	Kasper Schmeichel	Schmeichel, Kasper	GK	Leicester City F.C.
+Denmark	Frederik Rønnow	Ronnow, Frederik	GK	Brøndby IF
+Denmark	Jonas Lössl	Lossl, Jonas	GK	Huddersfield Town A.F.C.
+Denmark	Jesper Hansen	Hansen, Jesper	GK	FC Midtjylland
+Denmark	Simon Kjær	Kjaer, Simon	DF	Sevilla FC
+Denmark	Riza Durmisi	Durmisi, Riza	DF	Real Betis
+Denmark	Peter Ankersen	Ankersen, Peter	DF	F.C. Copenhagen
+Denmark	Nicolai Boilesen	Boilesen, Nicolai	DF	F.C. Copenhagen
+Denmark	Mathias Jørgensen	Jorgensen, Mathias	DF	Huddersfield Town A.F.C.
+Denmark	Jens Stryger Larsen	Larsen, Jens Stryger	DF	Udinese Calcio
+Denmark	Jonas Knudsen	Knudsen, Jonas	DF	Ipswich Town F.C.
+Denmark	Andreas Bjelland	Bjelland, Andreas	DF	Brentford F.C.
+Denmark	Jannik Vestergaard	Vestergaard, Jannik	DF	Borussia Mönchengladbach
+Denmark	Andreas Christensen	Christensen, Andreas	DF	Chelsea F.C.
+Denmark	Henrik Dalsgaard	Dalsgaard, Henrik	DF	Brentford F.C.
+Denmark	William Kvist	Kvist, William	MF	F.C. Copenhagen
+Denmark	Christian Eriksen	Eriksen, Christian	MF	Tottenham Hotspur F.C.
+Denmark	Lasse Schöne	Schone, Lasse	MF	AFC Ajax
+Denmark	Thomas Delaney	Delaney, Thomas	MF	SV Werder Bremen
+Denmark	Pione Sisto	Sisto, Pione	MF	Celta de Vigo
+Denmark	Mike Jensen	Jensen, Mike	MF	Rosenborg BK
+Denmark	Lukas Lerager	Lerager, Lukas	MF	FC Girondins de Bordeaux
+Denmark	Michael Krohn-Dehli	Krohn	MF	Deportivo de La Coruña
+Denmark	Pierre-Emile Højbjerg	Hojbjerg, Pierre	MF	Southampton F.C.
+Denmark	Daniel Wass	Wass, Daniel	MF	Celta de Vigo
+Denmark	Mathias Jensen	Jensen, Mathias	MF	FC Nordsjælland
+Denmark	Robert Skov	Skov, Robert	MF	F.C. Copenhagen
+Denmark	Nicklas Bendtner	Bendtner, Nicklas	FW	Rosenborg BK
+Denmark	Nicolai Jørgensen	Jorgensen, Nicolai	FW	Feyenoord
+Denmark	Yussuf Poulsen	Poulsen, Yussuf	FW	RB Leipzig
+Denmark	Andreas Cornelius	Cornelius, Andreas	FW	Atalanta B.C.
+Denmark	Martin Braithwaite	Braithwaite, Martin	FW	FC Girondins de Bordeaux
+Denmark	Viktor Fischer	Fischer, Viktor	FW	F.C. Copenhagen
+Denmark	Kasper Dolberg	Dolberg, Kasper	FW	AFC Ajax
+Denmark	Kenneth Zohore	Zohore, Kenneth	FW	Cardiff City F.C.
+Poland	Bartosz Białkowski	Bialkowski, Bartosz	GK	Ipswich Town F.C.
+Poland	Łukasz Fabiański	Fabianski, Lukasz	GK	Swansea City A.F.C.
+Poland	Łukasz Skorupski	Skorupski, Lukasz	GK	A.S. Roma
+Poland	Wojciech Szczęsny	Szczesny, Wojciech	GK	Juventus F.C.
+Poland	Jan Bednarek Jan Bednarek	Bednarek, Jan	DF	Southampton F.C.
+Poland	Bartosz Bereszyński	Bereszynski, Bartosz	DF	U.C. Sampdoria
+Poland	Thiago Cionek	Cionek, Thiago	DF	S.P.A.L. 2013
+Poland	Kamil Glik	Glik, Kamil	DF	AS Monaco FC
+Poland	Artur Jędrzejczyk	Jedrzejczyk, Artur	DF	Legia Warsaw
+Poland	Marcin Kamiński	Kaminski, Marcin	DF	VfB Stuttgart
+Poland	Tomasz Kędziora	Kedziora, Tomasz	DF	FC Dynamo Kyiv
+Poland	Michał Pazdan	Pazdan, Michal	DF	Legia Warsaw
+Poland	Łukasz Piszczek	Piszczek, Lukasz	DF	Borussia Dortmund
+Poland	Jakub Błaszczykowski	Blaszczykowski, Jakub	MF	VfL Wolfsburg
+Poland	Paweł Dawidowicz	Dawidowicz, Pawel	MF	U.S. Città di Palermo
+Poland	Przemysław Frankowski	Frankowski, Przemyslaw	MF	Jagiellonia Białystok
+Poland	Jacek Góralski	Goralski, Jacek	MF	PFC Ludogorets Razgrad
+Poland	Kamil Grosicki	Grosicki, Kamil	MF	Hull City A.F.C.
+Poland	Grzegorz Krychowiak	Krychowiak, Grzegorz	MF	West Bromwich Albion F.C.
+Poland	Rafał Kurzawa	Kurzawa, Rafal	MF	Górnik Zabrze
+Poland	Karol Linetty	Linetty, Karol	MF	U.C. Sampdoria
+Poland	Krzysztof Mączyński	Maczynski, Krzysztof	MF	Legia Warsaw
+Poland	Sławomir Peszko	Peszko, Slawomir	MF	Lechia Gdańsk
+Poland	Maciej Rybus	Rybus, Maciej	MF	FC Lokomotiv Moscow
+Poland	Sebastian Szymański	Szymanski, Sebastian	MF	Legia Warsaw
+Poland	Piotr Zieliński	Zielinski, Piotr	MF	S.S.C. Napoli
+Poland	Szymon Żurkowski	Zurkowski, Szymon	MF	Górnik Zabrze
+Poland	Dawid Kownacki	Kownacki, Dawid	FW	U.C. Sampdoria
+Poland	Robert Lewandowski	Lewandowski, Robert	FW	FC Bayern Munich
+Poland	Arkadiusz Milik	Milik, Arkadiusz	FW	S.S.C. Napoli
+Poland	Łukasz Teodorczyk	Teodorczyk, Lukasz	FW	R.S.C. Anderlecht
+Poland	Kamil Wilczek	Wilczek, Kamil	FW	Brøndby IF
+Morocco	Munir Mohand MohamediMunir Mohamedi	Munir Mohand Mohamedi	GK	CD Numancia
+Morocco	Yassine Bounou	Bounou, Yassine	GK	Girona FC
+Morocco	Ahmed Reda Tagnaouti	Tagnaouti, Ahmed Reda	GK	Ittihad Tanger
+Morocco	Medhi Benatia	Benatia, Medhi	DF	Juventus F.C.
+Morocco	Nabil Dirar	Dirar, Nabil	DF	Fenerbahçe S.K. (football)
+Morocco	Manuel da Costa Manuel da Costa	Costa, Manuel da	DF	İstanbul Başakşehir F.K.
+Morocco	Romain Saïss	Saiss, Romain	DF	Wolverhampton Wanderers F.C.
+Morocco	Hamza Mendyl	Mendyl, Hamza	DF	Lille OSC
+Morocco	Badr Banoun	Banoun, Badr	DF	Raja Casablanca
+Morocco	Achraf Hakimi	Hakimi, Achraf	DF	Real Madrid C.F.
+Morocco	Mbark Boussoufa	Boussoufa, Mbark	MF	Al Jazira Club
+Morocco	Karim El Ahmadi	Ahmadi, Karim	MF	Feyenoord
+Morocco	Younès Belhanda	Belhanda, Younes	MF	Galatasaray S.K. (football)
+Morocco	Nordin Amrabat	Amrabat, Nordin	MF	CD Leganés
+Morocco	Fayçal Fajr	Fajr, Faycal	MF	Getafe CF
+Morocco	Hakim Ziyech	Ziyech, Hakim	MF	AFC Ajax
+Morocco	Youssef Aït Bennasser	Ait Bennasser, Youssef	MF	Stade Malherbe Caen
+Morocco	Mehdi Carcela	Carcela	MF	Standard Liège
+Morocco	Sofyan Amrabat	Amrabat, Sofyan	MF	Feyenoord
+Morocco	Amine Harit	Harit, Amine	MF	FC Schalke 04
+Morocco	Khalid Boutaïb	Boutaib, Khalid	FW	Yeni Malatyaspor
+Morocco	Aziz Bouhaddouz	Bouhaddouz, Aziz	FW	FC St. Pauli
+Morocco	Ayoub El Kaabi	Kaabi, Ayoub	FW	Renaissance Sportive de Berkane
+Sweden	Robin Olsen	Olsen, Robin	GK	F.C. Copenhagen
+Sweden	Mikael Lustig	Lustig, Mikael	DF	Celtic F.C.
+Sweden	Victor Lindelöf	Lindelof, Victor	DF	Manchester United F.C.
+Sweden	Andreas Granqvist	Granqvist, Andreas Asterio	DF	FC Krasnodar
+Sweden	Martin Olsson	Olsson, Martin	DF	Swansea City A.F.C.
+Sweden	Ludwig Augustinsson	Augustinsson, Ludwig	DF	SV Werder Bremen
+Sweden	Sebastian Larsson	Larsson, Sebastian	MF	Hull City A.F.C.
+Sweden	Albin Ekdal	Ekdal, Albin	MF	Hamburger SV
+Sweden	Marcus Berg	Berg, Marcus	FW	Al Ain FC
+Sweden	Emil Forsberg	Forsberg, Emil	MF	RB Leipzig
+Sweden	John Guidetti	Guidetti, John	FW	Deportivo Alavés
+Sweden	Karl-Johan Johnsson	Johnsson, Karl	GK	En Avant de Guingamp
+Sweden	Gustav Svensson	Svensson, Gustav	MF	Seattle Sounders FC
+Sweden	Filip Helander	Helander, Filip	DF	Bologna F.C. 1909
+Sweden	Oscar Hiljemark	Hiljemark, Oscar	MF	Genoa C.F.C.
+Sweden	Emil Krafth	Krafth, Emil	DF	Bologna F.C. 1909
+Sweden	Viktor Claesson	Claesson, Viktor	MF	FC Krasnodar
+Sweden	Pontus Jansson	Jansson, Pontus	DF	Leeds United F.C.
+Sweden	Marcus Rohdén	Rohden, Marcus	MF	F.C. Crotone
+Sweden	Ola Toivonen	Toivonen, Ola	FW	Toulouse FC
+Sweden	Jimmy Durmaz	Durmaz, Jimmy	MF	Toulouse FC
+Sweden	Isaac Kiese Thelin	Thelin, Isaac	FW	Waasland-Beveren
+Sweden	Kristoffer Nordfeldt	Nordfeldt, Kristoffer	GK	Swansea City A.F.C.
+Croatia	Danijel Subašić	Subasic, Danijel	GK	AS Monaco FC
+Croatia	Lovre Kalinić	Kalinic, Lovre	GK	K.A.A. Gent
+Croatia	Dominik Livaković	Livakovic, Dominik	GK	GNK Dinamo Zagreb
+Croatia	Vedran Ćorluka	Corluka, Vedran	DF	FC Lokomotiv Moscow
+Croatia	Domagoj Vida	Vida, Domagoj	DF	Beşiktaş J.K.
+Croatia	Ivan Strinić	Strinic, Ivan	DF	U.C. Sampdoria
+Croatia	Dejan Lovren	Lovren, Dejan	DF	Liverpool F.C.
+Croatia	Šime Vrsaljko	Vrsaljko, Sime	DF	Atlético Madrid
+Croatia	Josip Pivarić	Pivaric, Josip	DF	FC Dynamo Kyiv
+Croatia	Tin Jedvaj	Jedvaj, Tin	DF	Bayer 04 Leverkusen
+Croatia	Matej Mitrović	Mitrovic, Matej	DF	Club Brugge KV
+Croatia	Duje Ćaleta-Car	Caleta	DF	FC Red Bull Salzburg
+Croatia	Luka Modrić	Modric, Luka	MF	Real Madrid C.F.
+Croatia	Ivan Rakitić	Rakitic, Ivan	MF	FC Barcelona
+Croatia	Mateo Kovačić	Kovacic, Mateo	MF	Real Madrid C.F.
+Croatia	Milan Badelj	Badelj, Milan	MF	ACF Fiorentina
+Croatia	Marcelo Brozović	Brozovic, Marcelo	MF	Inter Milan
+Croatia	Filip Bradarić	Bradaric, Filip	MF	HNK Rijeka
+Croatia	Mario Mandžukić	Mandzukic, Mario	FW	Juventus F.C.
+Croatia	Ivan Perišić	Perisic, Ivan	FW	Inter Milan
+Croatia	Nikola Kalinić	Kalinic, Nikola	FW	A.C. Milan
+Croatia	Andrej Kramarić	Kramaric, Andrej	FW	TSG 1899 Hoffenheim
+Croatia	Marko Pjaca	Pjaca, Marko	FW	FC Schalke 04
+Croatia	Ante Rebić	Rebic, Ante	FW	Eintracht Frankfurt
+Switzerland	Yann Sommer	Sommer, Yann	GK	Borussia Mönchengladbach
+Switzerland	Roman Bürki	Burki, Roman	GK	Borussia Dortmund
+Switzerland	Gregor Kobel	Kobel, Gregor	GK	TSG 1899 Hoffenheim
+Switzerland	Yvon Mvogo	Mvogo, Yann	GK	RB Leipzig
+Switzerland	Stephan Lichtsteiner	Lichtsteiner, Stephan	DF	Juventus F.C.
+Switzerland	Johan Djourou	Djourou, Johan	DF	Antalyaspor
+Switzerland	Ricardo Rodríguez Ricardo Rodríguez	Rodriguez, Ricardo	DF	A.C. Milan
+Switzerland	Fabian Schär	Schar, Fabian	DF	Deportivo de La Coruña
+Switzerland	Michael Lang Michael Lang	Lang, Michael	DF	FC Basel
+Switzerland	François Moubandje	Moubandje, Francois	DF	Toulouse FC
+Switzerland	Silvan Widmer	Widmer, Silvan	DF	Udinese Calcio
+Switzerland	Manuel Akanji	Akanji, Manuel	DF	Borussia Dortmund
+Switzerland	Nico Elvedi	Elvedi, Nico	DF	Borussia Mönchengladbach
+Switzerland	Valon Behrami	Behrami, Valon	MF	Udinese Calcio
+Switzerland	Xherdan Shaqiri	Shaqiri, Xherdan	MF	Stoke City F.C.
+Switzerland	Gelson Fernandes	Fernandes, Gelson	MF	Eintracht Frankfurt
+Switzerland	Blerim Džemaili	Dzemaili, Blerim	MF	Bologna F.C. 1909
+Switzerland	Granit Xhaka	Xhaka, Granit	MF	Arsenal F.C.
+Switzerland	Steven Zuber	Zuber, Steven	MF	TSG 1899 Hoffenheim
+Switzerland	Remo Freuler	Freuler, Remo	MF	Atalanta B.C.
+Switzerland	Denis Zakaria	Zakaria, Denis	MF	Borussia Mönchengladbach
+Switzerland	Edimilson Fernandes	Fernandes, Edimilson	MF	West Ham United F.C.
+Switzerland	Haris Seferović	Seferovic, Haris	FW	S.L. Benfica
+Switzerland	Josip Drmić	Drmic, Josip	FW	Borussia Mönchengladbach
+Switzerland	Breel Embolo	Embolo, Breel	FW	FC Schalke 04
+Switzerland	Mario Gavranović	Gavranovic, Mario	FW	GNK Dinamo Zagreb
+Russia	Igor Akinfeev	Akinfeev, Igor	GK	PFC CSKA Moscow
+Russia	Vladimir Gabulov	Gabulov, Vladimir	GK	Club Brugge KV
+Russia	Andrey Lunyov	Lunyov, Andrey	GK	FC Zenit Saint Petersburg
+Russia	Soslan Dzhanayev	Dzhanayev, Soslan	GK	FC Rubin Kazan
+Russia	Sergei Ignashevich	Ignashevich, Sergei	DF	PFC CSKA Moscow
+Russia	Igor Smolnikov	Smolnikov, Igor	DF	FC Zenit Saint Petersburg
+Russia	Fyodor Kudryashov	Kudryashov, Fyodor	DF	FC Rubin Kazan
+Russia	Vladimir Granat	Granat, Vladimir	DF	FC Rubin Kazan
+Russia	Roman Neustädter	Neustadter, Roman	DF	Fenerbahçe S.K. (football)
+Russia	Andrei Sergeyevich SemyonovAndrei Semyonov	Semyonov, Andrei Sergeyevich	DF	FC Akhmat Grozny
+Russia	Ilya Kutepov	Kutepov, Ilya	DF	FC Spartak Moscow
+Russia	Konstantin Rausch	Rausch, Konstantin	DF	FC Dynamo Moscow
+Russia	Mário Figueira FernandesMário Fernandes	Fernandes, Mario	DF	PFC CSKA Moscow
+Russia	Yuri Zhirkov	Zhirkov, Yuri	MF	FC Zenit Saint Petersburg
+Russia	Alan Dzagoev	Dzagoev, Alan	MF	PFC CSKA Moscow
+Russia	Aleksandr Samedov	Samedov, Aleksandr	MF	FC Spartak Moscow
+Russia	Aleksandr Golovin Aleksandr Golovin	Golovin, Aleksandr	MF	PFC CSKA Moscow
+Russia	Aleksandr Yerokhin	Yerokhin, Aleksandr	MF	FC Zenit Saint Petersburg
+Russia	Denis Cheryshev	Cheryshev, Denis	MF	Villarreal CF
+Russia	Roman Zobnin	Zobnin, Roman	MF	FC Spartak Moscow
+Russia	Yury Gazinsky	Gazinsky, Yury	MF	FC Krasnodar
+Russia	Daler Kuzyayev	Kuzyayev, Daler	MF	FC Zenit Saint Petersburg
+Russia	Anton Miranchuk	Miranchuk, Anton	MF	FC Lokomotiv Moscow
+Russia	Aleksandr Tashayev	Tashayev, Aleksandr	MF	FC Dynamo Moscow
+Russia	Fyodor Smolov	Smolov, Fyodor	FW	FC Krasnodar
+Russia	Artem Dzyuba	Dzyuba, Artem	FW	FC Arsenal Tula
+Russia	Aleksei Miranchuk	Miranchuk, Aleksei	FW	FC Lokomotiv Moscow
+Russia	Fyodor Chalov	Chalov, Fyodor	FW	PFC CSKA Moscow
+England	Jack Butland	Butland, Jack	GK	Stoke City F.C.
+England	Jordan Pickford	Pickford, Jordan	GK	Everton F.C.
+England	Nick Pope Nick Pope	Pope, Nick	GK	Burnley F.C.
+England	Trent Alexander-Arnold	Alexander	DF	Liverpool F.C.
+England	Gary Cahill	Cahill, Gary	DF	Chelsea F.C.
+England	Fabian Delph	Delph, Fabian	DF	Manchester City F.C.
+England	Phil Jones Phil Jones	Jones, Phil	DF	Manchester United F.C.
+England	Harry Maguire	Maguire, Harry	DF	Leicester City F.C.
+England	Danny Rose Danny Rose	Rose, Danny	DF	Tottenham Hotspur F.C.
+England	John Stones	Stones, John	DF	Manchester City F.C.
+England	Kieran Trippier	Trippier, Kieran	DF	Tottenham Hotspur F.C.
+England	Kyle Walker	Walker, Kyle	DF	Manchester City F.C.
+England	Ashley Young	Young, Ashley	DF	Manchester United F.C.
+England	Dele Alli	Alli, Dele	MF	Tottenham Hotspur F.C.
+England	Eric Dier	Dier, Eric	MF	Tottenham Hotspur F.C.
+England	Jordan Henderson	Henderson, Jordan	MF	Liverpool F.C.
+England	Jesse Lingard	Lingard, Jesse	MF	Manchester United F.C.
+England	Ruben Loftus-Cheek	Loftus	MF	Crystal Palace F.C.
+England	Harry Kane	Kane, Harry	FW	Tottenham Hotspur F.C.
+England	Marcus Rashford	Rashford, Marcus	FW	Manchester United F.C.
+England	Raheem Sterling	Sterling, Raheem	FW	Manchester City F.C.
+England	Jamie Vardy	Vardy, Jamie	FW	Leicester City F.C.
+England	Danny Welbeck	Welbeck, Danny	FW	Arsenal F.C.
+Portugal	Rui Patrício	Patricio, Rui	GK	Sporting CP
+Portugal	Beto Beto	Beto	GK	Göztepe S.K.
+Portugal	Anthony Lopes	Lopes, Anthony	GK	Olympique Lyonnais
+Portugal	Cédric SoaresCédric	Soares, Cedric	DF	Southampton F.C.
+Portugal	Ricardo Pereira Ricardo Pereira	Ricardo Pereira	DF	FC Porto
+Portugal	Pepe Pepe	Pepe	DF	Beşiktaş J.K.
+Portugal	José Fonte	Fonte, Jose	DF	Dalian Yifang F.C.
+Portugal	Bruno Alves	Alves, Bruno	DF	Rangers F.C.
+Portugal	Rúben Dias	Dias, Ruben	DF	S.L. Benfica
+Portugal	Raphaël Guerreiro	Guerreiro, Raphael	DF	Borussia Dortmund
+Portugal	Mário Rui	Mario Rui	DF	S.S.C. Napoli
+Portugal	João Moutinho	Moutinho, Joao	MF	AS Monaco FC
+Portugal	William Carvalho	Carvalho, William	MF	Sporting CP
+Portugal	João Mário João Mário	Joao Mario	MF	West Ham United F.C.
+Portugal	Manuel Fernandes Manuel Fernandes	Fernandes, Manuel	MF	FC Lokomotiv Moscow
+Portugal	Adrien Silva	Silva, Adrien	MF	Leicester City F.C.
+Portugal	Bruno Fernandes Bruno Fernandes	Fernandes, Bruno	MF	Sporting CP
+Portugal	Bernardo Silva	Silva, Bernardo	MF	Manchester City F.C.
+Portugal	André Silva André Silva	Silva, Andre	FW	A.C. Milan
+Portugal	Gonçalo Guedes	Guedes, Goncalo	FW	Valencia CF
+Portugal	Gelson Martins	Martins, Gelson	FW	Sporting CP
+Portugal	Ricardo Quaresma	Quaresma, Ricardo	FW	Beşiktaş J.K.
+Portugal	Cristiano Ronaldo	Ronaldo, Cristiano	FW	Real Madrid C.F.
+Uruguay	Fernando Muslera	Muslera, Fernando Nestor	GK	Galatasaray S.K. (football)
+Uruguay	Martín Silva	Silva, Martin	GK	CR Vasco da Gama
+Uruguay	Martín Campaña	Campana, Martin	GK	Club Atlético Independiente
+Uruguay	Maxi Pereira	Pereira, Maxi	DF	FC Porto
+Uruguay	Diego Godín	Godin, Diego	DF	Atlético Madrid
+Uruguay	Martín Cáceres	Caceres, Martin	DF	S.S. Lazio
+Uruguay	José Giménez	Gimenez, Jose	DF	Atlético Madrid
+Uruguay	Sebastián Coates	Coates, Sebastian	DF	Sporting CP
+Uruguay	Gastón Silva	Silva, Gaston	DF	Club Atlético Independiente
+Uruguay	Guillermo Varela	Varela, Guillermo	DF	Peñarol
+Uruguay	Cristian Rodríguez	Rodriguez, Cristian	MF	Peñarol
+Uruguay	Nicolás Lodeiro	Lodeiro, Nicolas	MF	Seattle Sounders FC
+Uruguay	Gastón Ramírez	Ramirez, Gaston	MF	U.C. Sampdoria
+Uruguay	Carlos Andrés SánchezCarlos Sánchez	Sanchez, Carlos	MF	C.F. Monterrey
+Uruguay	Matías Vecino	Vecino, Matias	MF	Inter Milan
+Uruguay	Giorgian De Arrascaeta	Arrascaeta, Giorgian De	MF	Cruzeiro Esporte Clube
+Uruguay	Nahitan Nández	Nandez, Nahitan	MF	Boca Juniors
+Uruguay	Rodrigo Bentancur	Bentancur, Rodrigo	MF	Juventus F.C.
+Uruguay	Diego Laxalt	Laxalt, Diego	MF	Genoa C.F.C.
+Uruguay	Federico Valverde	Valverde, Federico	MF	Deportivo de La Coruña
+Uruguay	Jonathan Urretaviscaya	Urretaviscaya, Jonathan	MF	C.F. Monterrey
+Uruguay	Lucas Torreira	Torreira, Lucas	MF	U.C. Sampdoria
+Uruguay	Edinson Cavani	Cavani, Edinson	FW	Paris Saint-Germain F.C.
+Uruguay	Luis Suárez	Suarez, Luis	FW	FC Barcelona
+Uruguay	Cristhian Stuani	Stuani, Cristhian	FW	Girona FC
+Uruguay	Maxi Gómez	Gomez, Maxi	FW	Celta de Vigo
+Egypt	Essam El-Hadary	Hadary, Essam El	GK	Al-Taawoun FC
+Egypt	Sherif Ekramy	Ekramy, Sherif	GK	Al Ahly SC
+Egypt	Mohamed Awad	Awad, Mohamed	GK	Ismaily SC
+Egypt	Mohamed El-Shenawy	Shenawy, Mohamed	GK	Al Ahly SC
+Egypt	Ahmed Fathy	Fathy, Ahmed	DF	Al Ahly SC
+Egypt	Ahmed Elmohamady	Elmohamady, Ahmed	DF	Aston Villa F.C.
+Egypt	Mohamed Abdel-Shafy	Abdel	DF	Al-Fateh SC
+Egypt	Ahmed Hegazi Ahmed Hegazi	Hegazi, Ahmed	DF	West Bromwich Albion F.C.
+Egypt	Omar Gaber	Gaber, Omar	DF	Los Angeles FC
+Egypt	Ali Gabr	Gabr, Ali	DF	West Bromwich Albion F.C.
+Egypt	Saad Samir	Samir, Saad	DF	Al Ahly SC
+Egypt	Karim Hafez	Hafez, Karim	DF	RC Lens
+Egypt	Ayman Ashraf	Ashraf, Ayman	DF	Al Ahly SC
+Egypt	Amro Tarek	Tarek, Amro	DF	Orlando City SC
+Egypt	Mahmoud Hamdy	Hamdy, Mahmoud	DF	Zamalek SC
+Egypt	Mohamed Elneny	Elneny, Mohamed	MF	Arsenal F.C.
+Egypt	Abdallah Said	Said, Abdallah	MF	Kuopion Palloseura
+Egypt	Shikabala	Shikabala	MF	Al-Raed FC
+Egypt	Mahmoud Hassan Trézéguet	Trezeguet	MF	Kasımpaşa S.K.
+Egypt	Ramadan Sobhi	Sobhi, Ramadan	MF	Stoke City F.C.
+Egypt	Tarek Hamed	Hamed, Tarek	MF	Zamalek SC
+Egypt	Kahraba Kahraba	Kahraba	MF	Al-Ittihad Club (Jeddah)
+Egypt	Amr Warda	Warda, Amr	MF	Atromitos F.C.
+Egypt	Sam Morsy	Morsy, Sam	MF	Wigan Athletic F.C.
+Egypt	Mahmoud Abdel Aziz Mahmoud Abdel Aziz	Abdel Aziz, Mahmoud	MF	Zamalek SC
+Egypt	Mohamed Salah	Salah, Mohamed	FW	Liverpool F.C.
+Egypt	Marwan Mohsen	Mohsen, Marwan	FW	Al Ahly SC
+Egypt	Ahmed Hassan MahgoubAhmed Hassan Kouka	Hassan, Ahmed	FW	S.C. Braga
+Egypt	Ahmed Gomaa	Gomaa, Ahmed	FW	Al-Masry SC
+Mexico	Guillermo Ochoa	Ochoa, Guillermo	GK	Standard Liège
+Mexico	José de Jesús Corona	Corona, Jesus	GK	Cruz Azul
+Mexico	Alfredo Talavera	Talavera, Alfredo	GK	Deportivo Toluca F.C.
+Mexico	Héctor Moreno	Moreno, Hector	DF	Real Sociedad
+Mexico	Miguel Layún	Layun, Miguel	DF	Sevilla FC
+Mexico	Diego Antonio ReyesDiego Reyes	Reyes, Diego Antonio	DF	FC Porto
+Mexico	Hugo Ayala	Ayala, Hugo	DF	Tigres UANL
+Mexico	Oswaldo Alanís	Alanis, Oswaldo	DF	C.D. Guadalajara
+Mexico	Jesús Gallardo	Gallardo, Jesus	DF	Club Universidad Nacional
+Mexico	Carlos Salcedo	Salcedo, Carlos	DF	Eintracht Frankfurt
+Mexico	Edson Álvarez	Alvarez, Edson	DF	Club América
+Mexico	Andrés Guardado	Guardado, Andres	MF	Real Betis
+Mexico	Marco Fabián	Fabian, Marco	MF	Eintracht Frankfurt
+Mexico	Héctor Herrera	Herrera, Hector	MF	FC Porto
+Mexico	Rafael Márquez	Marquez, Rafael	MF	Club Atlas
+Mexico	Jesús Molina	Molina, Jesus	MF	C.F. Monterrey
+Mexico	Jonathan dos Santos	Santos, Jonathan dos	MF	LA Galaxy
+Mexico	Giovani dos Santos	Santos dos, Giovani	MF	LA Galaxy
+Mexico	Érick Gutiérrez	Gutierrez, Erick	MF	C.F. Pachuca
+Mexico	Javier Aquino	Aquino, Javier	FW	Tigres UANL
+Mexico	Javier Hernández	Hernandez, Javier	FW	West Ham United F.C.
+Mexico	Carlos Vela	Vela, Carlos	FW	Los Angeles FC
+Mexico	Oribe Peralta	Peralta, Oribe	FW	Club América
+Mexico	Raúl Jiménez	Jimenez, Raul	FW	S.L. Benfica
+Mexico	Jesús Manuel Corona	Corona, Jesus	FW	FC Porto
+Mexico	Hirving Lozano	Lozano, Hirving	FW	PSV Eindhoven
+Mexico	Jürgen Damm	Damm, Jurgen	FW	Tigres UANL
+Serbia	Vladimir Stojković	Stojkovic, Vladimir	GK	FK Partizan
+Serbia	Predrag Rajković	Rajkovic, Predrag	GK	Maccabi Tel Aviv F.C.
+Serbia	Marko Dmitrović	Dmitrovic, Marko	GK	SD Eibar
+Serbia	Aleksandar Jovanović Aleksandar Jovanović	Jovanovic, Aleksandar	GK	Aarhus Gymnastikforening
+Serbia	Branislav Ivanović	Ivanovic, Branislav	DF	FC Zenit Saint Petersburg
+Serbia	Aleksandar Kolarov	Kolarov, Aleksandar	DF	A.S. Roma
+Serbia	Antonio Rukavina	Rukavina, Antonio	DF	Villarreal CF
+Serbia	Matija Nastasić	Nastasic, Matija	DF	FC Schalke 04
+Serbia	Duško Tošić	Tosic, Dusko	DF	Beşiktaş J.K.
+Serbia	Uroš Spajić	Spajic, Uros	DF	R.S.C. Anderlecht
+Serbia	Miloš Veljković	Veljkovic, Milos	DF	SV Werder Bremen
+Serbia	Nikola Milenković	Milenkovic, Nikola	DF	ACF Fiorentina
+Serbia	Milan Rodić	Rodic, Milan	DF	Red Star Belgrade
+Serbia	Dušan Tadić	Tadic, Dusan	MF	Southampton F.C.
+Serbia	Nemanja Matić	Matic, Nemanja	MF	Manchester United F.C.
+Serbia	Adem Ljajić	Ljajic, Adem	MF	Torino F.C.
+Serbia	Luka Milivojević	Milivojevic, Luka	MF	Crystal Palace F.C.
+Serbia	Filip Kostić	Kostic, Filip	MF	Hamburger SV
+Serbia	Andrija Živković	Zivkovic, Andrija	MF	S.L. Benfica
+Serbia	Mijat Gaćinović	Gacinovic, Mijat	MF	Eintracht Frankfurt
+Serbia	Marko Grujić	Grujic, Marko	MF	Cardiff City F.C.
+Serbia	Nemanja Maksimović	Maksimovic, Nemanja	MF	Valencia CF
+Serbia	Sergej Milinković-Savić	Milinkovic	MF	S.S. Lazio
+Serbia	Nemanja Radonjić	Radonjic, Nemanja	MF	Red Star Belgrade
+Serbia	Aleksandar Mitrović Aleksandar Mitrović	Mitrovic, Aleksandar	FW	Fulham F.C.
+Serbia	Aleksandar Prijović	Prijovic, Aleksandar	FW	PAOK FC
+Serbia	Luka Jović	Jovic, Luka	FW	Eintracht Frankfurt
+Tunisia	Aymen Mathlouthi	Mathlouthi, Aymen	GK	Al-Batin F.C.
+Tunisia	Moez Ben Cherifia	Ben Chrifia, Moez	GK	Espérance Sportive de Tunis
+Tunisia	Farouk Ben Mustapha	Ben Mustapha, Farouk	GK	Al-Shabab FC (Riyadh)
+Tunisia	Mouez Hassen	Hassen, Mouez	GK	LB Châteauroux
+Tunisia	Hamdi Nagguez	Nagguez, Hamdi	DF	Zamalek SC
+Tunisia	Dylan Bronn	Bronn, Dylan	DF	K.A.A. Gent
+Tunisia	Rami Bedoui	Bedoui, Rami	DF	Étoile Sportive du Sahel
+Tunisia	Yohan Benalouane	Benalouane, Yohan	DF	Leicester City F.C.
+Tunisia	Syam Ben Youssef	Ben Youssef, Syam	DF	Kasımpaşa S.K.
+Tunisia	Yassine Meriah	Meriah, Yassine	DF	CS Sfaxien
+Tunisia	Bilel Mohsni	Mohsni, Bilel	DF	Dundee United F.C.
+Tunisia	Khalil Chemmam	Chemmam, Khalil	DF	Espérance Sportive de Tunis
+Tunisia	Oussama Haddadi	Haddadi, Oussama	DF	Dijon FCO
+Tunisia	Ali Maâloul	Maaloul, Ali	DF	Al Ahly SC
+Tunisia	Ellyes Skhiri	Skhiri, Ellyes	MF	Montpellier HSC
+Tunisia	Mohamed Amine Ben Amor	Ben Amor, Mohamed Amine	MF	Al-Ahli Saudi FC
+Tunisia	Ghailene Chaalali	Chaalali, Ghailene	MF	Espérance Sportive de Tunis
+Tunisia	Karim Laribi	Laribi, Karim	MF	A.C. Cesena
+Tunisia	Ferjani Sassi	Sassi, Ferjani	MF	Al-Nassr FC
+Tunisia	Ahmed Khalil Ahmed Khalil	Khalil, Ahmed	MF	Club Africain
+Tunisia	Saîf-Eddine Khaoui	Khaoui, Saif	MF	Troyes AC
+Tunisia	Mohamed Larbi	Larbi, Mohamed	MF	Tours FC
+Tunisia	Naïm Sliti	Sliti, Naim	MF	Dijon FCO
+Tunisia	Bassem Srarfi	Srarfi, Bassem	MF	OGC Nice
+Tunisia	Fakhreddine Ben Youssef	Youssef, Fakhreddine	FW	Ettifaq FC
+Tunisia	Anice Badri	Badri, Anice	FW	Espérance Sportive de Tunis
+Tunisia	Ahmed Akaïchi	Akaichi, Ahmed	FW	Al-Ittihad Club (Jeddah)
+Tunisia	Wahbi Khazri	Khazri, Wahbi	FW	Stade Rennais F.C.
+Tunisia	Saber Khalifa	Khalifa, Saber	FW	Club Africain
+Senegal	Khadim N'Diaye	Ndiaye, Khadim	GK	Horoya AC
+Senegal	Abdoulaye Diallo	Diallo, Abdoulaye	GK	Stade Rennais F.C.
+Senegal	Alfred Gomis	Gomis, Alfred	GK	S.P.A.L. 2013
+Senegal	Kara Mbodji	Mbodji, Kara	DF	R.S.C. Anderlecht
+Senegal	Lamine Gassama	Gassama, Lamine	DF	Alanyaspor
+Senegal	Kalidou Koulibaly	Koulibaly, Kalidou	DF	S.S.C. Napoli
+Senegal	Salif Sané	Sane, Salif	DF	Hannover 96
+Senegal	Saliou Ciss	Ciss, Saliou	DF	Valenciennes FC
+Senegal	Moussa Wagué	Wague, Moussa	DF	K.A.S. Eupen
+Senegal	Youssouf Sabaly	Sabaly, Youssouf	DF	FC Girondins de Bordeaux
+Senegal	Idrissa Gueye	Gueye, Idrissa	MF	Everton F.C.
+Senegal	Cheikhou Kouyaté	Kayoute, Cheikhou	MF	West Ham United F.C.
+Senegal	Cheikh N'Doye	Ndoye, Cheikh	MF	Birmingham City F.C.
+Senegal	Alfred N'Diaye	Ndiaye, Alfred	MF	Wolverhampton Wanderers F.C.
+Senegal	Badou Ndiaye	Ndiaye, Badou	MF	Stoke City F.C.
+Senegal	Sadio Mané	Mane, Sadio	FW	Liverpool F.C.
+Senegal	Moussa Sow	Sow, Moussa	FW	Bursaspor
+Senegal	Mame Biram Diouf	Diouf, Mame Biram	FW	Stoke City F.C.
+Senegal	Moussa Konaté Moussa Konaté	Konate, Moussa	FW	Amiens SC
+Senegal	Keita Baldé	Balde Diao, Keita	FW	AS Monaco FC
+Senegal	Ismaïla Sarr	Sarr, Ismaila	FW	Stade Rennais F.C.
+Senegal	Diafra Sakho	Sakho, Diafra	FW	Stade Rennais F.C.
+Senegal	M'Baye Niang	Niang, MBaye	FW	Torino F.C.
+Colombia	David Ospina	Ospina, David	GK	Arsenal F.C.
+Colombia	Camilo Vargas	Vargas, Camilo	GK	Deportivo Cali
+Colombia	Iván Arboleda	Arboleda, Ivan	GK	Club Atlético Banfield
+Colombia	José Fernando Cuadrado	Cuadrado, Jose Fernando	GK	Once Caldas
+Colombia	Cristián Zapata	Zapata, Cristian	DF	A.C. Milan
+Colombia	Dávinson Sánchez	Sanchez, Davinson	DF	Tottenham Hotspur F.C.
+Colombia	Santiago Arias	Arias, Santiago	DF	PSV Eindhoven
+Colombia	Óscar Murillo	Murillo, Oscar	DF	C.F. Pachuca
+Colombia	Frank Fabra	Fabra, Frank	DF	Boca Juniors
+Colombia	Johan Mojica	Mojica, Johan Andres	DF	Girona FC
+Colombia	Yerry Mina	Mina, Yerry	DF	FC Barcelona
+Colombia	William Tesillo	Tesillo, Mina	DF	Club León
+Colombia	Bernardo Espinosa	Bernardo	DF	Girona FC
+Colombia	Stefan Medina	Medina, Stefan	DF	C.F. Monterrey
+Colombia	Farid Díaz	Diaz, Farid	DF	Club Olimpia
+Colombia	Wílmar Barrios	Barrios, Wilmar	MF	Boca Juniors
+Colombia	Carlos Sánchez MorenoCarlos Sánchez	Sanchez, Carlos	MF	RCD Espanyol
+Colombia	Jefferson Lerma	Lerma, Jefferson	MF	Levante UD
+Colombia	José Izquierdo José Izquierdo	Izquierdo, Jose	MF	Brighton & Hove Albion F.C.
+Colombia	James Rodríguez	Rodriguez, James	MF	FC Bayern Munich
+Colombia	Giovanni Moreno	Moreno, Giovanni	MF	Shanghai Greenland Shenhua F.C.
+Colombia	Abel Aguilar	Aguilar, Abel	MF	Deportivo Cali
+Colombia	Mateus Uribe	Uribe, Mateus	MF	Club América
+Colombia	Yimmi Chará	Chara, Yimmi	MF	Atlético Junior
+Colombia	Juan Fernando Quintero	Quintero, Juan Fernando	MF	Club Atlético River Plate
+Colombia	Edwin Cardona	Cardona, Edwin	MF	Boca Juniors
+Colombia	Juan Cuadrado	Cuadrado, Juan	MF	Juventus F.C.
+Colombia	Gustavo Cuéllar	Cuellar, Gustavo	MF	Clube de Regatas do Flamengo
+Colombia	Sebastián Pérez Cardona	Perez, Sebastian	MF	Boca Juniors
+Colombia	Radamel Falcao	Falcao, Radamel	FW	AS Monaco FC
+Colombia	Duván Zapata	Zapata, Duvan	FW	U.C. Sampdoria
+Colombia	Miguel Borja	Borja, Miguel	FW	Sociedade Esportiva Palmeiras
+Colombia	Carlos Bacca	Bacca, Carlos	FW	Villarreal CF
+Colombia	Luis Muriel	Muriel, Luis	FW	Sevilla FC
+Colombia	Teófilo Gutiérrez	Gutierrez, Teofilo	FW	Atlético Junior
+Japan	Eiji Kawashima	Kawashima, Eiji	GK	FC Metz
+Japan	Masaaki Higashiguchi	Higashiguchi, Masaaki	GK	Gamba Osaka
+Japan	Kosuke Nakamura	Nakamura, Kosuke	GK	Kashiwa Reysol
+Japan	Yuto Nagatomo	Nagatomo, Yuto	DF	Galatasaray S.K. (football)
+Japan	Tomoaki Makino	Makino, Tomoaki	DF	Urawa Red Diamonds
+Japan	Maya Yoshida	Yoshida, Maya	DF	Southampton F.C.
+Japan	Hiroki Sakai	Sakai, Hiroki	DF	Olympique de Marseille
+Japan	Gōtoku Sakai	Sakai, Gotoku	DF	Hamburger SV
+Japan	Gen Shoji	Shoji, Gen	DF	Kashima Antlers
+Japan	Wataru Endo	Endo, Wataru	DF	Urawa Red Diamonds
+Japan	Naomichi Ueda	Ueda, Naomichi	DF	Kashima Antlers
+Japan	Makoto Hasebe	Hasebe, Makoto	MF	Eintracht Frankfurt
+Japan	Toshihiro Aoyama	Aoyama, Toshihiro	MF	Sanfrecce Hiroshima
+Japan	Keisuke Honda	Honda, Keisuke	MF	C.F. Pachuca
+Japan	Takashi Inui	Inui, Takashi	MF	SD Eibar
+Japan	Shinji Kagawa	Kagawa, Shinji	MF	Borussia Dortmund
+Japan	Hotaru Yamaguchi	Yamaguchi, Hotaru	MF	Cerezo Osaka
+Japan	Genki Haraguchi	Haraguchi, Genki	MF	Fortuna Düsseldorf
+Japan	Takashi Usami	Usami, Takashi	MF	Fortuna Düsseldorf
+Japan	Gaku Shibasaki	Shibasaki, Gaku	MF	Getafe CF
+Japan	Ryota Oshima	Oshima, Ryota	MF	Kawasaki Frontale
+Japan	Kento Misao	Misao, Kento	MF	Kashima Antlers
+Japan	Yosuke Ideguchi	Ideguchi, Yosuke	MF	Cultural y Deportiva Leonesa
+Japan	Shinji Okazaki	Okazaki, Shinji	FW	Leicester City F.C.
+Japan	Yuya Osako	Osako, Yuya	FW	1. FC Köln
+Japan	Yoshinori Mutō	Muto, Yoshinori	FW	1. FSV Mainz 05
+Japan	Takuma Asano	Asano, Takuma	FW	VfB Stuttgart
