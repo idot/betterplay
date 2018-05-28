@@ -58,7 +58,6 @@ POST   /api/user/details              controllers.Users.updateDetails()
 POST   /api/user/password             controllers.Users.updatePassword() 
 POST   /api/user/filter               controllers.Users.updateFilter()    
 POST   /api/user/name                 controllers.Users.updateUserName()    
-POST   /api/userhadinstructions        controllers.Users.updateUserHadInstructions()
 POST   /api/changePasswordRequest            controllers.Users.changePasswordRequest()
 
 #set the password for the smtp mail user

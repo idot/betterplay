@@ -231,14 +231,14 @@ trait BetterTables {
     def role = column[String]("role")
 	  def club = column[String]("club")
     def teamId = column[Long]("team_id")
-       
+    def sortname = column[String]("sortname")   
     def imageFormat = column[String]("format")
     def image = column[String]("image")
      
     def foto = (imageFormat, image) <> (DBImage.tupled, DBImage.unapply)
     
     def team = foreignKey("PLAYER_COUNTRY_FK", teamId, teams)(_.id)    
-    def * = (id.?, name, role, club, teamId, foto) <> (Player.tupled, Player.unapply _)
+    def * = (id.?, name, role, club, teamId, foto, sortname) <> (Player.tupled, Player.unapply _)
 
   }
 

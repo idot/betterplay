@@ -4,13 +4,18 @@ import { Observable, of, pipe } from 'rxjs';
 
 import { NGXLogger } from 'ngx-logger';
 
-import { Environment } from './model/environment';
+import { Environment, ErrorMessage } from './model/environment';
 import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team } from './model/bet';
 import { User, UserWSpecialBets, GameWithBetsUsers } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { BetterSettings } from './model/settings';
 import { BetterTimerService } from './better-timer.service';
 import { SpecialBet, SpBet } from './model/specialbet';
+import { HttpErrorResponse } from '@angular/common/http';
+
+
+
+
 
 
 @Injectable({
@@ -52,33 +57,21 @@ export class BetterdbService {
       )
   }
 
-  saveSpecialBetPrediction(user: User, sp: SpecialBet){
-      this.http.post<any>(Environment.api(`specialBet`), sp.bet).pipe(
-        catchError(this.handleError<any>(`saving special bet`))
-        ).subscribe( data => {
-            this.logger.log(data)
-            return data
-        }
+  saveSpecialBetPrediction(user: User, sp: SpecialBet): Observable<User | ErrorMessage>{
+      return this.http.post<any>(Environment.api(`specialBet`), sp.bet).pipe(
+        catchError(this.handleSpecificError(`saving special bet prediction`))
       )
   }
 
-  saveSpecialBetResult(user: User, sp: SpecialBet){
-    this.http.post<any>(Environment.api(`specialBetResult`), sp.bet).pipe(
-      catchError(this.handleError<any>(`saving special bet`))
-      ).subscribe( data => {
-          this.logger.log(data)
-          return data
-      }
+  saveSpecialBetResult(user: User, sp: SpecialBet): Observable<User | ErrorMessage>{
+    return this.http.post<any>(Environment.api(`specialBetResult`), sp.bet).pipe(
+      catchError(this.handleSpecificError(`saving special bet result`))
     )
   }
 
-  createUser(details: {}){
-    this.http.put<any>(Environment.api(`user/create`), details).pipe(
-      catchError(this.handleError<any>(`creating user`))
-      ).subscribe( data => {
-          this.logger.log(data)
-          return data
-      }
+  createUser(details: {}) {
+    return this.http.put<any>(Environment.api(`user/create`), details).pipe(
+      catchError(this.handleSpecificError(`creating user`))
     )
   }
 
@@ -179,8 +172,30 @@ export class BetterdbService {
       }
   }
 
-
-
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+   handleSpecificError(operation: string) {
+      return (error: HttpErrorResponse): Observable<ErrorMessage> => {
+           if (error.error instanceof ErrorEvent) {
+           // A client-side or network error occurred. Handle it accordingly.
+           this.logger.error(`${operation} failed client side: ${error.error.message}`)
+           return of({ error: error.error.message, type: 'unknown' })
+       } else {
+           // The backend returned an unsuccessful response code.
+           // The response body may contain clues as to what went wrong,
+           this.logger.error(`backend returned code ${error.status}`, `body was: ${error.error}`)
+           if(error.error.error && error.error.error.indexOf("Unique index or primary key violation") >= 0){
+              return of({ error: 'could not create', type: 'not unique' })
+           } else {
+              return of({ error: error.error, type: 'unknown' })
+           }
+       }
+    }
+  }
 
   /**
    * Handle Http operation that failed.
@@ -189,16 +204,17 @@ export class BetterdbService {
    * @param result - optional value to return as the observable result
    */
    handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
+    return (error: HttpErrorResponse): Observable<T> => {
+      if (error.error instanceof ErrorEvent) {
+     // A client-side or network error occurred. Handle it accordingly.
+       this.logger.error(`${operation} failed client side: ${error.error.message}`)
+     } else {
+       // The backend returned an unsuccessful response code.
+       // The response body may contain clues as to what went wrong,
+       this.logger.error(`backend returned code ${error.status}`, `body was: ${error.error}`)
 
-      // TODO: send the error to remote logging infrastructure
-      //console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.logger.error(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
+     }
       return of(result as T);
-    };
+    }
   }
 }

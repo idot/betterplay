@@ -1,8 +1,6 @@
-<div fxLayout='column' class="toast {{data.level}}">
-  <div class="toast-level" fxLayoutAlign="start start">
-        <div>
-           {{data.level}}
-        </div>
+<div fxLayout='column' class="toast toast-border-{{data.level}}">
+  <div class="toast-level toast-background-{{data.level}}" fxLayoutAlign="start start">
+         {{data.level}}
   </div>
   <div class="toast-message">
        {{ data.message }}

@@ -10,7 +10,6 @@
 
 .toast-level {
   padding-left: 5px;
-  background-color: red;
   color: white;
   font-size: 85%;
   font-weight: light;
@@ -21,15 +20,26 @@
   padding: 14px 10px;
 }
 
-.error {
-  border-left-color: red;
+.toast-background-error {
+  background-color: red;
+}
+
+.toast-background-ok {
+  background-color: green;
+}
+
+.toast-background-warning {
+  background-color: orange;
+}
+
+.toast-border-error {
   border-color: red;
 }
 
-.ok {
-  border-left-color: green;
+.toast-border-ok {
+  border-color: green;
 }
 
-.warning {
-  border-left-color: orange;
+.toast-border-warning {
+  border-color: orange;
 }

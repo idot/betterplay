@@ -35,6 +35,7 @@ class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: Bet
   }
   
   //nicer would be post to id resource. But I have all in the body
+  //returns user with updated hadinstructions
   //
   def updateSpecialBet() = withUser.async(parse.json) { request =>
 	  request.body.validate[SpecialBetByUser].fold(
@@ -44,7 +45,7 @@ class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: Bet
 			    val mtg = BetterSettings.closingMinutesToGame	  
 			    betterException{
 			      betterDb.updateSpecialBetForUser(succ, now, mtg, request.user)
-			         .map{ s => Ok(Json.toJson(s)) }
+			         .map{ u => Ok(Json.toJson(UserNoPwC(u, request.user)))}
 		      }
 		  }
 	  )

@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 
 import { UserService } from '../../service/user.service';
+import { MatSnackBar } from '@angular/material';
+import { ToastComponent } from '../../components/toast/toast.component';
 
 
 @Component({
@@ -15,7 +17,7 @@ export class LoginComponent implements OnInit {
   username: string = "admin";
   password: string = "admin";
 
-  constructor(private logger: NGXLogger, private router: Router, private userService: UserService) { }
+  constructor(private logger: NGXLogger, private router: Router, private snackBar: MatSnackBar, private userService: UserService) { }
 
   ngOnInit() {
   }
@@ -24,18 +26,22 @@ export class LoginComponent implements OnInit {
     this.login(this.username, this.password)
   }
 
-
   login(username: string, password: string){
-      const result = this.userService.login(username, password);
-      this.logger.debug(`fetched user at login: ${username}`, result);
-      if(result){
-
-          //TODO: check if all specialbets have value => set hadInstructions
-          this.router.navigate([`/user/${username}/bets`])
-          //else{
-          //this.router.navigate([`/user/${username}/specialbets`])
-          //}
+      this.userService.login(username, password).subscribe( data => {
+          if(data['error']){
+             this.snackBar.openFromComponent(ToastComponent, { data: { message: "could not log you in", level: "error"}})
+          } else {
+             this.userService.setUserData(data)
+             const user = this.userService.getUser()
+             if(user && user.hadInstructions){
+                  this.router.navigate([`/user/${username}/bets`])
+             } else {
+                  this.snackBar.openFromComponent(ToastComponent, { data: { message: "please set the special bets", level: "warning"}})
+                  this.router.navigate([`/user/${username}/special`])
+             }
+          }
       }
+    )
   }
 
 

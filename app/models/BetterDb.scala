@@ -196,15 +196,61 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
      * TODO: load template with closing time, compare to local time get rid of global closingMinutesToGame
      * 
      */
-     def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
+     def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[User] = {
         dbLogger.debug(s"attempting updating special bet for user ${submittingUser.username} ${sp.prediction}") 
         validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
            v.fold(
                err => Future.failed(ValidationException(err.list.toList.mkString("\n"))),
                succ => updateSPU(sp, submittingUser)
-           )}
+          )}
+     }
+     
+
+     //TODO: TEST for exception when specialbet does not exist!
+     def updateSPU(sp: SpecialBetByUser, submittingUser: User): Future[User] = {     
+         dbLogger.debug(s"updating special bet for user ${sp.prediction}") 
+         val action = (specialbetsuser.filter(spdb => spdb.id === sp.id && spdb.userId === submittingUser.id && spdb.spId === sp.specialbetId).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
+             rowCount match {
+               case 0 => { 
+                      val err = s"could not find specialbet with ids ${sp.id} ${sp.userId} ${sp.specialbetId} - ${submittingUser.id}"; 
+                      dbLogger.error(err); 
+                      DBIO.failed(new ItemNotFoundException(err)) 
+               }
+               case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
+               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${sp.id}"))
+             }
+         }).transactionally
+         
+         /***
+         * we update the user with hadInstructions = false if any of his predictions are not set
+         * maybe cant be done in one transaction because if no empty => exception???
+         * 
+         */ 
+         //val updated =
+         val action2 = (for {
+                countEmptySpecialBetsForUser <- users.join(specialbetsuser.filter(sp => sp.userId === submittingUser.id && sp.prediction === "")).on(_.id === _.userId).length.result
+                updatedUser =  submittingUser.copy(hadInstructions = if(countEmptySpecialBetsForUser == 0) true else false )
+                 _ <- users.filter(_.id === submittingUser.id).update(updatedUser)
+             } yield( updatedUser )).transactionally               
+         val comb = action andThen action2
+         db.run(comb)
+
+     
      }
 
+    
+     
+//     def updateUserHadInstructions(submittingUser: User): Future[User] = {
+//         dbLogger.debug(s"updating user had instructions ${submittingUser.username}") 
+//         val action = (for {
+//             userWithEmptySpecialBets <- users.join(specialbetsuser.filter(sp => sp.userId === submittingUser.id && sp.prediction === "")).on(_.id === _.userId).result.head 
+//             updatedUser = userWithEmptySpecialBets._1.copy(hadInstructions = false)
+//             _ <- users.update(updatedUser)
+//         } yield( updatedUser )).transactionally
+//         db.run(action) //TODO: check if exception thrown in unit  //.recoverWith{ case ex: NoSuchElementException => Future.failed() }
+//     }
+
+     
      def setSpecialBetResult(specialBetId: Long, result: String, submittingUser: User): Future[String] = {
         dbLogger.info(s"attempting setting special bet result: ${submittingUser.username} ${specialBetId} ${result}")
         if(submittingUser.isAdmin){
@@ -219,25 +265,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
         }else Future.failed(AccessViolationException("only admins can set special bet results!"))
      }
      
-
-     //TODO: TEST for exception when specialbet does not exist!
-     def updateSPU(sp: SpecialBetByUser, submittingUser: User): Future[String] = {     
-         dbLogger.debug(s"updating special bet for user ${sp.prediction}") 
-         val action = (specialbetsuser.filter(spdb => spdb.id === sp.id && spdb.userId === submittingUser.id && spdb.spId === sp.specialbetId).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
-             rowCount match {
-               case 0 => { 
-                      val err = s"could not find specialbet with ids ${sp.id} ${sp.userId} ${sp.specialbetId} - ${submittingUser.id}"; 
-                      dbLogger.error(err); 
-                      DBIO.failed(new ItemNotFoundException(err)) 
-               }
-               case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
-               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${sp.id}"))
-             }
-         }).transactionally
-         db.run(action)
-     }
-
-
+     
      /**
       * This is for text import  and creation of game game details | team1name | team2name | levelNr (| == tab)
       * ids for teams and levels and results are ignored, taken from db and amended in game object
@@ -673,17 +701,8 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
          db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id}")) }
      }
      
-     
-     def updateUserHadInstructions(submittingUser: User): Future[User] = {
-         dbLogger.debug(s"updating user had instructions ${submittingUser.username}") 
-         val upd = (for{
-               user <- users.filter(u => u.id === submittingUser.id).result.head
-               updatedUser = user.copy(hadInstructions = true)
-               _ <- users.filter(_.id === submittingUser.id).update(updatedUser)
-           } yield( updatedUser )).transactionally
-           db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id}")) }
-     }
 
+    
 
     /**
      * if something was wrong with the game. we set the results for this game to isSet = false

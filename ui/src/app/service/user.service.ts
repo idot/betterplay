@@ -6,8 +6,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { NGXLogger } from 'ngx-logger';
 
-import { Environment } from '../model/environment';
+import { Environment, ErrorMessage, OkMessage } from '../model/environment';
 import { User } from '../model/user';
+import { ToastComponent } from '../components/toast/toast.component';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,7 +20,7 @@ export class UserService {
 
   private user: User | null = null;
   private authtoken = "";
-//  private a = environment.AUTHTOKEN;
+
 
   constructor(private logger: NGXLogger, private http: HttpClient) {
     console.trace("created user service")
@@ -50,26 +51,25 @@ export class UserService {
     return this.user != null
   }
 
-  //TODO: redirect if user did not have instructions
-  login(username: string, password: string): User | null {
-      this.http.post<any>(Environment.api("login"), { username: username, password: password })
+  login(username: string, password: string) {
+      return this.http.post<any>(Environment.api("login"), { username: username, password: password })
          .pipe(
             tap(_ => this.logger.debug(`fetching user with username ${username}`)),
-             catchError(this.handleError('login'))
-         ).subscribe( data => {
-             this.logger.trace(data);
-             this.user = data['user'];
-             this.authtoken = data[Environment.AUTHTOKEN];
-
-             localStorage.setItem(Environment.AUTHTOKEN, this.authtoken); //add expiry
-             this.logger.debug(`fetched user ${this.user}`)
-           }
-        )
-       return this.user;
+             catchError(this.handleSpecificError('login'))
+      )
    }
 
 
-
+  /**
+  * set by login component after successful this.login()
+  *
+  **/
+  setUserData(data: {}){
+    this.authtoken = data[Environment.AUTHTOKEN]
+    this.user = data['user']
+    localStorage.setItem(Environment.AUTHTOKEN, this.authtoken)//TODO: add expiry
+    this.logger.debug(`fetched user ${this.user}`)
+  }
 
   logout() {
       localStorage.removeItem(Environment.AUTHTOKEN);
@@ -85,18 +85,16 @@ export class UserService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      //console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.logger.error(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+  private  handleSpecificError(operation: string) {
+       return (error: HttpErrorResponse): Observable<ErrorMessage> => {
+            if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            this.logger.error(`${operation} failed client side: ${error.error.message}`)
+            return of({ error: error.error.message, type: 'unknown' })
+        } else {
+            return of({ error: "could not log you in", type: 'unknown' })
+        }
+     }
   }
 
 }

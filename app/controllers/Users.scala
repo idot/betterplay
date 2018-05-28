@@ -33,11 +33,11 @@ import TimeHelper._
 class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, override val messagesApi: MessagesApi,
                   ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends AbstractController(cc) with Security with I18nSupport {
     
-   //TODO move to mail controller
-   def sendUnsentMail() = withAdmin.async { request =>
+  //TODO move to mail controller
+  def sendUnsentMail() = withAdmin.async { request =>
        mailer ! SendUnsent()
-       Future{ Ok("done something") }
-   }
+       Future{ Ok(Json.obj("ok" -> "sending unsent mail")) }
+  }
   
   def all() = withUser.async { request =>
       betterDb.allUsersWithRank().map{ all => 
@@ -104,7 +104,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
                  inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
                  mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
                } yield {
-                 Ok(s"created user ${user.username} $mail")
+                 Ok(Json.obj("ok" -> s"created user ${user.username} $mail"))
                }
 			       }
 		       })
@@ -128,7 +128,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
              betterException{
              betterDb.updateUserDetails(succ.email, succ.icontype, succ.showname, succ.institute, request.user)
                .map{ u =>
-                 Ok("updated user details")     
+                 Ok(Json.obj("ok" -> s"updated ${u.username} details")) 
                }
            }}
        )
@@ -141,8 +141,8 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
 		          betterException{
  		             val encryptedPassword = DomainHelper.encrypt(succ)
  			           betterDb.updateUserPassword(encryptedPassword, request.user).map{ r =>
- 			           //TODO: EMAIL
- 		             Ok("updated user password")      
+ 			           //TODO: send EMAIL to user
+ 		             Ok(Json.obj("ok" -> s"updated user password"))    
  		           }
 		         }
 		    }
@@ -156,7 +156,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
          case (username: JsSuccess[String], firstName: JsSuccess[String], lastName: JsSuccess[String]) => {
             betterException{
               betterDb.updateUserName(username.value, firstName.value, lastName.value, request.user).map{ r =>
-                Ok("updated user name for user ${r.username}")
+                Ok(Json.obj("ok" -> s"updated user name for user ${r.username}"))
               }
             }
          }
@@ -186,7 +186,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
          case (username: JsSuccess[String], canBet: JsSuccess[Boolean]) => {
                 betterException{
                    betterDb.updateUserCanBet(username.value,  canBet.value, request.admin).map{ r =>
-                      Ok("updated filter")
+                      Ok(Json.obj("ok" -> s"updated filter"))
                    }
                 }
                }
@@ -202,15 +202,9 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
    def createBetsForUsers() = withAdmin.async{ request =>
       betterException{
 	    betterDb.createBetsForGamesForAllUsers(request.admin)
-	      .map{ succ =>  Ok("created bets for users") }
+	      .map{ succ =>  Ok(Json.obj("ok" -> s"created bets for users")) }
    }}
 
-   def updateUserHadInstructions() = withUser.async { request =>
-       betterException{
-       betterDb.updateUserHadInstructions(request.user)
-         .map{ succ => Ok("user knows instructions")
-       }}
-   }
    
    
    /**** reCAPTCHA begin ****/
@@ -221,7 +215,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
           mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
           inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
        }yield{
-          Ok(s"sent new password request")
+          Ok(Json.obj("ok" -> s"sent new password request"))
        }
    }
    
@@ -233,7 +227,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
            }else{
                 ( wsResponse.json \ "error-codes" ).validate[Array[String]].fold(
                    err => Future.failed(ValidationException("could not check error codes")),
-                   succ => Future.failed(ValidationException(s"errors: ${succ.mkString(",")}"))
+                   succ => Future.failed(ValidationException(s"error: ${succ.mkString(",")}"))
                 )
            }
        )
@@ -266,10 +260,10 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
        (jemail, jresponse) match {
          case (email: JsSuccess[String], response: JsSuccess[String]) =>
            configuration.getOptional[String]("betterplay.recaptchasecret")
-               .fold(Future.successful(InternalServerError("could not get recaptcha secret"))){ secret =>
+               .fold(Future.successful(InternalServerError(Json.obj("error" -> "could not get recaptcha secret")))){ secret =>
                    getUserAndVerify(secret, response.value, email.value)
                }
-         case _ => Future.successful(NotAcceptable("could not parse recaptcha request"))
+         case _ => Future.successful(NotAcceptable(Json.obj("error" -> "could not parse recaptcha request")))
        }
    }
    /**** reCAPTCHA end ****/
@@ -283,11 +277,11 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
                       Logger.info(s"set mail password")
                       betterException {
                           mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
-                                  .mapTo[String].map{ result => Ok(s"set mail password $result")}
+                                  .mapTo[String].map{ result => Ok(Json.obj("ok" -> s"set mail password $result"))}
                       }
                   }
        case _ => {
-           Future.successful(NotAcceptable("could not parse mail password setting"))
+           Future.successful(NotAcceptable(Json.obj("error" -> "could not parse mail password setting")))
        }
       }
    }

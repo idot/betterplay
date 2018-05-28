@@ -1,7 +1,9 @@
 <div *ngIf="user$ | async as userWG; else loading">
   <div *ngIf="betService.specialBetsOpen() && userService.isIdentical(userWG.user.username)">
      You can change these special bets <em>only until</em> ~ 1hr before start of the games time left: {{timeService.timeLeft(betterService.getGamesStart())}}
-
+  <div *ngIf="userWG.user.hadInstructions">
+       You did not fill out all your special bets!! Please do this within the next {{timeService.timeLeft(betterService.getGamesStart())}}
+  </div>
   </div>
   <div *ngIf="! userService.isIdentical(userWG.user.username)">
       Special Bets: <user-view [user]=userWG.user [full]=false></user-view>

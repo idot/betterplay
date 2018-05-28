@@ -84,13 +84,7 @@ export class BetViewComponent implements OnInit {
     console.log("saving")
     var error = this.checkSubmission()
     this.snackBar.openFromComponent(ToastComponent, { data: { message: "blabla", level: "error"}})
-  //  this.snackBar.open("something", undefined, {
-//        panelClass: ['toast-error']
-//    })
-  //  this.snackBar.openFromComponent(error, "", {
-  //    duration: 2000,
-  //    panelClass: ['blue-snackbar']
-//    })
+    
 
   }
 

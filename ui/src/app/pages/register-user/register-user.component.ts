@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { BetterdbService } from '../../betterdb.service';
+import { MatSnackBar } from '@angular/material';
+import { ToastComponent } from '../../components/toast/toast.component';
+import { Router } from '@angular/router';
+
+import { ErrorMessage } from '../../model/environment';
 
 @Component({
   selector: 'register-user',
@@ -17,9 +22,9 @@ export class RegisterUserComponent implements OnInit {
 
   createForm(){
     this.registerForm = this.fb.group({
-      username : ['', [Validators.required]],
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
+      username : ['', [Validators.required, Validators.pattern("^[a-z0-9_-]{8,20}$")]],
+      firstname: ['', [Validators.required, Validators.pattern("^[a-zA-Z]{3,30}$")]],
+      lastname: ['', [Validators.required, Validators.pattern("^[a-zA-Z]{3,30}$")]],
       email: ['',[Validators.required, Validators.email]]
     })
   }
@@ -33,7 +38,7 @@ export class RegisterUserComponent implements OnInit {
   //          ''
    }
 
-  constructor(private fb: FormBuilder, private userService: UserService, private betterdb: BetterdbService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private betterdb: BetterdbService, private snackBar: MatSnackBar, private router: Router) {
      this.createForm()
   }
 
@@ -44,11 +49,18 @@ export class RegisterUserComponent implements OnInit {
     const user = this.userService.getUser()
     if(user && user.isAdmin){
       const details = this.registerForm.value
-      this.betterdb.createUser(details)
-      console.log(details.username)
-      //TODO get return value
+      const result = this.betterdb.createUser(details).subscribe( result => {
+          if(result['ok']){
+              this.snackBar.openFromComponent(ToastComponent, { data: { message: result['ok'], level: "ok"}})
+              this.router.navigate([`/users`])
+          } else {
+              const message = result['type'] == 'not unique' ? "duplicate username or e-mail" : result['error']
+              this.snackBar.openFromComponent(ToastComponent, { data: { message: message, level: "error"}})
+          }
+      })
     } else {
-      //TODO: error
+        this.snackBar.openFromComponent(ToastComponent, { data: { message: "user not logged in or not admin", level: "error"}})
+        this.router.navigate([`/login`])
     }
   }
 

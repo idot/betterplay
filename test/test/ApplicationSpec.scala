@@ -111,7 +111,8 @@ class ApplicationSpec extends Specification with JsonMatchers {
         val changed = Json.toJson(bet.copy(prediction = prediction))
         val updated = route(app, FakeRequest(method="POST", path=s"/api/specialBet").withJsonBody(changed).withHeaders(("X-AUTH-TOKEN", token))).get
         status(updated) must equalTo(OK).setMessage(message) 
-        contentAsString(updated) === s""""updated special bet with prediction $prediction""""
+        contentAsString(updated)  must /("username" -> username)
+        contentAsString(updated)  must /("hadInstructions" -> false)
         val bet2 = getSpecialBet(username, token, row)
         bet2.prediction === prediction 
         bet2.prediction !== bet.prediction
@@ -173,7 +174,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
 		   val createUser = JsObject(Seq("username" -> JsString("createduser"), "firstname" -> JsString("Foo"), "lastname" -> JsString("lastName"), "email" -> JsString("email@email.com")))
        val createdUser = route(app, FakeRequest(method="PUT", path="/api/user/create").withJsonBody(createUser).withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
 	   	 val createdUserContent = contentAsString(createdUser)
-	   	 createdUserContent === "created user createduser mail not delivered"
+	   	 createdUserContent must /("ok" -> "created user createduser mail not delivered")
 	      
 	     val token = models.BetterSettings.randomToken()
 	     val userTokenPass = JsObject(Seq("token" -> JsString(token), "password" -> JsString("mypassword")))

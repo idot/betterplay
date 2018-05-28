@@ -178,8 +178,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
            val updFilterUser = Await.result(betterDb.updateFilterSettings(fs, user), 1 seconds)
            updFilterUser.filterSettings === fs
            
-           AR(betterDb.updateUserHadInstructions(user))
-           AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.hadInstructions === true
+           AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.hadInstructions === false
        
            AR(betterDb.updateUserPassword("newhash" , user))
            AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head.passwordHash === "newhash"
@@ -351,12 +350,12 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
             
 		      sp3.userId !== users(3).id.get
 		      betterDb.updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(3)) must throwAn[ValidationException](message="user ids differ 4 3").await      
-          betterDb.updateSpecialBetForUser(sp3.copy(userId = users(3).id.get ), firstStart.minusMinutes(91), 90, users(3)) must throwAn[ItemNotFoundException](message="""could not find specialbet with ids Some\(28\) 4 4 - Some\(4\)""").await
+//          betterDb.updateSpecialBetForUser(sp3.copy(userId = users(3).id.get ), firstStart.minusMinutes(91), 90, users(3)) must throwAn[ItemNotFoundException](message="""could not find specialbet with ids Some\(28\) 4 4 - Some\(4\)""").await
       
           
           Await.result(betterDb.updateSpecialBetForUser(sp3, firstStart.minusMinutes(91), 90, users(2)), 1 seconds)
 		      val uwsb = Await.result(betterDb.userWithSpecialBets(users(2).id.get), 1 second)
-		      uwsb._1.hadInstructions === false      //this is now done in the UI by activating a separate route        
+		      uwsb._1.hadInstructions === false        
           uwsb._2.unzip._2.filter(sb => sb.id == sp3.id).head.prediction === "XY"        
 		  
           //now set the special bet result on specialbetstore
@@ -485,6 +484,38 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
           
       }
    
+      def hasInstructions(){
+           val start = Await.result(betterDb.startOfGames(), 1 seconds).get
+           val dbUser = AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head
+           val (udb, specials) = Await.result(betterDb.userWithSpecialBets(dbUser.id.get), 1 seconds)
+           udb.id.get === dbUser.id.get
+           udb.username === dbUser.username
+           udb.hadInstructions === false
+    		   val (t, usp) = specials.unzip
+    		   val sps = usp.sortBy(_.specialbetId)
+    		   def update(sp: SpecialBetByUser): User = {
+               val spc = sp.copy(prediction = "XY")
+               Await.result(betterDb.updateSpecialBetForUser(spc, start.minusMinutes(91), 90, udb), 1 seconds)
+           }
+		       sps.drop(1).foreach{ sp => 
+		           val u = update(sp)
+		           u.hadInstructions === false
+		       }
+		       val uh = update(sps(0))
+		       val (udb2, specials2) = Await.result(betterDb.userWithSpecialBets(dbUser.id.get), 1 seconds)
+		       val (t2, usp2) = specials2.unzip
+		       
+		       udb2.hadInstructions === true
+           udb.hadInstructions === false
+		       uh.hadInstructions === true          
+		        
+		       val lostInstructions = Await.result(betterDb.updateSpecialBetForUser(sps(4), start.minusMinutes(91), 90, udb), 1 seconds)
+           lostInstructions.hadInstructions === false
+           
+           
+      }
+      
+      
       betterDb.dropCreate()
 		  insertSpecialBetTemplates()
       insertAdmin()
@@ -497,6 +528,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
       makeBets1()
       updateGames()
       newGames()
+      hasInstructions()
       success
     }
 
