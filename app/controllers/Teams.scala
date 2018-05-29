@@ -18,7 +18,7 @@ import scala.concurrent.Future
 @Singleton
 class Teams @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
   
-  def all() = withUser.async { request =>
+  def all() = Action.async { request =>
       betterDb.allTeams().map{ all => Ok(Json.toJson(all)) }
   }
   

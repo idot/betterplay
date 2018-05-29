@@ -46,23 +46,22 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
      }
   }
   
-  /***
-   * needs: withOptionalUser.async -- really??
-   * 
-   */
-  def get(username: String) = withUser.async { request =>
+
+  def get(username: String) = withOptUser.async { request =>
      betterException{
       betterDb.userWithSpecialBets(username)
          .flatMap{ case(user, sp) =>
           betterDb.gamesWithBetForUser(user)
             .map{ gamesWithBets =>
               val now = BetterSettings.now
+              val optUser = request.optUser
+              val id = request.getIdOrN()
               val gamesWithVBets = gamesWithBets.map{ case(g, b) => 
                 val vtg = g.game.viewMinutesToGame
-                (g, b.viewableBet(request.request.userId, g.game.serverStart, now, vtg)) 
+                (g, b.viewableBet(id, g.game.serverStart, now, vtg)) 
               }
               val gwbvs = gamesWithVBets.sortBy{case (g,b) => g.game.serverStart }
-              val json = Json.obj("user" -> UserNoPwC(user, Some(request.user)), "specialBets" -> sp, "gameBets" -> gwbvs)
+              val json = Json.obj("user" -> UserNoPwC(user, optUser), "specialBets" -> sp, "gameBets" -> gwbvs)
               Ok(json)
           }
       }        

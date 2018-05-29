@@ -32,6 +32,11 @@ import models.User
 class TokenRequest[A](val token: String, val userId: Long, request: Request[A]) extends WrappedRequest[A](request)
 class UserRequest[A](val user: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
 class AdminRequest[A](val admin: User, val request: TokenRequest[A]) extends WrappedRequest[A](request)
+class OptionalUserRequest[A](val optUser: Option[User], val request: Request[A]) extends WrappedRequest[A](request) {
+      def getIdOrN(): Long = {
+         optUser.flatMap{ u => u.id }.getOrElse(-1)
+      }
+}
 
 trait Security { self: AbstractController =>
   val betterDb: BetterDb
@@ -64,20 +69,21 @@ trait Security { self: AbstractController =>
       override def executionContext = controllerComponents.executionContext
   }
    
-  def withOptUser = new ActionRefiner[Request, Request] with ActionBuilder[Request, AnyContent]{
+  
+  def withOptUser = new ActionRefiner[Request, OptionalUserRequest] with ActionBuilder[OptionalUserRequest, AnyContent]{
       def refine[A](input: Request[A]) = Future.successful{
-          val maybeToken = input.headers.get(AuthTokenHeader)
-          securityLogger.trace(s"hasToken: ${input.uri} $AuthTokenHeader $maybeToken")
-          maybeToken.flatMap{ token =>
-              cache.get[Long](token).map{  userId =>  
-                       securityLogger.trace(s"hasToken: ${input.uri} found token $AuthTokenHeader $maybeToken userId: $userId")
-                       new TokenRequest(token, userId, input)
-              }
-          }.toRight{
-            securityLogger.trace(s"hasToken: didn't find token: ${input.uri} $AuthTokenHeader $maybeToken UNAUTHORIZED")
-            Unauthorized
-          }
-      }
+         securityLogger.trace(s"optUserToken: ${input.uri} $AuthTokenHeader ${input.headers.get(AuthTokenHeader)}")
+         val result = (for{
+            token <- input.headers.get(AuthTokenHeader)
+            userId <- cache.get[Long](token)
+          } yield {
+            betterDb.userById(userId).map{ user =>
+                new OptionalUserRequest(Some(user), input)
+            }.recoverWith{ case e: AccessViolationException =>  Future.successful(None) }
+                new OptionalUserRequest(None, input)
+          }).getOrElse( new OptionalUserRequest(None, input) )
+          Right(result)
+      }          
       override def parser = controllerComponents.parsers.defaultBodyParser
       override def executionContext = controllerComponents.executionContext
   }

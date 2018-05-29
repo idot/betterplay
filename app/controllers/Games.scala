@@ -35,13 +35,14 @@ class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
       }
   }
     
-  def get(gameNr: Int) = withUser.async { request =>
+  def get(gameNr: Int) = withOptUser.async { request =>
        betterDb.getGameByNr(gameNr).flatMap{ game => 
          betterException{
+          val id = request.getIdOrN()
           betterDb.betsWitUsersForGame(game.game).map{ betsWithUsers =>
             val now = BetterSettings.now
   				  val vtg = game.game.viewMinutesToGame
-            val vbWithUsers = betsWithUsers.map{ case(b,u) => (b.viewableBet(request.request.userId, game.game.serverStart, now, vtg), UserNoPwC(u, Some(request.user))) }
+            val vbWithUsers = betsWithUsers.map{ case(b,u) => (b.viewableBet(id, game.game.serverStart, now, vtg), UserNoPwC(u, request.optUser)) }
             val vbs = vbWithUsers.sortBy{ case(b,u) => u.username }
             val json = Json.obj("game" -> game, "betsUsers" -> vbs)
             Ok(json)

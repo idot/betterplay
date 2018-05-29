@@ -14,7 +14,7 @@ import javax.inject.{Inject, Provider, Singleton}
 @Singleton
 class Players @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
  
-  def all() = withUser.async { request =>
+  def all() = Action.async { request =>
       betterDb.allPlayersWithTeam().map{ all => Ok(Json.toJson(all)) }
   }
 
