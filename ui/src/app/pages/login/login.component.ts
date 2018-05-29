@@ -6,6 +6,9 @@ import { NGXLogger } from 'ngx-logger';
 import { UserService } from '../../service/user.service';
 import { MatSnackBar } from '@angular/material';
 import { ToastComponent } from '../../components/toast/toast.component';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { UrlSegment } from '@angular/router';
 
 
 @Component({
@@ -17,7 +20,7 @@ export class LoginComponent implements OnInit {
   username: string = "admin";
   password: string = "admin";
 
-  constructor(private logger: NGXLogger, private router: Router, private snackBar: MatSnackBar, private userService: UserService) { }
+  constructor(private logger: NGXLogger,  private router: Router, private snackBar: MatSnackBar, private userService: UserService) { }
 
   ngOnInit() {
   }

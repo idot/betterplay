@@ -19,7 +19,7 @@ const httpOptions = {
 export class UserService {
 
   private user: User | null = null;
-  private authtoken = "";
+  private authtoken = ""
 
 
   constructor(private logger: NGXLogger, private http: HttpClient) {
@@ -72,7 +72,9 @@ export class UserService {
   }
 
   logout() {
-      localStorage.removeItem(Environment.AUTHTOKEN);
+      localStorage.removeItem(Environment.AUTHTOKEN)
+      this.authtoken = ""
+      this.user = null
   }
 
   reauthenticate() {

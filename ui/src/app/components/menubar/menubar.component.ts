@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BetterdbService } from '../../betterdb.service';
 import { BetterTimerService } from '../../better-timer.service';
 import { UserService } from '../../service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'menubar',
@@ -13,7 +14,7 @@ import { UserService } from '../../service/user.service';
 })
 export class MenubarComponent implements OnInit {
 
-  constructor(private userService: UserService, private timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private router: Router, private timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
 
   ngOnInit() {
   }
@@ -53,6 +54,11 @@ export class MenubarComponent implements OnInit {
 
         currentTime(){
             return this.timerService.getTime();
+        }
+
+        logout(){
+           this.userService.logout()
+           this.router.navigate([`/login`])
         }
 
         //vm.large = $mdMedia('gt-xs');

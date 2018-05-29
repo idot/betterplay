@@ -5,7 +5,7 @@ import { Observable, of, pipe } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 import { Environment, ErrorMessage } from './model/environment';
-import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team } from './model/bet';
+import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team, GameWithTeams } from './model/bet';
 import { User, UserWSpecialBets, GameWithBetsUsers } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { BetterSettings } from './model/settings';
@@ -108,11 +108,29 @@ export class BetterdbService {
        )
   }
 
-  getGameWithBetsForUsers(nr: number): Observable<GameWithBetsUsers[]> {
-    return this.http.get<GameWithBetsUsers[]>(Environment.api(`game/${nr}`))
+  getGames(): Observable<GameWithTeams[]>{
+    return this.http.get<GameWithTeams[]>(Environment.api(`games`))
        .pipe(
-          tap(_ => this.logger.debug(`fetching game ${nr} with betsusers`)),
-          catchError(this.handleError<GameWithBetsUsers[]>(`getGameWithBetsUsers`))
+          tap(_ => this.logger.debug(`fetching games with teams`)),
+          map(gs => {
+              gs.forEach(g => this.gameMapper(g.game))
+              return gs
+            }
+          ),
+          catchError(this.handleError<GameWithTeams[]>(`getGamesWithTeams`))
+       )
+  }
+
+  getGameWithBetsForUsers(nr: number): Observable<GameWithBetsUsers> {
+    return this.http.get<GameWithBetsUsers>(Environment.api(`game/${nr}`))
+       .pipe(
+          tap(_ => this.logger.debug(`fetching game ${nr} with betsUsers`)),
+          map(g => {
+                g.game.game = this.gameMapper(g.game.game)
+                return g
+             }
+          ),
+          catchError(this.handleError<GameWithBetsUsers>(`getGameWithBetsUsers`))
        )
   }
 

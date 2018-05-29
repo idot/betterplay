@@ -14,8 +14,7 @@ import { ErrorMessage } from '../../model/environment';
   styleUrls: ['./register-user.component.css']
 })
 export class RegisterUserComponent implements OnInit {
-  //email = new FormControl('', [Validators.required, Validators.email])
-//  username = new FormControl('', [Validators.required])
+
   registerForm: FormGroup
 
 
@@ -30,13 +29,6 @@ export class RegisterUserComponent implements OnInit {
   }
 
 
-
-
-  getErrorMessage() {
-    // return this.email.hasError('required') ? 'You must enter a value' :
-  //          this.email.hasError('email') ? 'Not a valid email' :
-  //          ''
-   }
 
   constructor(private fb: FormBuilder, private userService: UserService, private betterdb: BetterdbService, private snackBar: MatSnackBar, private router: Router) {
      this.createForm()
