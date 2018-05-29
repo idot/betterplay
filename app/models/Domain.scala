@@ -118,20 +118,22 @@ case class UserNoPw(id: Option[Long] = None, username: String, email:String, fir
 }
    
 object UserNoPwC {
-   def apply(user: User, viewingUser: User, rank: Int = 0): UserNoPw = {
+   def apply(user: User, viewingUser: Option[User], rank: Int = 0): UserNoPw = {
         def forName(value: String): String = {
-            if(user.showName || viewingUser.id == user.id){
-               value
-            }else{
-               ""
-            }
+            viewingUser.map{ v =>
+              if(user.showName || v.id == user.id){
+                 value
+              }else{
+                 ""
+              }
+            }.getOrElse("")
         }
      
         UserNoPw(user.id, user.username, forName(user.email), forName(user.firstName), forName(user.lastName), user.institute,
            user.showName,
 		       user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
 		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, rank,
-		       user.filterSettings, user.id == viewingUser.id
+		       user.filterSettings,  viewingUser.map(v => v.id == user.id).getOrElse(false)
         )  
    }     
 }      

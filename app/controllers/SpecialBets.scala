@@ -29,7 +29,7 @@ class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: Bet
   def specialBetsForUser(username: String) = withUser.async { request => 
       betterException{
 	     	betterDb.userWithSpecialBets(username).map{  case(u, tb) =>
-           Ok(Json.obj("user" -> UserNoPwC(u, request.user), "templateBets" -> tb)) 
+           Ok(Json.obj("user" -> UserNoPwC(u, Some(request.user)), "templateBets" -> tb)) 
 		   }
      }
   }
@@ -45,7 +45,7 @@ class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: Bet
 			    val mtg = BetterSettings.closingMinutesToGame	  
 			    betterException{
 			      betterDb.updateSpecialBetForUser(succ, now, mtg, request.user)
-			         .map{ u => Ok(Json.toJson(UserNoPwC(u, request.user)))}
+			         .map{ u => Ok(Json.toJson(UserNoPwC(u, Some(request.user))))}
 		      }
 		  }
 	  )

@@ -64,6 +64,25 @@ trait Security { self: AbstractController =>
       override def executionContext = controllerComponents.executionContext
   }
    
+  def withOptUser = new ActionRefiner[Request, Request] with ActionBuilder[Request, AnyContent]{
+      def refine[A](input: Request[A]) = Future.successful{
+          val maybeToken = input.headers.get(AuthTokenHeader)
+          securityLogger.trace(s"hasToken: ${input.uri} $AuthTokenHeader $maybeToken")
+          maybeToken.flatMap{ token =>
+              cache.get[Long](token).map{  userId =>  
+                       securityLogger.trace(s"hasToken: ${input.uri} found token $AuthTokenHeader $maybeToken userId: $userId")
+                       new TokenRequest(token, userId, input)
+              }
+          }.toRight{
+            securityLogger.trace(s"hasToken: didn't find token: ${input.uri} $AuthTokenHeader $maybeToken UNAUTHORIZED")
+            Unauthorized
+          }
+      }
+      override def parser = controllerComponents.parsers.defaultBodyParser
+      override def executionContext = controllerComponents.executionContext
+  }
+  
+  
   def withUserA = new ActionRefiner[TokenRequest,UserRequest]{ 
       def refine[A](input: TokenRequest[A]) = {
          betterDb.userById(input.userId)

@@ -39,13 +39,17 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
        Future{ Ok(Json.obj("ok" -> "sending unsent mail")) }
   }
   
-  def all() = withUser.async { request =>
+  def all() = Action.async { request =>
       betterDb.allUsersWithRank().map{ all => 
-        val allNoPw = all.sortBy{ case(u,r) => (r, u.username.toLowerCase) }.map{ case(u,r) => UserNoPwC(u, request.user, r) }
+        val allNoPw = all.sortBy{ case(u,r) => (r, u.username.toLowerCase) }.map{ case(u,r) => UserNoPwC(u, None, r) }
         Ok(Json.toJson(allNoPw )) 
      }
   }
-   
+  
+  /***
+   * needs: withOptionalUser.async -- really??
+   * 
+   */
   def get(username: String) = withUser.async { request =>
      betterException{
       betterDb.userWithSpecialBets(username)
@@ -58,15 +62,18 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
                 (g, b.viewableBet(request.request.userId, g.game.serverStart, now, vtg)) 
               }
               val gwbvs = gamesWithVBets.sortBy{case (g,b) => g.game.serverStart }
-              val json = Json.obj("user" -> UserNoPwC(user, request.user), "specialBets" -> sp, "gameBets" -> gwbvs)
+              val json = Json.obj("user" -> UserNoPwC(user, Some(request.user)), "specialBets" -> sp, "gameBets" -> gwbvs)
               Ok(json)
           }
       }        
      }
   }
-     
+   
+  /**
+   * add e-mail manually to alwyas return userNoPwC
+   */
   def userToUserNoPwC(user: User): JsObject = {
-      val nop = UserNoPwC(user, user)
+      val nop = UserNoPwC(user, Some(user))
       val jnop = Json.toJson(nop)  
 	    val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> user.email ))
 	    jnope
