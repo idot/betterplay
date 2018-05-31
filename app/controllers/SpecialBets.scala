@@ -26,10 +26,10 @@ class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: Bet
       }
   }
    
-  def specialBetsForUser(username: String) = withUser.async { request => 
+  def specialBetsForUser(username: String) = withOptUser.async { request => 
       betterException{
 	     	betterDb.userWithSpecialBets(username).map{  case(u, tb) =>
-           Ok(Json.obj("user" -> UserNoPwC(u, Some(request.user)), "templateBets" -> tb)) 
+           Ok(Json.obj("user" -> UserNoPwC(u, request.optUser), "templateBets" -> tb)) 
 		   }
      }
   }

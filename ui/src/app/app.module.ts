@@ -8,9 +8,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
-import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material'
+import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatProgressSpinnerModule } from '@angular/material'
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
+
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
 
@@ -88,7 +89,7 @@ import { ToastComponent } from './components/toast/toast.component';
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule, ReactiveFormsModule, FlexLayoutModule,
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule,
-    MatTableModule, MatSortModule,
+    MatTableModule, MatSortModule, MatProgressSpinnerModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule

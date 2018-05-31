@@ -1,19 +1,19 @@
 <div fxLayoutAlign="center end"  fxLayout.gt-xs="row" fxLayout.xs="column">
           <div>
-              <button mat-button type="submit" value="users" title="users" ariaLabel="users" [routerLink]="['/users']">users</button>
+              <button mat-menu-item  [routerLink]="['/users']">users</button>
           </div>
           <div>
-              <button mat-button type="submit" value="games" title="games" ariaLabel="games" [routerLink]="['/games']">games</button>
+              <button mat-menu-item  [routerLink]="['/games']">games</button>
           </div>
           <div>
               <div><!-- TODO combine these two into vertica/horizontal -->
-                  <button mat-button type="submit" value="plots"  title="plots" [routerLink]="['/statistics/plots']">stats</button>
+                  <button mat-menu-item  [routerLink]="['/statistics/plots']">stats</button>
               </div>
               <div>
-                 <button mat-button type="submit" value="plots"  title="plots" [routerLink]="['/statistics/excel']">excel</button>
+                 <button mat-menu-item  [routerLink]="['/statistics/excel']">excel</button>
               </div>
               <div>
-                <button mat-button type="submit" value="rules"  title="rules" [routerLink]="['/rules']">rules</button>
+                <button mat-menu-item  [routerLink]="['/rules']">rules</button>
               </div>
           </div>
           <div *ngIf="userService.getUser()"  fxLayout.gt-xs="row" fxLayout.xs="column">
@@ -23,34 +23,34 @@
                    </a>
                </div>
                <div>
-                  <button mat-button color="accent" type="submit" value="bets" title="bets" ariaLabel="bets" [routerLink]="['/user', userService.getUser().username, 'bets']" [disabled]="betsDisabled()">
+                  <button mat-menu-item  color="accent" [routerLink]="['/user', userService.getUser().username, 'bets']" [disabled]="betsDisabled()">
                       my bets</button>
                </div>
                <div>
-                   <button mat-button type="submit" value="submit"  title="special bets" [routerLink]="['/user', userService.getUser().username, 'special']" [disabled]="specialDisabled()">
+                   <button mat-menu-item  [routerLink]="['/user', userService.getUser().username, 'special']" [disabled]="specialDisabled()">
                      special bets
                    </button>
                </div>
                <div>
-                   <button mat-button type="submit" value="submit"  title="register user" [routerLink]="['/admin/register']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
+                   <button mat-menu-item  [routerLink]="['/admin/register']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
                       register user
                    </button>
                </div>
                <div>
-                   <button mat-button type="submit" value="submit"  title="logout" (click)="logout()">
+                   <button mat-menu-item  type="submit" value="submit"  title="logout" (click)="logout()">
                        logout
                    </button>
                </div>
           </div>
           <div *ngIf="! userService.getUser()" fxLayout.gt-xs="row" fxLayout.xs="column">
             <div>
-               <button mat-button type="submit" value="submit"  title="Login" [routerLink]="['/login']" [disabled]="loginDisabled()">
+               <button mat-menu-item  [routerLink]="['/login']" [disabled]="loginDisabled()">
                   login
               </button>
              </div>
           </div>
           <div> <!-- time is always here -->
-            <button mat-button type="submit" [disabled]=true>
+            <button mat-menu-item  type="submit" [disabled]=true>
              {{ this.timerService.getTime() | date :  "HH:mm" }}
             </button>
           </div> <!-- date only in debug -->
