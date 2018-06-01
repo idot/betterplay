@@ -10,7 +10,7 @@ import { User, UserWSpecialBets, GameWithBetsUsers } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { BetterSettings } from './model/settings';
 import { BetterTimerService } from './better-timer.service';
-import { SpecialBet, SpBet } from './model/specialbet';
+import { SpecialBet, SpBet, SpecialBetPredictions } from './model/specialbet';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
@@ -132,6 +132,15 @@ export class BetterdbService {
           ),
           catchError(this.handleError<GameWithBetsUsers>(`getGameWithBetsUsers`))
        )
+  }
+
+  getSpecialBetStats(templateName: string): Observable<SpecialBetPredictions>{
+    return this.http.get<SpecialBetPredictions>(Environment.api(`statistics/specialBet/${templateName}`))
+       .pipe(
+          tap(_ => this.logger.debug(`fetching special bet stats ${templateName}`)),
+          catchError(this.handleError<SpecialBetPredictions>(`getSpecialBetStats`))
+       )
+
   }
 
   /**

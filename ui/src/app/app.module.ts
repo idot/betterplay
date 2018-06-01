@@ -12,6 +12,7 @@ import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, Mat
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
 
@@ -50,6 +51,7 @@ import { RulesComponent } from './pages/rules/rules.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { UsersComponent } from './pages/users/users.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { SpecialBetsChartComponent } from './components/special-bets-chart/special-bets-chart.component';
 
 
 
@@ -82,7 +84,8 @@ import { ToastComponent } from './components/toast/toast.component';
     StatisticsComponent,
     RulesComponent,
     UsersComponent,
-    ToastComponent
+    ToastComponent,
+    SpecialBetsChartComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +95,8 @@ import { ToastComponent } from './components/toast/toast.component';
     MatTableModule, MatSortModule, MatProgressSpinnerModule,
     HttpClientModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxChartsModule
   ],
   entryComponents: [
       ToastComponent

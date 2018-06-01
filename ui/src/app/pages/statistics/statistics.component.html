@@ -1,3 +1,20 @@
-<p>
-  statistics works!
-</p>
+<div>
+    <div layout="row">
+         <button mat-button type="submit" value="excel" title="excel" ng-click="vm.getExcel()">
+           excel
+         </button>
+         <div>
+             verify unchanged excel file:
+             <button type="button" md-button (click)="excelUpload.click()">upload</button>
+             <input hidden type="file" #excelUpload (change)="upload($event)"/>
+         </div>
+     </div>
+</div>
+<div>
+
+  <special-bets-chart betname="champion"></special-bets-chart>
+  <special-bets-chart betname="semifinalist"></special-bets-chart>
+  <special-bets-chart betname="mvp"></special-bets-chart>
+  <special-bets-chart betname="topscorer"></special-bets-chart>
+
+</div>

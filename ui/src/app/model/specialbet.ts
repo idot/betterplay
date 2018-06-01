@@ -23,3 +23,8 @@ export interface SpecialBet {
     template: Template
     bet: SpBet
 }
+
+export interface SpecialBetPredictions {
+    template: Template
+    predictions: string[]
+}

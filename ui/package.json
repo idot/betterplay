@@ -27,6 +27,7 @@
     "@angular/platform-browser": "^6.0.0",
     "@angular/platform-browser-dynamic": "^6.0.0",
     "@angular/router": "^6.0.0",
+    "@swimlane/ngx-charts": "^8.0.2",
     "core-js": "^2.5.4",
     "flag-icon-css": "^3.0.0",
     "lodash": "^4.17.10",
