@@ -112,6 +112,14 @@ export class BetterdbService {
      return this.settings
   }
 
+  sendUnsentMail(){
+    return this.http.post<any>(Environment.api(`sendUnsentMail`), {})
+  }
+
+  createMail(message){
+    return this.http.post<any>(Environment.api(`createMail`), message)
+  }
+
   getGames(): Observable<GameWithTeams[]>{
     return this.http.get<GameWithTeams[]>(Environment.api(`games`))
        .pipe(
