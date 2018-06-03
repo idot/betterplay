@@ -1,0 +1,14 @@
+.mat-select-trigger {
+  /**
+    width: 10px;
+    max-width: 10px;
+    background-color: green;
+  **/
+}
+.mat-select {
+  /**
+    width: 10px;
+    max-width: 10px;
+    background-color: red;
+  **/
+}

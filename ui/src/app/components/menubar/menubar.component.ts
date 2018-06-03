@@ -16,12 +16,16 @@ export class MenubarComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router, private timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
 
-  ngOnInit() {
-  }
+        ngOnInit() {
+        }
 
 
         DF(){
             return this.timerService.getDateFormatter;
+        }
+
+        isDebug(){
+           return this.betterdb.getSettings().debug
         }
 
         specialDisabled(){
@@ -42,16 +46,17 @@ export class MenubarComponent implements OnInit {
            return false//  return $state.includes("admin.registerUser");
         }
         statsDisabled(){
-            return //false return $state.includes("statistics.plots");
+            return false //false return $state.includes("statistics.plots");
         }
         loginDisabled(){
-            return //false return $state.includes("login");
+            return false //false return $state.includes("login");
         }
-
-        isDebug(){
-            return false //return betterSettings.isDebug();
+        mailDisabled(){
+            return false
         }
-
+        settingsDisabled(){
+            return false
+        }
         currentTime(){
             return this.timerService.getTime();
         }

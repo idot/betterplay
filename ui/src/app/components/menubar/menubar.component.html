@@ -34,11 +34,23 @@
                      special bets
                    </button>
                </div>
-               <div>
-                   <button mat-menu-item  [routerLink]="['/admin/register']" [disabled]="registerDisabled()" *ngIf="userService.getUser().isAdmin">
-                      register user
-                   </button>
-               </div>
+               <div *ngIf="userService.isAdmin()">
+                 <div>
+                     <button mat-menu-item  [routerLink]="['/admin/register']" [disabled]="registerDisabled()">
+                        register user
+                     </button>
+                 </div>
+                 <div>
+                     <button mat-menu-item  [routerLink]="['/admin/mail']" [disabled]="mailDisabled()">
+                        mail
+                     </button>
+                 </div>
+                 <div>
+                     <button mat-menu-item  [routerLink]="['/admin/settings']" [disabled]="settingsDisabled()">
+                        settings
+                     </button>
+                 </div>
+              </div>
                <div>
                    <button mat-menu-item  type="submit" value="submit"  title="logout" (click)="logout()">
                        logout
@@ -58,6 +70,6 @@
             </button>
           </div> <!-- date only in debug -->
           <div *ngIf="isDebug()">
-            {{ this.timerService.getTime()  | date : "dd-MM-yy"}}
+            {{ this.timerService.getTime()  | date : "dd/MM/yy"}}
          </div>
 </div>

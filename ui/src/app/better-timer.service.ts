@@ -24,7 +24,6 @@ export class BetterTimerService {
   private DF = 'd/M HH:mm'
 
 
-
   //time to update clock
   private UPDATEINTERVAL = 1000 * 5 //in ms
 
@@ -79,13 +78,12 @@ export class BetterTimerService {
         this.updateTimeOnServer(this.getTime())
   }
   //for testing
-  updateTime(time: Date) {
+  updateTime(hour: number, minute: number) {
         const oldtime = this.getTime()
         this.timeFromServer = false
-        const nm = moment(time)
         const om = moment(this.getTime())
-        om.hours(nm.hours())
-        om.minutes(nm.minutes())
+        om.hours(hour)
+        om.minutes(minute)
         this.currentTime = om.toDate()
         this.logger.info(`updated time ${oldtime} => ${this.getTime()}`)
         this.updateTimeOnServer(this.getTime())
@@ -102,12 +100,12 @@ export class BetterTimerService {
            tap(_ => this.logger.debug(`updating time from server`)),
            catchError(this.handleError<ServerTime>(`update time from server`))
         ).subscribe( data =>
-           this.setTimeFromServer(data['serverTime'])
+           this.setTimeFromServer(new Date(data['serverTime']))
         )
   }
 
   updateTimeOnServer(time: Date) {
-        this.http.post<ServerTime>(Environment.api("time"),{serverTime: time.getTime()}).pipe(
+        this.http.post<ServerTime>(Environment.api("time"),{serverTime: time.toISOString()}).pipe(
               tap(_ => this.logger.debug(`updating time from server`)),
               catchError(this.handleError<ServerTime>(`update time from server`))
         ).subscribe( data =>
@@ -124,6 +122,10 @@ export class BetterTimerService {
             this.updateTimeFromServer()
          }
       )
+  }
+
+  setDateFormat(df: string){
+    this.DF = df
   }
 
   /**

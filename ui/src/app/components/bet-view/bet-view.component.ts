@@ -3,10 +3,13 @@ import {MatSnackBar} from '@angular/material';
 
 import range from 'lodash/range';
 import isNumber from 'lodash/isNumber'
+import clone from 'lodash/clone'
 import { BetterdbService } from '../../betterdb.service';
 import { Bet, Result } from '../../model/bet';
 import { BetService } from '../../service/bet.service';
 import { ToastComponent } from '../toast/toast.component';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 
 export interface ViewResult {
@@ -79,6 +82,18 @@ export class BetViewComponent implements OnInit {
     if(error != ""){
        this.snackBar.openFromComponent(ToastComponent, { data: { message: error, level: "error"}})
     }
+    const result: Result = { goalsTeam1: parseInt(this.result.team1.toString()), goalsTeam2: parseInt(this.result.team2.toString()), isSet: true }
+    const bet = clone(this.bet)
+    bet.result = result
+    this.betterdb.saveBet(bet).pipe(
+    //   tap(_ => this.logger.debug(`saving bet ${bet.id} ${bet.result}`)),
+       catchError( (err, bet) => {
+          this.snackBar.openFromComponent(ToastComponent, { data: { message: "could not save bet", level: "error"}})
+          return of({ error: err.message})
+       })
+    ).subscribe( result => {
+         this.snackBar.openFromComponent(ToastComponent, { data: { message: "saved bet", level: "ok"}})
+    })
   }
 
   saveStyleValue() {

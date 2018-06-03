@@ -79,6 +79,9 @@ export class BetterdbService {
      this.init()
   }
 
+  saveBet(bet: Bet){
+     return this.http.post<Bet>(Environment.api(`bet/${bet.id}`), bet)
+  }
 
   init(){
     this.getSettingsForService()
