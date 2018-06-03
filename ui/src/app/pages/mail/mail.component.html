@@ -1,1 +1,19 @@
+<div>
+  <form (ngSubmit)="createMail()" [formGroup]="mailForm">
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="subject" formControlName="subject" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="body" formControlName="body" required>
+    </mat-form-field>
+  </div>
+  <button mat-button type="submit" value="submit" title="submit" [disabled]="mailForm.invalid">
+      save mail
+  </button>
+</form>
+<button mat-button type="submit" value="submit" title="submit" (click)="sendUnsentMail()">
+    send saved mails
+</button>
 
+</div>
