@@ -76,12 +76,12 @@ export class BetterdbService {
   }
 
   constructor(private logger: NGXLogger, private http: HttpClient, private timeService: BetterTimerService) {
-     this.getSettings()
+     this.init()
   }
 
 
   init(){
-    this.getSettings()
+    this.getSettingsForService()
   }
 
   isDebug(): boolean {
@@ -106,6 +106,10 @@ export class BetterdbService {
           tap(_ => this.logger.debug(`fetching teams`)),
           catchError(this.handleError<Team[]>(`getTeams`))
        )
+  }
+
+  getSettings(): BetterSettings {
+     return this.settings
   }
 
   getGames(): Observable<GameWithTeams[]>{
@@ -169,7 +173,11 @@ export class BetterdbService {
        )
   }
 
-  getSettings() {
+  changePasswordRequest(req: {}): Observable<string> {
+    return this.http.get<any>(Environment.api(`changePasswordRequest`))
+  }
+
+  private getSettingsForService() {
     this.http.get<BetterSettings>(Environment.api('settings'))
       .pipe(
         tap(_ => this.logger.debug(`fetching settings`),

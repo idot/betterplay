@@ -33,19 +33,12 @@ export class BetViewComponent implements OnInit {
   result: ViewResult = { 'team1' :  "hidden", 'team2' : "hidden", 'isSet' : false }
 
 
-  change1 = false
-  change2 = false
-
   disabled(): boolean {
       return ! this.enablePoints && this.betService.canBet(this.serverStart, this.bet)
   }
 
-  changed1(){
-    this.change1 = true
-  }
-
-  changed2(){
-    this.change2 = true
+  changed(){
+      this.saveStyleValue()
   }
 
   constructor(private betterdb: BetterdbService, private betService: BetService, public snackBar: MatSnackBar) { }
@@ -83,11 +76,30 @@ export class BetViewComponent implements OnInit {
   saveBet(){
     console.log("saving")
     var error = this.checkSubmission()
-    this.snackBar.openFromComponent(ToastComponent, { data: { message: "blabla", level: "error"}})
-    
-
+    if(error != ""){
+       this.snackBar.openFromComponent(ToastComponent, { data: { message: error, level: "error"}})
+    }
   }
 
+  saveStyleValue() {
+      if(! this.betService.canBet(this.serverStart, this.bet)){
+            return { 'fill' : 'rgba(0, 0, 0, 0)' };
+      }
+    //??  if(! this.enablePoints){
+   //?          return  { 'fill' : 'white' };
+  //??    }
+      if(this.bet.viewable){
+          if(this.betService.canBet(this.serverStart, this.bet)){
+              if(this.checkSubmission() != "") {
+                     return { 'fill' : 'green' };
+              } else {
+                  return { 'fill': 'yellow' };
+              }
+          } else if(! this.bet.result.isSet){
+              return { 'fill': 'red' };
+          }
+      }
+  }
 
 
 }

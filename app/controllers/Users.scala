@@ -184,7 +184,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
        )
    }
    
-  
+   
    def updateCanBet() = withAdmin.async(parse.json){ request =>
        val unj = (request.body \ "username").validate[String]
        val canj = (request.body \ "canBet").validate[Boolean]

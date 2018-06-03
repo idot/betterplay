@@ -19,6 +19,9 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
 import { httpInterceptorProviders } from './http-interceptors'
 import { AppRoutingModule } from './app-routing.module'
 
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+
 import { AppComponent } from './app.component'
 import { LoginComponent } from './pages/login/login.component'
 import { UserBetsComponent } from './pages/user-bets/user-bets.component'
@@ -96,7 +99,8 @@ import { SpecialBetsChartComponent } from './components/special-bets-chart/speci
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    RecaptchaModule.forRoot(), RecaptchaFormsModule
   ],
   entryComponents: [
       ToastComponent

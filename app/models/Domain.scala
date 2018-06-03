@@ -98,7 +98,7 @@ case class FilterSettings(bet: String, game: String, level: String)
 case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, institute: String, 
       showName: Boolean, email: String, passwordHash: String,
 	    isAdmin: Boolean, isRegistrant: Boolean, sendEmail: Boolean, hadInstructions: Boolean, canBet: Boolean,
-			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long],
+			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long], hadDSGVO: Boolean,
 			filterSettings: FilterSettings
 
       ){
@@ -112,7 +112,7 @@ case class UserNoPw(id: Option[Long] = None, username: String, email:String, fir
         showName: Boolean, 
 	      isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, 
         totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int,
-        iconurl: String, icontype: String, registeredBy: Option[Long], rank: Int,
+        iconurl: String, icontype: String, registeredBy: Option[Long], hadDSGVO: Boolean, rank: Int,
         filterSettings: FilterSettings, viewable: Boolean		  
      ){
 }
@@ -132,8 +132,8 @@ object UserNoPwC {
         UserNoPw(user.id, user.username, forName(user.email), forName(user.firstName), forName(user.lastName), user.institute,
            user.showName,
 		       user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
-		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, rank,
-		       user.filterSettings,  viewingUser.map(v => v.id == user.id).getOrElse(false)
+		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, user.hadDSGVO: Boolean, rank,
+		       user.filterSettings, viewingUser.map(v => v.id == user.id).getOrElse(false)
         )  
    }     
 }      

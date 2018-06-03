@@ -47,7 +47,7 @@ class DomainSpec extends Specification { def is =
    def mailGenerator() = {
        val body = "this is {{username}} {{firstname}} {{lastname}} {{username}} end"
        val user = User(None, "theusername", "thefirstname", "thelastname", "theinstitute", 
-        false, "email@email.com", "pwhash", false, false, true, false, true, 0, 0,  "", "", None,
+        false, "email@email.com", "pwhash", false, false, true, false, true, 0, 0,  "", "", None, false, 
 			 FilterSettings("","","")) 
        val message = MailGenerator.personalize("the subject", body, user, 0l)
        message.body === "this is theusername thefirstname thelastname theusername end"

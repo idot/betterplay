@@ -1,11 +1,11 @@
 <div class="betView">
   <mat-form-field class="betInput">
-    <mat-select [(ngModel)]="result.team1" onChange="changed1()" [disabled]="disabled()" ariaLabel="goals team1">
+    <mat-select [(ngModel)]="result.team1" onChange="changed()" [disabled]="disabled()" ariaLabel="goals team1">
       <mat-option *ngFor="let point of points" [value]="point">{{point}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="betInput">
-    <mat-select [(ngModel)]="result.team2" onChange="changed2()" [disabled]="disabled()" ariaLabel="goals team2">
+    <mat-select [(ngModel)]="result.team2" onChange="changed()" [disabled]="disabled()" ariaLabel="goals team2">
       <mat-option *ngFor="let point of points" [value]="point">{{point}}</mat-option>
     </mat-select>
   </mat-form-field>

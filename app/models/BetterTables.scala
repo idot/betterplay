@@ -196,14 +196,14 @@ trait BetterTables {
     def filterBet = column[String]("filterbet")
     def filterGame = column[String]("filtergame")
     def filterLevel = column[String]("filterlevel")
-    
+    def haddsgvo = column[Boolean]("haddsgvo")
     def usernameidx = index("USER_USERNAME_INDEX", (username), unique = true)
 	  def emailidx = index("USER_EMAIL_INDEX", (email), unique = true)
 
        
     def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id?) 
     
-    def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, sendEmail, hadInstructions, canBet, points, pointsSpecial, iconurl, icontype, registerby, filterSettings) <> (User.tupled, User.unapply)
+    def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, sendEmail, hadInstructions, canBet, points, pointsSpecial, iconurl, icontype, registerby, haddsgvo, filterSettings) <> (User.tupled, User.unapply)
     def filterSettings = (filterBet, filterGame, filterLevel) <> (FilterSettings.tupled, FilterSettings.unapply)
     
   }

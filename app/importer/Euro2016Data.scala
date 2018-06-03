@@ -119,7 +119,7 @@ class Euro2016Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
       def uf(name: String, first: String, last: String, email: String, pw: String, admin: Boolean): User = {
           val encrypted = DomainHelper.encrypt(pw)
 		      val (u,t) = DomainHelper.randomGravatarUrl(email)
-          User(None, name, first, last, "", true, email, encrypted, admin, admin, true, admin, true, 0, 0, u, t, None, DomainHelper.filterSettings())
+          User(None, name, first, last, "", true, email, encrypted, admin, admin, true, admin, true, 0, 0, u, t, None, false, DomainHelper.filterSettings())
       }
 	  if(debug){
          val admin = uf("admin", "admin" ,"admin", "admin@admin.com", "admin", true)
