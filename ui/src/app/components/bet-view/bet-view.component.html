@@ -1,17 +1,17 @@
 <div class="betView">
   <mat-form-field class="betInput">
-    <mat-select [(ngModel)]="result.team1" onChange="changed()" [disabled]="disabled()" ariaLabel="goals team1">
+    <mat-select [(ngModel)]="result.team1" [disabled]="disabled()" ariaLabel="goals team1">
       <mat-option *ngFor="let point of points" [value]="point">{{point}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="betInput">
-    <mat-select [(ngModel)]="result.team2" onChange="changed()" [disabled]="disabled()" ariaLabel="goals team2">
+    <mat-select [(ngModel)]="result.team2" [disabled]="disabled()" ariaLabel="goals team2">
       <mat-option *ngFor="let point of points" [value]="point">{{point}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-icon-button (click)="saveBet()" [disabled]="false">
+  <button mat-icon-button (click)="saveBet()" class="sync-icon-{{saveStyleValue()}}" [disabled]="saveStyleValue() == 'disabled'">
     <mat-icon ariaLabel="save bet">sync</mat-icon>
   </button>
-  <span *ngIf="gameresult.isSet" matBadge={{bet.points}} matBadgeOverlap="false" matBadgeSize="large"></span> <!-- originalBet.points -->
+  <!--pan *ngIf="gameresult.isSet" matBadge={{bet.points}} matBadgeOverlap="false" matBadgeSize="large"></span--> <!-- originalBet.points -->
   <!-- just for designing remove because of top span matBadge={{bet.points}} matBadgeOverlap="false" matBadgeSize="large"></span-->
 </div>

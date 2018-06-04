@@ -16,6 +16,7 @@ export class MenubarComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router, private timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
 
+
         ngOnInit() {
         }
 
@@ -29,30 +30,34 @@ export class MenubarComponent implements OnInit {
         }
 
         specialDisabled(){
-          //  return $state.includes("**.specialBets.**")  &&  $stateParams.username !== undefined &&  $stateParams.username == vm.userService.loggedInUser.username;
-          return false
+           return this.router.url.startsWith("/special")
         }
         gamesDisabled(){
-            return false //return $state.includes("games");
+           return this.router.url.startsWith("/games")
         }
         betsDisabled(){
-            return false//
-            ///return $state.includes("user.userBets") &&  $stateParams.username !== undefined &&  $stateParams.username == vm.userService.loggedInUser.username;
+            return this.router.url.startsWith("/bets")
         }
         usersDisabled(){
-              return false//         return $state.includes("users");
+            return this.router.url.startsWith("/users")
         }
         registerDisabled(){
-           return false//  return $state.includes("admin.registerUser");
+           return this.router.url.startsWith("/admin/register")
         }
         statsDisabled(){
-            return false //false return $state.includes("statistics.plots");
+            return this.router.url.startsWith("/statistics")
+        }
+        rulesDisabled(){
+            return this.router.url.startsWith("/rules")
         }
         loginDisabled(){
-            return false //false return $state.includes("login");
+          return this.router.url.startsWith("/login")
+        }
+        passwordDisabled(){
+            return this.router.url.startsWith("/password")
         }
         mailDisabled(){
-            return false
+            return this.router.url.startsWith("/admin/mail")
         }
         settingsDisabled(){
             return false

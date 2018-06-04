@@ -1,27 +1,27 @@
 <div fxLayoutAlign="center end"  fxLayout.gt-xs="row" fxLayout.xs="column">
           <div>
-              <button mat-menu-item  [routerLink]="['/users']">users</button>
+              <button mat-menu-item  [routerLink]="['/users']" [disabled]="usersDisabled()">users</button>
           </div>
           <div>
-              <button mat-menu-item  [routerLink]="['/games']">games</button>
+              <button mat-menu-item  [routerLink]="['/games']" [disabled]="gamesDisabled()">games</button>
           </div>
           <div><!-- TODO combine these into vertica/horizontal -->
               <div>
-                <button mat-menu-item  [routerLink]="['/password']">password</button>
+                <button mat-menu-item  [routerLink]="['/password']" [disabled]="passwordDisabled()">password</button>
               </div>
               <div>
-                  <button mat-menu-item  [routerLink]="['/statistics']">stats</button>
+                  <button mat-menu-item  [routerLink]="['/statistics']" [disabled]="statsDisabled()">stats</button>
               </div>
               <div>
-                 <button mat-menu-item  [routerLink]="['/statistics']">excel</button>
+                 <button mat-menu-item  [routerLink]="['/statistics']" [disabled]="statsDisabled()">excel</button>
               </div>
               <div>
-                <button mat-menu-item  [routerLink]="['/rules']">rules</button>
+                <button mat-menu-item  [routerLink]="['/rules']" [disabled]="rulesDisabled()">rules</button>
               </div>
           </div>
           <div *ngIf="userService.getUser()"  fxLayout.gt-xs="row" fxLayout.xs="column">
                <div>
-                   <a [routerLink]="['/user', userService.getUser().username, 'edit']">
+                   <a [routerLink]="['/user', userService.getUser().username, 'bets']">
                           <img src="{{ userService.getUser().iconurl+'&s=37' }}" alt="{{userService.getUser().username}}"/>
                    </a>
                </div>
