@@ -81,6 +81,7 @@ export class BetViewComponent implements OnInit {
     var error = this.checkSubmission()
     if(error != ""){
        this.snackBar.openFromComponent(ToastComponent, { data: { message: error, level: "error"}})
+       return
     }
     const result: Result = { goalsTeam1: parseInt(this.result.team1.toString()), goalsTeam2: parseInt(this.result.team2.toString()), isSet: true }
     const bet = clone(this.bet)
@@ -88,11 +89,14 @@ export class BetViewComponent implements OnInit {
     this.betterdb.saveBet(bet).pipe(
     //   tap(_ => this.logger.debug(`saving bet ${bet.id} ${bet.result}`)),
        catchError( (err, bet) => {
-          this.snackBar.openFromComponent(ToastComponent, { data: { message: "could not save bet", level: "error"}})
           return of({ error: err.message})
        })
     ).subscribe( result => {
-         this.snackBar.openFromComponent(ToastComponent, { data: { message: "saved bet", level: "ok"}})
+         if(result['error']){
+           this.snackBar.openFromComponent(ToastComponent, { data: { message: `could not save bet\n ${result['error']}`, level: "error"}})
+         }else{
+            this.snackBar.openFromComponent(ToastComponent, { data: { message: "saved bet", level: "ok"}})
+         }
     })
   }
 

@@ -38,9 +38,11 @@ export class BetterTimerService {
   }
 
   private init(){
+     this.logger.error(`timerService init`)
      this.subscription = this.timer.subscribe( tick =>
          this.updateTimeTick()
      )
+     this.updateTimeFromServer()
   }
 
   private updateTimeTick(){

@@ -71,18 +71,25 @@ trait Security { self: AbstractController =>
    
   
   def withOptUser = new ActionRefiner[Request, OptionalUserRequest] with ActionBuilder[OptionalUserRequest, AnyContent]{
-      def refine[A](input: Request[A]) = Future.successful{
-         securityLogger.trace(s"optUserToken: ${input.uri} $AuthTokenHeader ${input.headers.get(AuthTokenHeader)}")
+      def refine[A](input: Request[A]) = {
+         securityLogger.trace(s"optUserToken enter: ${input.uri} $AuthTokenHeader ${input.headers.get(AuthTokenHeader)}")
          val result = (for{
             token <- input.headers.get(AuthTokenHeader)
             userId <- cache.get[Long](token)
           } yield {
+            securityLogger.trace(s"optUserToken from cache: $userId ${input.uri} $AuthTokenHeader ${input.headers.get(AuthTokenHeader)}")
             betterDb.userById(userId).map{ user =>
-                new OptionalUserRequest(Some(user), input)
-            }.recoverWith{ case e: AccessViolationException =>  Future.successful(None) }
-                new OptionalUserRequest(None, input)
-          }).getOrElse( new OptionalUserRequest(None, input) )
-          Right(result)
+                securityLogger.trace(s"optUserToken from db: $userId ${user.username} ${input.uri} $AuthTokenHeader ${input.headers.get(AuthTokenHeader)}")
+                Right(new OptionalUserRequest(Some(user), input))
+            }.recoverWith{ case e: AccessViolationException =>  
+                securityLogger.trace(s"optUserToken no db match: $userId ${input.uri} $AuthTokenHeader ${input.headers.get(AuthTokenHeader)}")
+                Future.successful(Right(new OptionalUserRequest(None, input)))
+            }
+          }).getOrElse{ 
+               securityLogger.trace(s"optUserToken cache: ${input.uri} $AuthTokenHeader ${input.headers.get(AuthTokenHeader)}")
+               Future.successful(Right(new OptionalUserRequest(None, input)))
+          }
+          result
       }          
       override def parser = controllerComponents.parsers.defaultBodyParser
       override def executionContext = controllerComponents.executionContext

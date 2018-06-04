@@ -69,7 +69,9 @@ object DomainHelper {
    * 
    */
    def gameOpen(gameStart: OffsetDateTime, currentTime: OffsetDateTime, closingMinutesToGame: Int): Boolean = {
-       currentTime.isBefore(gameClosingTime(gameStart, closingMinutesToGame))
+       val result =  currentTime.isBefore(gameClosingTime(gameStart, closingMinutesToGame))
+       domainhelperLogger.debug(s"gameOpen: $result $gameStart $currentTime $closingMinutesToGame")
+       result
   }
   
   def gameClosingTime(gameStart: OffsetDateTime, closingMinutesToGame: Int): OffsetDateTime = {
@@ -82,7 +84,6 @@ object DomainHelper {
        }else{
          viewableTime(gameStart, currentTime, viewTimeToStart)
        }
-       domainhelperLogger.trace(s"viewable: $result $viewingUserId $betUserId ${TimeHelper.log(gameStart)} ${TimeHelper.log(currentTime)} $viewTimeToStart")
        result
   }
   
