@@ -21,6 +21,9 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class BetterdbService {
+
+
+
   private settings: BetterSettings = {
     debug: false,
     gamesStarts: new Date(),
@@ -155,6 +158,15 @@ export class BetterdbService {
           catchError(this.handleError<SpecialBetPredictions>(`getSpecialBetStats`))
        )
 
+  }
+
+  setMailPassword(password: string) {
+    const message = { password: password }
+    return this.http.post<{}>(Environment.api(`mailpassword`), message)
+  }
+
+  setTokenPassword(pt){
+      return this.http.post<{}>(Environment.api(`tokenPassword`), pt)
   }
 
   /**

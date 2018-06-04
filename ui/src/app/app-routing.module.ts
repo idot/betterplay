@@ -19,6 +19,7 @@ import { PasswordRequestComponent } from './pages/password-request/password-requ
 import { RulesComponent } from './pages/rules/rules.component';
 import { GameBetsComponent } from './pages/game-bets/game-bets.component';
 import { UsersComponent } from './pages/users/users.component';
+import { PasswordComponent } from './pages/password/password.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,8 @@ const routes: Routes = [
   { path: 'games', component: GamesComponent },
   { path: 'users', component: UsersComponent },
   { path: 'statistics', component: StatisticsComponent},
+  { path: 'completeregistration/:token', component: PasswordComponent},
+  { path: 'changepassword/:token', component: PasswordComponent},
   { path: 'password', component: PasswordRequestComponent},
   { path: 'rules', component: RulesComponent },
   {

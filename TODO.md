@@ -13,15 +13,19 @@ play/backend:
 * validate Excel in DBSpec
 * multiple mail provider; when creating users or afterwards;
 
-
 UI:
 ---
-* check if xls.xlx is returned for excel download and fix
 * create GAMES delayed (i.e. insert the time slot without the teams, then allow changing teams)
 * unit test in javascript for betting component
 * add individual games popup to stats view
-* add sync disabled in bets view
 
-* add page with rules
+IMPORTANT:
+----------
+* Recaptcha
+* complete registration with token completeRegistration/123456789012345678901234567890123456
+* fix urls in mail messages
+
+
+
 
 

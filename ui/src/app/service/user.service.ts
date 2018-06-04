@@ -60,7 +60,8 @@ export class UserService {
    }
 
 
-  /**
+
+ /**
   * set by login component after successful this.login()
   *
   **/

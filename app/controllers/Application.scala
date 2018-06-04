@@ -39,6 +39,7 @@ import models.User
 import models.UserNoPw
 import models.UserNoPwC
 import models.BetterSettings
+import models.MailSettings
 
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 import importer.InitialData
@@ -254,6 +255,9 @@ class Application(env: Environment,
     val insertdata = configuration.getOptional[String]("betterplay.insertdata").getOrElse("")
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
     Logger.info(s"starting up: $debugString")
+    val mailSettings = MailSettings.fromConfig(configuration)
+    BetterSettings.setMailSettings(mailSettings)
+    Logger.info(mailSettings.toString)
     if(debug){
       insertdata match {
         case "test" => new InitialData(betterDb, env).insert(debug)
@@ -263,6 +267,7 @@ class Application(env: Environment,
     }
     scheduleTasks()
   }
+  
   
   
   def scheduleTasks(){

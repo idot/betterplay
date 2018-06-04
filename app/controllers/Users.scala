@@ -106,7 +106,8 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
                val token = BetterSettings.randomToken()
                for{
                  user <- betterDb.insertUser(created, false, false, Some(request.admin))
-                 message = MailGenerator.createUserRegistrationMail(user, token, request.admin)
+                 val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
+                 message = MailGenerator.createUserRegistrationMail(user, token, request.admin, host)
                  inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
                  mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
                } yield {
@@ -216,7 +217,8 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
    /**** reCAPTCHA begin ****/
    def sendPasswordEmail(user: User): Future[Result] = {
        val token = BetterSettings.randomToken()
-       val message = MailGenerator.createPasswordRequestMail(user, token)
+       val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
+       val message = MailGenerator.createPasswordRequestMail(user, token, host)
        for{
           mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
           inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
@@ -279,7 +281,8 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
       val jpass = (request.body \ "password").validate[String]
       jpass match {
         case (pass: JsSuccess[String]) => {
-                      BetterSettings.setMailPassword(pass.value)
+                      val settings = BetterSettings.getMailSettings()
+                      BetterSettings.setMailSettings(settings.copy(password = pass.value))
                       Logger.info(s"set mail password")
                       betterException {
                           mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))

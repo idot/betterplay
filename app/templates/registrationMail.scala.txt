@@ -1,19 +1,19 @@
-@(user: User, registeringUser: String, token: String)
+@(user: User, registeringUser: String, token: String, host: String)
 Dear @{user.firstName}, 
             
-you have been registered by @registeringUser for the Euro2016 betting system.        
+you have been registered by @registeringUser for the FIFA2018 betting system.        
 In order to play you have to activate your account by choosing a password.
 Please click on the link below.
-After this, please don't forget to fill out the special bets, until the start of the EURO 2016 on the 10. Jun.
+After this, please don't forget to fill out the special bets, until the start of the FIFA2018 on the 14. Jun., 16:00!
 
 your username is: @{user.username}
 
-https://ngs.vbcf.ac.at/em2016/#/completeRegistration/@token
+@{host}/completeregistration/@token
 
 The link is valid for 1 time only. You can request another one,
 which is also valid only for 1 time at:
 
-https://ngs.vbcf.ac.at/em2016/#/requestPassword
+@{host}/password
 
 good luck,
 
@@ -23,10 +23,10 @@ your better
 
 PS: If during the game you get "Unauthorized" errors,
 please log in again at: 
-https://ngs.vbcf.ac.at/em2016/#/login
+@{host}/login
 
 If you forgot your password you can request a new one:
-https://ngs.vbcf.ac.at/em2016/#/requestPassword
+@{host}/password
 
 and an e-mail with further instructions will be sent to you.
 

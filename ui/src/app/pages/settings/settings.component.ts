@@ -52,4 +52,12 @@ export class SettingsComponent implements OnInit {
   }
 
 
+  mailpassword = ""
+  setMailPassword(){
+      this.betterdb.setMailPassword(this.mailpassword).subscribe( result =>
+          this.logger.log(result)
+      )
+  }
+
+
 }

@@ -19,16 +19,19 @@ object BetterSettings {
   val DEBUGTOKEN = "123456789012345678901234567890123456"
 	val ZONEID = ZoneId.of("Europe/Vienna")
     
-  private var _mailPassword = "" 
+  private var _mailSettings = MailSettings("","","","", 0, "") 
   private var _debugTime = now()
 	private var _debug = false  
 	
-  def setMailPassword(password: String){
-       _mailPassword = password
+	
+	def setMailSettings(mailSettings: MailSettings){
+      _mailSettings = mailSettings
   }
+	
+  
         
-  def getMailPassword(): String = {
-       _mailPassword
+  def getMailSettings(): MailSettings = {
+       _mailSettings
   }
         
   def debug(): Boolean = _debug

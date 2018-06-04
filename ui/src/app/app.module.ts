@@ -57,6 +57,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UsersComponent } from './pages/users/users.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { SpecialBetsChartComponent } from './components/special-bets-chart/special-bets-chart.component';
+import { PasswordComponent } from './pages/password/password.component';
 
 
 
@@ -90,7 +91,8 @@ import { SpecialBetsChartComponent } from './components/special-bets-chart/speci
     RulesComponent,
     UsersComponent,
     ToastComponent,
-    SpecialBetsChartComponent
+    SpecialBetsChartComponent,
+    PasswordComponent
   ],
   imports: [
     BrowserModule,
