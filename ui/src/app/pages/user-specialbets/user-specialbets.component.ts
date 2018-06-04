@@ -13,6 +13,7 @@ import { UserWithBets } from '../../model/bet';
 import { SpecialBet } from '../../model/specialbet';
 import { BetService } from '../../service/bet.service';
 import { User } from '../../model/user';
+import { BetterTimerService } from '../../better-timer.service';
 
 
 
@@ -32,25 +33,29 @@ export interface Element {
 export class UserSpecialbetsComponent implements OnInit {
   user$: Observable<UserWithBets>
 
-  constructor(private logger: NGXLogger, private route: ActivatedRoute, private router: Router, private betService: BetService, private userService: UserService, private betterdb: BetterdbService) { }
+  constructor(private logger: NGXLogger, private route: ActivatedRoute, private router: Router, private betService: BetService, private userService: UserService, private betterdb: BetterdbService, private timeService: BetterTimerService) { }
 
-  private displayedColumnsView = ['description', 'reward', 'result', 'prediction', 'points']
-  private displayedColumnsBeforeGameStart = ['description', 'reward', 'result', 'setprediction', 'prediction', 'points']
-  private displayedColumnsAfterGameStartAdmin = ['description', 'reward', 'result', 'setresult', 'prediction', 'points']
+  private displayColumnsBeforeGameStartAnon = ['description', 'reward', 'prediction']
+  private displayedColumnsBeforeGameStart = ['description', 'reward', 'prediction', 'setPrediction']
+  private displayedColumnsAfterGameStart = ['description', 'reward', 'result', 'prediction', 'points']
+  private displayedColumnsAfterGameStartAdmin = ['description', 'reward', 'result', 'prediction', 'points']
 
-  displayedColumns = this.displayedColumnsView
+  displayedColumns: string[] = this.displayColumnsBeforeGameStartAnon
+
 
 
 setDisplayedColumns(username: string){
-     if(this.canBet(username)){
-      //  this.logger.debug(`can bet ${username}`)
-        this.displayedColumns = this.displayedColumnsBeforeGameStart
-     } else if(this.userService.isAdmin()){
-      //  this.logger.debug(`cant bet ${username} is admin`)
-        this.displayedColumns = this.displayedColumnsAfterGameStartAdmin
-     } else {
-      //  this.logger.debug(`default ${username}`)
-        this.displayedColumns = this.displayedColumnsView
+     this.displayedColumns = this.displayColumnsBeforeGameStartAnon
+     if(this.userService.isIdentical(username)){
+         if(this.betService.specialBetsOpen()){
+             this.displayedColumns = this.displayedColumnsBeforeGameStart
+         } else {
+            if(this.userService.isAdmin()){
+                this.displayedColumns = this.displayedColumnsAfterGameStartAdmin
+            } else {
+                this.displayedColumns = this.displayedColumnsAfterGameStart
+            }
+         }
      }
 }
 
@@ -78,7 +83,7 @@ ngOnInit() {
            const username = params.get('username')
            this.logger.debug(`extracted ${username}`)
            if(username){
-             this.setDisplayedColumns(username)
+               this.setDisplayedColumns(username)
              return this.betterdb.getBetsForUser(username)
            } else {
              return EMPTY

@@ -19,7 +19,7 @@ export class GameViewComponent implements OnInit {
   private disabled = false
   private DF = this.timeService.getDateFormatter()
 
-  timeLeft = this.betService.timeLeft
+  
 
   gameClosed(): boolean {
     const start = this.gwt.game.serverStart

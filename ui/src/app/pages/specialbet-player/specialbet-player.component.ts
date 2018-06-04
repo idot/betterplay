@@ -35,12 +35,14 @@ export class SpecialbetPlayerComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort
 
+
+
   select(player: Player, specialBet: SpecialBet){
     specialBet.bet.prediction = player.name
     const user = this.userService.getUser()
     if(user){
        if(this.result){
-          this.betterdb.saveSpecialBetResult(user, specialBet)
+          this.betterdb.saveSpecialBetResult(user, specialBet).subscribe()
        } else {
           this.betterdb.saveSpecialBetPrediction(user, specialBet).subscribe( data => {
               const u = <User>data

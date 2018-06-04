@@ -19,49 +19,6 @@ export var single = [
   }
 ];
 
-export var multi = [
-  {
-    "name": "Germany",
-    "series": [
-      {
-        "name": "2010",
-        "value": 7300000
-      },
-      {
-        "name": "2011",
-        "value": 8940000
-      }
-    ]
-  },
-
-  {
-    "name": "USA",
-    "series": [
-      {
-        "name": "2010",
-        "value": 7870000
-      },
-      {
-        "name": "2011",
-        "value": 8270000
-      }
-    ]
-  },
-
-  {
-    "name": "France",
-    "series": [
-      {
-        "name": "2010",
-        "value": 5000002
-      },
-      {
-        "name": "2011",
-        "value": 5800000
-      }
-    ]
-  }
-];
 
 @Component({
   selector: 'special-bets-chart',
@@ -69,30 +26,33 @@ export var multi = [
   styleUrls: ['./special-bets-chart.component.css']
 })
 export class SpecialBetsChartComponent implements OnInit {
-  @Input() betname: string
-//  constructor() { }
+  @Input() betname: string = ''
+
 
   ngOnInit() {
      this.betterdb.getSpecialBetStats(this.betname).subscribe( data => {
-       var template = data.template
-       var grouped = groupBy(data.predictions, function(b) {
+       const template = data.template
+       const grouped = groupBy(data.predictions, function(b) {
                 return b;
-       });
-       var bets = map(grouped, function(v, k) {
-       var item = k.toString() == "" ? "undecided" : k.toString();
-       var arr = { label: item, value: v.length };
-                return arr;
-       });
-       var result = {
+       })
+       const bets = map(grouped, function(v, k) {
+       const item = k.toString() == "" ? "undecided" : k.toString()
+       const arr = { name: item, value: v.length }
+                return arr
+       })
+       const result = { //for D3
               template: template,
               data: [{
                 key: template.name,
                 values: bets
-           }]
-      }})
+           }]}
+       this.single = bets
+      }
+    )
   }
+
     single: any[]
-    multi: any[]
+
 
     view: any[] = [700, 400]
 
@@ -102,19 +62,19 @@ export class SpecialBetsChartComponent implements OnInit {
     gradient = false
     showLegend = false
     showXAxisLabel = true
-    xAxisLabel = 'Country'
+    xAxisLabel = this.betname
     showYAxisLabel = true
-    yAxisLabel = this.betname
+    yAxisLabel = 'count'
 
     colorScheme = {
       domain: ['#377eb8']
     }
 
     constructor(private betterdb: BetterdbService) {
-      Object.assign(this, { single })
+
     }
 
     onSelect(event) {
-      console.log(event);
+
     }
 }

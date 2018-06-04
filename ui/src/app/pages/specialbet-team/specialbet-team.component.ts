@@ -8,11 +8,12 @@ import { NGXLogger } from 'ngx-logger';
 import { UserService } from '../../service/user.service';
 import { BetterdbService } from '../../betterdb.service';
 import { Player, PlayerWithTeam, Team } from '../../model/bet';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource, MatSort, MatSnackBar } from '@angular/material';
 import { ViewChild } from '@angular/core';
 import { User } from '../../model/user';
 import { SpecialBet } from '../../model/specialbet';
 import { BetService } from '../../service/bet.service';
+import { ToastComponent } from '../../components/toast/toast.component';
 
 
 
@@ -28,20 +29,32 @@ export class SpecialbetTeamComponent implements OnInit {
   private betTemplateId: number = 0
   private result: boolean = false
 
-  constructor(private logger: NGXLogger, private userService: UserService, private betterdb: BetterdbService, private betService: BetService,  private route: ActivatedRoute, private router: Router) { }
+  constructor(private logger: NGXLogger,  private snackBar: MatSnackBar, private userService: UserService, private betterdb: BetterdbService, private betService: BetService,  private route: ActivatedRoute, private router: Router) { }
 
   displayedColumns = ['teamflag','country', 'select']
 
   @ViewChild(MatSort) sort: MatSort
+
+
 
   select(team: Team, specialBet: SpecialBet){
     specialBet.bet.prediction = team.name
     const user = this.userService.getUser()
     if(user){
        if(this.result){
-          this.betterdb.saveSpecialBetResult(user, specialBet)
+          this.betterdb.saveSpecialBetResult(user, specialBet).subscribe()
        } else {
-          this.betterdb.saveSpecialBetPrediction(user, specialBet)
+          this.betterdb.saveSpecialBetPrediction(user, specialBet).subscribe(data => {
+              const u = <User>data
+              if(u){
+                this.snackBar.openFromComponent(ToastComponent, { data: { message: "set special bet", level: "ok"}})
+                user.hadInstructions = u.hadInstructions
+                this.logger.debug(`instructions ${user.hadInstructions}`)
+                this.router.navigate([`user/${user.username}/special`])
+              } else {
+                this.snackBar.openFromComponent(ToastComponent, { data: { message: data['error'], level: "error"}})
+              }
+          })
        }
     }
     const un = user && user.username || ""

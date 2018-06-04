@@ -22,6 +22,10 @@ export class BetService {
      return ! this.betClosed(this.betterdb.getGamesStart())
   }
 
+  specialBetsTimeLeft(): string {
+     return this.timeLeft(this.betterdb.getGamesStart())
+  }
+
   betClosed(serverStart: Date): boolean {
       return this.diffToStart(serverStart) < 0
   }
@@ -41,8 +45,11 @@ export class BetService {
      //boolean true add in/ago
      //negative values = ago
      //positive values = in
-     const s = moment.duration(this.diffToStart(serverStart), "milliseconds").humanize(false)
-     return s
+     const diff = this.diffToStart(serverStart)
+     const adiff = Math.abs(diff)
+     const s = moment.duration(adiff, "milliseconds").humanize(false)
+     const sd = diff < 0 ? `${s} ago` : `in ${s}`
+     return sd
   }
 
 }
