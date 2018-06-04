@@ -69,11 +69,11 @@ export class PasswordComponent implements OnInit {
   }
 
   submit(){
-    const complete = this.router.url.startsWith("completeregistration")
+    const complete = this.router.url.startsWith("/complete")
 
-    const pw = this.editForm.get("password")
+    const pw = this.editForm.value['passwords']['password']
     if(pw){
-        const pt = {  password: pw.value,
+        const pt = {  password: pw,
                       token: this.token
                    }
 
@@ -92,7 +92,8 @@ export class PasswordComponent implements OnInit {
                    this.snackBar.openFromComponent(ToastComponent, { data: { message: `welcome ${user.username} and good luck!!`, level: "ok"}})
                    this.router.navigate([`/user/${user.username}/special`])
                  } else {
-
+                   this.snackBar.openFromComponent(ToastComponent, { data: { message: `you changed your password`, level: "ok"}})
+                   this.router.navigate([`/user/${user.username}/bets`])
                  }
              } else {
                  const message = complete ? "could not complete registration" : "could not change password"

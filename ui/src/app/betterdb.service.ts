@@ -166,7 +166,7 @@ export class BetterdbService {
   }
 
   setTokenPassword(pt){
-      return this.http.post<{}>(Environment.api(`tokenPassword`), pt)
+      return this.http.put<{}>(Environment.api(`tokenPassword`), pt)
   }
 
   /**
@@ -261,7 +261,7 @@ export class BetterdbService {
            // The backend returned an unsuccessful response code.
            // The response body may contain clues as to what went wrong,
            this.logger.error(`backend returned code ${error.status}`, `body was: ${error.error}`)
-           if(error.message && error.message.indexOf("Unique index or primary key violation") >= 0){
+           if(error.error['error'] && error.error['error'].indexOf("Unique index or primary key violation") >= 0){
               return of({ error: 'could not create', type: 'not unique' })
            } else {
               return of({ error: error.message, type: 'unknown' })
