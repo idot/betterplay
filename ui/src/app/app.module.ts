@@ -9,10 +9,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
 import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material'
+import {MatTooltipModule} from '@angular/material/tooltip'
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+//import { MaterialFileInputModule } from 'ngx-material-file-input'
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
 
@@ -95,17 +97,20 @@ import { SpecialBetsChartComponent } from './components/special-bets-chart/speci
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule, ReactiveFormsModule, FlexLayoutModule,
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule,
-    MatTableModule, MatSortModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule,
+    MatTableModule, MatSortModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule, MatTooltipModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgxChartsModule,
+    NgxChartsModule,//MaterialFileInputModule,
     RecaptchaModule.forRoot(), RecaptchaFormsModule
   ],
   entryComponents: [
       ToastComponent
   ],
-  providers: [httpInterceptorProviders, UserService, BetterdbService, BetService, BetterTimerService, {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }}],
+  providers: [httpInterceptorProviders, UserService, BetterdbService, BetService, BetterTimerService,
+       {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }}
+
+  ],
   bootstrap: [AppComponent]
 })
 

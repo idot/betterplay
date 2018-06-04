@@ -12,8 +12,7 @@ import { BetterSettings } from './model/settings';
 import { BetterTimerService } from './better-timer.service';
 import { SpecialBet, SpBet, SpecialBetPredictions } from './model/specialbet';
 import { HttpErrorResponse } from '@angular/common/http';
-
-
+import { HttpHeaders } from '@angular/common/http';
 
 
 
@@ -203,6 +202,22 @@ export class BetterdbService {
         this.settings = s
       })
   }
+
+  getExcel(loggedin: boolean){
+    var exUrl =  loggedin ? 'statistics/excel' : 'statistics/excelAnon'
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'my-auth-token'
+      })
+    }
+    return this.http.get(Environment.api(exUrl), {
+      responseType: "blob",
+      observe: 'response'
+    })
+  }
+
+
 
 
   badgecolour(rank): string {

@@ -1,16 +1,17 @@
 <div>
     <div layout="row">
-         <button mat-button type="submit" value="excel" title="excel" ng-click="vm.getExcel()">
+         <button mat-button type="submit" value="excel" title="excel" (click)="getExcel()"><!-- matTooltip="downloads excel file with crypto name and content. can be verified if unchanged."-->
            excel
          </button>
-         <div>
-             verify unchanged excel file:
-             <button type="button" md-button (click)="excelUpload.click()">upload</button>
-             <input hidden type="file" #excelUpload (change)="upload($event)"/>
-         </div>
+         <!--div>
+             verify unchanged and not renamed excel file
+             <mat-form-field>
+                <ngx-mat-file-input formControlName="basicfile" placeholder="Basic Input" multiple=false value="uploadfile"></ngx-mat-file-input>
+             </mat-form-field>
+         </div-->
      </div>
 </div>
-<div>
+<div> 
 
   <special-bets-chart betname="champion"></special-bets-chart>
   <special-bets-chart betname="semifinalist"></special-bets-chart>
