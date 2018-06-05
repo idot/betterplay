@@ -19,9 +19,10 @@ UI:
 * unit test in javascript for betting component
 * add individual games popup to stats view
 
+
+
 IMPORTANT:
 ----------
-* Recaptcha
 
 
 
