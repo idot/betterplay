@@ -50,7 +50,7 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.2-1003-jdbc4",
   "org.scalaz" %% "scalaz-core" % "7.2.22",
   "org.jasypt" % "jasypt" % "1.9.2",
-  "commons-io" % "commons-io" % "2.4",
+  "commons-io" % "commons-io" % "2.6",
   "com.andersen-gott" %% "scravatar" % "1.0.3",  
   "org.apache.poi" % "poi" % "3.14",
   "org.apache.poi" % "poi-ooxml" % "3.14",

@@ -43,7 +43,7 @@ import models.MailSettings
 
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 import importer.InitialData
-import importer.Euro2016Data
+import importer.{Euro2016Data,Fifa2018Data}
 
 
 
@@ -262,6 +262,7 @@ class Application(env: Environment,
       insertdata match {
         case "test" => new InitialData(betterDb, env).insert(debug)
         case "euro2016" => new Euro2016Data(betterDb, env).insert(false)
+        case "fifa2018" => new Fifa2018Data(betterDb, env).insert(false)
         case _ => Logger.info("not inserting any data!!!")//do nothing
       }
     }

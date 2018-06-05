@@ -47,6 +47,7 @@
   <logger name="mail" level="DEBUG"/>
   <logger name="work" level="DEBUG"/>
   <logger name="domainhelper" level="DEBUG"/>
+  <logger name="betterdb" level="DEBUG"/>
  
   <root level="WARN">
     <appender-ref ref="ASYNCFILE" />

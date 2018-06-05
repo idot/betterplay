@@ -26,7 +26,10 @@ object InitialDataX {
   }
 
   def toLines(file: String, environment: Environment): Seq[String] = {
-    val is = environment.classLoader.getResourceAsStream("data/" + file)
+    val path = "data/" + file
+  //  System.err.println(s"parsing from path $path")
+    val is = environment.classLoader.getResourceAsStream(path)
+  //  System.err.println(s"streamed resource from path $path")
     val string = IOUtils.toString(is, "UTF-8")
     val li = string.split("\n").drop(1)
     is.close

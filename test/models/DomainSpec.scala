@@ -27,9 +27,9 @@ class DomainSpec extends Specification { def is =
 	}
 
   def testMail() = {//disabled this test is just for debugging of mail settings
-    BetterSettings.setMailPassword("")
-    val send = MailMessages.sendMail("subject", "body",  MailMessages.address("ido.tamir@vbcf.ac.at", "Ido Tamir"), true)
-    send === "sent" 
+  //  BetterSettings.setMailPassword("")
+  //  val send = MailMessages.sendMail("subject", "body",  MailMessages.address("ido.tamir@vbcf.ac.at", "Ido Tamir"), true)
+  //  send === "sent" 
     
   }
 

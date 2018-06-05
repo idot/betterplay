@@ -30,7 +30,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
   import dbConfig._
   import profile.api._
   
-   val betterDBLogger = Logger("betterDBLogger")
+   val betterDBLogger = Logger("betterdb")
    
    def allTeams(): Future[Seq[Team]] = {
        db.run(teams.result)
