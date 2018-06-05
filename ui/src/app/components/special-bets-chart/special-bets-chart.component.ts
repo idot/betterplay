@@ -26,7 +26,7 @@ export var single = [
   styleUrls: ['./special-bets-chart.component.css']
 })
 export class SpecialBetsChartComponent implements OnInit {
-  @Input() betname: string = ''
+  @Input() betname
 
 
   ngOnInit() {
@@ -47,6 +47,7 @@ export class SpecialBetsChartComponent implements OnInit {
                 values: bets
            }]}
        this.single = bets
+       this.xAxisLabel = this.betname
       }
     )
   }

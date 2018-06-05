@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material'
 import {MatTooltipModule} from '@angular/material/tooltip'
 import {MatTableModule} from '@angular/material/table';
@@ -110,7 +112,8 @@ export function loadSettings(betterdb: BetterdbService){
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule, ReactiveFormsModule, FlexLayoutModule,
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule,
-    MatTableModule, MatSortModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule, MatTooltipModule,
+    MatTableModule, MatSortModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule,
+    MatTooltipModule, MatMenuModule, MatSidenavModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,

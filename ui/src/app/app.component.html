@@ -1,8 +1,18 @@
-<div style="text-align:center">
-  <menu>
+<div style="height: 100%;">
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [(opened)]="open">
+    <menu style="padding-left: 3px; width: 110px;">
+    </menu>
+  </mat-sidenav>
 
-  </menu>
-
+  <mat-sidenav-content style="height: 800px;">
+  <div>
+    <button mat-fab (click)="toggleOpen()">Menu</button>
+  </div>
   <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
 
 </div>

@@ -4,6 +4,17 @@
 
 @import "~flag-icon-css/css/flag-icon.css";
 
+html, body {
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+}
+
+app-root { 
+  min-height: 100%; 
+  display: flex;
+}
+
 .betterlist {
   list-style-type: none;
   padding-left: 0px;

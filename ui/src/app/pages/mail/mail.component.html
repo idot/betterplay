@@ -2,10 +2,11 @@
   <form (ngSubmit)="createMail()" [formGroup]="mailForm">
   <div>
     <mat-form-field>
-      <input matInput placeholder="subject" formControlName="subject" required>
+      <input matInput placeholder="subject" formControlName="subject" required></input>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="body" formControlName="body" required>
+      <!--does not compile: textarea matInput placeholder="body" formControlName="body" required></textarea-->
+      <input matInput placeholder="body" formControlName="body" required></input>
     </mat-form-field>
   </div>
   <button mat-button type="submit" value="submit" title="submit" [disabled]="mailForm.invalid">
