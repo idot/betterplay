@@ -4,7 +4,7 @@
 
   <ul class="betterlist">
      <li *ngFor="let user of users; let i = index">
-       <div  fxLayout="row" class="item-{{i | evenodd }}" style="width:600px; height: 7.5ex;" fxLayoutAlign="space-between center">
+       <div fxLayout.lt-sm="column" fxLayout.gt-sm="row" class="item-{{i | evenodd }}" fxFlex.lt-sm="320px" fxFlex.gt-sm="600px" style="height: 7.5ex" fxLayoutAlign="space-between center">
           <user-view [user]=user [full]=true></user-view>
        </div>
      </li>

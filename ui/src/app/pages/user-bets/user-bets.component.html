@@ -4,7 +4,7 @@
 
   <ul class="betterlist">
      <li *ngFor="let gameBet of user.gameBets; let i = index">
-       <div fxLayout="row" class="item-{{i | evenodd }}" style="width:600px;" fxLayoutAlign="space-between center">
+       <div fxLayout.lt-sm="column" fxLayout.gt-sm="row" class="item-{{i | evenodd }}" fxFlex.lt-sm="320px" fxFlex.gt-sm="600px" fxLayoutAlign="space-between center">
          <game-view [gwt]=gameBet.game [number]=true></game-view>
          <bet-view [bet]=gameBet.bet [serverStart]=gameBet.game.game.serverStart [gameresult]=gameBet.game.game.result></bet-view>
        </div>

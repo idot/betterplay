@@ -6,6 +6,7 @@
 
 .betterlist {
   list-style-type: none;
+  padding-left: 0px;
 }
 
 .item-odd {

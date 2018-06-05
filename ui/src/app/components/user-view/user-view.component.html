@@ -1,5 +1,5 @@
 
-<div class="userView" style="width: {{width}};" fxLayout="row" fxLayoutAlign="space-between center">
+<div class="userView" [ngStyle]="{ 'width': width }" fxLayout="row" fxLayoutAlign="space-between center">
   <div fxLayout="row">
     <a [routerLink]="['/user/', user.username, 'bets']">
       <img src="{{ user.iconurl+'&s=25' }}" alt="{{user.username}}" class="md-avatar" *ngIf="user.iconurl" style="margin: 0px 2px 0px 10px; border-radius: 50%;"/>

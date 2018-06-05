@@ -31,10 +31,10 @@ export class LoggingInterceptor implements HttpInterceptor {
         finalize(() => {
           const elapsed = Date.now() - started;
           const msg = `${req.method} "${req.urlWithParams}" ${ok} in ${elapsed} ms.`;
-          if(ok == "ok"){
-              this.logger.trace(msg);
-          }else{
+          if(ok == "failed"){
               this.logger.error(msg);
+          }else{
+              this.logger.trace(msg);
           }
         })
       );

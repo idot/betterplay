@@ -53,8 +53,7 @@ export class SpecialBetsChartComponent implements OnInit {
 
     single: any[]
 
-
-    view: any[] = [700, 400]
+    view: any[] = [320, 200]
 
     // options
     showXAxis = true

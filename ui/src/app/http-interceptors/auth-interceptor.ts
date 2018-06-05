@@ -17,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private logger: NGXLogger, private userService: UserService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    this.logger.error("intercepting XxXXXXXXXXXXXXX");
+    //this.logger.error("intercepting XxXXXXXXXXXXXXX");
 
     const authToken = localStorage.getItem(Environment.AUTHTOKEN);
     if(authToken){
