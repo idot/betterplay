@@ -58,8 +58,18 @@ import { UsersComponent } from './pages/users/users.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { SpecialBetsChartComponent } from './components/special-bets-chart/special-bets-chart.component';
 import { PasswordComponent } from './pages/password/password.component';
+import { APP_INITIALIZER } from '@angular/core';
+import { Pipe } from '@angular/core';
+import { EvenoddPipe } from './pipes/evenodd.pipe';
 
 
+
+/**
+* initialise betterdb with settings at startup APP_INITIALIZER
+*/
+export function loadSettings(betterdb: BetterdbService){
+    return () => betterdb.loadSettings()
+}
 
 //enable server side logging with serverLogginUrl
 //LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}),
@@ -92,7 +102,8 @@ import { PasswordComponent } from './pages/password/password.component';
     UsersComponent,
     ToastComponent,
     SpecialBetsChartComponent,
-    PasswordComponent
+    PasswordComponent,
+    EvenoddPipe
   ],
   imports: [
     BrowserModule,
@@ -109,9 +120,10 @@ import { PasswordComponent } from './pages/password/password.component';
   entryComponents: [
       ToastComponent
   ],
-  providers: [httpInterceptorProviders, UserService, BetterdbService, BetService, BetterTimerService,
-       {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }}
-
+  providers: [httpInterceptorProviders, UserService, BetterTimerService, BetterdbService,
+       {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }},
+       {provide: APP_INITIALIZER, deps: [BetterdbService], multi: true, useFactory: loadSettings },
+       BetService
   ],
   bootstrap: [AppComponent]
 })

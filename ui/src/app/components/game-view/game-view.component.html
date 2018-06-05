@@ -1,16 +1,16 @@
-<div class="gameView">
-    <div>
+<div class="gameView" fxLayout="row" fxLayoutAlign="start">
+         <div *ngIf="number" style="padding-right: 6px;">{{gwt.game.nr}}</div>
+
          <a [routerLink]="['/game', gwt.game.nr, 'bets']">
-           <span class="flag-icon flag-icon-{{gwt.team1.short2}}"></span><span class="flag-icon flag-icon-{{gwt.team2.short2}}"></span>  {{gwt.team1.name}} : {{gwt.team2.name}}
+           <div style="padding-right: 2px;" class="flag-icon flag-icon-{{gwt.team1.short2}}"></div><div style="padding-right: 4px;" class="flag-icon flag-icon-{{gwt.team2.short2}}"></div>  {{gwt.team1.name}} : {{gwt.team2.name}}
          </a>
-         <mat-icon class="material-icons md-20 red" *ngIf="gwt.game.nextGame">whatshot</mat-icon>
-         <span *ngIf="! gameClosed()">  {{gwt.game.serverStart | date : DF}}, {{betService.timeLeft(gwt.game.serverStart)}}</span>
-         <span *ngIf="gameClosed() && ! resultSet">closed, no result</span>
-         <span *ngIf="gameClosed() && resultSet">{{prettyResult()}}</span>
+         <mat-icon style="padding-left: 4px;" class="material-icons md-20 red" *ngIf="gwt.game.nextGame">whatshot</mat-icon>
+         <div style="padding-left: 6px;"  *ngIf="! gameClosed()">  {{gwt.game.serverStart | date : DF}}, {{betService.timeLeft(gwt.game.serverStart)}}</div>
+         <div style="padding-left: 6px;"  *ngIf="gameClosed() && ! resultSet">closed, no result</div>
+         <div style="padding-left: 6px;"  *ngIf="gameClosed() && resultSet">{{prettyResult()}}</div>
          <!--game-bets-popup gwt="gwt"></game-bets-popup-->
          <!--span *ngIf="expand" matBadge={{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}>&nbsp&nbsp{{gwt.level.name}}</span-->
-         <button *ngIf="allowEdit()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game', gwt.game.nr, 'edit']">
+         <!--button *ngIf="allowEdit()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game', gwt.game.nr, 'edit']">
               set result
-         </button>
-     </div>
+         </button-->
 </div>

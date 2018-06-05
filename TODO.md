@@ -22,8 +22,6 @@ UI:
 IMPORTANT:
 ----------
 * Recaptcha
-* complete registration with token completeRegistration/123456789012345678901234567890123456
-* fix urls in mail messages
 
 
 

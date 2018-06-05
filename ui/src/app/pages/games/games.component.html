@@ -1,10 +1,12 @@
 <div *ngIf="games$ | async as gwts; else loading">
 
 
-  <h1>Games</h1>
-  <ul>
+
+  <ul class="betterlist">
      <li *ngFor="let gwt of gwts; let i = index">
-       {{i}} <game-view [gwt]=gwt [allowedit]=false [fullcontent]=true></game-view>
+       <div fxLayout="row" class="item-{{i | evenodd }}" style="width: 400px; height: 7.5ex;" fxLayoutAlign="space-between center">
+         <game-view [gwt]=gwt [number]=true [allowedit]=false [fullcontent]=true></game-view>
+       </div>
      </li>
   </ul>
 </div>

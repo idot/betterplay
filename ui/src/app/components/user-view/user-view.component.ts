@@ -12,16 +12,18 @@ import { User } from '../../model/user';
 })
 export class UserViewComponent implements OnInit {
   @Input() user: User
-  @Input() full: Boolean 
+  @Input() full: Boolean
 
   constructor(private betterdb: BetterdbService, private timerService: BetterTimerService) {}
 
+  width: string = "300px"
 
   badgecolour(): string {
       return this.betterdb.badgecolour(this.user.rank)
   }
 
   ngOnInit() {
+    this.width = this.full ? "300px" : "150px"
   }
 
 }

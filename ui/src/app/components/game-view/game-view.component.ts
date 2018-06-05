@@ -15,11 +15,12 @@ export class GameViewComponent implements OnInit {
   @Input() gwt: GameWithTeams
   @Input() allowedit: boolean
   @Input() fullcontent: boolean
+  @Input() number: boolean
 
   private disabled = false
   private DF = this.timeService.getDateFormatter()
 
-  
+
 
   gameClosed(): boolean {
     const start = this.gwt.game.serverStart

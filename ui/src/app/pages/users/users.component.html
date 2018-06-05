@@ -1,10 +1,12 @@
 <div *ngIf="users$ | async as users; else loading">
 
 
-  <h1>Users</h1>
-  <ul>
+
+  <ul class="betterlist">
      <li *ngFor="let user of users; let i = index">
-       {{i}} <user-view [user]=user [full]=true></user-view>
+       <div  fxLayout="row" class="item-{{i | evenodd }}" style="width:600px; height: 7.5ex;" fxLayoutAlign="space-between center">
+          <user-view [user]=user [full]=true></user-view>
+       </div>
      </li>
   </ul>
 </div>

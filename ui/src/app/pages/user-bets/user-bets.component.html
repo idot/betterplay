@@ -2,10 +2,12 @@
   <user-view [user]=user.user [full]=true>
   </user-view>
 
-  <h1>Bets</h1>
-  <ul>
+  <ul class="betterlist">
      <li *ngFor="let gameBet of user.gameBets; let i = index">
-       {{i}} <game-view [gwt]=gameBet.game ></game-view> <bet-view [bet]=gameBet.bet [serverStart]=gameBet.game.game.serverStart [gameresult]=gameBet.game.game.result></bet-view>
+       <div fxLayout="row" class="item-{{i | evenodd }}" style="width:600px;" fxLayoutAlign="space-between center">
+         <game-view [gwt]=gameBet.game [number]=true></game-view>
+         <bet-view [bet]=gameBet.bet [serverStart]=gameBet.game.game.serverStart [gameresult]=gameBet.game.game.result></bet-view>
+       </div>
      </li>
   </ul>
 </div>

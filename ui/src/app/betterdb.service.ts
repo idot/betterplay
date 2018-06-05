@@ -196,10 +196,13 @@ export class BetterdbService {
   }
 
   changePasswordRequest(req: {}): Observable<string> {
-    return this.http.get<any>(Environment.api(`changePasswordRequest`))
+    return this.http.post<any>(Environment.api(`changePasswordRequest`), req)
   }
 
-  private getSettingsForService() {
+ /**
+ * it was there and just to make sure
+ */
+  getSettingsForService() {
     this.http.get<BetterSettings>(Environment.api('settings'))
       .pipe(
         tap(_ => this.logger.debug(`fetching settings`),
@@ -214,6 +217,25 @@ export class BetterdbService {
         this.settings = s
       })
   }
+
+/**
+* for APP_INITIALIZER the function must return a promise
+**/
+  loadSettings(): Promise<any> {
+    return new Promise((resolve, reject) => {
+        this.http.get<BetterSettings>(Environment.api('settings'))
+        .toPromise().then( success => {
+            success.gamesStarts = new Date(success.gamesStarts)
+            this.settings = success
+        resolve()
+        },
+                           error => {
+        reject("problems with loading")
+        }
+      )
+    })
+  }
+
 
   getExcel(loggedin: boolean){
     var exUrl =  loggedin ? 'statistics/excel' : 'statistics/excelAnon'

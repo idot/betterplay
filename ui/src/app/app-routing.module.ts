@@ -47,7 +47,7 @@ const routes: Routes = [
   { path: 'rules', component: RulesComponent },
   {
     path: '**',  //TODO: redirect to login if not loggedin and wrong, otherwise users home page
-    redirectTo: '/',
+    redirectTo: '/games',
     pathMatch: 'full'
   }
 ];

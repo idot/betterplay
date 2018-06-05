@@ -4,5 +4,16 @@
 
 @import "~flag-icon-css/css/flag-icon.css";
 
+.betterlist {
+  list-style-type: none;
+}
+
+.item-odd {
+  background: white;
+}
+
+.item-even {
+  background-color: #e6f2ff;
+}
 
 
