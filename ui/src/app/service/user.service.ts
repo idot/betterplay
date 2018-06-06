@@ -73,6 +73,7 @@ export class UserService {
   }
 
   logout() {
+      this.http.post<any>(Environment.api("logout"), {}).subscribe()
       localStorage.removeItem(Environment.AUTHTOKEN)
       this.authtoken = ""
       this.user = null

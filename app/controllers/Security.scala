@@ -42,15 +42,14 @@ trait Security { self: AbstractController =>
   val betterDb: BetterDb
   val cache: SyncCacheApi //TODO switch to AsyncCacheApi
   
-  val AuthTokenHeader = "X-AUTH-TOKEN"   //TODO: change to X-XSRF-TOKEN
-  val AuthTokenCookieKey = "AUTH-TOKEN"   //TODO: change to XSRF-TOKEN
+  val AuthTokenHeader = "X-AUTH-TOKEN"  
   val AuthTokenUrlKey = "auth"
 
   val securityLogger = Logger("security")
   
   implicit val ec = defaultExecutionContext  
   
-  //TODO: check if cookie is necessary  
+ 
   def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest, AnyContent]{
       def refine[A](input: Request[A]) = Future.successful{
           val maybeToken = input.headers.get(AuthTokenHeader)
