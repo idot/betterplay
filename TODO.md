@@ -23,8 +23,9 @@ UI:
 
 IMPORTANT:
 ----------
-
-
+* check cookie, multi-tabs, reload and login
+* Filter component
+* upload component
 
 
 

@@ -31,7 +31,6 @@
           <div class="menubutton">
             <button mat-raised-button  [routerLink]="['/rules']" [disabled]="rulesDisabled()">rules</button>
           </div>
-
           <div *ngIf="userService.isAdmin()">
                  <div class="menubutton">
                      <button mat-raised-button  [routerLink]="['/admin/register']" [disabled]="registerDisabled()">
@@ -49,17 +48,17 @@
                      </button>
                  </div>
             </div>
-            <div class="menubutton">
-                <button mat-raised-button  type="submit" value="submit"  title="logout" (click)="logout()">
-                       logout
-                </button>
-            </div>
             <div *ngIf="! userService.getUser()">
               <div class="menubutton">
                  <button mat-raised-button  [routerLink]="['/login']" [disabled]="loginDisabled()">
                     login
                 </button>
                </div>
+            </div>
+            <div *ngIf="userService.getUser()">
+              <div class="menubutton">
+                  <button mat-raised-button  type="submit" value="submit"  title="logout" (click)="logout()">logout</button>
+              </div>
             </div>
           <div class="menubutton"> <!-- time is always here -->
             <button mat-raised-button  type="submit" [disabled]=true>
