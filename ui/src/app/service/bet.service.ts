@@ -6,13 +6,16 @@ import { UserService } from '../service/user.service';
 import { BetterTimerService } from '../better-timer.service';
 import { Bet } from '../model/bet';
 import { BetterdbService } from '../betterdb.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BetService {
 
-  constructor(private userService: UserService, private timeService: BetterTimerService, private betterdb: BetterdbService) {}
+  constructor(private logger: NGXLogger, private userService: UserService, private timeService: BetterTimerService, private betterdb: BetterdbService) {
+       logger.info("betterdb service ctor")
+  }
 
   //TODO:: property of Game!!
   //time before game start that bet closes

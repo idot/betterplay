@@ -14,6 +14,7 @@ import akka.pattern.AskTimeoutException
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 import models.BetterDb
 import models.User
+import scala.concurrent.duration._
 
 /***
  * security based on 
@@ -43,13 +44,20 @@ trait Security { self: AbstractController =>
   val cache: SyncCacheApi //TODO switch to AsyncCacheApi
   
   val AuthTokenHeader = "X-AUTH-TOKEN"  
-  val AuthTokenUrlKey = "auth"
+
 
   val securityLogger = Logger("security")
   
   implicit val ec = defaultExecutionContext  
   
+  def deleteToken(token: String){
+      cache.remove(token)
+  }
  
+  def setToken(token: String, id: Long, expiration: Int){
+      cache.set(token, id, expiration minutes)
+  }
+  
   def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest, AnyContent]{
       def refine[A](input: Request[A]) = Future.successful{
           val maybeToken = input.headers.get(AuthTokenHeader)
@@ -61,7 +69,7 @@ trait Security { self: AbstractController =>
               }
           }.toRight{
             securityLogger.trace(s"hasToken: didn't find token: ${input.uri} $AuthTokenHeader $maybeToken UNAUTHORIZED")
-            Unauthorized
+            Unauthorized(Json.obj("error" -> "session expired. please log in again"))
           }
       }
       override def parser = controllerComponents.parsers.defaultBodyParser
@@ -104,7 +112,7 @@ trait Security { self: AbstractController =>
             }}
             .recoverWith{ case e: AccessViolationException =>
                  securityLogger.trace(s"withUser ${input.uri} could not find user in db: ${input.userId} ${e.getMessage}")
-                 Future.successful(Left(Unauthorized(e.getMessage))) 
+                 Future.successful(Left(Unauthorized(Json.obj("error" -> "user not in database")))) 
             }
       }
       override def executionContext = controllerComponents.executionContext
@@ -119,11 +127,11 @@ trait Security { self: AbstractController =>
                       Right(new AdminRequest(user, input))
                   } else {
                       securityLogger.trace(s"withAdmin ${input.uri} could find user in db: ${input.userId} but noadmin")
-                      Left(Unauthorized("you must be admin"))
+                      Left(Unauthorized(Json.obj("error" -> "must be admin for action")))
                   }
             }.recoverWith{ case e: AccessViolationException =>
                  securityLogger.trace(s"withAdmin ${input.uri} could not find user in db: ${input.userId} ${e.getMessage}")
-                 Future.successful(Left(Unauthorized(e.getMessage))) 
+                 Future.successful(Left(Unauthorized(Json.obj("error" -> "user not in database")))) 
             }
       }
       override def executionContext = controllerComponents.executionContext

@@ -22,7 +22,10 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class BetterdbService {
 
-
+  constructor(private logger: NGXLogger, private http: HttpClient, private timeService: BetterTimerService) {
+     logger.info("betterdb service ctor")
+     this.init()
+  }
 
   private settings: BetterSettings = {
     debug: false,
@@ -77,9 +80,7 @@ export class BetterdbService {
     )
   }
 
-  constructor(private logger: NGXLogger, private http: HttpClient, private timeService: BetterTimerService) {
-     this.init()
-  }
+
 
   saveBet(bet: Bet){
      return this.http.post<Bet>(Environment.api(`bet/${bet.id}`), bet)
@@ -227,10 +228,11 @@ export class BetterdbService {
         .toPromise().then( success => {
             success.gamesStarts = new Date(success.gamesStarts)
             this.settings = success
-        resolve()
+            this.logger.info('loaded settings')
+            resolve()
         },
-                           error => {
-        reject("problems with loading")
+       error => {
+          resolve("problems with loading")
         }
       )
     })
@@ -275,15 +277,15 @@ export class BetterdbService {
    */
    handleSpecificError(operation: string) {
       return (error: HttpErrorResponse): Observable<ErrorMessage> => {
-           if (error.error instanceof ErrorEvent) {
+           if (error instanceof ErrorEvent) {
            // A client-side or network error occurred. Handle it accordingly.
-           this.logger.error(`${operation} failed client side: ${error.error.message}`)
-           return of({ error: error.error.message, type: 'unknown' })
+           this.logger.error(`${operation} failed client side: ${error.message}`)
+           return of({ error: error.message, type: 'unknown' })
        } else {
            // The backend returned an unsuccessful response code.
            // The response body may contain clues as to what went wrong,
            this.logger.error(`backend returned code ${error.status}`, `body was: ${error.error}`)
-           if(error.error['error'] && error.error['error'].indexOf("Unique index or primary key violation") >= 0){
+           if(error['error'] && error['error'].indexOf("Unique index or primary key violation") >= 0){
               return of({ error: 'could not create', type: 'not unique' })
            } else {
               return of({ error: error.message, type: 'unknown' })

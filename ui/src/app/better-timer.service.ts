@@ -34,11 +34,11 @@ export class BetterTimerService {
   private subscription: Subscription;
 
   constructor(private logger: NGXLogger, private http: HttpClient) {
+     logger.info('timer service ctor')
      this.init()
   }
 
   private init(){
-     this.logger.error(`timerService init`)
      this.subscription = this.timer.subscribe( tick =>
          this.updateTimeTick()
      )

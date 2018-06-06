@@ -19,11 +19,11 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
 
 
-    const authToken = localStorage.getItem(Environment.AUTHTOKEN);
+    const authToken = localStorage.getItem(Environment.XAUTHTOKEN)
     if(authToken){
       const authReq = req.clone({
-        headers: req.headers.set(Environment.AUTHTOKEN, authToken)
-                             .set(Environment.XAUTHTOKEN, authToken)
+        headers: req.headers.set(Environment.XAUTHTOKEN, authToken)
+                      //       .set(Environment.XAUTHTOKEN, authToken)
       })
       return next.handle(authReq)
     }else{

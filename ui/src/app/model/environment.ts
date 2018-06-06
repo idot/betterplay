@@ -2,7 +2,7 @@
 
 export class Environment {
   public static readonly API = "/api"
-  public static readonly AUTHTOKEN = "AUTH-TOKEN"
+//  public static readonly AUTHTOKEN = "AUTH-TOKEN"
   public static readonly XAUTHTOKEN = "X-AUTH-TOKEN"
 
 

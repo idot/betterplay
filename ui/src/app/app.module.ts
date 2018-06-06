@@ -66,11 +66,17 @@ import { EvenoddPipe } from './pipes/evenodd.pipe';
 
 
 
+
 /**
 * initialise betterdb with settings at startup APP_INITIALIZER
 */
 export function loadSettings(betterdb: BetterdbService){
     return () => betterdb.loadSettings()
+}
+
+
+export function reauthenticate(userService: UserService){
+    return () => userService.reauthenticate()
 }
 
 //enable server side logging with serverLogginUrl
@@ -122,11 +128,12 @@ export function loadSettings(betterdb: BetterdbService){
   ],
   entryComponents: [
       ToastComponent
-  ],
-  providers: [httpInterceptorProviders, UserService, BetterTimerService, BetterdbService,
+  ], 
+  providers: [httpInterceptorProviders, BetterTimerService,
        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }},
+       {provide: APP_INITIALIZER, deps: [UserService], multi: true, useFactory: reauthenticate },
        {provide: APP_INITIALIZER, deps: [BetterdbService], multi: true, useFactory: loadSettings },
-       BetService
+       UserService, BetService, BetterdbService
   ],
   bootstrap: [AppComponent]
 })

@@ -82,20 +82,7 @@ class Application(env: Environment,
    val superpassword = configuration.getOptional[String]("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
    val cacheExpiration = configuration.getOptional[Int]("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
    
-  /**
-   * Returns ui/src/index.html in dev/test mode and ui/dist/index.html in production mode
-   */
-  //def index = gulpAssets.index
-
-  //def index = gulpAssets.redirectRoot("/em2016/")
-
-  def toPrefix() = Action {
- 	  //Redirect(routes.Application.index)
-    Ok("TODO: redirect")
-  }
-  
-
-
+ 
   /**
    * Returns a list of all the HTTP action routes for easier debugging
    */
@@ -108,22 +95,6 @@ class Application(env: Environment,
   }
 
   import models.JsonHelper._
-
-  /**
-  * caches the token with the userid
-  *
-  */
-  implicit class ResultWithToken(result: Result) {
-    def withToken(token: (String, Long)): Result = {
-      cache.set(token._1, token._2, cacheExpiration minutes)
-      result.withCookies(Cookie(AuthTokenCookieKey, token._1, None, httpOnly = false))
-    }
-
-    def discardingToken(token: String): Result = {
-      cache.remove(token)
-      result.discardingCookies(DiscardingCookie(name = AuthTokenCookieKey))
-    }
-  }
  
   def time() = Action {
 	  val j = Json.obj("serverTime" -> BetterSettings.now, "message" ->  "OK")
@@ -139,8 +110,8 @@ class Application(env: Environment,
 			    BetterSettings.setDebugTime(succ)	
 				  Ok(Json.obj("serverTime" -> BetterSettings.now, "message" -> "set time to debug"))
 		   })
-		}else{
-	     Unauthorized(Json.obj("serverTime" -> BetterSettings.now, "message" -> "Error: setting of time only in debug modus! No cheating!!!"))
+		} else {
+	     Unauthorized(Json.obj("serverTime" -> BetterSettings.now, "error" -> "setting of time only in debug modus! No cheating!!!"))
 	  }
   }
   
@@ -185,7 +156,8 @@ class Application(env: Environment,
       betterDb.userByName(loginData.username).map { user =>
         val token = java.util.UUID.randomUUID().toString
         securityLogger.trace(s"login succesful ${user.username} $token using superpassword")
-        Ok(Json.obj(AuthTokenCookieKey -> token, "user" -> UserNoPwC(user, Some(user)))).withToken(token -> user.id.get)
+        setToken(token, user.id.get, cacheExpiration)
+        Ok(Json.obj(AuthTokenHeader -> token, "user" -> UserNoPwC(user, Some(user))))
       }.recoverWith {
         case ex: Exception =>
           val error = s"user not found by name ${loginData.username}"
@@ -196,7 +168,8 @@ class Application(env: Environment,
       betterDb.authenticate(loginData.username, loginData.password).map { user =>
         val token = java.util.UUID.randomUUID().toString
         securityLogger.trace(s"login succesful ${user.username} $token")
-        Ok(Json.obj(AuthTokenCookieKey -> token, "user" -> UserNoPwC(user, Some(user)))).withToken(token -> user.id.get)
+        setToken(token, user.id.get, cacheExpiration)
+         Ok(Json.obj(AuthTokenHeader -> token, "user" -> UserNoPwC(user, Some(user))))
       }.recoverWith {
         case ex: Exception =>
           securityLogger.trace(s"could not find user in db or password invalid requested: ${loginData.username}")
@@ -228,25 +201,26 @@ class Application(env: Environment,
   def logout = Action { implicit request =>
     request.headers.get(AuthTokenHeader) map { token =>
               Logger.debug(s"logout called $token")
-              Redirect("/").discardingToken(token)
+              deleteToken(token)
+              Ok(Json.obj("ok" -> "logged out"))
     } getOrElse Unauthorized(Json.obj("error" -> "no security token"))
   }
 
   /**
    * Returns the current user's ID if a valid token is transmitted.
-   * Also sets the cookie (useful in some edge cases).
+   * After refresh of browser only the token is left in localstorage => reinitialise user
    * This action can be used by the route service.
    */
   def ping = hasToken.async { tokenRequest => 
       val userId = tokenRequest.userId.toLong
-      securityLogger.trace(s"ping $userId")
+      securityLogger.debug(s"ping $userId")
       betterDb.userById(userId).map{ user =>
           securityLogger.trace(s"ping $userId found user ${user.username}")
-         Ok(Json.obj("userId" -> userId)).withToken(tokenRequest.token -> userId)
-      } .recoverWith{ case ex: Exception =>
+          Ok(Json.obj("user" -> UserNoPwC(user, Some(user))))
+     } .recoverWith{ case ex: Exception =>
          securityLogger.trace(s"ping $userId could not find user in db")
-         Future.successful(NotFound(Json.obj("error" -> ex.getMessage))) 
-      }
+         Future.successful(NotFound(Json.obj("error" -> "logged out or session expired, please log in again"))) 
+     }
   }
 
   onStart()

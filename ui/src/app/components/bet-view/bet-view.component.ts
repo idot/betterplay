@@ -12,6 +12,8 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 
+
+
 export interface ViewResult {
   team1: number | string
   team2: number | string

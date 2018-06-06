@@ -7,6 +7,7 @@ import { BetterTimerService } from '../../better-timer.service';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'menubar',
   templateUrl: './menubar.component.html',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class MenubarComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router, private timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
+  constructor( private userService: UserService, private router: Router, private timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
         opened = true
 
         ngOnInit() {
