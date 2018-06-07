@@ -64,5 +64,5 @@ libraryDependencies += specs2 % Test
 coverageEnabled := false
 
 // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
-EclipseKeys.preTasks := Seq(compile in Compile, compile in Test)
+//EclipseKeys.preTasks := Seq(compile in Compile, compile in Test)
 
