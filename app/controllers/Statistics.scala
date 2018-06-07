@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import models._
 import models.JsonHelper._
 import play.api.i18n.MessagesApi
@@ -12,11 +12,12 @@ import scala.concurrent.{Future,blocking}
 
 import javax.inject.{Inject, Provider, Singleton}
 
-@Singleton
-class Statistics @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, configuration: Configuration) extends Controller with Security {
 
-  val excelSecret = configuration.getString("betterplay.excelSecret").getOrElse("BAD")  
-  import scala.concurrent.ExecutionContext.Implicits.global
+@Singleton
+class Statistics @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, configuration: Configuration) extends AbstractController(cc) with Security {
+
+  val excelSecret = configuration.getOptional[String]("betterplay.excelSecret").getOrElse("BAD")  
+
    
   def createExcel(userId: Long): Future[Result] = {
    
@@ -24,7 +25,7 @@ class Statistics @Inject()(override val betterDb: BetterDb, override val cache: 
         blocking{
 	        val excel = ExcelData.generateExcel(betterDb, BetterSettings.now, userId)
 	        val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-	        val name = BetterSettings.fileName(excel, excelSecret)
+	        val name = CryptoHelper.fileName(excel, excelSecret)
 	        val headers = ("Content-Disposition",s"attachment; filename=${name}")
 	        Ok(excel).as(mime).withHeaders(headers)
         }
@@ -79,7 +80,7 @@ class Statistics @Inject()(override val betterDb: BetterDb, override val cache: 
            val outf = new File(s"${outdir}/$filename")
            Logger.debug(s"creating: $outf")
            xls.ref.moveTo(outf)
-           val result = BetterSettings.validate(outf.getAbsolutePath, filename, excelSecret).fold(
+           val result = CryptoHelper.validate(outf.getAbsolutePath, filename, excelSecret).fold(
                err => NotAcceptable(err),
                succ => Ok("valid file")
            )

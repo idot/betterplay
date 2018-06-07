@@ -1,0 +1,23 @@
+::ng-deep snack-bar-container.toast-background {
+  background: green;
+  padding: 0px;
+  border-radius: 10px;
+}
+
+.betterlist {
+  list-style-type: none;
+}
+
+.item-even {
+  background: green;
+}
+
+.item-odd {
+  background-color: red;
+}
+
+/**
+::ng-deep .toast-error .mat-simple-snackbar {
+  color: black;
+}
+**/

@@ -1,10 +1,9 @@
 package models 
 
-import scala.concurrent.{Future,Await}
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import scala.concurrent.{Future,Await,ExecutionContext}
 import scala.concurrent.duration._
 import collection.mutable.HashMap
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 
 case class SpecialBet(betType: String, prediction: String)
 
@@ -77,7 +76,7 @@ object UserRow {
 }
 
 
-class StatsHelper(betterDb: BetterDb, currentTime: DateTime, viewingUserId: Long){
+class StatsHelper(betterDb: BetterDb, currentTime: OffsetDateTime, viewingUserId: Long) (implicit ec: ExecutionContext) {
      
       val q = for{
          usersSpRankUnsorted <- betterDb.usersWithSpecialBetsAndRank()

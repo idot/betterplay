@@ -1,0 +1,9 @@
+.userView {
+  display: flex; 
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+
+.material-icons.green { color: #008000; }
+.material-icons.red { color: #AA0114; }

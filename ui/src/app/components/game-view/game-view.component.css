@@ -1,0 +1,8 @@
+.gameView {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+
+.material-icons.red { color: #AA0114; }

@@ -1,0 +1,71 @@
+
+  <div>
+        <div *ngIf="userService.getUser()">
+             <div class="menubutton">
+                 <a [routerLink]="['/user', userService.getUser().username, 'bets']">
+                        <img src="{{ userService.getUser().iconurl+'&s=37' }}" alt="{{userService.getUser().username}}"/>
+                 </a>
+             </div>
+             <div class="menubutton">
+                <button mat-raised-button [routerLink]="['/user', userService.getUser().username, 'bets']" [disabled]="betsDisabled()">
+                    my bets</button>
+             </div>
+             <div class="menubutton">
+                 <button mat-raised-button  [routerLink]="['/user', userService.getUser().username, 'special']" [disabled]="specialDisabled()">
+                    special bets
+                 </button>
+             </div>
+          </div>
+          <div class="menubutton">
+              <button mat-raised-button  [routerLink]="['/users']" [disabled]="usersDisabled()">users</button>
+          </div>
+          <div class="menubutton">
+              <button mat-raised-button  [routerLink]="['/games']" [disabled]="gamesDisabled()">games</button>
+          </div>
+          <div class="menubutton">
+            <button mat-raised-button  [routerLink]="['/password']" [disabled]="passwordDisabled()">password</button>
+          </div>
+          <div class="menubutton">
+              <button mat-raised-button  [routerLink]="['/statistics']" [disabled]="statsDisabled()">stats excel</button>
+          </div>
+          <div class="menubutton">
+            <button mat-raised-button  [routerLink]="['/rules']" [disabled]="rulesDisabled()">rules</button>
+          </div>
+          <div *ngIf="userService.isAdmin()">
+                 <div class="menubutton">
+                     <button mat-raised-button  [routerLink]="['/admin/register']" [disabled]="registerDisabled()">
+                        register user
+                     </button>
+                 </div>
+                 <div class="menubutton">
+                     <button mat-raised-button  [routerLink]="['/admin/mail']" [disabled]="mailDisabled()">
+                        mail
+                     </button>
+                 </div>
+                 <div class="menubutton">
+                     <button mat-raised-button  [routerLink]="['/admin/settings']" [disabled]="settingsDisabled()">
+                        settings
+                     </button>
+                 </div>
+            </div>
+            <div *ngIf="! userService.getUser()">
+              <div class="menubutton">
+                 <button mat-raised-button  [routerLink]="['/login']" [disabled]="loginDisabled()">
+                    login
+                </button>
+               </div>
+            </div>
+            <div *ngIf="userService.getUser()">
+              <div class="menubutton">
+                  <button mat-raised-button  type="submit" title="logout" (click)="logout()">logout</button>
+              </div>
+            </div>
+          <div class="menubutton"> <!-- time is always here -->
+            <button mat-raised-button  type="submit" [disabled]=true>
+             {{ this.timerService.getTime() | date :  "HH:mm" }}
+            </button>
+          </div> <!-- date only in debug -->
+          <div *ngIf="isDebug()">
+            {{ this.timerService.getTime()  | date : "dd/MM/yy"}}
+          </div>
+      </div>

@@ -1,0 +1,16 @@
+<div *ngIf="game$ | async as ggwt; else loading">
+
+  <game-view [gwt]=ggwt.game [number]=true [allowedit]=false [fullcontent]=true></game-view>
+
+  <ul class="betterlist">
+     <li *ngFor="let betUser of ggwt.betsUsers; let i = index">
+       <div fxLayout.lt-sm="column" fxLayout.gt-sm="row" class="item-{{i | evenodd }}" fxFlex.lt-sm="320px" fxFlex.gt-sm="600px" fxLayoutAlign="space-between center">
+          <user-view [user]=betUser.user [full]=false></user-view> <bet-view [bet]=betUser.bet [serverStart]=ggwt.game.game.serverStart [gameresult]=ggwt.game.game.result></bet-view>
+       </div>
+    </li>
+  </ul>
+</div>
+
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

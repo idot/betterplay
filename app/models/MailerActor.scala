@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit._
 import scala.concurrent.duration._
 import akka.util.Timeout
 import scala.util.{Try, Success, Failure}
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
 import scala.concurrent.Future
 import scala.concurrent.blocking
 import org.apache.commons.mail._
@@ -31,6 +31,26 @@ case class ImmediateMail(user: User)
 case class TestMail()
 case class SendUnsent()
 
+case class MailSettings(from: String, hostname: String, login: String, password: String, port: Int, testReceiver: String){
+   def valid(): Boolean = password != ""
+}
+
+object MailSettings {
+ 
+  
+  def fromConfig(config: Configuration): MailSettings = {
+      MailSettings(
+        config.getOptional[String]("betterplay.mail.from").getOrElse(""),
+        config.getOptional[String]("betterplay.mail.host").getOrElse(""),
+        config.getOptional[String]("betterplay.mail.login").getOrElse(""),
+        config.getOptional[String]("betterplay.mail.password").getOrElse(""),
+        config.getOptional[Int]("betterplay.mail.port").getOrElse(-1),
+        config.getOptional[String]("betterplay.mail.testreceiver").getOrElse("")
+      )
+  }
+  
+}
+
 //generate messages
 //generate email after recaptcha for new password
 //generate email after registration for new password, random string in db as token, after usage set viewed = true
@@ -47,25 +67,24 @@ object MailMessages {
   
   def address(mail: String, name: String): InternetAddress = new InternetAddress(mail, name)
   
-  def sendMail(subject: String, body: String, to: InternetAddress, debug:Boolean): String = {
+  def sendMail(subject: String, body: String, to: InternetAddress, mailSettings: MailSettings, debug:Boolean): String = {
        mailLogger.debug(s"sending mail $subject ${to.getAddress}")
        
-       import scala.collection.JavaConversions._
-       val tos = seqAsJavaList(Seq(to))
-       val from =  "Ido Tamir <ido.tamir@vbcf.ac.at>"
+       val tos = scala.collection.JavaConverters.seqAsJavaList(Seq(to))
+       val from =  mailSettings.from
        
        val email = new SimpleEmail()
-       email.setHostName("webmail.imp.ac.at")
-       email.setAuthenticator(new DefaultAuthenticator("ido.tamir", BetterSettings.getMailPassword()))
+       email.setHostName(mailSettings.hostname)
+       email.setAuthenticator(new DefaultAuthenticator(mailSettings.login, mailSettings.password))
        email.setSSLCheckServerIdentity(false)
        email.setStartTLSEnabled(true)
-       email.setSSLOnConnect(false)
+       email.setSSLOnConnect(true)
        email.setFrom(from)
        email.setTo(tos)
        email.setSubject(subject)
        email.setMsg(body)
-       email.setSmtpPort(587)
-       email.setSslSmtpPort("587")
+       email.setSmtpPort(mailSettings.port)
+       email.setSslSmtpPort(mailSettings.port.toString)
        email.setDebug(debug)
        email.send()
   }
@@ -76,23 +95,22 @@ object MailMessages {
 
 class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) extends Actor {
    val mailLogger = Logger("mail")
-   val mailUser = configuration.getString("betterplay.mail.user").getOrElse("")
-   val mailUserTest = configuration.getString("betterplay.mail.testreceiver").getOrElse("")
+
 
    
-   val debug = BetterSettings.debug || configuration.getBoolean("betterplay.mail.debug").getOrElse(false)
+   val debug = BetterSettings.debug || configuration.getOptional[Boolean]("betterplay.mail.debug").getOrElse(false)
 
    import scala.concurrent.ExecutionContext.Implicits.global
   
    def mail(um: UserMessage, m: Message, user: User){
        val s = sender()
        mailLogger.debug(m.toString)
-       val send = BetterSettings.getMailPassword() != "" && mailUser != ""      
+       val send = BetterSettings.getMailSettings().valid
        if(send){
          Future{
            blocking {
               try{
-                 val result = MailMessages.sendMail(m.subject, m.body, MailMessages.address(user.email,user.firstName+" "+user.lastName), debug)
+                 val result = MailMessages.sendMail(m.subject, m.body, MailMessages.address(user.email,user.firstName+" "+user.lastName), BetterSettings.getMailSettings(), debug)
                  mailLogger.info(s"send ${user.username} ${m.subject} result: $result ")
                  s ! MailMessages.mailSuccess
               } catch {
@@ -116,7 +134,7 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
        val s = sender()
        Future{  
           blocking {
-             val result = MailMessages.sendMail("betterplay test email", "betterplay test body", MailMessages.address(mailUserTest, "Test"), true)
+             val result = MailMessages.sendMail("betterplay test email", "betterplay test body", MailMessages.address(BetterSettings.getMailSettings().testReceiver, "Test"),  BetterSettings.getMailSettings(), true)
              mailLogger.debug("test send result:"+result)
              s ! MailMessages.mailSuccess
           }   
@@ -134,7 +152,7 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
 class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  @Named("sendMail") sendMailActor: ActorRef) extends Actor {
   val mailLogger = Logger("mail")
   //how often do we go over unsent messages to send them in minutes
-  val sendMailInterval = configuration.getInt("betterplay.send.interval").getOrElse(0) 
+  val sendMailInterval = configuration.getOptional[Int]("betterplay.send.interval").getOrElse(0) 
    
   import scala.concurrent.ExecutionContext.Implicits.global
   val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))
@@ -174,7 +192,7 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
       .onComplete { mailSent =>
         mailSent match {
           case Success(succ: String) if succ == MailMessages.mailSuccess => {
-            betterDb.setMessageSent(userMessage.id.get, new DateTime())
+            betterDb.setMessageSent(userMessage.id.get, BetterSettings.now())
             s ! "sent email"
           }
           case Success(succ: String) if succ == MailMessages.error => {

@@ -4,17 +4,16 @@ package models
 
 import javax.inject.{Singleton, Inject}
 
-import org.joda.time.DateTime
-import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
-import slick.driver.JdbcProfile
-import slick.profile.FixedSqlAction
+import java.time.OffsetDateTime
+import play.api.db.slick.DatabaseConfigProvider
+
 
 import scalaz.{\/,-\/,\/-,Validation,ValidationNel,Success,Failure}
 import scalaz.syntax.apply._ 
 import scala.concurrent.Future
 
 import play.api.Logger
-
+import scala.concurrent.ExecutionContext
 /**
  * message types for games
  */
@@ -26,12 +25,12 @@ case object NewGame extends GameUpdate
 
 
 @Singleton()
-class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends BetterTables with HasDatabaseConfigProvider[JdbcProfile] {
-  //TODO: check if this is efficient or different ExecutionContext necessary
-  import scala.concurrent.ExecutionContext.Implicits.global
-  import driver.api._
+class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implicit ec: ExecutionContext) extends BetterTables {
+ 
+  import dbConfig._
+  import profile.api._
   
-  val importantLogger = Logger("important")
+   val betterDBLogger = Logger("betterdb")
    
    def allTeams(): Future[Seq[Team]] = {
        db.run(teams.result)
@@ -136,7 +135,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      }
  
      def insertPlayer(player: Player, teamName: String, submittingUser: User): Future[Player] = {
-         dbLogger.debug(s"inserting player $player.name")
+         betterDBLogger.debug(s"inserting player $player.name")
          if(submittingUser.isAdmin){
            val ins = (for{
               team <- teams.filter(t => t.name === teamName).result.head
@@ -179,7 +178,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          if(settingUser.isAdmin) Success(settingUser) else Failure(s"only admin can make these changes")
      }
      
-     def validSPU(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[ValidationNel[String,String]] = {
+     def validSPU(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[ValidationNel[String,String]] = {
          startOfGames().map{ OstartTime =>
              val withStart = OstartTime.map{ startTime => isGameOpen(startTime, currentTime, closingMinutesToGame) }.getOrElse( Failure("no games yet") )
              val ids = compareIds(submittingUser.id.getOrElse(-1), sp.userId, "user ids").toValidationNel
@@ -192,19 +191,68 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
    
 
      /**
-     * API
+     * I am loading the special bet by id from the database and check if the user is the actual owner to make sure its not tampered with 
+     * 
+     * TODO: load template with closing time, compare to local time get rid of global closingMinutesToGame
+     * 
      */
-     def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: DateTime, closingMinutesToGame: Int, submittingUser: User): Future[String] = {
-        dbLogger.debug(s"attempting updating special bet for user ${submittingUser.username} ${sp.prediction}") 
+     def updateSpecialBetForUser(sp: SpecialBetByUser, currentTime: OffsetDateTime, closingMinutesToGame: Int, submittingUser: User): Future[User] = {
+        betterDBLogger.debug(s"attempting updating special bet for user ${submittingUser.username} ${sp.prediction}") 
         validSPU(sp, currentTime, closingMinutesToGame, submittingUser).flatMap{ v =>
            v.fold(
                err => Future.failed(ValidationException(err.list.toList.mkString("\n"))),
-               succ => updateSPU(sp)
-           )}
+               succ => updateSPU(sp, submittingUser)
+          )}
+     }
+     
+
+     //TODO: TEST for exception when specialbet does not exist!
+     def updateSPU(sp: SpecialBetByUser, submittingUser: User): Future[User] = {     
+         betterDBLogger.debug(s"updating special bet for user ${sp.prediction}") 
+         val action = (specialbetsuser.filter(spdb => spdb.id === sp.id && spdb.userId === submittingUser.id && spdb.spId === sp.specialbetId).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
+             rowCount match {
+               case 0 => { 
+                      val err = s"could not find specialbet with ids ${sp.id} ${sp.userId} ${sp.specialbetId} - ${submittingUser.id}"; 
+                      betterDBLogger.error(err); 
+                      DBIO.failed(new ItemNotFoundException(err)) 
+               }
+               case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
+               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${sp.id}"))
+             }
+         }).transactionally
+         
+         /***
+         * we update the user with hadInstructions = false if any of his predictions are not set
+         * maybe cant be done in one transaction because if no empty => exception???
+         * 
+         */ 
+         //val updated =
+         val action2 = (for {
+                countEmptySpecialBetsForUser <- users.join(specialbetsuser.filter(sp => sp.userId === submittingUser.id && sp.prediction === "")).on(_.id === _.userId).length.result
+                updatedUser =  submittingUser.copy(hadInstructions = if(countEmptySpecialBetsForUser == 0) true else false )
+                 _ <- users.filter(_.id === submittingUser.id).update(updatedUser)
+             } yield( updatedUser )).transactionally               
+         val comb = action andThen action2
+         db.run(comb)
+
+     
      }
 
+    
+     
+//     def updateUserHadInstructions(submittingUser: User): Future[User] = {
+//         betterDBLogger.debug(s"updating user had instructions ${submittingUser.username}") 
+//         val action = (for {
+//             userWithEmptySpecialBets <- users.join(specialbetsuser.filter(sp => sp.userId === submittingUser.id && sp.prediction === "")).on(_.id === _.userId).result.head 
+//             updatedUser = userWithEmptySpecialBets._1.copy(hadInstructions = false)
+//             _ <- users.update(updatedUser)
+//         } yield( updatedUser )).transactionally
+//         db.run(action) //TODO: check if exception thrown in unit  //.recoverWith{ case ex: NoSuchElementException => Future.failed() }
+//     }
+
+     
      def setSpecialBetResult(specialBetId: Long, result: String, submittingUser: User): Future[String] = {
-        dbLogger.info(s"attempting setting special bet result: ${submittingUser.username} ${specialBetId} ${result}")
+        betterDBLogger.info(s"attempting setting special bet result: ${submittingUser.username} ${specialBetId} ${result}")
         if(submittingUser.isAdmin){
            val action = specialbetstore.filter(_.id === specialBetId).map(_.result).update(result).flatMap{ rowCount =>
              rowCount match {
@@ -217,21 +265,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         }else Future.failed(AccessViolationException("only admins can set special bet results!"))
      }
      
-
-     //TODO: TEST for exception when specialbet does not exist!
-     def updateSPU(sp: SpecialBetByUser): Future[String] = {     
-         dbLogger.debug(s"updating special bet for user ${sp.prediction}") 
-         val action = (specialbetsuser.filter(_.id === sp.id).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
-             rowCount match {
-               case 0 => DBIO.failed(new ItemNotFoundException(s"could not find specialbet with id ${sp.id}")) 
-               case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
-               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${sp.id}"))
-             }
-         }).transactionally
-         db.run(action)
-     }
-
-
+     
      /**
       * This is for text import  and creation of game game details | team1name | team2name | levelNr (| == tab)
       * ids for teams and levels and results are ignored, taken from db and amended in game object
@@ -239,7 +273,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def insertGame(game: Game, team1Name: String, team2Name: String, levelNr: Int, submittingUser: User): Future[GameWithTeams] = {
-         dbLogger.debug(s"inserting new game $game $team1Name $team2Name $levelNr $submittingUser")
+         betterDBLogger.debug(s"inserting new game $game $team1Name $team2Name $levelNr $submittingUser")
          if(submittingUser.isAdmin){
              val gttl = (for{
                 ((t1,t2),l) <- ((teams.filter(_.name === team1Name)).zip(teams.filter(_.name === team2Name)).zip(levels.filter(_.level === levelNr))).result.head
@@ -377,10 +411,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * all times are stored in local time
       * This happens at import where the timezone has to be specified
       */
-     def isGameOpen(gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): Validation[String,String] = {
-         val gameClosing = gameTimeStart.minusMinutes(closingMinutesToGame)
-         val open = currentTime.isBefore(gameClosing)
-         if(open) Success("valid time") else Failure(s"game closed since ${JodaHelper.compareTimeHuman(gameClosing, currentTime)}")
+     def isGameOpen(gameTimeStart: OffsetDateTime, currentTime: OffsetDateTime, closingMinutesToGame: Int): Validation[String,String] = {
+         val open = DomainHelper.gameOpen(gameTimeStart, currentTime, closingMinutesToGame)
+         if(open) Success("valid time") else Failure(s"game closed since ${TimeHelper.compareTimeHuman(DomainHelper.gameClosingTime(gameTimeStart, closingMinutesToGame), currentTime)}")
      }
 
 
@@ -388,7 +421,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       *
       */
-     def startOfGames(): Future[Option[DateTime]] = {
+     def startOfGames(): Future[Option[OffsetDateTime]] = {
           db.run(games.sortBy(_.serverStart ).result).map{ games => games.headOption.map(_.serverStart) }
      }
 
@@ -396,7 +429,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * 
       * TODO: not needed anymore?
       */
-     //def closingTimeSpecialBet(closingMinutesToGame: Int): Future[Option[DateTime]] = {
+     //def closingTimeSpecialBet(closingMinutesToGame: Int): Future[Option[OffsetDateTime]] = {
      //    startOfGames.map{ s => s.map(_.minusMinutes(closingMinutesToGame)) }
      //}
 
@@ -424,18 +457,18 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *  I have to execute the betlog database insert, so the application has to test for invalid bet insert request by checking the error string
       * 
       */
-     def updateBetResult(bet: Bet, submittingUser: User, currentTime: DateTime, closingMinutesToGame: Int): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
-          dbLogger.debug(s"updating bet result: $bet ${submittingUser.username}")
+     def updateBetResult(bet: Bet, submittingUser: User, currentTime: OffsetDateTime): Future[(GameWithTeams, Bet, Bet,BetLog, Seq[String])] = {
+          betterDBLogger.debug(s"updating bet result: $bet ${submittingUser.username}")
           val invalid = GameResult(-1,-1,true)
           val bg = (for{
              (((((g,t1),t2),l),b),u) <- joinGamesTeamsLevels().join(bets.filter { b =>  b.id === bet.id }).on(_._1._1._1.id === _.gameId).join(users).on(_._2.userId === _.id).result.head
-             (upl, dbAction) <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, closingMinutesToGame).fold(
+             (upl, dbAction) <- compareBet(u.canBet, u.id.getOrElse(-1), submittingUser.id.getOrElse(-1), b.gameId, bet.gameId, g.serverStart, currentTime, g.closingMinutesToGame).fold(
                        err => {
                         val errors = err.list.toList.mkString(";")
                         val updatedBet = b.copy(result=invalid)
                         val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, errors)
                         val upL = betlogs += log
-                        dbLogger.debug(s"updating bet result error: $bet ${submittingUser.username} $errors")
+                        betterDBLogger.debug(s"updating bet result error: $bet ${submittingUser.username} $errors")
                         DBIO.successful((updatedBet, log, err.list.toList)).zip(DBIO.seq(upL))
                     }, succ => {
                          val result = bet.result.copy(isSet=true)
@@ -443,7 +476,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
                          val log = DomainHelper.toBetLog(u, g, b, updatedBet, currentTime, "regular update")
                          val upB = bets.filter(_.id === updatedBet.id).update(updatedBet)
                          val upL = betlogs += log
-                         dbLogger.debug(s"updating bet result success: $bet -> $updatedBet ${submittingUser.username}")
+                         betterDBLogger.debug(s"updating bet result success: $bet -> $updatedBet ${submittingUser.username}")
                          DBIO.successful((updatedBet, log, Seq.empty[String])).zip(DBIO.seq(upL,upB))
                     })
           }yield{ (GameWithTeams(g,t1,t2,l), b, upl._1, upl._2, upl._3) }).transactionally   
@@ -459,7 +492,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          if(cb) Success("can bet") else Failure(s"user has not paid, no dice")
      }
 
-     def compareBet(cb: Boolean, userId: Long, betUserId: Long, gameId: Long, betGameId: Long, gameTimeStart: DateTime, currentTime: DateTime, closingMinutesToGame: Int): ValidationNel[String,String] = {
+     def compareBet(cb: Boolean, userId: Long, betUserId: Long, gameId: Long, betGameId: Long, gameTimeStart: OffsetDateTime, currentTime: OffsetDateTime, closingMinutesToGame: Int): ValidationNel[String,String] = {
          (compareIds(userId, betUserId, "user ids").toValidationNel |@|
              compareIds(gameId, betGameId, "game ids").toValidationNel |@|
              isGameOpen(gameTimeStart, currentTime, closingMinutesToGame).toValidationNel |@|
@@ -484,7 +517,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       * //game open can not set points but can change teams and start time
       */
-     def updateGameDetails(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
+     def updateGameDetails(game: Game, submittingUser: User, currentTime: OffsetDateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
          if(! submittingUser.isAdmin){
            return Future.failed(AccessViolationException("only admin user can change game details"))
          }
@@ -503,14 +536,14 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * contoller should initiate points calculation
       *
       */
-     def updateGameResults(game: Game, submittingUser: User, currentTime: DateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
+     def updateGameResults(game: Game, submittingUser: User, currentTime: OffsetDateTime, gameDuration: Int): Future[(Game,GameUpdate)] = {
          if(! submittingUser.isAdmin){
            return Future.failed(AccessViolationException("must be admin to change game results"))
          }
          val result = game.result.copy(isSet=true)
          val gUp = (for{
            dbGame <- games.filter(_.id === game.id).result.head
-           _ <- isGameOpen(dbGame.serverStart, currentTime: DateTime, -gameDuration).fold(err => DBIO.successful("IGNORE"), succ => DBIO.failed(ValidationException(s"game ${game.id.get} is still not finished")))
+           _ <- isGameOpen(dbGame.serverStart, currentTime: OffsetDateTime, -gameDuration).fold(err => DBIO.successful("IGNORE"), succ => DBIO.failed(ValidationException(s"game ${game.id.get} is still not finished")))
            gameWithResult = dbGame.copy(result=result) 
            _ <- games.filter(_.id === gameWithResult.id).update(gameWithResult)
          } yield { (gameWithResult, SetResult) }).transactionally
@@ -528,9 +561,9 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          val allGamesWithBetsForUser = for{
             (g,b) <- games.join(bets).on(_.id === _.gameId) if b.userId === userId
          } yield (g.id)
-         dbLogger.debug(s"fetched games without bets for user $userId yield")
+         betterDBLogger.debug(s"fetched games without bets for user $userId yield")
          val allGamesWithoutBetsForUser = games.filterNot(g => g.id in allGamesWithBetsForUser)
-         dbLogger.debug(s"fetched games without bets for user $userId filtered")
+         betterDBLogger.debug(s"fetched games without bets for user $userId filtered")
          allGamesWithoutBetsForUser
      }
      
@@ -548,7 +581,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *  
       */
      def insertUser(taintedUser: User, isAdmin: Boolean, isRegistering: Boolean, registeringUser: Option[User]): Future[User] = {
-          dbLogger.debug(s"inserting user: by ${registeringUser.map(_.username).getOrElse("noUser")} ${taintedUser.username}")
+          betterDBLogger.debug(s"inserting user: by ${registeringUser.map(_.username).getOrElse("noUser")} ${taintedUser.username}")
           if( registeringUser.map(r => ! r.isAdmin).getOrElse(false) ){ //if none => the data comes from text file import, no users yet!!!
              return Future.failed(AccessViolationException("must be admin user to be able to create users!"))
           }
@@ -568,7 +601,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only simple bets no special bets!
       */
      def createBetsForGamesForUser(userId: Long) = {
-         dbLogger.debug(s"creating bets for games for user $userId")
+         betterDBLogger.debug(s"creating bets for games for user $userId")
          for{
             gs <- gamesWithoutBetsForUser(userId).result
             inserts <- (bets returning bets.map(_.id)) ++= gs.map( game => Bet(None, 0, GameResult(0,0,false), game.id.get, userId))
@@ -584,7 +617,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * 
       */
      def createBetsForGamesForAllUsers(submittingUser: User): Future[String] = {
-         dbLogger.debug(s"creating bets for games for all users")
+         betterDBLogger.debug(s"creating bets for games for all users")
          if(submittingUser.isAdmin){
            val create = (for{
              userIds <- users.map(_.id).result
@@ -600,7 +633,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
              val upd = (for{
                _ <- users.filter(_.id === submittingUser.id).map(u => u.passwordhash).update(passwordHash)
              } yield { 
-               importantLogger.info(s"updated userpassword for ${submittingUser.id} ${submittingUser.username}")
+               betterDBLogger.info(s"updated userpassword for ${submittingUser.id} ${submittingUser.username}")
                "updated password"
              }).transactionally
              db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id} ${submittingUser.username} to update password")) }
@@ -610,7 +643,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only admins can now change firstname and lastname
       */
      def updateUserDetails(email: String, icontype: String, showName: Boolean, institute: String, submittingUser: User): Future[User] = {
-         dbLogger.debug(s"updating user details ${submittingUser.username}")
+         betterDBLogger.debug(s"updating user details ${submittingUser.username}")
          val (u,t) = DomainHelper.gravatarUrl(email, icontype)
          val upd = (for{
              user <- users.filter(u => u.id === submittingUser.id).result.head
@@ -624,7 +657,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only admins can now change firstname and lastname
       */
      def updateUserName(username: String, firstName: String, lastName: String, submittingUser: User): Future[User] = {
-          dbLogger.debug(s"updating user firstname and lastname ${username} ${submittingUser.username}")
+          betterDBLogger.debug(s"updating user firstname and lastname ${username} ${submittingUser.username}")
           if(submittingUser.isAdmin){
              val upd = (for{
                  user <- users.filter(u => u.username === username).result.head
@@ -641,14 +674,14 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       * only admins can change id user can bet 
       */
      def updateUserCanBet(username: String, canBet: Boolean, submittingUser: User): Future[User] = {
-          dbLogger.info(s"updating user can bet ${username} ${submittingUser.username}") //TODO: send email!
+          betterDBLogger.info(s"updating user can bet ${username} ${submittingUser.username}") //TODO: send email!
           if(submittingUser.isAdmin){
              val upd = (for{
                  user <- users.filter(u => u.username === username).result.head
                  updatedUser = user.copy(canBet=canBet)
                  _ <- users.filter(_.id === updatedUser.id).update(updatedUser)
              } yield{
-               importantLogger.info(s"updated user can bet to ${canBet} for ${updatedUser.id} ${updatedUser.username} by ${submittingUser.id} ${submittingUser.username}")  
+               betterDBLogger.info(s"updated user can bet to ${canBet} for ${updatedUser.id} ${updatedUser.username} by ${submittingUser.id} ${submittingUser.username}")  
                updatedUser
              }).transactionally
              db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id $username")) }
@@ -659,7 +692,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      
      
      def updateFilterSettings(filterSettings: FilterSettings, submittingUser: User): Future[User] = {
-         dbLogger.debug(s"updating filtersettings ${submittingUser.username}") 
+         betterDBLogger.debug(s"updating filtersettings ${submittingUser.username}") 
          val upd = (for{
              user <- users.filter(u => u.id === submittingUser.id).result.head
              updatedUser = user.copy(filterSettings=filterSettings)
@@ -668,17 +701,8 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
          db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id}")) }
      }
      
-     
-     def updateUserHadInstructions(submittingUser: User): Future[User] = {
-         dbLogger.debug(s"updating user had instructions ${submittingUser.username}") 
-         val upd = (for{
-               user <- users.filter(u => u.id === submittingUser.id).result.head
-               updatedUser = user.copy(hadInstructions = true)
-               _ <- users.filter(_.id === submittingUser.id).update(updatedUser)
-           } yield( updatedUser )).transactionally
-           db.run(upd).recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with id ${submittingUser.id}")) }
-     }
 
+    
 
     /**
      * if something was wrong with the game. we set the results for this game to isSet = false
@@ -691,7 +715,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
      def invalidateGame(game: Game, submittingUser: User): Future[String] = {
          if(submittingUser.isAdmin){
              val r = games.filter(_.id === game.id).map(_.isSet).update(false)
-             dbLogger.info("invalidating game $game")
+             betterDBLogger.info("invalidating game $game")
              db.run(r).map(i => s"invalidated game ${game.id.get} count: $i")
          } else {           
             Future.failed(AccessViolationException(s"only admin user can invalidate games"))
@@ -733,7 +757,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def updateBetsWithPoints() = { 
-          dbLogger.info("updating bets with points") 
+          betterDBLogger.info("updating bets with points") 
           val glbUpdate = for{
                   glbs <- gamesWithLevelsAndBetsSet()
                    _ <- DBIO.sequence(glbs.map{ case((g,l),b) => 
@@ -751,7 +775,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def calculateAndUpdateSpecialPointsForUser(user: User) = {
-         dbLogger.debug(s"calculating special points for user ${user.id}")
+         betterDBLogger.debug(s"calculating special points for user ${user.id}")
          val up = for{
             s <- specialbetstore.join(specialbetsuser.filter(sp => sp.userId === user.id)).on( _.id === _.spId ).result   
             updated = PointsCalculator.calculateSpecialBets(s).map{ case(t,b) => b }
@@ -768,7 +792,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
       *
       */
      def updateUsersPoints() = {
-         dbLogger.info("updating users with points")
+         betterDBLogger.info("updating users with points")
          val userUpdate = for{
               suser <- users.join(bets).on(_.id === _.userId).result
               ups <- DBIO.sequence(suser.groupBy{ _._1 }.map{ case(user,ub) =>  
@@ -789,7 +813,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
  
    
     def insertMessage(message: Message, userId: Long, token: String, send: Boolean, display: Boolean): Future[(UserMessage,Message)] = {
-        dbLogger.debug(s"inserting message for $userId $token ${message.messageType} ${message.subject}")
+        betterDBLogger.debug(s"inserting message for $userId $token ${message.messageType} ${message.subject}")
         val action = (for {
           messId <- (messages returning messages.map(_.id)) += message  
           mess = message.copy(id=Some(messId))
@@ -827,7 +851,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
     /**
      * the token usage sets seen = true
      */
-    def userByTokenPassword(token: String, now: DateTime, passwordHash: String): Future[User] = {
+    def userByTokenPassword(token: String, now: OffsetDateTime, passwordHash: String): Future[User] = {
         if(token.length == BetterSettings.TOKENLENGTH){
            val action = (for {
             (message, user) <- usersmessages.filter(m => m.token === token && ! m.seen.isDefined).join(users).on( _.userId === _.id ).result.head
@@ -845,18 +869,18 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
         db.run(query.result)
     }
     
-    def setMessageSent(messageId: Long, now: DateTime): Future[String] = {
+    def setMessageSent(messageId: Long, now: OffsetDateTime): Future[String] = {
         val up = usersmessages.filter(_.id === messageId).map(_.sent).update(Some(now))
         db.run(up).map{ rows => 
            rows match {
-             case 0 => val err = "could not find message with id $messageId to set to sent"; dbLogger.error(err); err
+             case 0 => val err = "could not find message with id $messageId to set to sent"; betterDBLogger.error(err); err
              case 1 => s"set message with id $messageId to sent"
-             case _ => val err = "found multiple messages with id $messageId to set to sent"; dbLogger.error(err); err
+             case _ => val err = "found multiple messages with id $messageId to set to sent"; betterDBLogger.error(err); err
            }
         }
     }
     
-    def setMessageError(um: UserMessage, error: String, now: DateTime): Future[MessageError] = {
+    def setMessageError(um: UserMessage, error: String, now: OffsetDateTime): Future[MessageError] = {
         val me = MessageError(None, um.id.get, error, now)
         db.run((messageserrors returning messageserrors.map(_.id)) += me).map{ lid => me.copy(id=Some(lid))}
     }
@@ -865,7 +889,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends 
     * sets nextGame and closed game
     * 
     */
-   def maintainGames(now: DateTime): Future[Int] = {
+   def maintainGames(now: OffsetDateTime): Future[Int] = {
       val q = (for{
         closed <- games.filter(g => g.serverStart < now).map(g => (g.gameClosed,g.nextGame)).update((true,false))
         open <- games.filter(g => g.serverStart > now).map(g => (g.gameClosed,g.nextGame)).update((false,false))

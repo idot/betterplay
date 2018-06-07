@@ -1,0 +1,16 @@
+<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+  <div class="form-group">
+    <mat-form-field>
+      <input matInput placeholder="username" name="username" [(ngModel)]="username" required>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input matInput placeholder="password" name="password" [(ngModel)]="password" type="password" required>
+    </mat-form-field>
+  </div>
+
+
+  <button type="submit" class="btn btn-success">submit</button>
+
+</form>

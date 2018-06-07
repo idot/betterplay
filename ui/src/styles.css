@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "~flag-icon-css/css/flag-icon.css";
+
+html, body {
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+}
+
+app-root { 
+  min-height: 100%; 
+  display: flex;
+}
+
+.betterlist {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+.item-odd {
+  background: white;
+}
+
+.item-even {
+  background-color: #e6f2ff;
+}
+
+

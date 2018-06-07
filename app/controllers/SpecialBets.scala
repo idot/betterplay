@@ -9,15 +9,15 @@ import models._
 import models.JsonHelper._
 import play.api.libs.json.JsError
 import javax.inject.{Inject, Provider, Singleton}
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import play.api.i18n.MessagesApi
 
 import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 
 
 @Singleton
-class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
+class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
   
 
   def all() = withUser.async { implicit rs =>
@@ -26,15 +26,16 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
       }
   }
    
-  def specialBetsForUser(username: String) = withUser.async { request => 
+  def specialBetsForUser(username: String) = withOptUser.async { request => 
       betterException{
 	     	betterDb.userWithSpecialBets(username).map{  case(u, tb) =>
-           Ok(Json.obj("user" -> UserNoPwC(u, request.user), "templateBets" -> tb)) 
+           Ok(Json.obj("user" -> UserNoPwC(u, request.optUser), "templateBets" -> tb)) 
 		   }
      }
   }
   
   //nicer would be post to id resource. But I have all in the body
+  //returns user with updated hadinstructions
   //
   def updateSpecialBet() = withUser.async(parse.json) { request =>
 	  request.body.validate[SpecialBetByUser].fold(
@@ -44,7 +45,7 @@ class SpecialBets @Inject()(override val betterDb: BetterDb, override val cache:
 			    val mtg = BetterSettings.closingMinutesToGame	  
 			    betterException{
 			      betterDb.updateSpecialBetForUser(succ, now, mtg, request.user)
-			         .map{ s => Ok(Json.toJson(s)) }
+			         .map{ u => Ok(Json.toJson(UserNoPwC(u, Some(request.user))))}
 		      }
 		  }
 	  )

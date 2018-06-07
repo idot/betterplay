@@ -1,6 +1,7 @@
 package models
 
-import org.joda.time.DateTime
+import java.time.OffsetDateTime
+import play.api.Logger
 
 trait BetterException 
 
@@ -23,69 +24,6 @@ case class AccessViolationException(message: String) extends RuntimeException(me
 case class ItemNotFoundException(message: String) extends RuntimeException(message) with BetterException
 case class ValidationException(message: String) extends RuntimeException(message) with BetterException
 
-object DomainHelper {
-  import org.jasypt.util.password.StrongPasswordEncryptor
-  import scravatar._
-  
-  type SpecialBets = Seq[(SpecialBetT,SpecialBetByUser)]
-  
-  val gts = Seq("monsterid", "identicon", "wavatar", "retro") 
-  
-  def encrypt(password: String): String = {
-      new StrongPasswordEncryptor().encryptPassword(password)
-  }
-  
-  def gravatarUrl(email: String, gravatartype: String): (String,String) = {
-	  val gt = DefaultImage(gravatartype)
-    val url = Gravatar(email).ssl(true).default(gt).maxRatedAs(G).avatarUrl  
-    (url, gravatartype)
-  }
-  
-  def randomGravatarUrl(email: String): (String,String) = {
-      val ri = new scala.util.Random().nextInt(gts.length)
-      gravatarUrl(email, gts(ri))
-  }
-  
-  def gameResultInit(): GameResult = GameResult(0,0,false)  
-  def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
-  
-  def filterSettings() = FilterSettings("all","all","all")
-  
-  /**
-   * admins had instructions!
-   */
-  def userInit(user: User, isAdmin: Boolean, isRegistrant: Boolean, registeringUser: Option[Long]): User = {
-	  val (u,t) = randomGravatarUrl(user.email)
-      User(None, user.username, user.firstName, user.lastName, user.institute, user.showName, user.email, user.passwordHash, isAdmin, isRegistrant, isAdmin, true, 0, 0, u, t, registeringUser, filterSettings() )
-  }
-
-  def userFromUPE(username: String, password: String, firstName: String, lastName: String, email: String, registeringUser: Option[Long]): User = {
-	    val (u,t) = randomGravatarUrl(email)
-      User(None, username, firstName, lastName, "", false, email, encrypt(password), false, false, false, true, 0, 0, u, t, registeringUser, filterSettings() )
-  }
- 
-  def toBetLog(user: User, game: Game, betOld: Bet, betNew: Bet, time: DateTime, comment: String): BetLog = {
-      BetLog(None, user.id.getOrElse(-1), game.id.getOrElse(-1), game.serverStart, betOld.id.getOrElse(-1), betOld.result.goalsTeam1, betNew.result.goalsTeam1, betOld.result.goalsTeam2, betNew.result.goalsTeam2, time, comment)
-  }
- 
-  /**
-   * its viewable AFTER the time!!!
-   */
-  def viewableTime(gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): Boolean = {
-       val viewOpen = gameStart.minusMinutes(viewTimeToStart)
-       val open = currentTime.isAfter(viewOpen)
-       open
-  }
-  
-  def viewable(viewingUserId: Long, betUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): Boolean = {
-       if(viewingUserId == betUserId){
-         true
-       }else{
-         viewableTime(gameStart, currentTime, viewTimeToStart)
-       }
-  }
-  
-}
 
 
 
@@ -109,12 +47,12 @@ case class DBImage(format: String, image: String) //unsure of base64 string or a
 
 case class Team(id: Option[Long] = None, name: String, short3: String, short2: String)
 
-case class Player(id: Option[Long] = None, name: String, role: String, club: String, teamId: Long,  dbimage: DBImage)
+case class Player(id: Option[Long] = None, name: String, role: String, club: String, teamId: Long,  dbimage: DBImage, sortname: String)
 
 case class Bet(id: Option[Long] = None, points: Int, result: GameResult, gameId: Long, userId: Long){ 
 //unique: user/bet game/bet one bet for each user per game 
   
-  def viewableBet(viewingUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): ViewableBet = {
+  def viewableBet(viewingUserId: Long, gameStart: OffsetDateTime, currentTime: OffsetDateTime, viewTimeToStart: Int): ViewableBet = {
       if(DomainHelper.viewable(viewingUserId, userId, gameStart, currentTime, viewTimeToStart)){
         ViewableBet(id, points, Some(result), gameId, userId, true)
       }else{
@@ -132,19 +70,22 @@ case class ViewableBet(id: Option[Long] = None, points: Int, result: Option[Game
      
 }
 
-case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, gameStart: DateTime, betId: Long, t1old: Int, t1new: Int, t2old: Int, t2new: Int, time: DateTime, comment: String){
+case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, gameStart: OffsetDateTime, betId: Long, t1old: Int, t1new: Int, t2old: Int, t2new: Int, time: OffsetDateTime, comment: String){
 
-	def toText(viewingUserId: Long, gameStart: DateTime, currentTime: DateTime, viewTimeToStart: Int): String = {
+ 
+	def toText(viewingUserId: Long, gameStart: OffsetDateTime, currentTime: OffsetDateTime, viewTimeToStart: Int): String = {
 	    val betchange = if(DomainHelper.viewable(viewingUserId, userId, gameStart, currentTime, viewTimeToStart)){
           Seq(GameResult(t1old, t2old, true).display, "->",  GameResult(t1old, t2old, true).display).mkString(" ")
       }else{
           Seq(GameResult(t1old, t2old, false).display, "->",  GameResult(t1old, t2old, false).display).mkString(" ")
      }    
-	   val format = org.joda.time.format.DateTimeFormat.fullDateTime() 
-	   Seq(id, userId, gameId, betId, betchange, format.print(time), comment).mkString("\t")
+	   Seq(id, userId, gameId, betId, betchange, TimeHelper.standardFormatter.format(time), comment).mkString("\t")
 	}
 	
 }
+
+
+
 
 case class FilterSettings(bet: String, game: String, level: String)
 
@@ -156,8 +97,8 @@ case class FilterSettings(bet: String, game: String, level: String)
  */
 case class User(id: Option[Long] = None, username: String, firstName: String, lastName: String, institute: String, 
       showName: Boolean, email: String, passwordHash: String,
-	    isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean,
-			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long],
+	    isAdmin: Boolean, isRegistrant: Boolean, sendEmail: Boolean, hadInstructions: Boolean, canBet: Boolean,
+			points: Int, pointsSpecialBet: Int, iconurl: String, icontype: String, registeredBy: Option[Long], hadDSGVO: Boolean,
 			filterSettings: FilterSettings
 
       ){
@@ -171,26 +112,28 @@ case class UserNoPw(id: Option[Long] = None, username: String, email:String, fir
         showName: Boolean, 
 	      isAdmin: Boolean, isRegistrant: Boolean, hadInstructions: Boolean, canBet: Boolean, 
         totalPoints: Int, pointsGames: Int, pointsSpecialBet: Int,
-        iconurl: String, icontype: String, registeredBy: Option[Long], rank: Int,
+        iconurl: String, icontype: String, registeredBy: Option[Long], hadDSGVO: Boolean, rank: Int,
         filterSettings: FilterSettings, viewable: Boolean		  
      ){
 }
    
 object UserNoPwC {
-   def apply(user: User, viewingUser: User, rank: Int = 0): UserNoPw = {
+   def apply(user: User, viewingUser: Option[User], rank: Int = 0): UserNoPw = {
         def forName(value: String): String = {
-            if(user.showName || viewingUser.id == user.id){
-               value
-            }else{
-               ""
-            }
+            viewingUser.map{ v =>
+              if(user.showName || v.id == user.id){
+                 value
+              }else{
+                 ""
+              }
+            }.getOrElse("")
         }
      
         UserNoPw(user.id, user.username, forName(user.email), forName(user.firstName), forName(user.lastName), user.institute,
            user.showName,
 		       user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
-		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, rank,
-		       user.filterSettings, user.id == viewingUser.id
+		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, user.hadDSGVO: Boolean, rank,
+		       user.filterSettings, viewingUser.map(v => v.id == user.id).getOrElse(false)
         )  
    }     
 }      
@@ -207,7 +150,7 @@ case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long,
 * the betgroupID allows grouping for multiple results e.g. semifinal1 seimifinal2 .. semifinal4 should all have the same groupId
 *
 **/
-case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: DateTime, betGroup: String, itemType: String, result: String)
+case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: OffsetDateTime, betGroup: String, itemType: String, result: String)
 
 case class SpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]){
 	
@@ -225,14 +168,8 @@ case class GameLevel(id: Option[Long] = None, name: String, pointsExact: Int, po
  * startServer: start in server timezone
  * 
  **/
-case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: DateTime, localtz: String, serverStart: DateTime, servertz: String, venue: String, group: String, nr: Int, viewMinutesToGame: Int, gameClosed: Boolean, nextGame: Boolean){
-  //     def GameResultPrettyPrint = if(calculated) GameResult.goalsTeam1+":"+GameResult.goalsTeam2 else "NA"
-	    	 
- //	     def datePrettyPrint = sdf.format(date.getTime)
+case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team2id: Long, levelId: Long, localStart: OffsetDateTime, localtz: String, serverStart: OffsetDateTime, servertz: String, venue: String, group: String, nr: Int, viewMinutesToGame: Int, closingMinutesToGame: Int, gameClosed: Boolean, nextGame: Boolean){
 
-  //def closed(): Boolean = {
-    //compare with time
-  //}
   
 }
 
@@ -240,6 +177,6 @@ case class Game(id: Option[Long] = None, result: GameResult, team1id: Long, team
 case class GameWithTeams(game: Game, team1: Team, team2: Team, level: GameLevel)
 
 case class Message(id: Option[Long] = None, messageType: String, subject: String, body: String, creatingUser: Long)
-case class UserMessage(id: Option[Long], userId: Long, messageId: Long, token: String, send: Boolean, sent: Option[DateTime], display: Boolean, seen: Option[DateTime], sendingUser: Long)
-case class MessageError(id: Option[Long], userMessageId: Long, error: String, time: DateTime)
+case class UserMessage(id: Option[Long], userId: Long, messageId: Long, token: String, send: Boolean, sent: Option[OffsetDateTime], display: Boolean, seen: Option[OffsetDateTime], sendingUser: Long)
+case class MessageError(id: Option[Long], userMessageId: Long, error: String, time: OffsetDateTime)
 

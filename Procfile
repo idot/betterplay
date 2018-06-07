@@ -1,1 +1,0 @@
-web: target/universal/stage/bin/play-gulp-standalone -Dhttp.port=${PORT} -Dplay.crypto.secret=${PLAY_APP_SECRET}

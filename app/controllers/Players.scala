@@ -4,20 +4,17 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json
 import play.api.libs.json.Json._
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import models._
 import models.JsonHelper._
 
 import javax.inject.{Inject, Provider, Singleton}
 
-import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.i18n.MessagesApi
 
 @Singleton
-class Players @Inject()(override val betterDb: BetterDb, override val cache: CacheApi) extends Controller with Security {
+class Players @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
  
-  def all() = withUser.async { request =>
+  def all() = Action.async { request =>
       betterDb.allPlayersWithTeam().map{ all => Ok(Json.toJson(all)) }
   }
 

@@ -1,0 +1,25 @@
+.betView {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.sync-icon-disabled {
+  background-color: white;
+}
+
+.sync-icon-necessary {
+  background-color: red;
+}
+
+.sync-icon-imperfect {
+  background-color: orange;
+}
+
+.sync-icon-savable {
+  background-color: yellow;
+}
+
+.sync-icon-changable {
+  background-color: green;
+}

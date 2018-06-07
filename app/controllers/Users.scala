@@ -8,7 +8,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsError
 import play.api.data._
 import play.api.data.Forms._
-import play.api.cache.CacheApi
+import play.api.cache.SyncCacheApi
 import play.api.i18n.MessagesApi
 import play.api.i18n.I18nSupport
 import akka.actor._
@@ -23,50 +23,56 @@ import javax.inject.{Inject, Provider, Singleton, Named}
 
 
 import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.JsSuccess
 import play.api.libs.ws._
 import scala.concurrent.duration._
-import JodaHelper._
+import TimeHelper._
+
 
 @Singleton
-class Users @Inject()(override val betterDb: BetterDb, override val cache: CacheApi, val messagesApi: MessagesApi,
-                  ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends Controller with Security with I18nSupport {
+class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, override val messagesApi: MessagesApi,
+                  ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends AbstractController(cc) with Security with I18nSupport {
     
-   //TODO move to mail controller
-   def sendUnsentMail() = withAdmin.async { request =>
+  //TODO move to mail controller
+  def sendUnsentMail() = withAdmin.async { request =>
        mailer ! SendUnsent()
-       Future{ Ok("done something") }
-   }
+       Future{ Ok(Json.obj("ok" -> "sending unsent mail")) }
+  }
   
-  def all() = withUser.async { request =>
+  def all() = Action.async { request =>
       betterDb.allUsersWithRank().map{ all => 
-        val allNoPw = all.sortBy{ case(u,r) => (r, u.username.toLowerCase) }.map{ case(u,r) => UserNoPwC(u, request.user, r) }
+        val allNoPw = all.sortBy{ case(u,r) => (r, u.username.toLowerCase) }.map{ case(u,r) => UserNoPwC(u, None, r) }
         Ok(Json.toJson(allNoPw )) 
      }
   }
-   
-  def get(username: String) = withUser.async { request =>
+  
+
+  def get(username: String) = withOptUser.async { request =>
      betterException{
       betterDb.userWithSpecialBets(username)
          .flatMap{ case(user, sp) =>
           betterDb.gamesWithBetForUser(user)
             .map{ gamesWithBets =>
               val now = BetterSettings.now
+              val optUser = request.optUser
+              val id = request.getIdOrN()
               val gamesWithVBets = gamesWithBets.map{ case(g, b) => 
                 val vtg = g.game.viewMinutesToGame
-                (g, b.viewableBet(request.request.userId, g.game.serverStart, now, vtg)) 
+                (g, b.viewableBet(id, g.game.serverStart, now, vtg)) 
               }
               val gwbvs = gamesWithVBets.sortBy{case (g,b) => g.game.serverStart }
-              val json = Json.obj("user" -> UserNoPwC(user, request.user), "specialBets" -> sp, "gameBets" -> gwbvs)
+              val json = Json.obj("user" -> UserNoPwC(user, optUser), "specialBets" -> sp, "gameBets" -> gwbvs)
               Ok(json)
           }
       }        
      }
   }
-     
+   
+  /**
+   * add e-mail manually to alwyas return userNoPwC
+   */
   def userToUserNoPwC(user: User): JsObject = {
-      val nop = UserNoPwC(user, user)
+      val nop = UserNoPwC(user, Some(user))
       val jnop = Json.toJson(nop)  
 	    val jnope = jnop.as[JsObject].deepMerge(Json.obj( "email" -> user.email ))
 	    jnope
@@ -90,7 +96,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        )(UserCreate.apply)(UserCreate.unapply)
    )
   
-   def create() = withAdmin.async(parse.json) { request =>
+   def create() = withAdmin.async(parse.json) {implicit request =>
        FormUserCreate.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),   
            succ =>  {
@@ -100,11 +106,12 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
                val token = BetterSettings.randomToken()
                for{
                  user <- betterDb.insertUser(created, false, false, Some(request.admin))
-                 message = MailGenerator.createUserRegistrationMail(user, token, request.admin)
+                 val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
+                 message = MailGenerator.createUserRegistrationMail(user, token, request.admin, host)
                  inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
                  mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
                } yield {
-                 Ok(s"created user ${user.username} $mail")
+                 Ok(Json.obj("ok" -> s"created user ${user.username} $mail"))
                }
 			       }
 		       })
@@ -121,14 +128,14 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
       )(UserUpdateDetails.apply)(UserUpdateDetails.unapply)
    )
    
-   def updateDetails() = withUser.async(parse.json){ request =>
+   def updateDetails() = withUser.async(parse.json){implicit request =>
        FormUserUpdateDetails.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),
            succ => {
              betterException{
              betterDb.updateUserDetails(succ.email, succ.icontype, succ.showname, succ.institute, request.user)
                .map{ u =>
-                 Ok("updated user details")     
+                 Ok(Json.obj("ok" -> s"updated ${u.username} details")) 
                }
            }}
        )
@@ -141,8 +148,8 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
 		          betterException{
  		             val encryptedPassword = DomainHelper.encrypt(succ)
  			           betterDb.updateUserPassword(encryptedPassword, request.user).map{ r =>
- 			           //TODO: EMAIL
- 		             Ok("updated user password")      
+ 			           //TODO: send EMAIL to user
+ 		             Ok(Json.obj("ok" -> s"updated user password"))    
  		           }
 		         }
 		    }
@@ -156,7 +163,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
          case (username: JsSuccess[String], firstName: JsSuccess[String], lastName: JsSuccess[String]) => {
             betterException{
               betterDb.updateUserName(username.value, firstName.value, lastName.value, request.user).map{ r =>
-                Ok("updated user name for user ${r.username}")
+                Ok(Json.obj("ok" -> s"updated user name for user ${r.username}"))
               }
             }
          }
@@ -178,7 +185,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        )
    }
    
-  
+   
    def updateCanBet() = withAdmin.async(parse.json){ request =>
        val unj = (request.body \ "username").validate[String]
        val canj = (request.body \ "canBet").validate[Boolean]
@@ -186,7 +193,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
          case (username: JsSuccess[String], canBet: JsSuccess[Boolean]) => {
                 betterException{
                    betterDb.updateUserCanBet(username.value,  canBet.value, request.admin).map{ r =>
-                      Ok("updated filter")
+                      Ok(Json.obj("ok" -> s"updated filter"))
                    }
                 }
                }
@@ -202,26 +209,21 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
    def createBetsForUsers() = withAdmin.async{ request =>
       betterException{
 	    betterDb.createBetsForGamesForAllUsers(request.admin)
-	      .map{ succ =>  Ok("created bets for users") }
+	      .map{ succ =>  Ok(Json.obj("ok" -> s"created bets for users")) }
    }}
 
-   def updateUserHadInstructions() = withUser.async { request =>
-       betterException{
-       betterDb.updateUserHadInstructions(request.user)
-         .map{ succ => Ok("user knows instructions")
-       }}
-   }
    
    
    /**** reCAPTCHA begin ****/
    def sendPasswordEmail(user: User): Future[Result] = {
        val token = BetterSettings.randomToken()
-       val message = MailGenerator.createPasswordRequestMail(user, token)
+       val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
+       val message = MailGenerator.createPasswordRequestMail(user, token, host)
        for{
           mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
           inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
        }yield{
-          Ok(s"sent new password request")
+          Ok(Json.obj("ok" -> s"sent new password request"))
        }
    }
    
@@ -233,7 +235,7 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
            }else{
                 ( wsResponse.json \ "error-codes" ).validate[Array[String]].fold(
                    err => Future.failed(ValidationException("could not check error codes")),
-                   succ => Future.failed(ValidationException(s"errors: ${succ.mkString(",")}"))
+                   succ => Future.failed(ValidationException(s"error: ${succ.mkString(",")}"))
                 )
            }
        )
@@ -245,9 +247,9 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
          for{
            user <- betterDb.userByEmail(email)
            result <- ws.url(url)
-                    .withQueryString(("secret", secret),("response", response))
+                    .withQueryStringParameters(("secret", secret),("response", response))
                     .withRequestTimeout(10000.millis)
-                    .withHeaders("Accept" -> "application/json")
+                    .withHttpHeaders("Accept" -> "application/json")
                     .post("")
            outcome <- checkCaptchaResponse(result, user)
          }yield(outcome)
@@ -265,11 +267,11 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
        val jresponse =  (request.body \ "response").validate[String]
        (jemail, jresponse) match {
          case (email: JsSuccess[String], response: JsSuccess[String]) =>
-           configuration.getString("betterplay.recaptchasecret")
-               .fold(Future.successful(InternalServerError("could not get recaptcha secret"))){ secret =>
+           configuration.getOptional[String]("betterplay.recaptchasecret")
+               .fold(Future.successful(InternalServerError(Json.obj("error" -> "could not get recaptcha secret")))){ secret =>
                    getUserAndVerify(secret, response.value, email.value)
                }
-         case _ => Future.successful(NotAcceptable("could not parse recaptcha request"))
+         case _ => Future.successful(NotAcceptable(Json.obj("error" -> "could not parse recaptcha request")))
        }
    }
    /**** reCAPTCHA end ****/
@@ -279,15 +281,16 @@ class Users @Inject()(override val betterDb: BetterDb, override val cache: Cache
       val jpass = (request.body \ "password").validate[String]
       jpass match {
         case (pass: JsSuccess[String]) => {
-                      BetterSettings.setMailPassword(pass.value)
+                      val settings = BetterSettings.getMailSettings()
+                      BetterSettings.setMailSettings(settings.copy(password = pass.value))
                       Logger.info(s"set mail password")
                       betterException {
                           mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
-                                  .mapTo[String].map{ result => Ok(s"set mail password $result")}
+                                  .mapTo[String].map{ result => Ok(Json.obj("ok" -> s"set mail password $result"))}
                       }
                   }
        case _ => {
-           Future.successful(NotAcceptable("could not parse mail password setting"))
+           Future.successful(NotAcceptable(Json.obj("error" -> "could not parse mail password setting")))
        }
       }
    }

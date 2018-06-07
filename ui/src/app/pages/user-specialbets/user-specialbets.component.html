@@ -1,0 +1,83 @@
+<div *ngIf="user$ | async as userWG; else loading">
+  <div *ngIf="betService.specialBetsOpen() && userService.isIdentical(userWG.user.username)">
+     You can change these special bets <em>only until</em> ~ 1hr before start of the games. Time left: {{betService.specialBetsTimeLeft()}}
+  <div *ngIf="! userWG.user.hadInstructions">
+       You did not fill out all your special bets!!
+  </div>
+  </div>
+  <div *ngIf="! userService.isIdentical(userWG.user.username)">
+      Special Bets: <user-view [user]=userWG.user [full]=false></user-view>
+  </div>
+
+   <table mat-table #table [dataSource]="userWG.specialBets">
+
+     <ng-container matColumnDef="description">
+       <th mat-header-cell *matHeaderCellDef>description</th>
+       <td mat-cell *matCellDef="let specialBet"> {{specialBet.template.description}} </td>
+     </ng-container>
+
+     <ng-container matColumnDef="reward">
+       <th mat-header-cell *matHeaderCellDef>reward</th>
+       <td mat-cell *matCellDef="let specialBet"> {{specialBet.template.points}} </td>
+     </ng-container>
+
+
+     <ng-container matColumnDef="result">
+       <th mat-header-cell *matHeaderCellDef>result</th>
+       <td mat-cell *matCellDef="let specialBet">
+         <button mat-button color="accent" type="submit" value="set result"
+                  title="set result" *ngIf="specialBet.template.result == '' && userService.isAdmin() && !betService.specialBetsOpen();else view"
+                  (click)="setResult(userWG.user, specialBet)">set result
+         </button>
+         <ng-template #view>
+             {{specialBet.template.result}}
+         </ng-template>
+       </td>
+     </ng-container>
+
+     <ng-container matColumnDef="prediction">
+       <th mat-header-cell *matHeaderCellDef>prediction</th>
+       <td mat-cell *matCellDef="let specialBet">
+          <button mat-button color="accent" type="submit" value="set prediction"
+               title="set prediction" *ngIf="specialBet.bet.prediction == '' && canBet(userWG.user.username);else view"
+               (click)="setPrediction(userWG.user, specialBet)">
+               set prediction
+          </button>
+          <ng-template #view>
+              {{specialBet.bet.prediction}}
+          </ng-template>
+       </td>
+     </ng-container>
+
+     <ng-container matColumnDef="setPrediction">
+       <th mat-header-cell *matHeaderCellDef>set prediction</th>
+       <td mat-cell *matCellDef="let specialBet">
+          <button mat-button color="accent" type="submit" value="set prediction"
+               title="set prediction" *ngIf="canBet(userWG.user.username);else view"
+               (click)="setPrediction(userWG.user, specialBet)">
+               set prediction
+          </button>
+          <ng-template #view>
+
+          </ng-template>
+       </td>
+     </ng-container>
+
+     <ng-container matColumnDef="points">
+       <th mat-header-cell *matHeaderCellDef>points</th>
+       <td mat-cell *matCellDef="let specialBet"> {{specialBet.bet.points}} </td>
+     </ng-container>
+
+
+     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+   </table>
+
+
+</div>
+
+
+
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

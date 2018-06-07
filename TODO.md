@@ -1,13 +1,31 @@
 TODO: 
-* check if xls.xlx is returned for excel download and fix
+====
+
+play/backend:
+-------------
+* throttler -> stream
+* remove minutesToView from BetterSettings; currently used for importer
+* remove scalaz and use cats
 * disable betting for users that canBet = false
-* create GAMES delayed (i.e. insert the time slot without the teams, then allow changing teams)
-* unit test in javascript for betting component
-* unit tests in backend for non-viewable bets
+* unit tests in backend for non-viewable bets  ????
 * actor sending unsent mails
 * view for unsent mails
-* add individual games popup to stats view
 * validate Excel in DBSpec
-* add sync disabled in bets view
+* multiple mail provider; when creating users or afterwards;
+
+UI:
+---
+* create GAMES delayed (i.e. insert the time slot without the teams, then allow changing teams)
+* unit test in javascript for betting component
+* add individual games popup to stats view
+
+
+
+IMPORTANT:
+----------
+* check cookie, multi-tabs, reload and login
+* Filter component
+* upload component
+
 
 
