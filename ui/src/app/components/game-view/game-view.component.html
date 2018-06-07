@@ -6,8 +6,8 @@
          </a>
          <mat-icon style="padding-left: 4px;" class="material-icons md-20 red" *ngIf="gwt.game.nextGame">whatshot</mat-icon>
          <div style="padding-left: 6px;"  *ngIf="! gameClosed()">  {{gwt.game.serverStart | date : DF}}, {{betService.timeLeft(gwt.game.serverStart)}}</div>
-         <div style="padding-left: 6px;"  *ngIf="gameClosed() && ! resultSet">closed, no result</div>
-         <div style="padding-left: 6px;"  *ngIf="gameClosed() && resultSet">{{prettyResult()}}</div>
+         <!--div style="padding-left: 6px;"  *ngIf="gameClosed() && ! resultSet">closed, no result</div>
+         <div style="padding-left: 6px;"  *ngIf="gameClosed() && resultSet">{{prettyResult()}}</div-->
          <!--game-bets-popup gwt="gwt"></game-bets-popup-->
          <!--span *ngIf="expand" matBadge={{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}>&nbsp&nbsp{{gwt.level.name}}</span-->
          <!--button *ngIf="allowEdit()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game', gwt.game.nr, 'edit']">

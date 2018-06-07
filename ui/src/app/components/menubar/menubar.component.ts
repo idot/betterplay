@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class MenubarComponent implements OnInit {
 
-  constructor( private userService: UserService, private router: Router, private timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
+  constructor( public userService: UserService, private router: Router, public timerService: BetterTimerService, private betterdb: BetterdbService, private route: ActivatedRoute) { }
         opened = true
 
         ngOnInit() {

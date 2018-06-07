@@ -24,11 +24,13 @@ export class SettingsComponent implements OnInit {
   hours = range(0, 23)
   minutes = range(0, 59)
 
+  df = "MM/dd HH:mm"
+
   hour = 12
   minute = 0
 
   constructor(private logger: NGXLogger, private route: ActivatedRoute,
-             private betterdb: BetterdbService,  private userService: UserService,
+             private betterdb: BetterdbService,  public userService: UserService,
              private timeService: BetterTimerService
             ) { }
 

@@ -14,6 +14,8 @@ export class UserEditComponent implements OnInit {
 
   editForm: FormGroup
 
+  submit(){}
+
   createForm(){
     this.editForm = this.fb.group({
       firstname : ['', [Validators.required]],
