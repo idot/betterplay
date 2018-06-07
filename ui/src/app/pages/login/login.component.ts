@@ -17,8 +17,8 @@ import { UrlSegment } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string = "admin";
-  password: string = "admin";
+  username: string = "";
+  password: string = "";
 
   constructor(private logger: NGXLogger,  private router: Router, private snackBar: MatSnackBar, private userService: UserService) { }
 
