@@ -1,3 +1,4 @@
+deploy.sh
 conf/production.conf
 logs
 project/project
