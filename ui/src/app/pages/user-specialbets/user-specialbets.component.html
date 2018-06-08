@@ -9,7 +9,7 @@
       Special Bets: <user-view [user]=userWG.user [full]=false></user-view>
   </div>
 
-   <table mat-table #table [dataSource]="userWG.specialBets">
+   <table mat-table #table [dataSource]="sorted(userWG.specialBets)">
 
      <ng-container matColumnDef="description">
        <th mat-header-cell *matHeaderCellDef>description</th>

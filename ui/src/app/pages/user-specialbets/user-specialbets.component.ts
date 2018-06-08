@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { ParamMap } from '@angular/router';
 import { Observable, EMPTY } from 'rxjs';
+import sortBy from 'lodash/sortBy';
 
 import { BetterdbService } from '../../betterdb.service';
 import { UserService } from '../../service/user.service';
@@ -42,7 +43,9 @@ export class UserSpecialbetsComponent implements OnInit {
 
   displayedColumns: string[] = this.displayColumnsBeforeGameStartAnon
 
-
+sorted(bets: SpecialBet[]): SpecialBet[] {
+   return sortBy(bets, function(b){ return b.template.nr })
+}
 
 setDisplayedColumns(username: string){
      this.displayedColumns = this.displayColumnsBeforeGameStartAnon
@@ -70,7 +73,7 @@ createUrl(user: User, bet: SpecialBet, result: boolean): string {
 }
 
 setResult(user: User, bet: SpecialBet){
-      this.router.navigate([this.createUrl(user, bet, true),{ result : 'true' }])
+     this.router.navigate([this.createUrl(user, bet, true),{ result : 'true' }])
 }
 
 setPrediction(user: User, bet: SpecialBet){

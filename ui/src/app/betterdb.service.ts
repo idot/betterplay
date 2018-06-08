@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, pipe } from 'rxjs';
+import { Observable, of, pipe, EMPTY } from 'rxjs';
 
 import { NGXLogger } from 'ngx-logger';
 
@@ -30,7 +30,8 @@ export class BetterdbService {
   private settings: BetterSettings = {
     debug: false,
     gamesStarts: new Date(),
-    recaptchasite: ""
+    recaptchasite: "",
+    sentmail: false
   }
 
   getSpecialBetForUser(user: User | null, betId: number): Observable<SpecialBet> {
@@ -50,7 +51,7 @@ export class BetterdbService {
           catchError(this.handleError<SpecialBet>(`getSpecialBetForUser`))
         )
     } else {
-       throw Error(`user not logged in`)
+       return EMPTY
     }
   }
 
@@ -284,12 +285,18 @@ export class BetterdbService {
        } else {
            // The backend returned an unsuccessful response code.
            // The response body may contain clues as to what went wrong,
-           this.logger.error(`backend returned code ${error.status}`, `body was: ${error.error}`)
-           if(error['error'] && error['error'].indexOf("Unique index or primary key violation") >= 0){
-              return of({ error: 'could not create', type: 'not unique' })
-           } else {
-              return of({ error: error.message, type: 'unknown' })
-           }
+           this.logger.error(`s: backend returned code ${error.status}`, `body was: ${error.error}`, error)
+           if(error.error){ //built in
+              if(error.error['error']){ //this is my normal UNAUTHORIZED( error: -> message) etc...
+                 if(typeof error.error['error'] === "string"){
+                     if(error.error['error'].indexOf("Unique index or primary key violation") >= 0){
+                        return of({ error: 'could not create because of duplicate item', type: 'not unique' })
+                     }
+                 }
+                 return(of({ error: error.error['error'], type: 'error' }))
+              }
+            }
+           return of({ error: error.message, type: 'unknown' })
        }
     }
   }
@@ -308,7 +315,7 @@ export class BetterdbService {
      } else {
        // The backend returned an unsuccessful response code.
        // The response body may contain clues as to what went wrong,
-       this.logger.error(`backend returned code ${error.status}`, `body was: ${error.error}`)
+       this.logger.error(`g: backend returned code ${error.status}`, `body was: ${error.error}`, error)
 
      }
       return of(result as T);

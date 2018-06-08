@@ -22,13 +22,17 @@ object BetterSettings {
   private var _mailSettings = MailSettings("","","","", 0, "") 
   private var _debugTime = now()
 	private var _debug = false  
-	
+	private var _sentMail = false
 	
 	def setMailSettings(mailSettings: MailSettings){
       _mailSettings = mailSettings
   }
 	
+  def setSentMail(){
+      _sentMail = true
+  }
   
+  def getSentMail(): Boolean = _sentMail
         
   def getMailSettings(): MailSettings = {
        _mailSettings

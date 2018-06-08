@@ -126,7 +126,7 @@ class Application(env: Environment,
       val start = ot.getOrElse( BetterSettings.now() )
       //default key no recaptcha
       val sitekey = configuration.getOptional[String]("betterplay.recaptchasite").getOrElse("6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI")
-      val json = Json.obj("debug" -> debug, "gamesStarts" -> start, "recaptchasite" -> sitekey)
+      val json = Json.obj("debug" -> debug, "gamesStarts" -> start, "recaptchasite" -> sitekey, "sentmail" -> BetterSettings.getSentMail())
       Ok(json)
     } 
   }

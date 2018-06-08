@@ -150,7 +150,7 @@ case class SpecialBetByUser(id: Option[Long], userId: Long,  specialbetId: Long,
 * the betgroupID allows grouping for multiple results e.g. semifinal1 seimifinal2 .. semifinal4 should all have the same groupId
 *
 **/
-case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: OffsetDateTime, betGroup: String, itemType: String, result: String)
+case class SpecialBetT(id: Option[Long], name: String, description: String, points: Int, closeDate: OffsetDateTime, betGroup: String, itemType: String, result: String, nr: Int)
 
 case class SpecialBets(bets: Seq[(SpecialBetT,SpecialBetByUser)]){
 	

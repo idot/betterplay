@@ -25,6 +25,7 @@ import { ToastComponent } from '../../components/toast/toast.component';
 export class SpecialbetTeamComponent implements OnInit {
   specialBet$: Observable<SpecialBet>
   teams: MatTableDataSource<Team>
+  username = ""
 
   private betTemplateId: number = 0
   private result: boolean = false
@@ -45,20 +46,25 @@ export class SpecialbetTeamComponent implements OnInit {
           this.betterdb.saveSpecialBetResult(user, specialBet).subscribe()
        } else {
           this.betterdb.saveSpecialBetPrediction(user, specialBet).subscribe(data => {
-              const u = <User>data
-              if(u){
+              if(data['error']){
+                  this.snackBar.openFromComponent(ToastComponent, { data: { message: data['error'], level: "error"}})
+              } else {
+                const u = <User>data
                 this.snackBar.openFromComponent(ToastComponent, { data: { message: "set special bet", level: "ok"}})
                 user.hadInstructions = u.hadInstructions
                 this.logger.debug(`instructions ${user.hadInstructions}`)
                 this.router.navigate([`user/${user.username}/special`])
-              } else {
-                this.snackBar.openFromComponent(ToastComponent, { data: { message: data['error'], level: "error"}})
-              }
-          })
+              }}
+          )
        }
+    } else {
+      this.snackBar.openFromComponent(ToastComponent, { data: { message: "not logged in, please log in again", level: "error"}})
+      if(this.username != ""){
+          this.router.navigate([`user/${this.username}/special`])
+      } else {
+          this.router.navigate([`users`])
+      }
     }
-    const un = user && user.username || ""
-    this.router.navigate([`user/${un}/special`])
   }
 
   applyFilter(filterValue: string) {
@@ -75,6 +81,9 @@ export class SpecialbetTeamComponent implements OnInit {
      this.specialBet$ = this.route.paramMap.pipe(
         switchMap((params: ParamMap) => {
            const username = params.get('username')
+           if(username){
+             this.username = username
+           }
            const id = params.get('id')
            const setresult = params.get('result')
            if(setresult){
