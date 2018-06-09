@@ -63,6 +63,7 @@ import { PasswordComponent } from './pages/password/password.component';
 import { APP_INITIALIZER } from '@angular/core';
 import { Pipe } from '@angular/core';
 import { EvenoddPipe } from './pipes/evenodd.pipe';
+import { APP_BASE_HREF } from '@angular/common';
 
 
 
@@ -128,7 +129,7 @@ export function reauthenticate(userService: UserService){
   ],
   entryComponents: [
       ToastComponent
-  ], 
+  ],
   providers: [httpInterceptorProviders, BetterTimerService,
        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }},
        {provide: APP_INITIALIZER, deps: [UserService], multi: true, useFactory: reauthenticate },
