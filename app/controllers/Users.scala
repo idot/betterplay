@@ -96,6 +96,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
        )(UserCreate.apply)(UserCreate.unapply)
    )
   
+   //TODO: move host, prefix + hosturl somewhere else
    def create() = withAdmin.async(parse.json) {implicit request =>
        FormUserCreate.bind(request.body).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),   
@@ -104,10 +105,12 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
                val random = BetterSettings.randomToken()
                val created = DomainHelper.userFromUPE(succ.username, random, succ.firstname, succ.lastname, succ.email, request.admin.id)
                val token = BetterSettings.randomToken()
+               val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
+               val prefix = configuration.getOptional[String]("betterplay.prefix").getOrElse("")
+               val hosturl = if(prefix != "") host+"/"+prefix else host
                for{
-                 user <- betterDb.insertUser(created, false, false, Some(request.admin))
-                 val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
-                 message = MailGenerator.createUserRegistrationMail(user, token, request.admin, host)
+                 user <- betterDb.insertUser(created, false, false, Some(request.admin))       
+                 message = MailGenerator.createUserRegistrationMail(user, token, request.admin, hosturl)
                  inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
                  mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
                } yield {
