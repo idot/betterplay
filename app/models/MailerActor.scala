@@ -112,6 +112,7 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
               try{
                  val result = MailMessages.sendMail(m.subject, m.body, MailMessages.address(user.email,user.firstName+" "+user.lastName), BetterSettings.getMailSettings(), debug)
                  mailLogger.info(s"send ${user.username} ${m.subject} result: $result ")
+                 BetterSettings.setSentMail()
                  s ! MailMessages.mailSuccess
               } catch {
                 case e: EmailException => {

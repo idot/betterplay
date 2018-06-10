@@ -56,7 +56,7 @@ object RG {
    
    def genTemplate(id: Long, group: String) = {
        genResult.map{ r => 
-		   SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), group, "itemtype", r)
+		   SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), group, "itemtype", r, 1)
 	   } 
    }
    
@@ -204,7 +204,7 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
 	
 	def specialBetsForGroup1 = {
 		val id = 10
-	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result")
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result", 1)
 	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "result", 0)
 		val b2 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)
 		PointsCalculator.calculateSpecialBetForGroup(Seq((t1,b1))) === Seq((t1,b1.copy(points=3))) and
@@ -214,8 +214,8 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
 	
 	def specialBetsForGroupAllWrong = {
 		val id = 10
-	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result1")
-		val t2 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result2")
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result1", 1)
+		val t2 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result2", 1)
 	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)
 		val b2 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)
 		val input = Seq((t1,b1),(t2,b2))
@@ -224,8 +224,8 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
 	
 	def specialBetsForGroupAllCorrect = {
 		val id = 10
-	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result1")
-		val t2 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result2")
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result1", 1)
+		val t2 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result2", 1)
 	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "result2", 0)
 		val b2 = SpecialBetByUser(Some(1000), 1l, id, "result1", 0)
 		val input = Seq((t1,b1),(t2,b2))
@@ -235,9 +235,9 @@ class PointsCalculatorSpec extends Specification with ScalaCheck { def is =
 	
 	def specialBetsForGroupPartCorrect = {
 		val id = 10
-	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result1")
-		val t2 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result2")
-		val t3 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result3")
+	    val t1 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result1", 1)
+		val t2 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result2", 1)
+		val t3 = SpecialBetT(Some(id), "name", "description", 3, BetterSettings.now(), "group1", "itemtype", "result3", 1)
 	    val b1 = SpecialBetByUser(Some(1000), 1l, id, "result2", 0)
 		val b2 = SpecialBetByUser(Some(1000), 1l, id, "result3", 0)
 		val b3 = SpecialBetByUser(Some(1000), 1l, id, "wrong", 0)

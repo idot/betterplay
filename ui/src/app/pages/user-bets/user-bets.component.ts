@@ -6,8 +6,11 @@ import { Observable, EMPTY } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 import { BetterdbService } from '../../betterdb.service';
-import { UserWithBets } from '../../model/bet';
-
+import { UserWithBets, GameBet } from '../../model/bet';
+import { UserService } from '../../service/user.service';
+import { FilterService } from '../../service/filter.service';
+import filter from 'lodash/filter'
+import { BetService } from '../../service/bet.service';
 
 
 @Component({
@@ -19,7 +22,13 @@ export class UserBetsComponent implements OnInit {
   user$: Observable<UserWithBets>;
   JSON = JSON;
 
-  constructor(private logger: NGXLogger, private route: ActivatedRoute, private betterdb: BetterdbService) { }
+  constructor(private logger: NGXLogger, private route: ActivatedRoute, private betterdb: BetterdbService, private filterService: FilterService, private betService: BetService) { }
+
+  filterG(gameBets: GameBet[]){
+     const fs = this.filterService
+     const bs = this.betService
+     return filter(gameBets, function(g){ return fs.filterGBL(g, bs) })
+  }
 
   ngOnInit() {
     this.user$ = this.route.paramMap.pipe(

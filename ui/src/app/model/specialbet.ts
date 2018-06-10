@@ -8,6 +8,7 @@ export interface Template {
     betGroup: string
     itemType: string
     result: string
+    nr: number
 }
 
 export interface SpBet {

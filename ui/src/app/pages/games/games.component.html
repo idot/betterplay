@@ -1,10 +1,10 @@
 <div *ngIf="games$ | async as gwts; else loading">
 
-
+  <filter-view withBet="false"></filter-view>
 
   <ul class="betterlist">
-     <li *ngFor="let gwt of gwts; let i = index">
-       <div fxLayout.lt-sm="column" fxLayout.gt-sm="row" class="item-{{i | evenodd }}" fxFlex.lt-sm="320px" fxFlex.gt-sm="600px" style="height: 7.5ex" fxLayoutAlign="space-between center">
+     <li *ngFor="let gwt of filterG(gwts); let i = index">
+       <div fxLayout.lt-sm="column" fxLayout.gt-sm="row" class="item-{{i | evenodd }}" fxFlex.lt-sm="340px" fxFlex.gt-sm="600px" style="height: 7.5ex" fxLayoutAlign="space-between center">
          <game-view [gwt]=gwt [number]=true [allowedit]=false [fullcontent]=true></game-view>
        </div>
      </li>

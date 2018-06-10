@@ -21,11 +21,16 @@ your better
 
 
 
-PS: If during the game you get "Unauthorized" errors,
+
+PS: When you log out, it does log you out on the server. Other tabs
+or devices will still list you as logged in, but updates you want to
+do will be rejected by the server. If during the game you get "Unauthorized" errors,
 please log in again at: 
+
 @{host}/login
 
 If you forgot your password you can request a new one:
+
 @{host}/password
 
 and an e-mail with further instructions will be sent to you.

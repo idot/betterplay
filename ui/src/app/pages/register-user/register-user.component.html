@@ -1,6 +1,13 @@
 
 
 <div>
+  <h3>sending mails: {{betterdb.getSettings().sentmail}}</h3>
+  <div *ngIf="! betterdb.getSettings().sentmail">
+    <h4>seems like the mail password was not set or no email was sent successfully</h4>
+  </div>
+
+
+
   <form (ngSubmit)="register()" [formGroup]="registerForm">
   <div class="registerfield">
     <mat-form-field>
@@ -36,4 +43,7 @@
       submit
   </button>
  </form>
+
+
+
 </div>

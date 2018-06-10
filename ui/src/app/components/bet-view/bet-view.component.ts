@@ -94,16 +94,17 @@ export class BetViewComponent implements OnInit {
        catchError( (err, bet) => {
           return of({ error: err.message})
        })
-    ).subscribe( result => {
-         if(result['error']){
-           this.snackBar.openFromComponent(ToastComponent, { data: { message: `could not save bet\n ${result['error']}`, level: "error"}})
+    ).subscribe( response => {
+         if(response['error']){
+           this.snackBar.openFromComponent(ToastComponent, { data: { message: `could not save bet\n ${response['error']}`, level: "error"}})
          }else{
             this.result.isSet = true
-            const betnew = result['betnew']
+            const betnew = response['betnew']
             //const betold = result['betold']
             if(betnew){
               this.result = this.result2view(betnew.result)
             }
+            this.bet.result = result
             this.snackBar.openFromComponent(ToastComponent, { data: { message: "saved bet", level: "ok"}})
          }
          this.submitting = false

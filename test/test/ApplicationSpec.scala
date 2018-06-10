@@ -52,7 +52,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
     
     
     def extractToken(result: Future[play.api.mvc.Result]): Option[String] = {
-       (Json.parse(contentAsString((result))) \ "AUTH-TOKEN").asOpt[String]
+       (Json.parse(contentAsString((result))) \ "X-AUTH-TOKEN").asOpt[String]
     }  
       
     def setTime(time: OffsetDateTime, authToken: String, message: String) = {
@@ -252,8 +252,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     
 	     
        val out = route(app, FakeRequest(POST, "/api/logout").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
-       status(out) must equalTo(SEE_OTHER)
-       redirectLocation(out) must beSome.which(_ == "/")
+       status(out) must equalTo(OK)
        
        val wou = route(app, FakeRequest(method="POST", path="/api/createBetsForUsers").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get
        status(wou) must equalTo(UNAUTHORIZED)    

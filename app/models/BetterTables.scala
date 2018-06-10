@@ -155,7 +155,8 @@ trait BetterTables {
 	   def betGroup = column[String]("betgroup")
      def itemtype = column[String]("itemtype")
      def result = column[String]("result") 
-     def * = (id.?, name, description, points, closeDate, betGroup, itemtype, result) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
+     def nr = column[Int]("number")
+     def * = (id.?, name, description, points, closeDate, betGroup, itemtype, result, nr) <> (SpecialBetT.tupled, SpecialBetT.unapply)  
   }
   
   

@@ -7,10 +7,11 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 
 import { Environment, ErrorMessage, OkMessage } from '../model/environment';
-import { User } from '../model/user';
+import { User, FilterSettings } from '../model/user';
 import { ToastComponent } from '../components/toast/toast.component';
 import { MatSnackBar } from '@angular/material';
 import { BetterdbService } from '../betterdb.service';
+import { FilterService } from './filter.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -20,9 +21,11 @@ const httpOptions = {
 @Injectable()
 export class UserService {
 
+
+
   private user: User | null = null;
 
-  constructor(private logger: NGXLogger, private snackBar: MatSnackBar, private http: HttpClient) {
+  constructor(private logger: NGXLogger, private snackBar: MatSnackBar, private http: HttpClient, private filterService: FilterService) {
     logger.info("user service ctor")
   //  this.reauthenticate() //for browser refresh
   //   this.query()
@@ -64,6 +67,7 @@ export class UserService {
   **/
   setUserData(data: {}){
     this.user = data['user']
+    this.filterService.setFilter( this.user ? this.user.filterSettings : this.filterService.getDefaultFilter())
     localStorage.setItem(Environment.XAUTHTOKEN,  data[Environment.XAUTHTOKEN])
     this.logger.debug(`fetched user ${this.user}`)
   }
@@ -93,6 +97,7 @@ export class UserService {
               success => {
                 if(success['user']){
                    this.user = success['user']
+                   this.filterService.setFilter( this.user ? this.user.filterSettings : this.filterService.getDefaultFilter())
                 }
                 resolve()
               },

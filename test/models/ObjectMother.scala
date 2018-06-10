@@ -32,9 +32,9 @@ object ObjectMother {
 	  val nm = "template "+stype
 	  (1 to 6).map{ i =>  
 		  if(i < 4){ //first 3 -> grouped bets 
-		     SpecialBetT(None, s"$nm $i", s"$nm $i", 1 , start, stype+"1" , stype, "" )
+		     SpecialBetT(None, s"$nm $i", s"$nm $i", 1 , start, stype+"1" , stype, "", i )
 	      }else{
-		      SpecialBetT(None, s"$nm $i", s"$nm $i", i , start, stype+"1" , stype, "" )
+		      SpecialBetT(None, s"$nm $i", s"$nm $i", i , start, stype+"1" , stype, "", i )
 		  }
 	   }.toList
    }

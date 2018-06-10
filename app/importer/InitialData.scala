@@ -41,13 +41,13 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   def specialBets(): Seq[SpecialBetT] = {
 	  val start = OffsetDateTime.of(2014, 6, 12, 22, 0, 0, 0, BetterSettings.offset)
 	  val s = Seq(
-	   SpecialBetT(None, "topscorer", "highest scoring player", 8 , start, "topscorer" , SpecialBetType.player, "" ),
-		 SpecialBetT(None, "mvp", "most valuable player", 8 , start, "mvp" , SpecialBetType.player, "" ),
-     SpecialBetT(None, "champion", "champion", 10 , start, "champion" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" ),
-		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "" )
+	   SpecialBetT(None, "topscorer", "highest scoring player", 8 , start, "topscorer" , SpecialBetType.player, "",1),
+		 SpecialBetT(None, "mvp", "most valuable player", 8 , start, "mvp" , SpecialBetType.player, "", 2),
+     SpecialBetT(None, "champion", "champion", 10 , start, "champion" , SpecialBetType.team, "", 3 ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "", 4 ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "", 5 ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "", 6 ),
+		 SpecialBetT(None, "semifinalist", "semifinalist", 5 , start, "semifinalist" , SpecialBetType.team, "", 7 )
 	  )
 	  s
   }

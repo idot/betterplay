@@ -21,6 +21,7 @@ export class BetService {
   //time before game start that bet closes
   private MSTOCLOSING = 60 * 60 * 1000 //in ms
 
+
   specialBetsOpen(): boolean {
      return ! this.betClosed(this.betterdb.getGamesStart())
   }
