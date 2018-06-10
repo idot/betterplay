@@ -1,9 +1,12 @@
 <div *ngIf="user$ | async as userWG; else loading">
   <div *ngIf="betService.specialBetsOpen() && userService.isIdentical(userWG.user.username)">
      You can change these special bets <em>only until</em> ~ 1hr before start of the games. Time left: {{betService.specialBetsTimeLeft()}}
-  <div *ngIf="! userWG.user.hadInstructions">
-       You did not fill out all your special bets!!
+     <div *ngIf="! userWG.user.hadInstructions">
+         You did not fill out all your special bets! Please do this.
+     </div>
   </div>
+  <div *ngIf="userService.isAdmin() && !betService.specialBetsOpen()">
+       Now you are admin and you can set the result of the special bet
   </div>
   <div *ngIf="! userService.isIdentical(userWG.user.username)">
       Special Bets: <user-view [user]=userWG.user [full]=false></user-view>

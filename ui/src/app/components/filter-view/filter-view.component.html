@@ -1,17 +1,17 @@
 <div fxLayout="row">
     <div style="width:200px;" fxLayoutAlign="space-between">
       <mat-form-field class="filterInput" style="width:60px;">
-        <mat-select (change)="filterChanged" [(ngModel)]="filter.game" [disabled]="disabled()" ariaLabel="game">
+        <mat-select (change)="filterChanged" [(ngModel)]="filter.game" ariaLabel="game" placeholder="game">
           <mat-option *ngFor="let g of gameFilter" [value]="g">{{g}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="filterInput" style="width:60px;">
-         <mat-select (change)="filterChanged" [(ngModel)]="filter.bet" [disabled]="disabled()" ariaLabel="result">
+      <mat-form-field class="filterInput" style="width:60px;" *ngIf="withBet">
+         <mat-select (change)="filterChanged" [(ngModel)]="filter.bet" ariaLabel="result" placeholder="bet">
           <mat-option  *ngFor="let b of betFilter" [value]="b">{{b}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="filterInput" style="width:60px;">
-         <mat-select (change)="filterChanged" [(ngModel)]="filter.level" [disabled]="disabled()" ariaLabel="level">
+         <mat-select (change)="filterChanged" [(ngModel)]="filter.level" ariaLabel="level" placeholder="level">
           <mat-option  *ngFor="let l of levelFilter" [value]="l">{{l}}</mat-option>
         </mat-select>
       </mat-form-field>

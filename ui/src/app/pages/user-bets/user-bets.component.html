@@ -1,9 +1,9 @@
 <div *ngIf="user$ | async as user; else loading">
   <user-view [user]=user.user [full]=true>
   </user-view>
-
+  <filter-view withBet="true"></filter-view>
   <ul class="betterlist">
-     <li *ngFor="let gameBet of filter(user.gameBets); let i = index">
+     <li *ngFor="let gameBet of filterG(user.gameBets); let i = index">
        <div fxLayout.lt-sm="column" fxLayout.gt-sm="row" class="item-{{i | evenodd }}" fxFlex.lt-sm="350px" fxFlex.gt-sm="600px" fxLayoutAlign="space-between center">
          <game-view [gwt]=gameBet.game [number]=true></game-view>
          <bet-view [bet]=gameBet.bet [serverStart]=gameBet.game.game.serverStart [gameresult]=gameBet.game.game.result></bet-view>

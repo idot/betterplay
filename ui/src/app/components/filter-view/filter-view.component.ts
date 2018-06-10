@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { ToastComponent } from '../toast/toast.component';
 import { MatSnackBar } from '@angular/material';
 import { FilterService } from '../../service/filter.service';
+import { Input } from '@angular/core';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { FilterService } from '../../service/filter.service';
   styleUrls: ['./filter-view.component.css']
 })
 export class FilterViewComponent implements OnInit {
+  @Input() withBet: boolean  
 
   constructor(private filterService: FilterService, private snackBar: MatSnackBar, private userService: UserService) { }
 

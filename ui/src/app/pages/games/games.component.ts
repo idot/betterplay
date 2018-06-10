@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { GameWithTeams } from '../../model/bet';
 import { FilterService } from '../../service/filter.service';
 import filter from 'lodash/filter'
+import { BetService } from '../../service/bet.service';
+
 
 
 @Component({
@@ -15,10 +17,12 @@ import filter from 'lodash/filter'
 export class GamesComponent implements OnInit {
   games$: Observable<GameWithTeams[]>
 
-  constructor(private betterdb: BetterdbService, private snackBar: MatSnackBar,private filterService: FilterService) { }
+  constructor(private betterdb: BetterdbService, private snackBar: MatSnackBar, private filterService: FilterService, private betService: BetService) { }
 
-  filter(games: GameWithTeams[]){
-     return filter(games, function(g){ return this.filterService.filterGL(g) })
+  filterG(games: GameWithTeams[]){
+     const fs = this.filterService
+     const bs = this.betService
+     return filter(games, function(g){ return fs.filterGL(g, bs) })
   }
 
   ngOnInit() {

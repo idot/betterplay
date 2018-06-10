@@ -64,6 +64,7 @@ import { APP_INITIALIZER } from '@angular/core';
 import { Pipe } from '@angular/core';
 import { EvenoddPipe } from './pipes/evenodd.pipe';
 import { APP_BASE_HREF } from '@angular/common';
+import { FilterService } from './service/filter.service';
 
 
 
@@ -130,11 +131,11 @@ export function reauthenticate(userService: UserService){
   entryComponents: [
       ToastComponent
   ],
-  providers: [httpInterceptorProviders, BetterTimerService,
+  providers: [httpInterceptorProviders, BetterTimerService, FilterService,
        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }},
        {provide: APP_INITIALIZER, deps: [UserService], multi: true, useFactory: reauthenticate },
        {provide: APP_INITIALIZER, deps: [BetterdbService], multi: true, useFactory: loadSettings },
-       UserService, BetService, BetterdbService
+       UserService, BetService,
   ],
   bootstrap: [AppComponent]
 })
