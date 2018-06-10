@@ -255,8 +255,6 @@ export class BetterdbService {
   }
 
 
-
-
   badgecolour(rank): string {
       switch (rank) {
          case 1:
