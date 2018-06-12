@@ -1,5 +1,5 @@
 .userView {
-  display: flex; 
+  display: flex;
   flex-direction: row;
   justify-content: flex-start;
 }
@@ -7,3 +7,40 @@
 
 .material-icons.green { color: #008000; }
 .material-icons.red { color: #AA0114; }
+
+
+.badge-points {
+    background: #039BE5;
+}
+
+.badge-gold {
+     background: #EDE275;
+}
+
+.badge-silver {
+     background: #BCC6CC;
+}
+
+.badge-bronze {
+     background: #CD7F32;
+}
+
+[data-notifications] {
+  position: relative;
+}
+
+/* append the notification badge after it */
+[data-notifications]:after {
+
+  /* the burger */
+  content: attr(data-notifications);
+
+  /* the fries */
+  position: absolute;
+  border-radius: 50%;
+  display: inline-block;
+  padding: 0.3em;
+/*  color: #f2f2f2; */
+  right: -15px;
+  top: -15px;
+}

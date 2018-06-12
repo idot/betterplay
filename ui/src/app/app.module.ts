@@ -14,6 +14,7 @@ import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, Mat
 import {MatTooltipModule} from '@angular/material/tooltip'
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 //import { MaterialFileInputModule } from 'ngx-material-file-input'
@@ -65,6 +66,7 @@ import { Pipe } from '@angular/core';
 import { EvenoddPipe } from './pipes/evenodd.pipe';
 import { APP_BASE_HREF } from '@angular/common';
 import { FilterService } from './service/filter.service';
+import { GameChartComponent } from './components/game-chart/game-chart.component';
 
 
 
@@ -113,7 +115,8 @@ export function reauthenticate(userService: UserService){
     ToastComponent,
     SpecialBetsChartComponent,
     PasswordComponent,
-    EvenoddPipe
+    EvenoddPipe,
+    GameChartComponent
   ],
   imports: [
     BrowserModule,
@@ -122,14 +125,14 @@ export function reauthenticate(userService: UserService){
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule,
     MatTableModule, MatSortModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule,
     MatTooltipModule, MatMenuModule, MatSidenavModule,
-    HttpClientModule,
+    HttpClientModule, MatDialogModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgxChartsModule,//MaterialFileInputModule,
     RecaptchaModule.forRoot(), RecaptchaFormsModule
   ],
   entryComponents: [
-      ToastComponent
+      ToastComponent, GameChartComponent
   ],
   providers: [httpInterceptorProviders, BetterTimerService, FilterService,
        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }},

@@ -5,7 +5,7 @@ import { Observable, of, pipe, EMPTY } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 import { Environment, ErrorMessage } from './model/environment';
-import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team, GameWithTeams } from './model/bet';
+import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team, GameWithTeams, Result } from './model/bet';
 import { User, UserWSpecialBets, GameWithBetsUsers } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { BetterSettings } from './model/settings';
@@ -14,6 +14,19 @@ import { SpecialBet, SpBet, SpecialBetPredictions } from './model/specialbet';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
+//for statistics getter
+import forEach from 'lodash/forEach';
+import partition from 'lodash/partition';
+import maxBy from 'lodash/maxBy';
+import fill from 'lodash/fill';
+
+
+
+export interface Prediction {
+   name: string
+   value: number
+   color: string
+}
 
 
 
@@ -81,7 +94,11 @@ export class BetterdbService {
     )
   }
 
-
+  saveGameResult(game: Game){
+    return this.http.post<any>(Environment.api(`game/results`), game).pipe(
+      catchError(this.handleSpecificError(`updating game result`))
+    )
+  }
 
   saveBet(bet: Bet){
      return this.http.post<Bet>(Environment.api(`bet/${bet.id}`), bet)
@@ -254,19 +271,43 @@ export class BetterdbService {
     })
   }
 
+  getGameStatistics(id: number): Observable<Prediction[]>{
+    return this.http.get<Result[]>(Environment.api(`statistics/game/${id}`)).pipe(
+       map( results => {
+        const predictions = new Array<Prediction>()
+        const color1 = "#80b1d3"
+        const color2 = "#8dd3c7"
+        const setOrNot = partition(results, function(r){ return r.isSet })
+        const isSet = setOrNot[0]
+        const notSet = setOrNot[1]
+        if(isSet.length == 0){
+          return predictions
+        }
+        const maxG = maxBy(isSet, function(r){ return r.goalsTeam1 > r.goalsTeam2 ? r.goalsTeam1 : r.goalsTeam2 })
+        const max = maxG.goalsTeam1 > maxG.goalsTeam2 ? maxG.goalsTeam1 : maxG.goalsTeam2
+        const counts1 = new Array<number>(max + 1)
+        const counts2 = new Array<number>(max + 1)
+        fill(counts1, 0)
+        fill(counts2, 0)
 
-  badgecolour(rank): string {
-      switch (rank) {
-         case 1:
-            return "badge-gold";
-         case 2:
-            return "badge-silver";
-         case 3:
-            return "badge-bronze";
-        default:
-            return "badge-points";
-      }
+        forEach(isSet, function(r){
+           counts1[r.goalsTeam1] = counts1[r.goalsTeam1] + 1
+           counts2[r.goalsTeam2] = counts2[r.goalsTeam2] + 1
+        })
+
+
+        for(var i = counts1.length - 1; i >= 0; i--){
+          const p = { name: `a ${i}`, value: counts1[i], color : color1 }
+          predictions.push( p )
+        }
+        for(var i = 0; i < counts2.length; i++){
+          const p = { name: `b ${i}`, value: counts2[i], color: color2 }
+          predictions.push( p )
+        }
+        return predictions
+      }))
   }
+
 
   /**
    * Handle Http operation that failed.

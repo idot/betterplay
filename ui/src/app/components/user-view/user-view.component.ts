@@ -19,7 +19,17 @@ export class UserViewComponent implements OnInit {
   width: string = "300px"
 
   badgecolour(): string {
-      return this.betterdb.badgecolour(this.user.rank)
+          switch (this.user.rank) {
+             case 1:
+                return "badge-gold";
+             case 2:
+                return "badge-silver";
+             case 3:
+                return "badge-bronze";
+            default:
+                return "badge-points";
+          }
+
   }
 
   ngOnInit() {

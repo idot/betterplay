@@ -1,4 +1,4 @@
-<div class="gameView" fxLayout="row" fxLayoutAlign="space-between center" style="width: 330px;">
+<div class="gameView" fxLayout="row" fxLayoutAlign="space-between center" [ngStyle]="viewwidth()">
          <div *ngIf="number">{{gwt.game.nr}}</div>
 
          <button mat-button type="submit" [routerLink]="['/game', gwt.game.nr, 'bets']">
@@ -6,11 +6,33 @@
          </button>
          <mat-icon style="padding-left: 4px;" class="material-icons md-20 red" *ngIf="gwt.game.nextGame">whatshot</mat-icon>
          <div style="padding-left: 6px;"  *ngIf="! gameClosed()"><div> {{gwt.game.serverStart | date : DF}},</div><div>{{betService.timeLeft(gwt.game.serverStart)}}</div></div>
-         <!--div style="padding-left: 6px;"  *ngIf="gameClosed() && ! resultSet">closed, no result</div>
-         <div style="padding-left: 6px;"  *ngIf="gameClosed() && resultSet">{{prettyResult()}}</div-->
-         <!--game-bets-popup gwt="gwt"></game-bets-popup-->
-         <!--span *ngIf="expand" matBadge={{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}>&nbsp&nbsp{{gwt.level.name}}</span-->
-         <!--button *ngIf="allowEdit()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game', gwt.game.nr, 'edit']">
+         <div style="padding-left: 6px;"  *ngIf="gameClosed() && ! resultSet()">closed, no result</div>
+         <div style="padding-left: 6px;"  *ngIf="gameClosed() && resultSet()">{{prettyResult()}}</div>
+         <button style="padding-left: 6px;" mat-icon-button type="submit" (click)="openChart()">
+              <mat-icon aria-label="bar chart">bar_chart</mat-icon>
+         </button>
+         <div style="padding-left: 6px;"  *ngIf="fullcontent"  matBadgeOverlap="false" matBadge="{{gwt.level.pointsExact}}/{{gwt.level.pointsTendency}}">{{gwt.level.name}}</div>
+         <button style="padding-left: 6px;"  *ngIf="allowSetResult()" mat-raised-button type="submit" value="Submit"  title="set result"  [routerLink]="['/game', gwt.game.nr, 'edit']">
               set result
-         </button-->
+         </button>
+</div>
+
+<div *ngIf="allowedit">
+  <div class="resultEdit" fxLayout="row">
+      <div style="width:220px;" fxLayoutAlign="space-between">
+        <mat-form-field class="resultInput" style="width:50px;">
+          <mat-select  [(ngModel)]="result.team1" [disabled]="disabled()" ariaLabel="goals team1">
+            <mat-option *ngFor="let point of points" [value]="point">{{point}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="resultInput" style="width:50px;">
+           <mat-select [(ngModel)]="result.team2" [disabled]="disabled()" ariaLabel="goals team2">
+            <mat-option  *ngFor="let point of points" [value]="point">{{point}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    <button mat-button style="padding:0px 17px 0px 17px;margin-left:20px;"(click)="saveResult()" [disabled]="disabled()">
+      <mat-icon  ariaLabel="save result">sync</mat-icon>
+    </button>
+  </div>
 </div>

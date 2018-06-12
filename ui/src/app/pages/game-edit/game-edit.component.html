@@ -1,3 +1,12 @@
-<p>
-  game-edit works!
-</p>
+
+<h1>set result</h1>
+
+<div *ngIf="game$ | async as ggwt; else loading">
+
+  <game-view [gwt]=ggwt.game [number]=true [allowedit]=true [fullcontent]=true></game-view>
+
+</div>
+
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

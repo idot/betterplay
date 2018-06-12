@@ -5,11 +5,25 @@
       <img src="{{ user.iconurl+'&s=25' }}" alt="{{user.username}}" class="md-avatar" *ngIf="user.iconurl" style="margin: 0px 2px 0px 10px; border-radius: 50%;"/>
       {{user.username}}
     </button>
+
+
+    <!--div>
+      <span matBadge={{user.totalPoints}} style="color: red; background-color: orange;" matBadgeOverlap="false"></span>
+      <span matBadge={{user.pointsGames}} class="{{badgecolour()}}" matBadgeOverlap="false"></span>
+      <span matBadge={{user.pointsSpecialBet}} class="{{badgecolour()}}" matBadgeOverlap="false"></span>
+    </div-->
+
     <div>
       <span matBadge={{user.totalPoints}} matBadgeOverlap="false"></span>
-      <span matBadge={{user.pointsGames}} matBadgeOverlap="false"></span>
+      <span matBadge={{user.pointsGames}}  matBadgeOverlap="false"></span>
       <span matBadge={{user.pointsSpecialBet}} matBadgeOverlap="false"></span>
     </div>
+
+    <!--div fxLayout="row">
+      <div data-notifications="1" class="{{badgecolour()}}"></div>
+      <div data-notifications="2" class="{{badgecolour()}}"></div>
+      <div data-notifications="3" class="{{badgecolour()}}"></div>
+    </div-->
     <mat-icon class="material-icons md-20 red" *ngIf="! user.canBet">do_not_disturb</mat-icon>
     <mat-icon class="material-icons md-20 green" *ngIf="user.canBet">check_circle</mat-icon>
   </div>

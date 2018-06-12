@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-    open = true
+    open = false
 
     toggleOpen(){
       this.open = ! this.open
