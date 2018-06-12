@@ -4,6 +4,7 @@
 #log in on server and execute deploy_server.sh
 
 SERVER=better:/home/centos/better
+SERVER=solexa@gecko:/groups/vbcf-ngs/programs
 
 sbt dist
 if [ $? -eq 0 ]; then

@@ -158,7 +158,7 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
   import scala.concurrent.ExecutionContext.Implicits.global
   val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))
 
-  val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], Rate(3, (1.minutes))))
+  val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], Rate(1, (1.minutes))))
   throttler ! SetTarget(Some(sendMailActor))
   
   if(sendMailInterval > 0){

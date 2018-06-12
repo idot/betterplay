@@ -30,7 +30,7 @@ export class SettingsComponent implements OnInit {
   minute = 0
 
   constructor(private logger: NGXLogger, private route: ActivatedRoute,
-             private betterdb: BetterdbService,  public userService: UserService,
+             public betterdb: BetterdbService,  public userService: UserService,
              private timeService: BetterTimerService
             ) { }
 
