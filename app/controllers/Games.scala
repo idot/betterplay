@@ -59,7 +59,7 @@ class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
 	       betterException{
 	         betterDb.updateGameResults(game, request.admin, BetterSettings.now, BetterSettings.closingMinutesToGame)
 	             .flatMap{ case(g,gu) => betterDb.calculateAndUpdatePoints(request.admin)
-	             .map{ succ => Ok("updated all points") }
+	             .map{ succ => Ok(Json.obj("message" -> "updated all points"))}
 	         }} 
 	      }
   )}
