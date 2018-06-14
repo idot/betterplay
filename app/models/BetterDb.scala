@@ -328,7 +328,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
      }
  
      def userByEmail(email: String): Future[User] = {
-         db.run(users.filter(_.email === email).result.head)
+         db.run(users.filter(_.email.toLowerCase === email.toLowerCase).result.head)
              .recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find user with email $email")) }
      }
 
