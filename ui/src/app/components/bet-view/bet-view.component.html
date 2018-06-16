@@ -14,6 +14,5 @@
   <button mat-button style="padding:0px 17px 0px 17px;margin-left:10px;"(click)="saveBet()" class="sync-icon-{{saveStyleValue()}}" [disabled]="saveStyleValue() == 'disabled'">
     <mat-icon  ariaLabel="save bet">sync</mat-icon>
   </button>
-  <!--pan *ngIf="gameresult.isSet" matBadge={{bet.points}} matBadgeOverlap="false" matBadgeSize="large"></span--> <!-- originalBet.points -->
-  <!-- just for designing remove because of top span matBadge={{bet.points}} matBadgeOverlap="false" matBadgeSize="large"></span-->
+  <div *ngIf="gameresult.isSet" matBadge={{bet.points}} matBadgeOverlap="false"></div>
 </div>

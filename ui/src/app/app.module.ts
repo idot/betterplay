@@ -67,6 +67,7 @@ import { EvenoddPipe } from './pipes/evenodd.pipe';
 import { APP_BASE_HREF } from '@angular/common';
 import { FilterService } from './service/filter.service';
 import { GameChartComponent } from './components/game-chart/game-chart.component';
+import { GameHeatmapComponent } from './components/game-heatmap/game-heatmap.component';
 
 
 
@@ -116,7 +117,8 @@ export function reauthenticate(userService: UserService){
     SpecialBetsChartComponent,
     PasswordComponent,
     EvenoddPipe,
-    GameChartComponent
+    GameChartComponent,
+    GameHeatmapComponent
   ],
   imports: [
     BrowserModule,
