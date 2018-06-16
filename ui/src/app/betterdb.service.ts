@@ -20,7 +20,10 @@ import partition from 'lodash/partition';
 import maxBy from 'lodash/maxBy';
 import fill from 'lodash/fill';
 
-
+export interface GameStats {
+   barchart: Prediction[] //for barchart
+   //heatmap:
+}
 
 export interface Prediction {
    name: string
@@ -271,17 +274,20 @@ export class BetterdbService {
     })
   }
 
-  getGameStatistics(id: number): Observable<Prediction[]>{
+  getGameStatistics(id: number, team1: string, team2: string): Observable<GameStats>{
     return this.http.get<Result[]>(Environment.api(`statistics/game/${id}`)).pipe(
        map( results => {
         const predictions = new Array<Prediction>()
+        const gameStats = {
+           barchart : predictions
+        }
         const color1 = "#80b1d3"
         const color2 = "#8dd3c7"
         const setOrNot = partition(results, function(r){ return r.isSet })
         const isSet = setOrNot[0]
         const notSet = setOrNot[1]
         if(isSet.length == 0){
-          return predictions
+          return gameStats
         }
         const maxG = maxBy(isSet, function(r){ return r.goalsTeam1 > r.goalsTeam2 ? r.goalsTeam1 : r.goalsTeam2 })
         const max = maxG.goalsTeam1 > maxG.goalsTeam2 ? maxG.goalsTeam1 : maxG.goalsTeam2
@@ -304,7 +310,9 @@ export class BetterdbService {
           const p = { name: `b ${i}`, value: counts2[i], color: color2 }
           predictions.push( p )
         }
-        return predictions
+        return {
+           barchart : predictions
+        }
       }))
   }
 

@@ -120,7 +120,7 @@ export class GameViewComponent implements OnInit {
   }
 
   openChart(){
-    this.betterdb.getGameStatistics(this.gwt.game.id).subscribe( data => {
+    this.betterdb.getGameStatistics(this.gwt.game.id, this.gwt.team1.name, this.gwt.team2.name).subscribe( data => {
       let dialogRef = this.dialog.open(GameChartComponent , {
             width: '320px',
             data: data
