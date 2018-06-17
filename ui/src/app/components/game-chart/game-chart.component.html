@@ -1,13 +1,6 @@
-<ngx-charts-bar-vertical
-  [view]="view"
-  [scheme]="colorScheme"
-  [results]="predictions"
-  [gradient]="gradient"
-  [xAxis]="showXAxis"
-  [yAxis]="showYAxis"
-  [legend]="showLegend"
-  [showXAxisLabel]="showXAxisLabel"
-  [showYAxisLabel]="showYAxisLabel"
-  [xAxisLabel]="xAxisLabel"
-  [yAxisLabel]="yAxisLabel">
-</ngx-charts-bar-vertical>
+<div>
+  <nvd3 [options]="barchart" [data]="bcdata"></nvd3>
+</div>
+<div>
+  <nvd3 [options]="heatmap" [data]="hmdata"></nvd3>
+</div>

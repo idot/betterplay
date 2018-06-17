@@ -21,12 +21,23 @@ import maxBy from 'lodash/maxBy';
 import fill from 'lodash/fill';
 
 export interface GameStats {
-   barchart: Prediction[] //for barchart
-   //heatmap:
+   team1: string,
+   team2: string,
+   barchart: {
+     key: string,
+     values: Prediction[]
+   }
+   heatmap: GoalCount[]
+}
+
+export interface GoalCount {
+   team1: string,
+   team2: string,
+   count: number
 }
 
 export interface Prediction {
-   name: string
+   label: string
    value: number
    color: string
 }
@@ -276,10 +287,18 @@ export class BetterdbService {
 
   getGameStatistics(id: number, team1: string, team2: string): Observable<GameStats>{
     return this.http.get<Result[]>(Environment.api(`statistics/game/${id}`)).pipe(
+  //    return this.http.get<Result[]>(`https://ngs.vbcf.ac.at/fifa2018/api/statistics/game/${id}`).pipe(
        map( results => {
         const predictions = new Array<Prediction>()
+        const heatmap = new Array<GoalCount>()
         const gameStats = {
-           barchart : predictions
+           team1: team1,
+           team2: team2,
+           barchart : {
+             key: 'game',
+             values: predictions
+           },
+           heatmap: heatmap
         }
         const color1 = "#80b1d3"
         const color2 = "#8dd3c7"
@@ -293,25 +312,41 @@ export class BetterdbService {
         const max = maxG.goalsTeam1 > maxG.goalsTeam2 ? maxG.goalsTeam1 : maxG.goalsTeam2
         const counts1 = new Array<number>(max + 1)
         const counts2 = new Array<number>(max + 1)
+
         fill(counts1, 0)
         fill(counts2, 0)
+
+        for(var t1 = 0; t1 <= max; t1++){
+          for(var t2 = 0; t2 <= max; t2++){
+             heatmap.push({ team1: `${t1}`, team2: `${t2}`, count: 0 })
+          }
+        }
+
 
         forEach(isSet, function(r){
            counts1[r.goalsTeam1] = counts1[r.goalsTeam1] + 1
            counts2[r.goalsTeam2] = counts2[r.goalsTeam2] + 1
+           const goalIndex = r.goalsTeam1 * (max + 1) + r.goalsTeam2
+           const goal = heatmap[goalIndex]
+           goal.count = goal.count + 1
         })
 
-
         for(var i = counts1.length - 1; i >= 0; i--){
-          const p = { name: `a ${i}`, value: counts1[i], color : color1 }
+          const p = { label: ` ${i}`, value: counts1[i], color : color1 }
           predictions.push( p )
         }
         for(var i = 0; i < counts2.length; i++){
-          const p = { name: `b ${i}`, value: counts2[i], color: color2 }
+          const p = { label: `${i}`, value: counts2[i], color: color2 }
           predictions.push( p )
         }
         return {
-           barchart : predictions
+          team1: team1,
+          team2: team2,
+          barchart : {
+            key: 'game',
+            values: predictions
+          },
+          heatmap: heatmap
         }
       }))
   }
