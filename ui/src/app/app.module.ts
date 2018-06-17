@@ -10,13 +10,12 @@ import {MatIconModule} from '@angular/material/icon'
 import {DomSanitizer} from '@angular/platform-browser'
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material'
+import {MatIconRegistry, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material'
 import {MatTooltipModule} from '@angular/material/tooltip'
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatDialogModule} from '@angular/material/dialog';
 
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 //import { MaterialFileInputModule } from 'ngx-material-file-input'
 
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger'
@@ -67,8 +66,11 @@ import { EvenoddPipe } from './pipes/evenodd.pipe';
 import { APP_BASE_HREF } from '@angular/common';
 import { FilterService } from './service/filter.service';
 import { GameChartComponent } from './components/game-chart/game-chart.component';
+import { NvD3Module } from 'ng2-nvd3';
 
-
+// d3 and nvd3 should be included somewhere
+import 'd3';
+import 'nvd3';
 
 
 /**
@@ -119,7 +121,7 @@ export function reauthenticate(userService: UserService){
     GameChartComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, NvD3Module,
     LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG}),
     FormsModule, ReactiveFormsModule, FlexLayoutModule,
     MatIconModule, MatButtonModule, MatCheckboxModule, MatBadgeModule, MatInputModule, MatSelectModule, MatSnackBarModule,
@@ -128,7 +130,7 @@ export function reauthenticate(userService: UserService){
     HttpClientModule, MatDialogModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgxChartsModule,//MaterialFileInputModule,
+    //MaterialFileInputModule,
     RecaptchaModule.forRoot(), RecaptchaFormsModule
   ],
   entryComponents: [
@@ -138,6 +140,7 @@ export function reauthenticate(userService: UserService){
        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500, panelClass: ['toast-background'] }},
        {provide: APP_INITIALIZER, deps: [UserService], multi: true, useFactory: reauthenticate },
        {provide: APP_INITIALIZER, deps: [BetterdbService], multi: true, useFactory: loadSettings },
+       {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
        UserService, BetService,
   ],
   bootstrap: [AppComponent]

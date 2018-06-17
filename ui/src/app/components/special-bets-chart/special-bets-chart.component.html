@@ -1,15 +1,4 @@
-
-<ngx-charts-bar-vertical
-  [view]="view"
-  [scheme]="colorScheme"
-  [results]="single"
-  [gradient]="gradient"
-  [xAxis]="showXAxis"
-  [yAxis]="showYAxis"
-  [legend]="showLegend"
-  [showXAxisLabel]="showXAxisLabel"
-  [showYAxisLabel]="showYAxisLabel"
-  [xAxisLabel]="xAxisLabel"
-  [yAxisLabel]="yAxisLabel"
-  (select)="onSelect($event)">
-</ngx-charts-bar-vertical>
+<div>
+  <h5 align="center">{{betname}}</h5>
+  <nvd3 [options]="barchart" [data]="bcdata"></nvd3>
+</div>

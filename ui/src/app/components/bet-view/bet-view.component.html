@@ -1,4 +1,5 @@
 <div class="betView" fxLayout="row">
+    <div *ngIf="gameresult.isSet" matBadge={{bet.points}} matBadgeOverlap="false"></div>   
     <div style="width:120px;" fxLayoutAlign="space-between">
       <mat-form-field class="betInput" style="width:50px;">
         <mat-select  [(ngModel)]="result.team1" [disabled]="disabled()" ariaLabel="goals team1">
@@ -14,5 +15,5 @@
   <button mat-button style="padding:0px 17px 0px 17px;margin-left:10px;"(click)="saveBet()" class="sync-icon-{{saveStyleValue()}}" [disabled]="saveStyleValue() == 'disabled'">
     <mat-icon  ariaLabel="save bet">sync</mat-icon>
   </button>
-  <div *ngIf="gameresult.isSet" matBadge={{bet.points}} matBadgeOverlap="false"></div>
+
 </div>

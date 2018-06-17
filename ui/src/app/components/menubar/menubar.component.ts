@@ -67,6 +67,10 @@ export class MenubarComponent implements OnInit {
             return this.timerService.getTime();
         }
 
+        gameCreateDisabled(){
+            return this.router.url.startsWith("/game/create")
+        }
+
         logout(){
            this.userService.logout()
            this.router.navigate([`/login`])

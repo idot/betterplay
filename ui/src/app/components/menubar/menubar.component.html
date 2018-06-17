@@ -33,6 +33,11 @@
           </div>
           <div *ngIf="userService.isAdmin()">
                  <div class="menubutton">
+                      <button mat-raised-button  [routerLink]="['/game/create']" [disabled]="gameCreateDisabled()">
+                         new game
+                      </button>
+                 </div>
+                 <div class="menubutton">
                      <button mat-raised-button  [routerLink]="['/admin/register']" [disabled]="registerDisabled()">
                         register user
                      </button>

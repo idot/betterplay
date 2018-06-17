@@ -34,8 +34,8 @@ const routes: Routes = [
   { path: 'user/:username/special/team/:id', component: SpecialbetTeamComponent},
   { path: 'user/:username/special', component: UserSpecialbetsComponent},
   { path: 'user/:username', component: UserBetsComponent}, //??
+  { path: 'game/create', component: GameCreateComponent},
   { path: 'game/:gamenr/edit', component: GameEditComponent},
-  { path: 'game/:gamenr/create', component: GameCreateComponent},
   { path: 'game/:gamenr/bets', component: GameBetsComponent},
   { path: 'game/:gamenr', component: GameBetsComponent},
   { path: 'games', component: GamesComponent },

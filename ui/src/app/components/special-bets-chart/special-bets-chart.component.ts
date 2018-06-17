@@ -4,20 +4,7 @@ import { BetterdbService } from '../../betterdb.service';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 
-export var single = [
-  {
-    "name": "Germany",
-    "value": 8940000
-  },
-  {
-    "name": "USA",
-    "value": 5000000
-  },
-  {
-    "name": "France",
-    "value": 7200000
-  }
-];
+
 
 
 @Component({
@@ -28,47 +15,71 @@ export var single = [
 export class SpecialBetsChartComponent implements OnInit {
   @Input() betname
 
+  bcdata: any
+  barchart: any
 
   ngOnInit() {
-     this.betterdb.getSpecialBetStats(this.betname).subscribe( data => {
-       const template = data.template
-       const grouped = groupBy(data.predictions, function(b) {
-                return b;
-       })
-       const bets = map(grouped, function(v, k) {
-       const item = k.toString() == "" ? "undecided" : k.toString()
-       const arr = { name: item, value: v.length }
-                return arr
-       })
-       const result = { //for D3
-              template: template,
-              data: [{
-                key: template.name,
-                values: bets
-           }]}
-       this.single = bets
-       this.xAxisLabel = this.betname
-      }
+     this.barchartOptions()
+     this.getData()
+  }
+
+  getData(){
+    this.betterdb.getSpecialBetStats(this.betname).subscribe( data => {
+      const template = data.template
+      const grouped = groupBy(data.predictions, function(b) {
+               return b;
+      })
+      const bets = map(grouped, function(v, k) {
+          const item = k.toString() == "" ? "undecided" : k.toString()
+          const arr = { label: item, value: v.length }
+          return arr
+      })
+      const result = { //for D3
+             template: template,
+             data: [{
+               key: template.name,
+               values: bets
+      }]}
+      this.bcdata = result.data
+     }
     )
   }
 
-    single: any[]
-
-    view: any[] = [320, 200]
-
-    // options
-    showXAxis = true
-    showYAxis = true
-    gradient = false
-    showLegend = false
-    showXAxisLabel = true
-    xAxisLabel = this.betname
-    showYAxisLabel = true
-    yAxisLabel = 'count'
-
-    colorScheme = {
-      domain: ['#377eb8']
+  barchartOptions(){
+    this.barchart = {
+      chart: {
+        type: 'discreteBarChart',
+        height: 320,
+        margin : {
+          top: 10,
+          right: 20,
+          bottom: 100,
+          left: 30
+        },
+        x: function(d){
+          return d.label
+        },
+        y: function(d){return d.value },
+        color: function(d){ return "#80b1d3" },
+        showValues: false,
+        showYAxis: true,
+        showXAxis: true,
+        valueFormat: function(d){
+          return d3.format('0')(d);
+        },
+        duration: 500,
+        xAxis: {
+        //  axisLabel: this.betname,
+          rotateLabels: -90
+        },
+        yAxis: {
+//          axisLabel: 'Y Axis',
+//          axisLabelDistance: -10
+        }
+      }
     }
+  }
+
 
     constructor(private betterdb: BetterdbService) {
 
