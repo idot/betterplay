@@ -1,3 +1,66 @@
-<p>
-  game-create works!
-</p>
+<div>
+  <h3>create game</h3>
+
+<div *ngIf="{ teams: teams$ | async, levels: levels$ | async } as teamsLevels; else loading">
+
+  <div>
+    <div fxLayout="row">
+      <mat-form-field>
+        <mat-select required placeholder="team1" name="team1" [(ngModel)]="team1" ariaLabel="team1">
+          <mat-option *ngFor="let team of teamsLevels.teams" [value]="team">{{team.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select required placeholder="team2" name="team2" [(ngModel)]="team2" ariaLabel="team2">
+          <mat-option *ngFor="let team of teamsLevels.teams" [value]="team">{{team.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-form-field style="width: 70px;">
+      <mat-select  placeholder="level" name="level" [(ngModel)]="level" ariaLabel="level">
+        <mat-option *ngFor="let level of teamsLevels.levels" [value]="level">{{level.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+<div fxLayout="column">
+    <mat-form-field style="width: 120px;">
+        <input matInput [matDatepicker]="picker" placeholder="set date" [(ngModel)]="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+    </mat-form-field>
+
+    <div fxLayout="row" style="width: 120px;">
+       <div>
+         <mat-form-field style="width: 50px;">
+           <mat-select  placeholder="hr" name="hour" [(ngModel)]="hour">
+             <mat-option *ngFor="let hour of hours" [value]="hour">{{hour}}</mat-option>
+           </mat-select>
+         </mat-form-field>
+       </div>
+       <div>
+         <mat-form-field style="width: 50px;">
+           <mat-select placeholder="min" name="minute" [(ngModel)]="minute">
+              <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute}}</mat-option>
+            </mat-select>
+           </mat-form-field>
+       </div>
+    </div>
+  </div>
+
+
+  <button mat-button type="submit" value="submit" title="submit" [disabled]="false" (click)="create()">
+      submit
+  </button>
+</div>
+
+
+
+</div>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>
+
+</div>

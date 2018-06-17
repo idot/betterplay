@@ -5,7 +5,7 @@ import { Observable, of, pipe, EMPTY } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 import { Environment, ErrorMessage } from './model/environment';
-import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team, GameWithTeams, Result } from './model/bet';
+import { Bet, UserWithBets, Game, Player, PlayerWithTeam, Team, GameWithTeams, Result, Level } from './model/bet';
 import { User, UserWSpecialBets, GameWithBetsUsers } from './model/user';
 import { catchError, tap, map } from 'rxjs/operators';
 import { BetterSettings } from './model/settings';
@@ -19,6 +19,14 @@ import forEach from 'lodash/forEach';
 import partition from 'lodash/partition';
 import maxBy from 'lodash/maxBy';
 import fill from 'lodash/fill';
+
+export interface CreatedGame {
+   serverStart: Date,
+   localStart: Date,
+   team1: string,
+   team2: string,
+   level: number
+ }
 
 export interface GameStats {
    team1: string,
@@ -146,6 +154,15 @@ export class BetterdbService {
        )
   }
 
+  getLevels(): Observable<Level[]> {
+    return this.http.get<Level[]>(Environment.api(`levels`))
+       .pipe(
+          tap(_ => this.logger.debug(`fetching levels`)),
+          catchError(this.handleError<Level[]>(`getLevels`))
+       )
+  }
+
+
   getSettings(): BetterSettings {
      return this.settings
   }
@@ -185,11 +202,11 @@ export class BetterdbService {
   }
 
   getSpecialBetStats(templateName: string): Observable<SpecialBetPredictions>{
-    return this.http.get<SpecialBetPredictions>(Environment.api(`statistics/specialBet/${templateName}`))
-       .pipe(
+  //  return this.http.get<SpecialBetPredictions>(`https://ngs.vbcf.ac.at/fifa2018/api/statistics/specialBet/${templateName}`).pipe(
+    return this.http.get<SpecialBetPredictions>(Environment.api(`statistics/specialBet/${templateName}`)).pipe(
           tap(_ => this.logger.debug(`fetching special bet stats ${templateName}`)),
           catchError(this.handleError<SpecialBetPredictions>(`getSpecialBetStats`))
-       )
+      )
 
   }
 
@@ -230,6 +247,12 @@ export class BetterdbService {
 
   changePasswordRequest(req: {}): Observable<string> {
     return this.http.post<any>(Environment.api(`changePasswordRequest`), req)
+  }
+
+  createGame(game: CreatedGame){
+    return this.http.post<any>(Environment.api(`game`), game).pipe(
+      catchError(this.handleSpecificError(`create game`))
+    )
   }
 
  /**

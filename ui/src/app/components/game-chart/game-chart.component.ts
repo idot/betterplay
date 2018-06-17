@@ -58,7 +58,7 @@ export class GameChartComponent {
             return d.label
           },
           y: function(d){return d.value },
-          color: function(d){return "#80b1d3"  },// d.color},
+          color: function(d){return d.color},
           showValues: false,
           showYAxis: true,
           showXAxis: true,
