@@ -1,20 +1,27 @@
 <div>
   <form (ngSubmit)="createMail()" [formGroup]="mailForm">
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="subject" formControlName="subject" required>
-    </mat-form-field>
-    <mat-form-field>
-      <!--does not compile: textarea matInput placeholder="body" formControlName="body" required>-->
-      <input matInput placeholder="body" formControlName="body" required>
-    </mat-form-field>
-  </div>
-  <button mat-button type="submit" value="submit" title="submit" [disabled]="mailForm.invalid">
-      save mail
-  </button>
-</form>
-<button mat-button type="submit" value="submit" title="submit" (click)="sendUnsentMail()">
-    send saved mails
-</button>
+      <div fxLayout="column">
+          <div>
+            <mat-form-field>
+              <input matInput placeholder="subject" formControlName="subject" required>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <mat-label>body</mat-label>
+              <textarea style="width: 350px; height: 300px;" matInput formControlName="body" required></textarea>
+            </mat-form-field>
+          </div>
+          <div>
+           write <pre ngNonBindable>{{username}}</pre> <pre ngNonBindable>{{firstname}}</pre> <pre ngNonBindable>{{lastname}}</pre> in body to make the e-mail more personal
+         </div>
+          <button mat-button type="submit" value="submit" title="submit" [disabled]="mailForm.invalid">
+              save mail
+          </button>
+      </div>
+  </form>
+      <button mat-button type="submit" value="submit" title="submit" (click)="sendUnsentMail()">
+          send saved mails
+      </button>
 
 </div>
