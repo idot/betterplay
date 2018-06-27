@@ -1,6 +1,4 @@
 <div class="gameView" fxLayout="row" fxLayoutAlign="space-between center" [ngStyle]="viewwidth()">
-         <div *ngIf="number">{{gwt.game.nr}}</div>
-
          <button mat-button type="submit" [routerLink]="['/game', gwt.game.nr, 'bets']">
            <div style="padding-right: 2px;" class="flag-icon flag-icon-{{gwt.team1.short2}}"></div><div style="padding-right: 4px;" class="flag-icon flag-icon-{{gwt.team2.short2}}"></div>  {{gwt.team1.name}} : {{gwt.team2.name}}
          </button>

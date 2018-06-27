@@ -5,6 +5,7 @@ import { BetterdbService, CreatedGame } from '../../betterdb.service';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
+import sortBy from 'lodash/sortBy';
 import range from 'lodash/range';
 import { Team, Level, GameWithTeams, Game } from '../../model/bet';
 import { Observable } from 'rxjs';
@@ -46,6 +47,10 @@ export class GameCreateComponent implements OnInit {
      const cdate = this.date
      cdate.setHours(this.hour, this.minute)
      return cdate
+  }
+
+  sortedTeams(teams: Team[]): Team[] {
+     return sortBy(teams, function(team: Team){ return team.name })
   }
 
   getGame(): CreatedGame {

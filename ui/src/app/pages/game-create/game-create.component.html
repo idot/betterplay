@@ -7,13 +7,13 @@
     <div fxLayout="row">
       <mat-form-field>
         <mat-select required placeholder="team1" name="team1" [(ngModel)]="team1" ariaLabel="team1">
-          <mat-option *ngFor="let team of teamsLevels.teams" [value]="team">{{team.name}}</mat-option>
+          <mat-option *ngFor="let team of sortedTeams(teamsLevels.teams)" [value]="team">{{team.name}}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
         <mat-select required placeholder="team2" name="team2" [(ngModel)]="team2" ariaLabel="team2">
-          <mat-option *ngFor="let team of teamsLevels.teams" [value]="team">{{team.name}}</mat-option>
+          <mat-option *ngFor="let team of sortedTeams(teamsLevels.teams)" [value]="team">{{team.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
