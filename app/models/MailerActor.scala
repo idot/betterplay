@@ -135,7 +135,7 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
        val s = sender()
        Future{  
           blocking {
-             val result = MailMessages.sendMail("betterplay test email", "betterplay test body", MailMessages.address(BetterSettings.getMailSettings().testReceiver, "Test"),  BetterSettings.getMailSettings(), true)
+             val result = MailMessages.sendMail("betterplay test email", MailGenerator.testMail(configuration), MailMessages.address(BetterSettings.getMailSettings().testReceiver, "Test"),  BetterSettings.getMailSettings(), true)
              mailLogger.debug("test send result:"+result)
              s ! MailMessages.mailSuccess
           }   

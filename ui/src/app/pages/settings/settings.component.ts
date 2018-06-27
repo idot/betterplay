@@ -61,5 +61,10 @@ export class SettingsComponent implements OnInit {
       )
   }
 
+  sendTestMail(){
+      this.betterdb.sendTestMail().subscribe( result =>
+          this.logger.log(result)
+      )
+  }
 
 }

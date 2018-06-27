@@ -13,6 +13,11 @@ import play.api.i18n.MessagesApi
 import scala.concurrent.duration._
 import akka.actor._
 import scala.concurrent.{Future,Await}
+import play.api.i18n.I18nSupport
+import akka.actor._
+import akka.pattern.ask
+import akka.util.Timeout
+
 
 import models._
 import models.JsonHelper._
@@ -23,7 +28,7 @@ import play.api.libs.json.JsSuccess
 
 
 @Singleton
-class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi) extends AbstractController(cc) with Security {
+class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, @Named("mailer") mailer: ActorRef) extends AbstractController(cc) with Security {
  
    //TODO move to database in 1 transaction
   
@@ -47,6 +52,36 @@ class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, 
        }
    }
     
-
    
+ def testMail() = withAdmin.async { implicit request =>
+      Logger.info(s"sending test email")
+      betterException {
+          mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
+                    .mapTo[String].map{ result => Ok(Json.obj("ok" -> s"sent test email $result"))}
+      }
+  }
+   
+   def mailPassword() = withAdmin.async(parse.json) { implicit request =>
+      val jpass = (request.body \ "password").validate[String]
+      jpass match {
+        case (pass: JsSuccess[String]) => {
+                      val settings = BetterSettings.getMailSettings()
+                      BetterSettings.setMailSettings(settings.copy(password = pass.value))
+                      Logger.info(s"set mail password")
+                      betterException {
+                          mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
+                                  .mapTo[String].map{ result => Ok(Json.obj("ok" -> s"set mail password $result"))}
+                      }
+                  }
+       case _ => {
+           Future.successful(NotAcceptable(Json.obj("error" -> "could not parse mail password setting")))
+       }
+      }
+   }
+
+  def sendUnsentMail() = withAdmin.async { request =>
+       mailer ! SendUnsent()
+       Future{ Ok(Json.obj("ok" -> "sending unsent mail")) }
+  }
+ 
 }

@@ -33,11 +33,7 @@ import TimeHelper._
 class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, override val messagesApi: MessagesApi,
                   ws: WSClient, configuration: Configuration, @Named("mailer") mailer: ActorRef) extends AbstractController(cc) with Security with I18nSupport {
     
-  //TODO move to mail controller
-  def sendUnsentMail() = withAdmin.async { request =>
-       mailer ! SendUnsent()
-       Future{ Ok(Json.obj("ok" -> "sending unsent mail")) }
-  }
+
   
   def all() = Action.async { request =>
       betterDb.allUsersWithRank().map{ all => 
@@ -105,9 +101,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
                val random = BetterSettings.randomToken()
                val created = DomainHelper.userFromUPE(succ.username, random, succ.firstname, succ.lastname, succ.email, request.admin.id)
                val token = BetterSettings.randomToken()
-               val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
-               val prefix = configuration.getOptional[String]("betterplay.prefix").getOrElse("")
-               val hosturl = if(prefix != "") host+"/"+prefix else host
+               val hosturl = MailGenerator.getURL(configuration)
                for{
                  user <- betterDb.insertUser(created, false, false, Some(request.admin))       
                  message = MailGenerator.createUserRegistrationMail(user, token, request.admin, hosturl)
@@ -220,8 +214,8 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
    /**** reCAPTCHA begin ****/
    def sendPasswordEmail(user: User): Future[Result] = {
        val token = BetterSettings.randomToken()
-       val host = configuration.getOptional[String]("betterplay.host").getOrElse("localhost:4200")
-       val message = MailGenerator.createPasswordRequestMail(user, token, host)
+       val hosturl = MailGenerator.getURL(configuration)
+       val message = MailGenerator.createPasswordRequestMail(user, token, hosturl)
        for{
           mail <- mailer.ask(ImmediateMail(user))(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))).mapTo[String]
           inserted <- betterDb.insertMessage(message, user.id.get, token, true, false)
@@ -280,23 +274,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
    /**** reCAPTCHA end ****/
    
        
-  def mailPassword() = withAdmin.async(parse.json) { implicit request =>
-      val jpass = (request.body \ "password").validate[String]
-      jpass match {
-        case (pass: JsSuccess[String]) => {
-                      val settings = BetterSettings.getMailSettings()
-                      BetterSettings.setMailSettings(settings.copy(password = pass.value))
-                      Logger.info(s"set mail password")
-                      betterException {
-                          mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
-                                  .mapTo[String].map{ result => Ok(Json.obj("ok" -> s"set mail password $result"))}
-                      }
-                  }
-       case _ => {
-           Future.successful(NotAcceptable(Json.obj("error" -> "could not parse mail password setting")))
-       }
-      }
-   }
+ 
    
 }
 

@@ -215,6 +215,10 @@ export class BetterdbService {
     return this.http.post<{}>(Environment.api(`mailpassword`), message)
   }
 
+  sendTestMail() {
+    return this.http.post<{}>(Environment.api(`testmail`), {})
+  }
+
   setTokenPassword(pt){
       return this.http.put<{}>(Environment.api(`tokenPassword`), pt)
   }

@@ -60,8 +60,7 @@ POST   /api/user/filter               controllers.Users.updateFilter()
 POST   /api/user/name                 controllers.Users.updateUserName()    
 POST   /api/changePasswordRequest            controllers.Users.changePasswordRequest()
 
-#set the password for the smtp mail user
-POST   /api/mailpassword               controllers.Users.mailPassword()
+
 
 POST    /api/createBetsForUsers      controllers.Users.createBetsForUsers()
 
@@ -80,7 +79,10 @@ GET     /api/statistics/game/:id      controllers.Statistics.game(id: Long)
 GET     /api/statistics/specialBet/:name   controllers.Statistics.specialBets(name: String)
 
 POST    /api/createMail                controllers.Mail.createMail()
-POST    /api/sendUnsentMail            controllers.Users.sendUnsentMail()
+POST    /api/sendUnsentMail            controllers.Mail.sendUnsentMail()
+POST    /api/testmail               controllers.Mail.testMail()
+#set the password for the smtp mail user
+POST    /api/mailpassword              controllers.Mail.mailPassword()
 
 
 GET    /routes                     controllers.Application.routes

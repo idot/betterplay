@@ -11,6 +11,8 @@ play/backend:
 * view for unsent mails
 * validate Excel in DBSpec
 * multiple mail provider; when creating users or afterwards;
+* creation date for usersmessages; mail attempt history
+
 
 UI:
 ---
@@ -19,7 +21,6 @@ UI:
 IMPORTANT:
 ----------
 * upload component
-
 
 
 
