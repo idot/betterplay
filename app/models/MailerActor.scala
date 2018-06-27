@@ -33,6 +33,8 @@ case class SendUnsent()
 
 case class MailSettings(from: String, hostname: String, login: String, password: String, port: Int, testReceiver: String){
    def valid(): Boolean = password != ""
+   
+   override def toString(): String = s"$from $hostname $login XXXXXXXX $port $testReceiver"
 }
 
 object MailSettings {
