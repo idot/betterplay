@@ -288,7 +288,7 @@ export class BetterdbService {
             success.gamesStarts = new Date(success.gamesStarts)
             this.settings = success
             this.logger.info('loaded settings')
-            resolve()
+            resolve("")
         },
        error => {
           resolve("problems with loading")
@@ -387,7 +387,7 @@ export class BetterdbService {
    */
    handleSpecificError(operation: string) {
       return (error: HttpErrorResponse): Observable<ErrorMessage> => {
-           if (error instanceof ErrorEvent) {
+           if (error.error instanceof ErrorEvent) {
            // A client-side or network error occurred. Handle it accordingly.
            this.logger.error(`${operation} failed client side: ${error.message}`)
            return of({ error: error.message, type: 'unknown' })

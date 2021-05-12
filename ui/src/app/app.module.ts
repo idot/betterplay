@@ -33,7 +33,7 @@ import { httpInterceptorProviders } from './http-interceptors'
 import { AppRoutingModule } from './app-routing.module'
 
 import { RecaptchaModule } from 'ng-recaptcha';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+import { RecaptchaFormsModule } from 'ng-recaptcha';
 
 import { AppComponent } from './app.component'
 import { LoginComponent } from './pages/login/login.component'
@@ -140,7 +140,7 @@ export function reauthenticate(userService: UserService){
     AppRoutingModule,
     BrowserAnimationsModule,
     //MaterialFileInputModule,
-    RecaptchaModule.forRoot(), RecaptchaFormsModule
+    RecaptchaModule, RecaptchaFormsModule
   ],
   entryComponents: [
       ToastComponent, GameChartComponent

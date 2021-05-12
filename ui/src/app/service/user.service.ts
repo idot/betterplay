@@ -99,15 +99,15 @@ export class UserService {
                    this.user = success['user']
                    this.filterService.setFilter( this.user ? this.user.filterSettings : this.filterService.getDefaultFilter())
                 }
-                resolve()
+                resolve("ok")
               },
               error => {
-                resolve()
+                resolve("ok")
                 this.snackBar.openFromComponent(ToastComponent, { data: { message: "session expired, please log in again", level: "error"}})
               }
           )
         } else {
-            resolve()
+            resolve("ok")
         }
     })
   }
@@ -121,10 +121,10 @@ export class UserService {
    */
   private  handleSpecificError(operation: string) {
          return (error: HttpErrorResponse): Observable<ErrorMessage> => {
-            if (error instanceof ErrorEvent) {
+            if (error.error instanceof ErrorEvent) {
                this.snackBar.openFromComponent(ToastComponent, { data: { message: `${operation} failed client side: ${error.message}`, level: "error"}})
-               this.logger.error(`${operation} failed client side: ${error.message}`)
-               return of({ error: error.message, type: 'unknown' })
+               this.logger.error(`${operation} failed client side: ${error.error.message}`)
+               return of({ error: error.error.message, type: 'unknown' })
             } else {
                 if(error['error']){
                    this.snackBar.openFromComponent(ToastComponent, { data: { message: error['error'], level: "error"}})
