@@ -3,7 +3,7 @@ import { BetterdbService } from '../../betterdb.service';
 import { UserService } from '../../service/user.service';
 
 import * as FileSaver from 'file-saver';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../../components/toast/toast.component';
 
 

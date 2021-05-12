@@ -7,7 +7,7 @@ import { Result, GameWithTeams } from '../../model/bet';
 import { Input } from '@angular/core';
 import range from 'lodash/range';
 import isNumber from 'lodash/isNumber'
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { GameWithBetsUsers } from '../../model/user';
 import { Observable, EMPTY } from 'rxjs';

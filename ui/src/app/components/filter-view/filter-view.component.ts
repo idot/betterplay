@@ -3,7 +3,7 @@ import { UserService } from '../../service/user.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ToastComponent } from '../toast/toast.component';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilterService } from '../../service/filter.service';
 import { Input } from '@angular/core';
 

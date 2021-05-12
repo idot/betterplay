@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BetterdbService } from '../../betterdb.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { GameWithTeams } from '../../model/bet';
 import { FilterService } from '../../service/filter.service';

@@ -9,7 +9,8 @@ import range from 'lodash/range';
 import isNumber from 'lodash/isNumber'
 import clone from 'lodash/clone'
 import { UserService } from '../../service/user.service';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../toast/toast.component';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';

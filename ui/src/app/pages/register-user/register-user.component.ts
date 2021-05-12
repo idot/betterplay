@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { BetterdbService } from '../../betterdb.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { Router } from '@angular/router';
 

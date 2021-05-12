@@ -4,7 +4,7 @@ import { GameWithTeams } from '../../model/bet';
 import { Observable } from 'rxjs';
 import { GameWithBetsUsers } from '../../model/user';
 import { BetterdbService, GameStats } from '../../betterdb.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import forEach from 'lodash/forEach';
 

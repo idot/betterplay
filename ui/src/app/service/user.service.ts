@@ -9,7 +9,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Environment, ErrorMessage, OkMessage } from '../model/environment';
 import { User, FilterSettings } from '../model/user';
 import { ToastComponent } from '../components/toast/toast.component';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BetterdbService } from '../betterdb.service';
 import { FilterService } from './filter.service';
 

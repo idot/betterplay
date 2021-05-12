@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NGXLogger } from 'ngx-logger';
 
 import { UserService } from '../../service/user.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';

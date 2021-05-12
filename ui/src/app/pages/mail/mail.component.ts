@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BetterdbService } from '../../betterdb.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';

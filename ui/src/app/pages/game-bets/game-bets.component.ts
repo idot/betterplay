@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, EMPTY } from 'rxjs';
 import { GameWithBetsUsers } from '../../model/user';
 import { BetterdbService } from '../../betterdb.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { ParamMap } from '@angular/router';

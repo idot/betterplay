@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
 import { switchMap, catchError } from 'rxjs/operators';
 import { ParamMap } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../../components/toast/toast.component';
 import { NGXLogger } from 'ngx-logger';
 import { of } from 'rxjs';
