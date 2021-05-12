@@ -36,7 +36,7 @@ export class SpecialbetPlayerComponent implements OnInit {
 
   displayedColumns = ['teamflag','country', 'name', 'select']
 
-  @ViewChild(MatSort) sort: MatSort
+  @ViewChild(MatSort, {static: false}) sort: MatSort
 
 
 
