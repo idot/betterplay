@@ -26,14 +26,14 @@ class DomainSpec extends Specification { def is =
 		  ex3.getMessage === mess
 	}
 
-  def testMail() = {//disabled this test is just for debugging of mail settings
+  def testMail = {//disabled this test is just for debugging of mail settings
   //  BetterSettings.setMailPassword("")
   //  val send = MailMessages.sendMail("subject", "body",  MailMessages.address("ido.tamir@vbcf.ac.at", "Ido Tamir"), true)
   //  send === "sent" 
     
   }
 
-  def testViewableTime() = {
+  def testViewableTime = {
       val now = BetterSettings.now()
       val futu = now.plusMinutes(10)
       DomainHelper.viewableTime(futu, now, 9) === false and 
@@ -44,12 +44,12 @@ class DomainSpec extends Specification { def is =
       DomainHelper.viewable(3, 3, futu, now, 11) === true 
    }
   
-   def mailGenerator() = {
+   def mailGenerator = {
        val body = "this is {{username}} {{firstname}} {{lastname}} {{username}} end"
        val user = User(None, "theusername", "thefirstname", "thelastname", "theinstitute", 
         false, "email@email.com", "pwhash", false, false, true, false, true, 0, 0,  "", "", None, false, 
 			 FilterSettings("","","")) 
-       val message = MailGenerator.personalize("the subject", body, user, 0l)
+       val message = MailGenerator.personalize("the subject", body, user, 0L)
        message.body === "this is theusername thefirstname thelastname theusername end"
    }
 

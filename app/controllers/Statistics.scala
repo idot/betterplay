@@ -15,7 +15,7 @@ import javax.inject.{Inject, Provider, Singleton}
 
 @Singleton
 class Statistics @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, configuration: Configuration) extends AbstractController(cc) with Security {
-
+  val logger: Logger = Logger(this.getClass())
   val excelSecret = configuration.getOptional[String]("betterplay.excelSecret").getOrElse("BAD")  
 
    
@@ -23,7 +23,7 @@ class Statistics @Inject()(cc: ControllerComponents, override val betterDb: Bett
    
     Future{
         blocking{
-	        val excel = ExcelData.generateExcel(betterDb, BetterSettings.now, userId)
+	        val excel = ExcelData.generateExcel(betterDb, BetterSettings.now(), userId)
 	        val mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 	        val name = CryptoHelper.fileName(excel, excelSecret)
 	        val headers = ("Content-Disposition",s"attachment; filename=${name}")
@@ -64,21 +64,21 @@ class Statistics @Inject()(cc: ControllerComponents, override val betterDb: Bett
   
   
   def uploadExcel = Action(parse.multipartFormData) { request => 
-     Logger.debug("receiving upload request ")
+     logger.debug("receiving upload request ")
      request.body.file("file").map { xls =>
         import java.io.File
         val filename = xls.filename
-        Logger.debug(s"received upload file $filename")
+        logger.debug(s"received upload file $filename")
         val contentType = xls.contentType
         val randomFolder = java.util.UUID.randomUUID().toString.replaceAll("-","")
         val outdir = s"/tmp/better/${randomFolder}"
         val created = new File(outdir).mkdirs()
         if(created == false){
-          Logger.error(s"could not create folder $outdir")
+          logger.error(s"could not create folder $outdir")
           InternalServerError("could not create folder")
         }else{
            val outf = new File(s"${outdir}/$filename")
-           Logger.debug(s"creating: $outf")
+           logger.debug(s"creating: $outf")
            xls.ref.moveTo(outf)
            val result = CryptoHelper.validate(outf.getAbsolutePath, filename, excelSecret).fold(
                err => NotAcceptable(err),

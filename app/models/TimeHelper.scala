@@ -37,7 +37,7 @@ object TimeHelper {
   final val secPerHour = 3600
   
   def durationToString(diff: Long): String = {
-      val s = diff / 1000l
+      val s = diff / 1000L
       val days = s / secPerDay
       val sdays = s - (days * secPerDay)
       val hours =  sdays / secPerHour

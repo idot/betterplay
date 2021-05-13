@@ -29,7 +29,7 @@ object DomainHelper {
   }
   
   def gameResultInit(): GameResult = GameResult(0,0,false)  
-  def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit, game.id.getOrElse(-1), user.id.getOrElse(-1)) 
+  def betInit(user: User, game: Game): Bet = Bet(None, 0, gameResultInit(), game.id.getOrElse(-1), user.id.getOrElse(-1)) 
   
   def filterSettings() = FilterSettings("all","all","all")
   

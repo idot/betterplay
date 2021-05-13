@@ -29,7 +29,7 @@ import play.api.libs.json.JsSuccess
 
 @Singleton
 class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, override val cache: SyncCacheApi, @Named("mailer") mailer: ActorRef) extends AbstractController(cc) with Security {
- 
+   val logger: Logger = Logger(this.getClass())
    //TODO move to database in 1 transaction
   
    def createMail() = withAdmin.async(parse.json) { request =>
@@ -41,7 +41,7 @@ class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, 
                  val fs = betterDb.allUsers().flatMap{ users =>
                     val ums = users.map{ user => 
                        val message = MailGenerator.personalize(subject.value, body.value, user, request.admin.id.get)
-                       betterDb.insertMessage(message, user.id.get, BetterSettings.randomToken, true, false)
+                       betterDb.insertMessage(message, user.id.get, BetterSettings.randomToken(), true, false)
                     }
                     Future.sequence(ums)
                  }
@@ -54,7 +54,7 @@ class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, 
     
    
  def testMail() = withAdmin.async { implicit request =>
-      Logger.info(s"sending test email")
+      logger.info(s"sending test email")
       betterException {
           mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
                     .mapTo[String].map{ result => Ok(Json.obj("ok" -> s"sent test email $result"))}
@@ -67,7 +67,7 @@ class Mail @Inject()(cc: ControllerComponents, override val betterDb: BetterDb, 
         case (pass: JsSuccess[String]) => {
                       val settings = BetterSettings.getMailSettings()
                       BetterSettings.setMailSettings(settings.copy(password = pass.value))
-                      Logger.info(s"set mail password")
+                      logger.info(s"set mail password")
                       betterException {
                           mailer.ask(models.TestMail())(new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds")))
                                   .mapTo[String].map{ result => Ok(Json.obj("ok" -> s"set mail password $result"))}

@@ -6,8 +6,8 @@ import akka.actor._
 import akka.pattern.ask
 import javax.inject._
 import play.api.Configuration
-import akka.contrib.throttle._
-import akka.contrib.throttle.Throttler._
+//import akka.contrib.throttle._
+//import akka.contrib.throttle.Throttler._
 import java.util.concurrent.TimeUnit._
 import scala.concurrent.duration._
 import akka.util.Timeout
@@ -16,6 +16,8 @@ import java.time.OffsetDateTime
 import scala.concurrent.Future
 import scala.concurrent.blocking
 import org.apache.commons.mail._
+import scala.jdk.CollectionConverters._
+import akka.stream.scaladsl.{Source}
 
 //token could contain expiry date encrypted with secret key
 
@@ -72,7 +74,7 @@ object MailMessages {
   def sendMail(subject: String, body: String, to: InternetAddress, mailSettings: MailSettings, debug:Boolean): String = {
        mailLogger.debug(s"sending mail $subject ${to.getAddress}")
        
-       val tos = scala.collection.JavaConverters.seqAsJavaList(Seq(to))
+       val tos = Seq(to).asJava
        val from =  mailSettings.from
        
        val email = new SimpleEmail()
@@ -100,14 +102,14 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
 
 
    
-   val debug = BetterSettings.debug || configuration.getOptional[Boolean]("betterplay.mail.debug").getOrElse(false)
+   val debug = BetterSettings.debug() || configuration.getOptional[Boolean]("betterplay.mail.debug").getOrElse(false)
 
    import scala.concurrent.ExecutionContext.Implicits.global
   
-   def mail(um: UserMessage, m: Message, user: User){
+   def mail(um: UserMessage, m: Message, user: User): Unit = {
        val s = sender()
        mailLogger.debug(m.toString)
-       val send = BetterSettings.getMailSettings().valid
+       val send = BetterSettings.getMailSettings().valid()
        if(send){
          Future{
            blocking {
@@ -120,7 +122,7 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
                 case e: EmailException => {
                   val error = e.getMessage()
                   mailLogger.error(error)
-                  betterDb.setMessageError(um, error, BetterSettings.now)
+                  betterDb.setMessageError(um, error, (BetterSettings.now()))
                   s ! error
                 }
               }
@@ -132,7 +134,7 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
        }
    }
    
-   def testMail(){
+   def testMail(): Unit = {
        mailLogger.info("received test mail")
        val s = sender()
        Future{  
@@ -145,13 +147,15 @@ class SendMailActor @Inject()(configuration: Configuration, betterDb: BetterDb) 
    }
    
    def receive = {
-      case ((um: UserMessage, m: Message, user: User)) ⇒ mail(um,m,user) 
+      case ((um: UserMessage, m: Message, user: User)) => mail(um,m,user) 
       case TestMail() => testMail() 
       case _ => 
     }
 }
 
 
+//TODO throttle with akka stream to 1/30 seconds
+//TODO:typed actors
 class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  @Named("sendMail") sendMailActor: ActorRef) extends Actor {
   val mailLogger = Logger("mail")
   //how often do we go over unsent messages to send them in minutes
@@ -160,8 +164,8 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
   import scala.concurrent.ExecutionContext.Implicits.global
   val timeout = new Timeout(Duration.create(BetterSettings.MAILTIMEOUT, "seconds"))
 
-  val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], Rate(1, (1.minutes))))
-  throttler ! SetTarget(Some(sendMailActor))
+ // val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], Rate(1, (1.minutes))))
+ // throttler ! SetTarget(Some(sendMailActor))
   
   if(sendMailInterval > 0){
   //TODO: enable interval scanning when error handling complete to prevent sending mails with an error count > 2  
@@ -170,13 +174,13 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
   
   def receive = {
       case ImmediateMail(user) => sendImmediateMailToUser(user)  
-      case TestMail() => mailLogger.info("got test mail"); val s = sender(); throttler.ask(TestMail())(timeout).mapTo[String].map(s ! _)
+      case TestMail() => mailLogger.info("got test mail"); val s = sender(); sendMailActor.ask(TestMail())(timeout).mapTo[String].map(s ! _)
       case SendUnsent() => sendUnsent()
       case _ =>
   }
   
  
-  def sendUnsent(){
+  def sendUnsent(): Unit = {
     mailLogger.info("sending unsent mail")
     val s = sender()
     blocking{
@@ -190,8 +194,8 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
     mailLogger.info("sent unsent mail")
   }
 
-  def sendMail(userMessage: UserMessage, message: Message, user: User, s: ActorRef) {
-    throttler.ask((userMessage, message, user))(timeout).mapTo[String]
+  def sendMail(userMessage: UserMessage, message: Message, user: User, s: ActorRef): Unit = {
+    sendMailActor.ask((userMessage, message, user))(timeout).mapTo[String]
       .onComplete { mailSent =>
         mailSent match {
           case Success(succ: String) if succ == MailMessages.mailSuccess => {
@@ -211,12 +215,12 @@ class MailerActor @Inject() (configuration: Configuration, betterDb: BetterDb,  
       }
   }
   
-  def sendMails(mails: Seq[(UserMessage,Message)], user: User, s: ActorRef){
+  def sendMails(mails: Seq[(UserMessage,Message)], user: User, s: ActorRef): Unit = {
       mails.foreach{ case(um,m) => sendMail(um,m,user, s) }
   }
   
   //extra task => throtteler
-  def sendImmediateMailToUser(user: User){  
+  def sendImmediateMailToUser(user: User): Unit = {  
       val s = sender()
       betterDb.unseenMailForUser(user).map{ unsent => 
          val immediate = unsent.filter{ case(um, m) => MessageTypes.immediate.contains(m.messageType)  }

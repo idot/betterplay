@@ -29,7 +29,7 @@ case class ValidationException(message: String) extends RuntimeException(message
 
 //embedaable
 case class GameResult(goalsTeam1: Int, goalsTeam2: Int, isSet: Boolean){
-     def display = if(isSet) goalsTeam1+":"+goalsTeam2 else "-:-"
+     def display = if(isSet) s"${goalsTeam1}:${goalsTeam2}" else "-:-"
      def winner(): Int = {
          if(goalsTeam1 > goalsTeam2){
            1
@@ -79,7 +79,7 @@ case class BetLog(id: Option[Long] = None, userId: Long, gameId: Long, gameStart
       }else{
           Seq(GameResult(t1old, t2old, false).display, "->",  GameResult(t1old, t2old, false).display).mkString(" ")
      }    
-	   Seq(id, userId, gameId, betId, betchange, TimeHelper.standardFormatter.format(time), comment).mkString("\t")
+	   Seq(id, userId, gameId, betId, betchange, TimeHelper.standardFormatter().format(time), comment).mkString("\t")
 	}
 	
 }
@@ -132,7 +132,7 @@ object UserNoPwC {
         UserNoPw(user.id, user.username, forName(user.email), forName(user.firstName), forName(user.lastName), user.institute,
            user.showName,
 		       user.isAdmin, user.isRegistrant, user.hadInstructions, user.canBet,
-		       user.totalPoints, user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, user.hadDSGVO: Boolean, rank,
+		       user.totalPoints(), user.points, user.pointsSpecialBet, user.iconurl, user.icontype, user.registeredBy, user.hadDSGVO: Boolean, rank,
 		       user.filterSettings, viewingUser.map(v => v.id == user.id).getOrElse(false)
         )  
    }     

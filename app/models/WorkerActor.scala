@@ -5,8 +5,6 @@ import akka.actor._
 import akka.pattern.ask
 import javax.inject._
 import play.api.Configuration
-import akka.contrib.throttle._
-import akka.contrib.throttle.Throttler._
 import java.util.concurrent.TimeUnit._
 import scala.concurrent.duration._
 import akka.util.Timeout
@@ -34,11 +32,11 @@ class WorkerActor @Inject()(configuration: Configuration, betterDb: BetterDb) ex
     * Its in a transaction on db, but still ...
     * 
     **/
-   def updatePoints(user: User){
+   def updatePoints(user: User): Unit = {
        val s = sender()
        workerLogger.info(s"calculating and updating points for all users initiated: ${user.username}")
        blocking{
-          val result = Await.result(betterDb.calculateAndUpdatePoints(user), 10 seconds)
+          val result = Await.result(betterDb.calculateAndUpdatePoints(user), 10.seconds)
           s ! result
        }
        workerLogger.info(s"calculated and updated points for all users initiated: ${user.username}")

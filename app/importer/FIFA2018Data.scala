@@ -24,7 +24,7 @@ import scala.collection.Seq
 
 
 class Fifa2018Data(betterDb: BetterDb, environment: Environment) (implicit ec: ExecutionContext) {
-
+  val logger: Logger = Logger(this.getClass())
   val long2cc = InitialDataX.longNameToCC(environment)
   
   val csv = new CSVParser()
@@ -63,7 +63,7 @@ class Fifa2018Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
    }
   
    def teamsGames(levelId: Long): (Set[Team], Seq[(String,String,Game)]) = {
-      Logger.info("parsing games")
+      logger.info("parsing games")
       val lines = InitialDataX.toLines("fifa-world-cup-2018-RussianStandardTime.csv", environment)   
  //     System.err.println("DDDDDDDDDDDDDDDDDD", lines.mkString("\n"))
       val ttg = lines.zipWithIndex.map{ case(line,index) => parseGame(line, levelId, index) }
@@ -74,7 +74,7 @@ class Fifa2018Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
    
     //1,16/06/2018 19:00,Saransk Stadium,Peru,Denmark,Group C,
    def parseGame(line: String, levelId: Long, pos: Int): (Team,Team, Game) = {
-      Logger.trace(line)
+      logger.trace(line)
       val items = line.split("\\,")
       val venue = items(2)
       //System.err.println("DDDDDDDDDDDDDDDDDD", items.mkString(" , "))
@@ -97,7 +97,7 @@ class Fifa2018Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
       val t1 = toTeam(items(3).trim)
       val t2 = toTeam(items(4).trim)
       val group = items(5)
-      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos+1, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
+      val g = Game(None, DomainHelper.gameResultInit(), 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos+1, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
       (t1,t2,g)
   }
   
@@ -110,7 +110,7 @@ class Fifa2018Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
          (serverTime, localTime)
       }catch{
         case e: Exception => {
-          Logger.error("error on date: "+dayTime+" "+e.getMessage+"\n"+line)
+          logger.error("error on date: "+dayTime+" "+e.getMessage+"\n"+line)
           throw(e)
         }
       }
@@ -118,7 +118,7 @@ class Fifa2018Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
   
 
   def players(): Seq[(Player,String)] = {
-      Logger.info("parsing players")
+      logger.info("parsing players")
 	    val lines = InitialDataX.toLines("wiki.fifa2018.squads.tab", environment)
 	    lines.map(parsePlayer)
   }
@@ -151,24 +151,24 @@ class Fifa2018Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
 
     betterDb.dropCreate()
 
-    Logger.info("inserting data in db")
-    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1 seconds)
-    Logger.info("inserted special bets")
-    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1 seconds)
-    Logger.info("inserted users")
-    val admin = Await.result(betterDb.allUsers(), 1 seconds).sortBy(_.id).head
-    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1 seconds)  
-    val level = Await.result(betterDb.allLevels(), 1 second)(0)
+    logger.info("inserting data in db")
+    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1.seconds)
+    logger.info("inserted special bets")
+    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1.seconds)
+    logger.info("inserted users")
+    val admin = Await.result(betterDb.allUsers(), 1.seconds).sortBy(_.id).head
+    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1.seconds)  
+    val level = Await.result(betterDb.allLevels(), 1.second)(0)
     val (teams, ttg) = teamsGames(level.id.get)
-    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 3 seconds)
-    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 5 seconds)
-    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 5 seconds)
+    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 3.seconds)
+    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 5.seconds)
+    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 5.seconds)
     ps.map{ case(p,t) => Await.result(betterDb.insertPlayer(p, t, admin), 1 seconds) }
 
 	   
 	  
 
-    Logger.info("done inserting data in db")
+    logger.info("done inserting data in db")
     
    
     

@@ -77,7 +77,7 @@ class Application(env: Environment,
            dbConfigProvider,  cc, betterDb, 
           messagesApi, cache, configuration, system, Some(router.get))
 
-   
+   val logger: Logger = Logger(this.getClass())
    val debug = configuration.getOptional[Boolean]("betterplay.debug").getOrElse(false)  
    val superpassword = configuration.getOptional[String]("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
    val cacheExpiration = configuration.getOptional[Int]("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
@@ -97,7 +97,7 @@ class Application(env: Environment,
   import models.JsonHelper._
  
   def time() = Action {
-	  val j = Json.obj("serverTime" -> BetterSettings.now, "message" ->  "OK")
+	  val j = Json.obj("serverTime" -> BetterSettings.now(), "message" ->  "OK")
 	  Ok(j)
   }
   
@@ -108,16 +108,16 @@ class Application(env: Environment,
 		     err => BadRequest(Json.obj("error" -> JsError.toJson(err))),
 		     succ => {
 			    BetterSettings.setDebugTime(succ)	
-				  Ok(Json.obj("serverTime" -> BetterSettings.now, "message" -> "set time to debug"))
+				  Ok(Json.obj("serverTime" -> BetterSettings.now(), "message" -> "set time to debug"))
 		   })
 		} else {
-	     Unauthorized(Json.obj("serverTime" -> BetterSettings.now, "error" -> "setting of time only in debug modus! No cheating!!!"))
+	     Unauthorized(Json.obj("serverTime" -> BetterSettings.now(), "error" -> "setting of time only in debug modus! No cheating!!!"))
 	  }
   }
   
   def resetTime() = withAdmin(parse.json) { request =>
 	  BetterSettings.resetTime()
-	  Ok(Json.obj("serverTime" -> BetterSettings.now, "message" -> "reset time to system clock"))
+	  Ok(Json.obj("serverTime" -> BetterSettings.now(), "message" -> "reset time to system clock"))
   }
 
   
@@ -143,7 +143,7 @@ class Application(env: Environment,
  
   /** Check credentials, generate token and serve it back as auth token in a Cookie */
   def login = Action.async(parse.json) { implicit request => 
-     LoginForm.bind(request.body).fold(
+     LoginForm.bind(request.body, 1000).fold(
       formErrors => Future.successful(BadRequest(formErrors.errorsAsJson)),
       loginData => {
 	      loginUser(loginData)
@@ -200,7 +200,7 @@ class Application(env: Environment,
   /** Invalidate the token in the Cache and discard the cookie */
   def logout = Action { implicit request =>
     request.headers.get(AuthTokenHeader) map { token =>
-              Logger.debug(s"logout called $token")
+              logger.debug(s"logout called $token")
               deleteToken(token)
               Ok(Json.obj("ok" -> "logged out"))
     } getOrElse Unauthorized(Json.obj("error" -> "no security token"))
@@ -225,19 +225,19 @@ class Application(env: Environment,
 
   onStart()
   
-  def onStart() {
+  def onStart(): Unit = {
     val insertdata = configuration.getOptional[String]("betterplay.insertdata").getOrElse("")
     val debugString = if(debug){ "\nXXXXXXXXX debug mode XXXXXXXXX"}else{ "production" }
-    Logger.info(s"starting up: $debugString")
+    logger.info(s"starting up: $debugString")
     val mailSettings = MailSettings.fromConfig(configuration)
     BetterSettings.setMailSettings(mailSettings)
-    Logger.info(mailSettings.toString)
+    logger.info(mailSettings.toString)
     if(debug){
       insertdata match {
         case "test" => new InitialData(betterDb, env).insert(debug)
         case "euro2016" => new Euro2016Data(betterDb, env).insert(false)
         case "fifa2018" => new Fifa2018Data(betterDb, env).insert(false)
-        case _ => Logger.info("not inserting any data!!!")//do nothing
+        case _ => logger.info("not inserting any data!!!")//do nothing
       }
     }
     scheduleTasks()
@@ -245,22 +245,22 @@ class Application(env: Environment,
   
   
   
-  def scheduleTasks(){
+  def scheduleTasks(): Unit = {
       scheduleGamesMaintenance()
   }
   
-  def scheduleGamesMaintenance(){
+  def scheduleGamesMaintenance(): Unit = {
     val maintenenceInterval = configuration.getOptional[Int]("betterplay.gamemaintenance.interval").getOrElse(0) 
     if(maintenenceInterval > 0){
-      Logger.info(s"maintaining games each $maintenenceInterval minutes")
+      logger.info(s"maintaining games each $maintenenceInterval minutes")
       class Maintain extends Runnable {
-         def run {
-            betterDb.maintainGames(BetterSettings.now)
+         def run: Unit = {
+            betterDb.maintainGames(BetterSettings.now())
          }
       }
-      system.scheduler.schedule( 1 minutes, maintenenceInterval minutes, new Maintain()) 
+      system.scheduler.schedule( 1.minutes, maintenenceInterval.minutes, new Maintain()) 
     }else{
-      Logger.info(s"not maintaining games")
+      logger.info(s"not maintaining games")
     }
   }
   

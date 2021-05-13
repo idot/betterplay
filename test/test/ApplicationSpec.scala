@@ -33,6 +33,7 @@ import play.api.Logger
  */
 @RunWith(classOf[JUnitRunner])
 class ApplicationSpec extends Specification with JsonMatchers {
+    val logger = Logger(this.getClass())
     val app = new GuiceApplicationBuilder().configure(
             Configuration.from(
                 Map(
@@ -129,7 +130,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
     }
     
     def checkMexCameroon(username: String, authToken: String, should: Option[GameResult], message: String) = {
-       Logger.debug(s"mexCam: $username $authToken $should $message")
+       logger.debug(s"mexCam: $username $authToken $should $message")
        val userBetsResult = route(app, FakeRequest(method="GET", path=s"/api/user/$username").withHeaders(("X-AUTH-TOKEN", authToken))).get
        val userBets = contentAsString(userBetsResult)
        val (gwt, mexCam) = extractMexCameroon(userBets)
@@ -141,9 +142,9 @@ class ApplicationSpec extends Specification with JsonMatchers {
   
     "allow login for users, protect routes and allow logout" in new WithApplication(app=app){
        val MexCam = java.time.LocalDateTime.of(2014, 6, 13, 18, 0, 0, 0).atZone(BetterSettings.zoneId()).toOffsetDateTime()//y m d h min
-       val betPossible = MexCam.minusMinutes(BetterSettings.viewMinutesToGame + 2)
-       val betForbidden = MexCam.minusMinutes(BetterSettings.viewMinutesToGame + 1)
-       val betVisible = MexCam.minusMinutes(BetterSettings.viewMinutesToGame - 1)
+       val betPossible = MexCam.minusMinutes(BetterSettings.viewMinutesToGame() + 2)
+       val betForbidden = MexCam.minusMinutes(BetterSettings.viewMinutesToGame() + 1)
+       val betVisible = MexCam.minusMinutes(BetterSettings.viewMinutesToGame() - 1)
       
        val up = JsObject(Seq("username" -> JsString("admin"), "password" -> JsString("admin")))
        
@@ -217,7 +218,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     
 	     setTimeFail(betPossible, createdUserToken, "only admin user can set time")
 	     setTime(betPossible, adminUserToken, "set time possible 1")
-	     Logger.debug(s"TIMES: now ${TimeHelper.log(BetterSettings.now)} =~= possible: ${TimeHelper.log(betPossible)} visible:${TimeHelper.log(betVisible)} forbidden: ${TimeHelper.log(betForbidden)} orig: ${TimeHelper.log(MexCam)}")
+	     logger.debug(s"TIMES: now ${TimeHelper.log(BetterSettings.now())} =~= possible: ${TimeHelper.log(betPossible)} visible:${TimeHelper.log(betVisible)} forbidden: ${TimeHelper.log(betForbidden)} orig: ${TimeHelper.log(MexCam)}")
 	    
      
 	     checkMexCameroon("createduser", createdUserToken, NOBET, "A possible createduser createduser no bet")
@@ -248,7 +249,7 @@ class ApplicationSpec extends Specification with JsonMatchers {
 	     val excelf = route(app, FakeRequest(method="GET", path="/api/statistics/excelAnon").withHeaders(("X-AUTH-TOKEN", createdUserToken))).get
        val excel = Await.result(excelf, 3 second) //TODO: was 1 second why is it slower or blocking???
   //     print(excel)
-       excel.body.contentLength.get must be_>(1000l)
+       excel.body.contentLength.get must be_>(1000L)
 	     
 	     
        val out = route(app, FakeRequest(POST, "/api/logout").withHeaders(("X-AUTH-TOKEN", adminUserToken))).get

@@ -36,7 +36,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json" % "2.9.2", 
   "com.typesafe.slick" %% "slick" % "3.3.3",
   "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",
-  "com.typesafe.akka" %% "akka-contrib" % "2.5.32" , //todo change throttler to stream
+  "com.typesafe.akka" %% "akka-stream" % "2.6.14",
+  //"com.typesafe.akka" %% "akka-contrib" % "2.5.32" , //todo change throttler to stream
  // "org.specs2" %% "specs2-core" % specs2Version % "test",
    "org.specs2" %% "specs2-matcher-extra" % specs2Version % "test",
   "org.specs2" %% "specs2-scalacheck" % specs2Version % "test",

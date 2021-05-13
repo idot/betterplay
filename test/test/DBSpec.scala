@@ -95,10 +95,10 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
 
 
     
-      def insertAdmin(){
+      def insertAdmin(): Unit = {
 		      tl( betterDb.specialbetsuser,0, "A1" )
           tl( betterDb.users,0, "A2"  )
-          AR(betterDb.insertUser(ObjectMother.adminUser, true, true, None))
+          AR(betterDb.insertUser(ObjectMother.adminUser(), true, true, None))
           tl( betterDb.users,1 , "A3")
 		      tl( betterDb.specialbetsuser,12, "A4" )
 		      //no games yet, so no normal bets!!!
@@ -111,32 +111,32 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
       /**
        * inserts have to be blocked because otherwise underterministic! Bad for unit tests!
        */
-      def insertTeams(){
+      def insertTeams(): Unit = {
           val admin = getAdmin()
           val fs = ObjectMother.dummyTeams.map{t => AR(betterDb.insertTeam(t, admin )) }
           tl( betterDb.teams,6, "T1" )
       }
       
-      def insertLevels(){
+      def insertLevels(): Unit = {
           val admin = getAdmin()
           val fs = ObjectMother.dummyLevels.map{ l => AR(betterDb.insertLevel(l, admin)) }
           tl( betterDb.levels,3, "L1" )
       }
         
-      def insertPlayers(){
+      def insertPlayers(): Unit = {
           val admin = getAdmin() 
           val fs = ObjectMother.dummyPlayers.map{ p => AR(betterDb.insertPlayer(p, "t1", admin)) }
           tl( betterDb.players,6 , "P1")
       }
 
-      def insertGames(){
+      def insertGames(): Unit = {
           val admin = getAdmin()
           val fs = ObjectMother.dummyGames(firstStart).map{ case(g,t1,t2, l) => AR(betterDb.insertGame(g, t1, t2, l, admin)) }
           tl( betterDb.games,3, "G1" )
           tl( betterDb.bets,0, "G2" )
       }
     
-      def insertUsers(){
+      def insertUsers(): Unit = {
           val admin = getAdmin()
 		      tl( betterDb.specialbetsuser, 12, "U1" )
           tl( betterDb.bets,0 , "U2")
@@ -148,7 +148,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
           tl( betterDb.bets,3, "U3b" )
           admin.hadInstructions === true
           admin.canBet === true
-          ObjectMother.dummyUsers.map{u => 
+          ObjectMother.dummyUsers().map{u => 
                  val us = AR(betterDb.insertUser(u, false, false, Some(admin)))
                  us.registeredBy === admin.id && us.isAdmin === false && us.points === 0 && us.canBet === true
           }
@@ -194,7 +194,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
            
            val (t,spBs) = AR(betterDb.specialBetsByTemplate(allSpecialTemplates(0).id.get))
            t === allSpecialTemplates(0)
-           spBs.map(_.userId).sorted === AR(betterDb.allUsers).map(_.id.get).sorted
+           spBs.map(_.userId).sorted === AR(betterDb.allUsers()).map(_.id.get).sorted
            
            //message: Message, userId: Long, token: String, send: Boolean, display: Boolean, sendingUser: User)
            val message = Message(None, MessageTypes.REGISTRATION, "the subject", "the message body", admin.id.get)
@@ -232,7 +232,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
            sent2 === s"set message with id ${m2._1.id.get} to sent"
       }
     
-      def insertSpecialBetTemplates(){
+      def insertSpecialBetTemplates(): Unit = {
   		  val specialT = ObjectMother.specialTemplates(SpecialBetType.team, firstStart)
   		  val specialP = ObjectMother.specialTemplates(SpecialBetType.player, firstStart)
   		  (specialT ++ specialP).foreach{ t => 
@@ -250,7 +250,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
           (after.head.nextGame === true).setMessage(msg)
       }
       
-  	  def maintainGames(){
+  	  def maintainGames(): Unit = {
   	      val g1 = AR(betterDb.allGamesWithTeams()).map(_.game)
   	      g1.map(_.gameClosed).toSet === Set(false)
   	      val gm = g1(g1.size / 2)
@@ -269,8 +269,8 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
   	      g4.map(_.nextGame).toSet === Set(false)
   	  }
 	 
-      def makeBets1(){
-         val users = AR(betterDb.allUsers).sortBy(_.id)
+      def makeBets1(): Unit = {
+         val users = AR(betterDb.allUsers()).sortBy(_.id)
          val gb1 = AR(betterDb.gamesWithBetForUser(users(1))).sortBy(_._1.game.id)
          gb1.size === 3
          val game = gb1(0)._1.game
@@ -289,14 +289,14 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
          timeDiff.toMinutes === 0
          upD._5 === Seq("user ids differ 2 1", "game closed since 0 days, 1 hours, 0 minutes, 0 seconds")
          tl( betterDb.betlogs,1, "Bet1" )
-         Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1l), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, -1, 0, -1, firstStart, "user ids differ 2 1;game closed since 0 days, 1 hours, 0 minutes, 0 seconds")
+         Await.result(db.run(betterDb.betlogs.result.head), 1 seconds) === BetLog(Some(1L), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, -1, 0, -1, firstStart, "user ids differ 2 1;game closed since 0 days, 1 hours, 0 minutes, 0 seconds")
     
          //update the result in the database and check the return values; this bet is submitted successfully; will be tendency points
          val upD2 = AR(betterDb.updateBetResult(b1, users(1), firstStart.minusMinutes(61)))
          upD2._5 === Nil
        	 tl( betterDb.betlogs,2, "Bet2" )
          val q = betterDb.betlogs.sortBy(_.id.desc).result.head
-			   Await.result(db.run(q), 1 seconds) === BetLog(Some(2l), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61), "regular update")
+			   Await.result(db.run(q), 1 seconds) === BetLog(Some(2L), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61), "regular update")
          upD2._2.result === GameResult(0,0,false)
          upD2._3.result === GameResult(1,2,true)
          //now check if the value in the database was really changed
@@ -316,7 +316,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
          
       }
    
-      def updateGames(){
+      def updateGames(): Unit = {
           val admin = getAdmin()
           val p1 = Await.result(betterDb.allPlayers(), 1 second).head.id
           val users = Await.result(betterDb.allUsers(), 1 second).sortBy(_.id)
@@ -411,12 +411,12 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
     
 
  
-      def newGames(){
+      def newGames(): Unit = {
           val admin = getAdmin()
           val finalGameStart = firstStart.plusMinutes(100)
           val finalGame = Game(None, GameResult(1,2,true), 10,100, 3333, finalGameStart.minusHours(5), "local", finalGameStart, "server",  "stadium", "groupC", 4, 59, 60, false, false)
           val teams = Await.result(betterDb.allTeams(), 1 seconds).sortBy(_.id)
-          val level = Await.result(betterDb.allLevels, 1 seconds).sortBy(_.level).reverse.head
+          val level = Await.result(betterDb.allLevels(), 1 seconds).sortBy(_.level).reverse.head
           val gwt = Await.result(betterDb.insertGame(finalGame, teams(0).name, teams(1).name, level.level, admin), 1 seconds).toOption.get
           val gameCount = AR(betterDb.allGamesWithTeams()).size
           val userCount =  AR(betterDb.allUsers()).size
@@ -448,14 +448,14 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
           val pointsSpecial = 4 
           betPoints() === pointsBets
           userPoints() === pointsBets
-          val players = Await.result(betterDb.allPlayers, 1 seconds).sortBy(_.id)
+          val players = Await.result(betterDb.allPlayers(), 1 seconds).sortBy(_.id)
 
      
          
-          val usersNow = Await.result(betterDb.allUsers, 1 seconds).sortBy(_.id)
+          val usersNow = Await.result(betterDb.allUsers(), 1 seconds).sortBy(_.id)
           usersNow.map(_.points).sum === pointsBets
           usersNow.map(_.pointsSpecialBet).sum === pointsSpecial 
-          usersNow.map(_.totalPoints).sum === pointsBets + pointsSpecial 
+          usersNow.map(_.totalPoints()).sum === pointsBets + pointsSpecial 
                  
 
           betterDb.invalidateGame(gwt.game, usersNow(2)) must throwAn[AccessViolationException].await
@@ -476,7 +476,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
           
           val excel = ExcelData.generateExcel(betterDb, firstStart, admin.id.get)
           val bos = new java.io.BufferedOutputStream(new java.io.FileOutputStream("testData/excel.xls"))
-          Stream.continually(bos.write(excel))
+          LazyList.continually(bos.write(excel))
           bos.close()
      //     new java.io.File("testData/excel.xls") must haveSameMD5As(new java.io.File("testData/excel.expect.xls"))
           
@@ -484,7 +484,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
           
       }
    
-      def hasInstructions(){
+      def hasInstructions(): Unit = {
            val start = Await.result(betterDb.startOfGames(), 1 seconds).get
            val dbUser = AR(betterDb.allUsers()).filter(u => u.firstName == "joe").head
            val (udb, specials) = Await.result(betterDb.userWithSpecialBets(dbUser.id.get), 1 seconds)
@@ -517,7 +517,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
       
       
       betterDb.dropCreate()
-		  insertSpecialBetTemplates()
+      insertSpecialBetTemplates()
       insertAdmin()
       insertTeams()
       insertLevels()

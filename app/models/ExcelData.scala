@@ -21,6 +21,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.BuiltinFormats
 import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.BorderStyle
+import org.apache.poi.ss.usermodel.HorizontalAlignment
+import org.apache.poi.ss.usermodel.FillPatternType
 
 object ExcelData {
   
@@ -28,7 +31,7 @@ object ExcelData {
      val helper = new StatsHelper(betterDb, dateTime, viewingUserId)  
 	   val templates = helper.specialBetsTemplates()
 	   val gwts = helper.getGwts()
-     val excelD = new ExcelData(helper.createUserRows, gwts, templates)
+     val excelD = new ExcelData(helper.createUserRows(), gwts, templates)
 	   val excel = excelD.createExcelSheetComplete()
 	   excel
   }
@@ -59,7 +62,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 	  out.toByteArray
 	}
 	
-	def fillSpecialBets(wb: XSSFWorkbook, nr: Int){
+	def fillSpecialBets(wb: XSSFWorkbook, nr: Int): Unit = {
 		val s = wb.createSheet()
 //		 declare a row object reference
 	//	val XSSFRow r = null
@@ -68,9 +71,9 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		//		 create 3 cell styles
 		val userHeading = wb.createCellStyle()
 		val pointsCell = wb.createCellStyle()
-		pointsCell.setBorderRight(CellStyle.BORDER_THIN )
+		pointsCell.setBorderRight(BorderStyle.THIN )
 		userHeading.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
-		userHeading.setBorderBottom(CellStyle.BORDER_THIN)
+		userHeading.setBorderBottom(BorderStyle.THIN)
 		wb.setSheetName(nr, "special Bets")
 
 		val r = s.createRow(0)		
@@ -87,7 +90,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		}
 	}
 	
-	def createRow(row: XSSFRow, userRow: UserRow){
+	def createRow(row: XSSFRow, userRow: UserRow): Unit = {
 		val user = userRow.user 
 		val c = row.createCell(0)
 		c.setCellValue(userRow.user.username)
@@ -98,7 +101,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 	    }
 	}
 	
-	def createMessage(wb: XSSFWorkbook, nr: Int){
+	def createMessage(wb: XSSFWorkbook, nr: Int): Unit = {
 	   val s = wb.createSheet()
 	   wb.setSheetName(nr, "important")
 	   
@@ -114,7 +117,7 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		 c2.setCellValue(new XSSFRichTextString("Do not change the content or the file name (i.e. don't save it after opening). The file name contains a sigature so its possible to verify the file."))
 	}
 	
-	def fillSheet(wb: XSSFWorkbook, sheetname: String, nr: Int){
+	def fillSheet(wb: XSSFWorkbook, sheetname: String, nr: Int): Unit = {
 		val s = wb.createSheet()
 //		 declare a row object reference
 	//	val XSSFRow r = null
@@ -125,21 +128,21 @@ class ExcelData(userRows: Seq[UserRow], gwts: Seq[GameWithTeams], specialBetTemp
 		val gameStyle = wb.createCellStyle()
         val pointsHeading = wb.createCellStyle()
         pointsHeading.setRotation(90)
-        pointsHeading.setBorderBottom(CellStyle.BORDER_THIN)
+        pointsHeading.setBorderBottom(BorderStyle.THIN)
         pointsHeading.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
 		gameStyle.setRotation(70)
-		gameStyle.setBorderBottom(CellStyle.BORDER_THIN)
-		gameStyle.setAlignment(CellStyle.ALIGN_LEFT)
+		gameStyle.setBorderBottom(BorderStyle.THIN)
+		gameStyle.setAlignment(HorizontalAlignment.LEFT)
         gameStyle.setWrapText(true)
 		val pointsCell = wb.createCellStyle()
-		pointsCell.setBorderRight(CellStyle.BORDER_THIN )
+		pointsCell.setBorderRight(BorderStyle.THIN)
 		userHeading.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
-		userHeading.setBorderBottom(CellStyle.BORDER_THIN)
+		userHeading.setBorderBottom(BorderStyle.THIN)
 		gameStyle.setDataFormat(BuiltinFormats.getBuiltinFormat("text"))
         val leadingCell = wb.createCellStyle()
-        leadingCell.setBorderRight(CellStyle.BORDER_THIN )
+        leadingCell.setBorderRight(BorderStyle.THIN)
         leadingCell.setFillBackgroundColor(new XSSFColor(java.awt.Color.BLUE))
-        leadingCell.setFillPattern(CellStyle.FINE_DOTS)
+        leadingCell.setFillPattern(FillPatternType.FINE_DOTS)
 		wb.setSheetName(nr, sheetname)
 
 		val r = s.createRow(0)		

@@ -13,7 +13,7 @@ case class Row(size: Int){
 	
 	val values = new Array[String](size)
 	
-	def set(value: String, index: Int){
+	def set(value: String, index: Int): Unit = {
 		values(index) = value
 	}
 	
@@ -85,7 +85,7 @@ class StatsHelper(betterDb: BetterDb, currentTime: OffsetDateTime, viewingUserId
          templates <- betterDb.allSpecialBetTemplates()
        } yield(usersSpRankUnsorted, gwtsUnsorted, allBetsPerUserSeq, templates)
      
-      val (usersSpRankUnsorted, gwtsUnsorted, allBetsPerUserSeq, templates) = Await.result(q, 5 seconds)
+      val (usersSpRankUnsorted, gwtsUnsorted, allBetsPerUserSeq, templates) = Await.result(q, 5.seconds)
     
       val gwts = gwtsUnsorted.sortBy(_.game.nr)
       val usersSpRank = usersSpRankUnsorted.sortBy(_._1.username)

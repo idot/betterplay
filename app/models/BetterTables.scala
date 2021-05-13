@@ -68,22 +68,22 @@ trait BetterTables {
                messageserrors.schema
   }
 
-  def createTables(){
+  def createTables(): Unit = {
      dbLogger.info("creating tables") 
-     Await.result(db.run(DBIO.seq(schema.create)), 1 second)
+     Await.result(db.run(DBIO.seq(schema().create)), 1.second)
   }
   
-  def drop(){
+  def drop(): Unit = {
      dbLogger.info("dropping tables") 
-     Await.result(db.run(DBIO.seq(schema.drop)), 1 second)
+     Await.result(db.run(DBIO.seq(schema().drop)), 1.second)
   }
 
-  def dropCreate(){
+  def dropCreate(): Unit = {
       import scala.concurrent.ExecutionContext.Implicits.global
       dbLogger.info("starting to drop or create tables") 
 
       val f = db.run(MTable.getTables(namePattern = "users").headOption)
-      val r = Await.result(f, 1 seconds)
+      val r = Await.result(f, 1.seconds)
       r match {
         case Some(t) => {
           drop()
@@ -202,7 +202,7 @@ trait BetterTables {
 	  def emailidx = index("USER_EMAIL_INDEX", (email), unique = true)
 
        
-    def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id?) 
+    def registerfk = foreignKey("USER_USER_FK", registerby, users)(_.id.?) 
     
     def * = (id.?, username, firstname, lastname, institute, showName, email, passwordhash, isAdmin, isRegistrant, sendEmail, hadInstructions, canBet, points, pointsSpecial, iconurl, icontype, registerby, haddsgvo, filterSettings) <> (User.tupled, User.unapply)
     def filterSettings = (filterBet, filterGame, filterLevel) <> (FilterSettings.tupled, FilterSettings.unapply)

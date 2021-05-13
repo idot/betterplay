@@ -41,8 +41,8 @@ class SpecialBets @Inject()(cc: ControllerComponents, override val betterDb: Bet
 	  request.body.validate[SpecialBetByUser].fold(
 		  err => Future.successful(UnprocessableEntity(Json.obj("error" -> JsError.toJson(err)))),
 		  succ => {
-		      val now = BetterSettings.now
-			    val mtg = BetterSettings.closingMinutesToGame	  
+		      val now = BetterSettings.now()
+			    val mtg = BetterSettings.closingMinutesToGame()
 			    betterException{
 			      betterDb.updateSpecialBetForUser(succ, now, mtg, request.user)
 			         .map{ u => Ok(Json.toJson(UserNoPwC(u, Some(request.user))))}

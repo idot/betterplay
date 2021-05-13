@@ -40,7 +40,7 @@ class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
          betterException{
           val id = request.getIdOrN()
           betterDb.betsWitUsersForGame(game.game).map{ betsWithUsers =>
-            val now = BetterSettings.now
+            val now = BetterSettings.now()
   				  val vtg = game.game.viewMinutesToGame
             val vbWithUsers = betsWithUsers.map{ case(b,u) => (b.viewableBet(id, game.game.serverStart, now, vtg), UserNoPwC(u, request.optUser)) }
             val vbs = vbWithUsers.sortBy{ case(b,u) => u.username }
@@ -57,7 +57,7 @@ class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
 		err => Future.successful(BadRequest(Json.obj("error" -> JsError.toJson(err)))),
 	    game => {
 	       betterException{
-	         betterDb.updateGameResults(game, request.admin, BetterSettings.now, BetterSettings.closingMinutesToGame)
+	         betterDb.updateGameResults(game, request.admin, BetterSettings.now(), BetterSettings.closingMinutesToGame())
 	             .flatMap{ case(g,gu) => betterDb.calculateAndUpdatePoints(request.admin)
 	             .map{ succ => Ok(Json.obj("message" -> "updated all points"))}
 	         }} 
@@ -74,7 +74,7 @@ class Games @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
 		    err =>  Future.successful(BadRequest(Json.obj("error" -> JsError.toJson(err)))),
 		  cg => {
 		    betterException{
-		     val game = Game(None, DomainHelper.gameResultInit, 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
+		     val game = Game(None, DomainHelper.gameResultInit(), 0, 0, 0, cg.localStart, "unkown", cg.serverStart, "unknown", "unknown", "unknown", 0, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
 			       betterDb.insertGame(game, cg.team1, cg.team2, cg.level, request.admin)
 			        .flatMap{ gwt => 
 				           betterDb.createBetsForGamesForAllUsers(request.admin)

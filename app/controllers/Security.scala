@@ -47,15 +47,16 @@ trait Security { self: AbstractController =>
 
 
   val securityLogger = Logger("security")
-  
+  val exceptionLogger = Logger("exception")
+
   implicit val ec = defaultExecutionContext  
   
-  def deleteToken(token: String){
+  def deleteToken(token: String): Unit = {
       cache.remove(token)
   }
  
-  def setToken(token: String, id: Long, expiration: Int){
-      cache.set(token, id, expiration minutes)
+  def setToken(token: String, id: Long, expiration: Int): Unit = {
+      cache.set(token, id, expiration.minutes)
   }
   
   def hasToken[A] = new ActionRefiner[Request,TokenRequest] with ActionBuilder[TokenRequest, AnyContent]{
@@ -144,12 +145,12 @@ trait Security { self: AbstractController =>
   def betterException(future: Future[Result]): Future[Result] = {
       def toJs(e: Exception) = Json.obj("error" -> e.getMessage)
       future.recoverWith {
-        case e: AccessViolationException => Logger.debug(e.getMessage); Future.successful(Unauthorized(toJs(e)))
-        case e: ItemNotFoundException => Logger.debug(e.getMessage); Future.successful(NotFound(toJs(e)))
-        case e: ValidationException => Logger.debug(e.getMessage); Future.successful(NotAcceptable(toJs(e)))
-        case e: java.sql.SQLException => Logger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
-        case e: AskTimeoutException => Logger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
-        case e: org.apache.commons.mail.EmailException => Logger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
+        case e: AccessViolationException => exceptionLogger.debug(e.getMessage); Future.successful(Unauthorized(toJs(e)))
+        case e: ItemNotFoundException => exceptionLogger.debug(e.getMessage); Future.successful(NotFound(toJs(e)))
+        case e: ValidationException => exceptionLogger.debug(e.getMessage); Future.successful(NotAcceptable(toJs(e)))
+        case e: java.sql.SQLException => exceptionLogger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
+        case e: AskTimeoutException => exceptionLogger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
+        case e: org.apache.commons.mail.EmailException => exceptionLogger.debug(e.getMessage); Future.successful(InternalServerError(toJs(e)))
       }
   }
 

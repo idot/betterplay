@@ -69,7 +69,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
      
      def allUsersWithRank(): Future[Seq[(User,Int)]] = {
          val res = users.sortBy(u => ((u.points + u.pointsSpecial).desc, u.id.desc) ).result.map{ sorted =>
-            val points = sorted.map(_.totalPoints)
+            val points = sorted.map(_.totalPoints())
             val ranks = PointsCalculator.pointsToRanks(points)
             sorted.zip(ranks)
          }
@@ -96,7 +96,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
                      (u, SpecialBets(spT.zip(spU)))
                    }
                    val sorted = betsPerUser.toList.sortBy{ case(u,b) => (u.totalPoints(),u.id) }.reverse
-                   val points = sorted.map{ case(u,b) => u.totalPoints }
+                   val points = sorted.map{ case(u,b) => u.totalPoints() }
                    val ranks = PointsCalculator.pointsToRanks(points)
                    sorted.zip(ranks).map{ case((u,b),p) => (u,b,p) }
              }
@@ -278,7 +278,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
              val gttl = (for{
                 ((t1,t2),l) <- ((teams.filter(_.name === team1Name)).zip(teams.filter(_.name === team2Name)).zip(levels.filter(_.level === levelNr))).result.head
                  gameNr <- games.map(_.nr).max.result
-                 gameWithTeamsAndLevel = game.copy(team1id=t1.id.get, team2id=t2.id.get, levelId=l.id.get, result=DomainHelper.gameResultInit, nr=if(game.nr == 0) gameNr.map(_ + 1).getOrElse(1) else game.nr)
+                 gameWithTeamsAndLevel = game.copy(team1id=t1.id.get, team2id=t2.id.get, levelId=l.id.get, result=DomainHelper.gameResultInit(), nr=if(game.nr == 0) gameNr.map(_ + 1).getOrElse(1) else game.nr)
                  gameId <- (games returning games.map(_.id)) += gameWithTeamsAndLevel
              }yield((gameWithTeamsAndLevel.copy(id=Some(gameId))), t1, t2, l)).transactionally
              db.run(gttl).map{ case(g,t1,t2,l) => GameWithTeams(g, t1, t2, l) }
@@ -807,7 +807,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
 
     def specialBetsByTemplate(id: Long): Future[(SpecialBetT,Seq[SpecialBetByUser])] = {
        val res = specialbetstore.filter(_.id === id).join(specialbetsuser).on(_.id === _.spId).result
-       db.run(res).map{ r => r.groupBy{ case(t, sp) => t }.mapValues{ v => v.unzip._2 }.head }
+       db.run(res).map{ r => r.groupBy{ case(t, sp) => t }.view.mapValues{ v => v.unzip._2 }.head }
             .recoverWith{ case ex: NoSuchElementException => Future.failed(ItemNotFoundException(s"could not find special bet template with id $id")) }
     }
  
@@ -894,7 +894,7 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
         closed <- games.filter(g => g.serverStart < now).map(g => (g.gameClosed,g.nextGame)).update((true,false))
         open <- games.filter(g => g.serverStart > now).map(g => (g.gameClosed,g.nextGame)).update((false,false))
         next <- games.filter(g => g.serverStart > now).sortBy(_.serverStart).take(1).result.headOption
-        setNext <- games.filter(_.id === next.map(_.id).getOrElse(Some(-1l))).map(_.nextGame).update(true) 
+        setNext <- games.filter(_.id === next.map(_.id).getOrElse(Some(-1L))).map(_.nextGame).update(true) 
       } yield(setNext)).transactionally
       db.run(q)
    }

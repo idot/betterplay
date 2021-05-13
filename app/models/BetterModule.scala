@@ -10,7 +10,7 @@ object ActorNames {
 }
 
 class BetterModule extends AbstractModule with AkkaGuiceSupport {
-  def configure = {
+  override def configure = {
     bindActor[MailerActor](ActorNames.mailer)
     bindActor[SendMailActor](ActorNames.sendMail)
     bindActor[WorkerActor](ActorNames.worker)

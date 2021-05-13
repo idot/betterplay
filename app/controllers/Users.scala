@@ -49,7 +49,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
          .flatMap{ case(user, sp) =>
           betterDb.gamesWithBetForUser(user)
             .map{ gamesWithBets =>
-              val now = BetterSettings.now
+              val now = BetterSettings.now()
               val optUser = request.optUser
               val id = request.getIdOrN()
               val gamesWithVBets = gamesWithBets.map{ case(g, b) => 
@@ -94,7 +94,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
   
    //TODO: move host, prefix + hosturl somewhere else
    def create() = withAdmin.async(parse.json) {implicit request =>
-       FormUserCreate.bind(request.body).fold(
+       FormUserCreate.bind(request.body, 1000).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),   
            succ =>  {
              betterException{
@@ -126,7 +126,7 @@ class Users @Inject()(cc: ControllerComponents, override val betterDb: BetterDb,
    )
    
    def updateDetails() = withUser.async(parse.json){implicit request =>
-       FormUserUpdateDetails.bind(request.body).fold(
+       FormUserUpdateDetails.bind(request.body, 1000).fold(
            err => Future.successful(UnprocessableEntity(Json.obj("error" -> err.errorsAsJson))),
            succ => {
              betterException{

@@ -13,7 +13,8 @@ import java.security.SecureRandom
 
 
 object BetterSettings {
-  val TOKENLENGTH = 36
+	val logger: Logger = Logger(this.getClass())
+    val TOKENLENGTH = 36
 	val MAILTIMEOUT = 30	 
 	
   val DEBUGTOKEN = "123456789012345678901234567890123456"
@@ -24,11 +25,11 @@ object BetterSettings {
 	private var _debug = false  
 	private var _sentMail = false
 	
-	def setMailSettings(mailSettings: MailSettings){
+	def setMailSettings(mailSettings: MailSettings): Unit = {
       _mailSettings = mailSettings
   }
 	
-  def setSentMail(){
+  def setSentMail(): Unit = {
       _sentMail = true
   }
   
@@ -41,8 +42,8 @@ object BetterSettings {
   def debug(): Boolean = _debug
 	
     
-	def setDebugTime(time: OffsetDateTime){
-    Logger.info(s"set time to: ${TimeHelper.log(time)}")
+	def setDebugTime(time: OffsetDateTime): Unit = {
+    logger.info(s"set time to: ${TimeHelper.log(time)}")
 		_debugTime = time
 		_debug = true	
 	}
@@ -51,8 +52,8 @@ object BetterSettings {
 	
 	def offset(): ZoneOffset = java.time.ZoneOffset.ofHours(0)
 	
-	def resetTime(){
-      Logger.info(s"debug time off")
+	def resetTime(): Unit = {
+      logger.info(s"debug time off")
 	    _debug = false
 	}
 		
@@ -85,7 +86,7 @@ object BetterSettings {
 
 	
 	def randomToken(): String = {
-	   if(debug){
+	   if(debug()){
 	     DEBUGTOKEN 
 	   }else{
 	     java.util.UUID.randomUUID().toString()

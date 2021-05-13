@@ -13,6 +13,7 @@ import play.api.Environment
 import scala.collection.Seq
 
 object InitialDataX {
+  val logger: Logger = Logger(this.getClass())
   def specialBets(start: OffsetDateTime): Seq[SpecialBetT] = {
     val s = Seq(
       SpecialBetT(None, "topscorer", "highest scoring player", 8, start, "topscorer", SpecialBetType.player, "", 1),
@@ -62,7 +63,7 @@ object InitialDataX {
   }
 
   def levels(environment: Environment): Seq[GameLevel] = {
-      Logger.info("parsing levels")
+      logger.info("parsing levels")
       val lines = toLines("levels.tab", environment)
       lines.map(parseLevel)    
   }
@@ -77,8 +78,8 @@ object InitialDataX {
   
 }
 
-trait InitialDataX {
-    
+abstract class InitialDataX {
+    val logger: Logger = Logger(this.getClass())
     def betterDb: BetterDb
     def environment(): Environment
    
@@ -95,13 +96,13 @@ trait InitialDataX {
     def importTeams(environment: Environment): Seq[Team]
     
     def importGames(environment: Environment, levelId: Long): Seq[(Game,Team,Team)] = {
-        Logger.info("parsing games")
+        logger.info("parsing games")
         val lines = InitialDataX.toLines(gamesFile(), environment)
 	      lines.map(line => parseGame(line, levelId))
     }
           
     def importPlayers(environment: Environment): Seq[Player] = {
-        Logger.info("parsing players")
+        logger.info("parsing players")
 	      val lines = InitialDataX.toLines(playersFile(), environment)
 	      lines.map(parsePlayer)  
     }
@@ -118,22 +119,22 @@ trait InitialDataX {
     
     def insert(debug: Boolean) (implicit ec: ExecutionContext) : Unit = { 
         betterDb.dropCreate()
-        Logger.info("inserting data in db")
-        Await.result(Future.sequence(importSpecialBets(specialBetsStart(environment), environment).map(t => betterDb.insertSpecialBetInStore(t))), 1 seconds)
-        Logger.info("inserted special bets")
-        Await.result(Future.sequence(importUsers(environment).map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1 seconds)
-        Logger.info("inserted users")
-        val admin = Await.result(betterDb.allUsers(), 1 seconds).sortBy(_.id).head
-        Await.result(Future.sequence(importLevels(environment).map(l => betterDb.insertLevel(l, admin))), 1 seconds)  
-        Await.result(Future.sequence(importTeams(environment).map(t => betterDb.insertTeam(t, admin))), 1 seconds)
-        val dblevel = Await.result(betterDb.allLevels(), 1 second)(0)
-        val dbteams = Await.result(betterDb.allTeams(), 1 second)
-        val players = importPlayers(environment)
-        val gamesWithTeams = importGames(environment, dblevel.id.get)
-        Await.result(Future.sequence(gamesWithTeams.map{ case(g,t1,t2) => betterDb.insertGame(g, t1.name, t2.name, dblevel.level, admin)}), 1 seconds)
-        Await.result(betterDb.createBetsForGamesForAllUsers(admin), 1 seconds)
+        logger.info("inserting data in db")
+        Await.result(Future.sequence(importSpecialBets(specialBetsStart(environment()), environment()).map(t => betterDb.insertSpecialBetInStore(t))), 1.seconds)
+        logger.info("inserted special bets")
+        Await.result(Future.sequence(importUsers(environment()).map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1.seconds)
+        logger.info("inserted users")
+        val admin = Await.result(betterDb.allUsers(), 1.seconds).sortBy(_.id).head
+        Await.result(Future.sequence(importLevels(environment()).map(l => betterDb.insertLevel(l, admin))), 1.seconds)  
+        Await.result(Future.sequence(importTeams(environment()).map(t => betterDb.insertTeam(t, admin))), 1.seconds)
+        val dblevel = Await.result(betterDb.allLevels(), 1.second)(0)
+        val dbteams = Await.result(betterDb.allTeams(), 1.second)
+        val players = importPlayers(environment())
+        val gamesWithTeams = importGames(environment(), dblevel.id.get)
+        Await.result(Future.sequence(gamesWithTeams.map{ case(g,t1,t2) => betterDb.insertGame(g, t1.name, t2.name, dblevel.level, admin)}), 1.seconds)
+        Await.result(betterDb.createBetsForGamesForAllUsers(admin), 1.seconds)
         
-        Logger.info("done inserting data in db")
+        logger.info("done inserting data in db")
       
   }
    

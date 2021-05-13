@@ -24,7 +24,7 @@ import scala.collection.Seq
 
 
 class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: ExecutionContext) {
-   
+  val logger: Logger = Logger(this.getClass()) 
   val csv = new CSVParser()
   
   val fifa2iso2 = {
@@ -39,7 +39,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   }  
   
   def specialBets(): Seq[SpecialBetT] = {
-	  val start = OffsetDateTime.of(2014, 6, 12, 22, 0, 0, 0, BetterSettings.offset)
+	  val start = OffsetDateTime.of(2014, 6, 12, 22, 0, 0, 0, BetterSettings.offset())
 	  val s = Seq(
 	   SpecialBetT(None, "topscorer", "highest scoring player", 8 , start, "topscorer" , SpecialBetType.player, "",1),
 		 SpecialBetT(None, "mvp", "most valuable player", 8 , start, "mvp" , SpecialBetType.player, "", 2),
@@ -80,7 +80,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
       (dt,dt.plusHours(5+shift)) 
       }catch{
         case e: Exception => {
-          Logger.error("error on date: "+str+" "+venue+" "+e.getMessage)
+          logger.error("error on date: "+str+" "+venue+" "+e.getMessage)
           throw(e)
         }
       }
@@ -91,7 +91,7 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   
   //TODO: fix time zone parsing
   def parseGame(line: String, levelId: Long): (Team,Team, Game) = {
-      Logger.trace(line)
+      logger.trace(line)
       val items = line.split("\\|")
       val venue = if(items.length == 10) items(9) else ""
       val (localStart, serverStart) = parseDate(items(0), venue)
@@ -103,12 +103,12 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
 	    val s2_2 = fifa2iso2.get(s3_2.toLowerCase).getOrElse("XX")
       val t1 = Team(None, items(4), s3_1, s2_1)
       val t2 = Team(None, items(7), s3_2, s2_2)
-      val g = Game(None, DomainHelper.gameResultInit, 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
+      val g = Game(None, DomainHelper.gameResultInit(), 0, 0, levelId, localStart, "UNK", serverStart, "UNK", venue, group, pos, BetterSettings.viewMinutesToGame(), BetterSettings.closingMinutesToGame(), false, false)
       (t1,t2,g)
   }
   
   def teamsGames(levelId: Long): (Set[Team], Seq[(String,String,Game)]) = {
-      Logger.info("parsing games")
+      logger.info("parsing games")
       val lines = toLines("GAMES2014.txt")    
       val ttg = lines.map(parseGame(_,levelId))
       val teams = ttg.map{case(t1,t2,g) => Seq(t1,t2)}.flatten.toSet
@@ -124,13 +124,13 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
   }
   
   def levels(): Seq[GameLevel] = {
-      Logger.info("parsing levels")
+      logger.info("parsing levels")
       val lines = toLines("levels.tab")
       lines.map(parseLevel)    
   }
   
   def players(): Seq[(Player,String)] = {
-      Logger.info("parsing teams")
+      logger.info("parsing teams")
 	  val lines = toLines("players.tab")
 	  lines.map(parsePlayer)
   }
@@ -163,24 +163,24 @@ class InitialData(betterDb: BetterDb, environment: Environment) (implicit ec: Ex
 
     betterDb.dropCreate()
 
-    Logger.info("inserting data in db")
-    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1 seconds)
-    Logger.info("inserted special bets")
-    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1 seconds)
-    Logger.info("inserted users")
-    val admin = Await.result(betterDb.allUsers(), 1 seconds).sortBy(_.id).head
-    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1 seconds)  
-    val level = Await.result(betterDb.allLevels(), 1 second)(0)
+    logger.info("inserting data in db")
+    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1.seconds)
+    logger.info("inserted special bets")
+    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1.seconds)
+    logger.info("inserted users")
+    val admin = Await.result(betterDb.allUsers(), 1.seconds).sortBy(_.id).head
+    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1.seconds)  
+    val level = Await.result(betterDb.allLevels(), 1.second)(0)
     val (teams, ttg) = teamsGames(level.id.get)
-    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 1 seconds)
-    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 1 seconds)
-    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 1 seconds)
-    Await.result(Future.sequence(ps.map{ case(p,t) => betterDb.insertPlayer(p, t, admin) }), 1 seconds)
+    Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 1.seconds)
+    Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 1.seconds)
+    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 1.seconds)
+    Await.result(Future.sequence(ps.map{ case(p,t) => betterDb.insertPlayer(p, t, admin) }), 1.seconds)
 	   
 	  
     //TODO: updateChampion()
 
-    Logger.info("done inserting data in db")
+    logger.info("done inserting data in db")
     
     BetterSettings.setDebugTime(OffsetDateTime.of(2014, 3, 9, 10, 0, 0, 0, BetterSettings.offset()))
     
