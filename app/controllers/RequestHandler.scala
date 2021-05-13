@@ -7,10 +7,12 @@ import play.api.http._
 import play.api.mvc.RequestHeader
 import play.api.routing.Router
 import scala.annotation.implicitNotFound
+import play.core.WebCommands
+import play.api.OptionalDevContext
 
 
-class RequestHandler @Inject() (config: Configuration, router: Router, errorHandler: HttpErrorHandler, configuration: HttpConfiguration, filters: HttpFilters )
-     extends DefaultHttpRequestHandler( router, errorHandler, configuration, filters ) {
+class RequestHandler @Inject() (webCommands: WebCommands, optionalDevContext: OptionalDevContext, config: Configuration, router: Router, errorHandler: HttpErrorHandler, configuration: HttpConfiguration, filters: HttpFilters )
+     extends DefaultHttpRequestHandler( webCommands, optionalDevContext, router, errorHandler, configuration, filters ) {
    
     val logger: Logger = Logger(this.getClass())
     val prefix = config.getOptional[String]("betterplay.prefix").map(p => "/"+p).getOrElse("")  

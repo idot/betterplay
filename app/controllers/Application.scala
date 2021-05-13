@@ -44,6 +44,7 @@ import models.MailSettings
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 import importer.InitialData
 import importer.{Euro2016Data,Fifa2018Data}
+import models.MaintenanceExecutionContext
 
 
 
@@ -57,6 +58,7 @@ class Application(env: Environment,
                   val cache: SyncCacheApi,
                   configuration: Configuration,
                   system: ActorSystem,
+                  maintenanceExecutor:  MaintenanceExecutionContext, 
           //        @Named("mailer") mailer: ActorRef,
                   router: => Option[Router] = None) extends AbstractController(cc) with Security with I18nSupport {
 
@@ -72,17 +74,18 @@ class Application(env: Environment,
             configuration: Configuration,
        //     mailer: ActorRef,
             system: ActorSystem,
+            maintenanceExecutor:  MaintenanceExecutionContext, 
             router: Provider[Router]) =
     this(env, lifecycle, 
            dbConfigProvider,  cc, betterDb, 
-          messagesApi, cache, configuration, system, Some(router.get))
+          messagesApi, cache, configuration, system, maintenanceExecutor, Some(router.get))
 
    val logger: Logger = Logger(this.getClass())
    val debug = configuration.getOptional[Boolean]("betterplay.debug").getOrElse(false)  
    val superpassword = configuration.getOptional[String]("betterplay.superpassword").getOrElse(java.util.UUID.randomUUID().toString)  
    val cacheExpiration = configuration.getOptional[Int]("cache.expiration").getOrElse(60 /*seconds*/ * 180 /* minutes */)
    
- 
+   
   /**
    * Returns a list of all the HTTP action routes for easier debugging
    */
@@ -258,7 +261,7 @@ class Application(env: Environment,
             betterDb.maintainGames(BetterSettings.now())
          }
       }
-      system.scheduler.schedule( 1.minutes, maintenenceInterval.minutes, new Maintain()) 
+      system.scheduler.scheduleWithFixedDelay( 1.minutes, maintenenceInterval.minutes)(new Maintain())(maintenanceExecutor) 
     }else{
       logger.info(s"not maintaining games")
     }
