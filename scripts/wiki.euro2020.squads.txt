@@ -1,0 +1,757 @@
+#italy
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Salvatore Sirigu,12 January 1987 (aged 34),26,0,Torino
+,GK,Gianluigi Donnarumma,25 February 1999 (aged 22),25,0,Milan
+,GK,Alex Meret,22 March 1997 (aged 24),2,0,Napoli
+,DF,Giorgio Chiellini (captain),14 August 1984 (aged 36),106,8,Juventus
+,DF,Leonardo Bonucci,1 May 1987 (aged 34),101,7,Juventus
+,DF,Alessandro Florenzi,11 March 1991 (aged 30),42,2,Paris Saint-Germain
+,DF,Emerson,3 August 1994 (aged 26),14,0,Chelsea
+,DF,Francesco Acerbi,10 February 1988 (aged 33),13,1,Lazio
+,DF,Leonardo Spinazzola,25 March 1993 (aged 28),13,0,Roma
+,DF,Giovanni Di Lorenzo,4 August 1993 (aged 27),7,0,Napoli
+,DF,Gianluca Mancini,17 April 1996 (aged 25),6,0,Roma
+,DF,Alessandro Bastoni,13 April 1999 (aged 22),5,0,Internazionale
+,DF,Rafael Tolói,10 October 1990 (aged 30),2,0,Atalanta
+,,,,,,
+,MF,Marco Verratti,5 November 1992 (aged 28),40,3,Paris Saint-Germain
+,MF,Jorginho,20 December 1991 (aged 29),27,5,Chelsea
+,MF,Nicolò Barella,7 February 1997 (aged 24),22,4,Internazionale
+,MF,Lorenzo Pellegrini,19 June 1996 (aged 24),17,2,Roma
+,MF,Bryan Cristante,3 March 1995 (aged 26),10,1,Roma
+,MF,Manuel Locatelli,8 January 1998 (aged 23),9,1,Sassuolo
+,MF,Stefano Sensi,5 August 1995 (aged 25),8,3,Internazionale
+,MF,Matteo Pessina,21 April 1997 (aged 24),5,2,Atalanta
+,,,,,,
+,FW,Ciro Immobile,20 February 1990 (aged 31),45,12,Lazio
+,FW,Lorenzo Insigne,4 June 1991 (aged 30),40,7,Napoli
+,FW,Andrea Belotti,20 December 1993 (aged 27),33,12,Torino
+,FW,Federico Bernardeschi,16 February 1994 (aged 27),30,6,Juventus
+,FW,Federico Chiesa,25 October 1997 (aged 23),24,1,Juventus
+,FW,Domenico Berardi,1 August 1994 (aged 26),10,4,Sassuolo
+,FW,Matteo Politano,3 August 1993 (aged 27),4,3,Napoli
+
+#switzerland
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Yann Sommer,17 December 1988 (aged 32),61,0,Borussia Mönchengladbach
+,GK,Yvon Mvogo,6 June 1994 (aged 27),3,0,PSV Eindhoven
+,GK,Jonas Omlin,10 January 1994 (aged 27),2,0,Montpellier
+,DF,Ricardo Rodríguez,25 August 1992 (aged 28),80,9,Torino
+,DF,Fabian Schär,20 December 1991 (aged 29),59,8,Newcastle United
+,DF,Manuel Akanji,19 July 1995 (aged 25),29,0,Borussia Dortmund
+,DF,Nico Elvedi,30 September 1996 (aged 24),26,1,Borussia Mönchengladbach
+,DF,Silvan Widmer,5 March 1993 (aged 28),16,1,Basel
+,DF,Loris Benito,7 January 1992 (aged 29),12,1,Bordeaux
+,DF,Kevin Mbabu,19 April 1995 (aged 26),11,0,VfL Wolfsburg
+,DF,Eray Cömert,4 February 1998 (aged 23),5,0,Basel
+,DF,Bećir Omeragić,20 January 2002 (aged 19),3,0,Zürich
+,DF,Jordan Lotomba,29 September 1998 (aged 22),1,0,Nice
+,MF,Granit Xhaka (captain),27 September 1992 (aged 28),93,12,Arsenal
+,MF,Xherdan Shaqiri,10 October 1991 (aged 29),90,23,Liverpool
+,MF,Steven Zuber,17 August 1991 (aged 29),36,8,Eintracht Frankfurt
+,MF,Denis Zakaria,20 November 1996 (aged 24),32,3,Borussia Mönchengladbach
+,MF,Remo Freuler,15 April 1992 (aged 29),28,3,Atalanta
+,MF,Edimilson Fernandes,15 April 1996 (aged 25),21,1,Mainz 05
+,MF,Djibril Sow,6 February 1997 (aged 24),15,0,Eintracht Frankfurt
+,FW,Haris Seferović,22 February 1992 (aged 29),74,21,Benfica
+,FW,Admir Mehmedi,16 March 1991 (aged 30),73,10,VfL Wolfsburg
+,FW,Breel Embolo,14 February 1997 (aged 24),43,5,Borussia Mönchengladbach
+,FW,Mario Gavranović,24 November 1989 (aged 31),29,11,Dinamo Zagreb
+,FW,Ruben Vargas,5 August 1998 (aged 22),11,2,FC Augsburg
+,FW,Christian Fassnacht,11 November 1993 (aged 27),7,1,Young Boys
+
+#turkey
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Mert Günok,1 March 1989 (aged 32),22,0,İstanbul Başakşehir
+,GK,Uğurcan Çakır,5 April 1996 (aged 25),7,0,Trabzonspor
+,GK,Gökhan Akkan,1 January 1995 (aged 26),1,0,Çaykur Rizespor
+,GK,Altay Bayındır,14 April 1998 (aged 23),1,0,Fenerbahçe
+,DF,Kaan Ayhan,10 November 1994 (aged 26),36,4,Sassuolo
+,DF,Çağlar Söyüncü,23 May 1996 (aged 25),34,2,Leicester City
+,DF,Merih Demiral,5 March 1998 (aged 23),20,0,Juventus
+,DF,Zeki Çelik,17 February 1997 (aged 24),19,2,Lille
+,DF,Umut Meraş,20 December 1995 (aged 25),12,0,Le Havre
+,DF,Ozan Kabak,25 March 2000 (aged 21),11,0,Liverpool
+,DF,Mert Müldür,3 April 1999 (aged 22),7,0,Sassuolo
+,DF,Rıdvan Yılmaz,21 May 2001 (aged 20),2,0,Beşiktaş
+,MF,Ozan Tufan,23 March 1995 (aged 26),59,9,Fenerbahçe
+,MF,Hakan Çalhanoğlu,8 February 1994 (aged 27),55,13,Milan
+,MF,Okay Yokuşlu,9 March 1994 (aged 27),33,1,West Bromwich Albion
+,MF,Yusuf Yazıcı,29 January 1997 (aged 24),30,1,Lille
+,MF,Cengiz Ünder,14 July 1997 (aged 23),28,8,Leicester City
+,MF,Mahmut Tekdemir,20 January 1988 (aged 33),22,0,İstanbul Başakşehir
+,MF,İrfan Kahveci,15 July 1995 (aged 25),18,0,Fenerbahçe
+,MF,Abdülkadir Ömür,25 June 1999 (aged 21),9,0,Trabzonspor
+,MF,Dorukhan Toköz,21 May 1996 (aged 25),9,1,Beşiktaş
+,MF,Efecan Karaca,16 November 1989 (aged 31),7,1,Alanyaspor
+,MF,Taylan Antalyalı,8 January 1995 (aged 26),5,0,Galatasaray
+,MF,Orkun Kökçü,29 December 2000 (aged 20),5,0,Feyenoord
+,MF,Halil Akbunar,9 November 1993 (aged 27),2,0,Göztepe
+,MF,Kerem Aktürkoğlu,21 October 1998 (aged 22),1,0,Galatasaray
+,,,,,,
+,FW,Burak Yılmaz (captain),15 July 1985 (aged 35),66,28,Lille
+,FW,Enes Ünal,10 May 1997 (aged 24),22,2,Getafe
+,FW,Kenan Karaman,5 March 1994 (aged 27),21,5,Fortuna Düsseldorf
+,FW,Halil Dervişoğlu,8 December 1999 (aged 21),2,1,Galatasaray
+
+#wales
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Wayne Hennessey,24 January 1987 (aged 34),95,0,Crystal Palace
+,GK,Danny Ward,22 June 1993 (aged 27),12,0,Leicester City
+,GK,Adam Davies,17 July 1992 (aged 28),2,0,Stoke City
+,DF,Chris Gunter,21 July 1989 (aged 31),100,0,Charlton Athletic
+,DF,Ben Davies,24 April 1993 (aged 28),58,0,Tottenham Hotspur
+,DF,Connor Roberts,23 September 1995 (aged 25),25,1,Swansea City
+,DF,Chris Mepham,5 November 1997 (aged 23),16,0,Bournemouth
+,DF,Tom Lockyer,3 December 1994 (aged 26),13,0,Luton Town
+,DF,Joe Rodon,22 October 1997 (aged 23),12,0,Tottenham Hotspur
+,DF,Neco Williams,13 April 2001 (aged 20),9,1,Liverpool
+,DF,Rhys Norrington-Davies,22 April 1999 (aged 22),4,0,Stoke City
+,DF,Ben Cabango,30 May 2000 (aged 21),3,0,Swansea City
+,,,,,,
+,MF,Aaron Ramsey,26 December 1990 (aged 30),61,16,Juventus
+,MF,Joe Allen,14 March 1990 (aged 31),57,2,Stoke City
+,MF,Jonny Williams,9 October 1993 (aged 27),27,1,Cardiff City
+,MF,Harry Wilson,22 March 1997 (aged 24),24,5,Cardiff City
+,MF,Ethan Ampadu,14 September 2000 (aged 20),22,0,Sheffield United
+,MF,Daniel James,10 November 1997 (aged 23),19,4,Manchester United
+,MF,David Brooks,8 July 1997 (aged 23),16,2,Bournemouth
+,MF,Joe Morrell,3 January 1997 (aged 24),14,0,Luton Town
+,MF,Matthew Smith,22 November 1999 (aged 21),13,0,Doncaster Rovers
+,MF,Dylan Levitt,17 November 2000 (aged 20),6,0,Istra 1961
+,MF,Rubin Colwill,27 April 2002 (aged 19),0,0,Cardiff City
+,,,,,,
+,FW,Gareth Bale (captain),16 July 1989 (aged 31),90,33,Tottenham Hotspur
+,FW,Kieffer Moore,8 August 1992 (aged 28),15,5,Cardiff City
+,FW,Tyler Roberts,12 January 1999 (aged 22),13,0,Leeds United
+
+#belgium
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Thibaut Courtois,11 May 1992 (aged 29),83,0,Real Madrid
+2,DF,Toby Alderweireld,2 March 1989 (aged 32),107,5,Tottenham Hotspur
+3,DF,Thomas Vermaelen,14 November 1985 (aged 35),79,2,Vissel Kobe
+4,DF,Jason Denayer,28 June 1995 (aged 25),23,1,Lyon
+5,DF,Jan Vertonghen,24 April 1987 (aged 34),126,9,Benfica
+6,MF,Axel Witsel,12 January 1989 (aged 32),110,10,Borussia Dortmund
+7,MF,Kevin De Bruyne,28 June 1991 (aged 29),80,21,Manchester City
+8,MF,Youri Tielemans,7 May 1997 (aged 24),37,4,Leicester City
+9,FW,Romelu Lukaku,13 May 1993 (aged 28),91,59,Internazionale
+10,FW,Eden Hazard (captain),7 January 1991 (aged 30),106,32,Real Madrid
+11,MF,Yannick Carrasco,4 September 1993 (aged 27),44,6,Atlético Madrid
+12,GK,Simon Mignolet,6 March 1988 (aged 33),30,0,Club Brugge
+13,GK,Matz Sels,26 February 1992 (aged 29),0,0,Strasbourg
+14,FW,Dries Mertens,6 May 1987 (aged 34),96,21,Napoli
+15,DF,Thomas Meunier,12 September 1991 (aged 29),46,7,Borussia Dortmund
+16,MF,Thorgan Hazard,29 March 1993 (aged 28),33,5,Borussia Dortmund
+17,MF,Hans Vanaken,24 August 1992 (aged 28),9,2,Club Brugge
+18,DF,Leander Dendoncker,15 April 1995 (aged 26),15,0,Wolverhampton Wanderers
+19,MF,Dennis Praet,14 May 1994 (aged 27),10,1,Leicester City
+20,FW,Christian Benteke,3 December 1990 (aged 30),39,16,Crystal Palace
+21,DF,Timothy Castagne,5 December 1995 (aged 25),13,2,Leicester City
+22,MF,Nacer Chadli,2 August 1989 (aged 31),62,8,İstanbul Başakşehir
+23,FW,Michy Batshuayi,2 October 1993 (aged 27),33,22,Crystal Palace
+24,FW,Leandro Trossard,4 December 1994 (aged 26),6,2,Brighton & Hove Albion
+25,DF,Dedryck Boyata,28 November 1990 (aged 30),22,0,Hertha BSC
+26,FW,Jérémy Doku,27 May 2002 (aged 19),6,2,Rennes
+
+#denmark
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Kasper Schmeichel,5 November 1986 (aged 34),63,0,Leicester City
+2,DF,Joachim Andersen,31 May 1996 (aged 25),4,0,Fulham
+3,DF,Jannik Vestergaard,3 August 1992 (aged 28),21,1,Southampton
+4,DF,Simon Kjær (captain),26 March 1989 (aged 32),105,3,Milan
+5,DF,Joakim Mæhle,20 May 1997 (aged 24),8,2,Atalanta
+6,DF,Andreas Christensen,10 April 1996 (aged 25),40,1,Chelsea
+7,MF,Mathias Jensen,1 January 1996 (aged 25),5,1,Brentford
+8,MF,Thomas Delaney,3 September 1991 (aged 29),52,5,Borussia Dortmund
+9,FW,Martin Braithwaite,5 June 1991 (aged 30),48,8,Barcelona
+10,MF,Christian Eriksen,14 February 1992 (aged 29),106,36,Internazionale
+11,FW,Andreas Skov Olsen,29 December 1999 (aged 21),5,3,Bologna
+12,FW,Kasper Dolberg,6 October 1997 (aged 23),24,7,Nice
+13,FW,Robert Skov,20 May 1996 (aged 25),9,5,1899 Hoffenheim
+14,FW,Mikkel Damsgaard,3 July 2000 (aged 20),2,2,Sampdoria
+15,MF,Christian Nørgaard,10 March 1994 (aged 27),4,0,Brentford
+16,GK,Jonas Lössl,1 February 1989 (aged 32),1,0,Midtjylland
+17,DF,Jens Stryger Larsen,21 February 1991 (aged 30),34,2,Udinese
+18,MF,Daniel Wass,31 May 1989 (aged 32),28,0,Valencia
+19,DF,Nicolai Boilesen,16 February 1992 (aged 29),18,1,Copenhagen
+20,FW,Yussuf Poulsen,15 June 1994 (aged 26),52,7,RB Leipzig
+21,FW,Jonas Wind,7 February 1999 (aged 22),6,3,Copenhagen
+22,GK,Frederik Rønnow,4 August 1992 (aged 28),8,0,Schalke 04
+23,MF,Pierre-Emile Højbjerg,5 August 1995 (aged 25),40,4,Tottenham Hotspur
+24,FW,Andreas Cornelius,16 March 1993 (aged 28),27,5,Parma
+25,MF,Anders Christiansen,8 June 1990 (aged 31),3,0,Malmö FF
+26,DF,Mathias Jørgensen,23 April 1990 (aged 31),34,2,Copenhagen
+
+#finnland
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Lukáš Hrádecký,24 November 1989 (aged 31),64,0,Bayer Leverkusen
+,GK,Jesse Joronen,21 March 1993 (aged 28),14,0,Brescia
+,GK,Anssi Jaakkola,13 March 1987 (aged 34),3,0,Bristol Rovers
+,GK,Carljohan Eriksson,25 April 1995 (aged 26),0,0,Mjällby AIF
+,DF,Paulus Arajuuri,15 June 1988 (aged 32),50,3,Pafos
+,DF,Jere Uronen,13 July 1994 (aged 26),48,1,Genk
+,DF,Juhani Ojala,19 June 1989 (aged 31),32,1,Vejle
+,DF,Thomas Lam,18 December 1993 (aged 27),26,0,PEC Zwolle
+,DF,Sauli Väisänen,5 June 1994 (aged 27),20,0,Chievo
+,DF,Albin Granlund,1 September 1989 (aged 31),19,0,Stal Mielec
+,DF,Nikolai Alho,12 March 1993 (aged 28),11,0,MTK
+,DF,Daniel O'Shaughnessy,14 September 1994 (aged 26),10,0,HJK
+,DF,Niko Hämäläinen,5 March 1997 (aged 24),7,0,Queens Park Rangers
+,DF,Leo Väisänen,23 July 1997 (aged 23),7,0,IF Elfsborg
+,DF,Robert Ivanov,19 September 1994 (aged 26),4,0,Warta Poznań
+,DF,Aapo Halme,22 May 1998 (aged 23),0,0,Barnsley
+,,,,,,
+,MF,Tim Sparv (captain),20 February 1987 (aged 34),81,1,AEL
+,MF,Rasmus Schüller,18 June 1991 (aged 29),48,0,Djurgårdens IF
+,MF,Glen Kamara,28 October 1995 (aged 25),30,1,Rangers
+,MF,Pyry Soiri,22 September 1994 (aged 26),30,5,Esbjerg
+,MF,Joni Kauko,12 July 1990 (aged 30),25,0,Esbjerg
+,MF,Fredrik Jensen,9 September 1997 (aged 23),17,7,FC Augsburg
+,MF,Onni Valakari,18 August 1999 (aged 21),5,1,Pafos
+,MF,Jasin-Amin Assehnoun,26 December 1998 (aged 22),1,0,Lahti
+,,,,,,
+,FW,Teemu Pukki,29 March 1990 (aged 31),90,30,Norwich City
+,FW,Joel Pohjanpalo,13 September 1994 (aged 26),41,9,Union Berlin
+,FW,Lassi Lappalainen,24 August 1998 (aged 22),8,0,CF Montréal
+,FW,Roope Riski,16 August 1991 (aged 29),6,1,HJK
+,FW,Marcus Forss,18 June 1999 (aged 21),4,1,Brentford
+
+#russia
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Anton Shunin,27 January 1987 (aged 34),10,0,Dynamo Moscow
+,GK,Andrey Lunyov,13 November 1991 (aged 29),7,0,Zenit Saint Petersburg
+,GK,Yury Dyupin,17 March 1988 (aged 33),0,0,Rubin Kazan
+,GK,Matvei Safonov,25 February 1999 (aged 22),0,0,Krasnodar
+,,,,,,
+,DF,Yuri Zhirkov,20 August 1983 (aged 37),102,2,Zenit Saint Petersburg
+,DF,Fyodor Kudryashov,5 April 1987 (aged 34),43,1,Antalyaspor
+,DF,Georgi Dzhikiya,21 November 1993 (aged 27),31,1,Spartak Moscow
+,DF,Mário Fernandes,19 September 1990 (aged 30),28,5,CSKA Moscow
+,DF,Andrei Semyonov,24 March 1989 (aged 32),24,0,Akhmat Grozny
+,DF,Vyacheslav Karavayev,20 May 1995 (aged 26),11,1,Zenit Saint Petersburg
+,DF,Igor Diveyev,27 September 1999 (aged 21),2,0,CSKA Moscow
+,DF,Roman Yevgenyev,23 February 1999 (aged 22),1,0,Dynamo Moscow
+,DF,Ilya Samoshnikov,14 November 1997 (aged 23),0,0,Rubin Kazan
+,,,,,,
+,MF,Aleksandr Golovin,30 May 1996 (aged 25),36,5,Monaco
+,MF,Aleksei Ionov,18 February 1989 (aged 32),34,4,Krasnodar
+,MF,Roman Zobnin,11 February 1994 (aged 27),33,0,Spartak Moscow
+,MF,Daler Kuzyayev,15 January 1993 (aged 28),32,2,Zenit Saint Petersburg
+,MF,Aleksei Miranchuk,17 October 1995 (aged 25),31,5,Atalanta
+,MF,Denis Cheryshev,26 December 1990 (aged 30),30,12,Valencia
+,MF,Magomed Ozdoyev,5 November 1992 (aged 28),30,4,Zenit Saint Petersburg
+,MF,Andrei Mostovoy,5 November 1997 (aged 23),7,0,Zenit Saint Petersburg
+,MF,Dmitri Barinov,11 September 1996 (aged 24),4,0,Lokomotiv Moscow
+,MF,Daniil Fomin,2 March 1997 (aged 24),4,0,Dynamo Moscow
+,MF,Rifat Zhemaletdinov,20 September 1996 (aged 24),3,0,Lokomotiv Moscow
+,MF,Maksim Mukhin,4 November 2001 (aged 19),1,0,Lokomotiv Moscow
+,MF,Denis Makarov,18 February 1998 (aged 23),0,0,Rubin Kazan
+,MF,Arsen Zakharyan,26 May 2003 (aged 18),0,0,Dynamo Moscow
+,,,,,,
+,FW,Artem Dzyuba (captain),22 August 1988 (aged 32),50,29,Zenit Saint Petersburg
+,FW,Anton Zabolotny,13 June 1991 (aged 29),12,1,Sochi
+,FW,Aleksandr Sobolev,7 March 1997 (aged 24),5,2,Spartak Moscow
+
+#austria
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Pavao Pervan,13 November 1987 (aged 33),7,0,VfL Wolfsburg
+,GK,Alexander Schlager,1 February 1996 (aged 25),6,0,LASK
+,GK,Daniel Bachmann,9 July 1994 (aged 26),0,0,Watford
+,,,,,,
+,DF,Aleksandar Dragović,6 March 1991 (aged 30),89,2,Bayer Leverkusen
+,DF,David Alaba,24 June 1992 (aged 28),79,14,Bayern Munich
+,DF,Martin Hinteregger,7 September 1992 (aged 28),53,4,Eintracht Frankfurt
+,DF,Stefan Lainer,27 August 1992 (aged 28),28,1,Borussia Mönchengladbach
+,DF,Andreas Ulmer,30 October 1985 (aged 35),23,0,Red Bull Salzburg
+,DF,Christopher Trimmel,24 February 1987 (aged 34),11,0,Union Berlin
+,DF,Stefan Posch,14 May 1997 (aged 24),10,1,1899 Hoffenheim
+,DF,Philipp Lienhart,11 July 1996 (aged 24),3,0,SC Freiburg
+,DF,Marco Friedl,16 March 1998 (aged 23),2,0,Werder Bremen
+,,,,,,
+,MF,Julian Baumgartlinger (captain),2 January 1988 (aged 33),82,1,Bayer Leverkusen
+,MF,Stefan Ilsanker,18 May 1989 (aged 32),50,0,Eintracht Frankfurt
+,MF,Valentino Lazaro,24 March 1996 (aged 25),30,3,Borussia Mönchengladbach
+,MF,Alessandro Schöpf,7 February 1994 (aged 27),25,5,Schalke 04
+,MF,Florian Grillitsch,7 August 1995 (aged 25),21,1,1899 Hoffenheim
+,MF,Louis Schaub,29 December 1994 (aged 26),19,6,Luzern
+,MF,Xaver Schlager,28 September 1997 (aged 23),19,1,VfL Wolfsburg
+,MF,Christoph Baumgartner,1 August 1999 (aged 21),8,3,1899 Hoffenheim
+,MF,Konrad Laimer,27 May 1997 (aged 24),7,1,RB Leipzig
+,,,,,,
+,FW,Marko Arnautović,19 April 1989 (aged 32),87,26,Shanghai Port
+,FW,Marcel Sabitzer,17 March 1994 (aged 27),48,8,RB Leipzig
+,FW,Michael Gregoritsch,18 April 1994 (aged 27),24,4,FC Augsburg
+,FW,Karim Onisiwo,17 March 1992 (aged 29),11,1,Mainz 05
+,FW,Saša Kalajdžić,7 July 1997 (aged 23),5,3,VfB Stuttgart
+
+#Netherlands
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Jasper Cillessen,22 April 1989 (aged 32),60,0,Valencia
+2,DF,Joël Veltman,15 January 1992 (aged 29),27,2,Brighton & Hove Albion
+3,DF,Matthijs de Ligt,12 August 1999 (aged 21),26,2,Juventus
+4,DF,Nathan Aké,18 February 1995 (aged 26),19,2,Manchester City
+5,DF,Owen Wijndal,28 November 1999 (aged 21),7,0,AZ
+6,DF,Stefan de Vrij,5 February 1992 (aged 29),43,3,Internazionale
+7,FW,Steven Berghuis,19 December 1991 (aged 29),24,2,Feyenoord
+8,MF,Georginio Wijnaldum (captain),11 November 1990 (aged 30),73,22,Liverpool
+9,FW,Wout Weghorst,7 August 1992 (aged 28),4,0,VfL Wolfsburg
+10,FW,Memphis Depay,13 February 1994 (aged 27),62,23,Lyon
+11,FW,Quincy Promes,4 January 1992 (aged 29),47,7,Spartak Moscow
+12,DF,Patrick van Aanholt,29 August 1990 (aged 30),13,0,Crystal Palace
+13,GK,Maarten Stekelenburg,22 September 1982 (aged 38),58,0,Ajax
+14,MF,Ryan Gravenberch,16 May 2002 (aged 19),3,0,Ajax
+15,MF,Marten de Roon,29 March 1991 (aged 30),21,0,Atalanta
+16,MF,Davy Klaassen,21 February 1993 (aged 28),22,5,Ajax
+17,DF,Daley Blind,9 March 1990 (aged 31),77,2,Ajax
+18,FW,Donyell Malen,19 January 1999 (aged 22),8,2,PSV Eindhoven
+19,FW,Luuk de Jong,27 August 1990 (aged 30),35,8,Sevilla
+20,MF,Donny van de Beek,18 April 1997 (aged 24),19,3,Manchester United
+21,MF,Frenkie de Jong,12 May 1997 (aged 24),25,1,Barcelona
+22,DF,Denzel Dumfries,18 April 1996 (aged 25),17,0,PSV Eindhoven
+23,GK,Tim Krul,3 April 1988 (aged 33),14,0,Norwich City
+24,MF,Teun Koopmeiners,28 February 1998 (aged 23),1,0,AZ
+25,FW,Cody Gakpo,7 May 1999 (aged 22),0,0,PSV Eindhoven
+26,DF,Jurriën Timber,17 June 2001 (aged 19),0,0,Ajax
+
+#North Macedonia
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Stole Dimitrievski,25 December 1993 (aged 27),40,0,Rayo Vallecano
+,GK,Damjan Shishkovski,18 March 1995 (aged 26),6,0,Doxa Katokopias
+,GK,Risto Jankov,5 September 1998 (aged 22),0,0,Rabotnichki
+,,,,,,
+,DF,Stefan Ristovski,12 February 1992 (aged 29),63,2,Dinamo Zagreb
+,DF,Kire Ristevski,22 October 1990 (aged 30),45,0,Újpest
+,DF,Ezgjan Alioski,12 February 1992 (aged 29),42,7,Leeds United
+,DF,Visar Musliu,13 November 1994 (aged 26),29,1,Fehérvár
+,DF,Darko Velkovski,21 June 1995 (aged 25),27,1,Rijeka
+,DF,Egzon Bejtulai,7 January 1994 (aged 27),19,0,Shkëndija
+,DF,Gjoko Zajkov,10 February 1995 (aged 26),17,1,Charleroi
+,,,,,,
+,MF,Ferhan Hasani,18 June 1990 (aged 30),40,2,Partizani
+,MF,Stefan Spirovski,23 August 1990 (aged 30),39,1,AEK Larnaca
+,MF,Enis Bardhi,2 July 1995 (aged 25),34,6,Levante
+,MF,Boban Nikolov,28 July 1994 (aged 26),32,2,Lecce
+,MF,Eljif Elmas,24 September 1999 (aged 21),25,6,Napoli
+,MF,Arijan Ademi,29 May 1991 (aged 30),20,4,Dinamo Zagreb
+,MF,Marjan Radeski,10 February 1995 (aged 26),17,1,Akademija Pandev
+,MF,Tihomir Kostadinov,4 March 1996 (aged 25),8,0,Ružomberok
+,MF,Daniel Avramovski,20 February 1995 (aged 26),4,0,Kayserispor
+,MF,Darko Churlinov,11 July 2000 (aged 20),1,0,VfB Stuttgart
+,,,,,,
+,FW,Goran Pandev (captain),27 July 1983 (aged 37),117,37,Genoa
+,FW,Aleksandar Trajkovski,5 September 1992 (aged 28),63,18,Mallorca
+,FW,Ivan Trichkovski,18 April 1987 (aged 34),62,6,AEK Larnaca
+,FW,Krste Velkoski,20 February 1988 (aged 33),14,0,Sarajevo
+,FW,Vlatko Stojanovski,23 April 1997 (aged 24),8,2,Chambly
+,FW,Milan Ristovski,8 April 1998 (aged 23),0,0,Spartak Trnava
+
+#Ukraine
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Andriy Pyatov (captain),28 June 1984 (aged 36),96,0,Shakhtar Donetsk
+,GK,Andriy Lunin,11 February 1999 (aged 22),6,0,Real Madrid
+,GK,Heorhiy Bushchan,31 May 1994 (aged 27),5,0,Dynamo Kyiv
+,GK,Anatoliy Trubin,1 August 2001 (aged 19),2,0,Shakhtar Donetsk
+,,,,,,
+,DF,Mykola Matviyenko,2 May 1996 (aged 25),34,0,Shakhtar Donetsk
+,DF,Oleksandr Karavayev,2 June 1992 (aged 29),31,1,Dynamo Kyiv
+,DF,Serhiy Kryvtsov,15 March 1991 (aged 30),22,0,Shakhtar Donetsk
+,DF,Eduard Sobol,20 April 1995 (aged 26),19,0,Club Brugge
+,DF,Vitaliy Mykolenko,29 May 1999 (aged 22),14,0,Dynamo Kyiv
+,DF,Bohdan Mykhaylichenko,21 March 1997 (aged 24),6,0,Anderlecht
+,DF,Illya Zabarnyi,1 September 2002 (aged 18),6,0,Dynamo Kyiv
+,DF,Oleksandr Tymchyk,20 January 1997 (aged 24),4,0,Dynamo Kyiv
+,DF,Denys Popov,17 February 1999 (aged 22),1,0,Dynamo Kyiv
+,DF,Oleksandr Syrota,11 June 2000 (aged 21),0,0,Dynamo Kyiv
+,,,,,,
+,MF,Andriy Yarmolenko,23 October 1989 (aged 31),92,38,West Ham United
+,MF,Taras Stepanenko,8 August 1989 (aged 31),60,3,Shakhtar Donetsk
+,MF,Oleksandr Zinchenko,15 December 1996 (aged 24),38,5,Manchester City
+,MF,Ruslan Malinovskyi,4 May 1993 (aged 28),35,6,Atalanta
+,MF,Serhiy Sydorchuk,2 May 1991 (aged 30),35,3,Dynamo Kyiv
+,MF,Viktor Tsyhankov,15 November 1997 (aged 23),26,6,Dynamo Kyiv
+,MF,Roman Bezus,26 September 1990 (aged 30),23,5,Gent
+,MF,Marlos,7 June 1988 (aged 33),23,1,Shakhtar Donetsk
+,MF,Yevhenii Makarenko,21 May 1991 (aged 30),11,0,Kortrijk
+,MF,Mykola Shaparenko,4 October 1998 (aged 22),10,0,Dynamo Kyiv
+,MF,Oleksandr Zubkov,3 August 1996 (aged 24),9,0,Ferencváros
+,MF,Heorhiy Sudakov,1 September 2002 (aged 18),1,0,Shakhtar Donetsk
+,MF,Artem Bondarenko,21 August 2000 (aged 20),0,0,Mariupol
+,MF,Bohdan Lyednyev,7 April 1998 (aged 23),0,0,Dynamo Kyiv
+,,,,,,
+,FW,Roman Yaremchuk,27 November 1995 (aged 25),22,7,Gent
+,FW,Artem Besyedin,31 March 1996 (aged 25),14,2,Dynamo Kyiv
+,FW,Artem Dovbyk,21 June 1997 (aged 23),2,0,Dnipro-1
+
+#Croatia
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Dominik Livaković,9 January 1995 (aged 26),19,0,Dinamo Zagreb
+2,DF,Šime Vrsaljko,10 January 1992 (aged 29),47,0,Atlético Madrid
+3,DF,Borna Barišić,10 November 1992 (aged 28),18,1,Rangers
+4,FW,Ivan Perišić,2 February 1989 (aged 32),99,27,Internazionale
+5,DF,Duje Ćaleta-Car,17 September 1996 (aged 24),12,0,Marseille
+6,DF,Dejan Lovren,5 July 1989 (aged 31),64,4,Zenit Saint Petersburg
+7,FW,Josip Brekalo,23 June 1998 (aged 22),22,4,VfL Wolfsburg
+8,MF,Mateo Kovačić,6 May 1994 (aged 27),66,3,Chelsea
+9,FW,Andrej Kramarić,19 June 1991 (aged 29),52,14,1899 Hoffenheim
+10,MF,Luka Modrić (captain),9 September 1985 (aged 35),136,17,Real Madrid
+11,MF,Marcelo Brozović,16 November 1992 (aged 28),57,6,Internazionale
+12,GK,Lovre Kalinić,3 April 1990 (aged 31),19,0,Hajduk Split
+13,MF,Nikola Vlašić,4 October 1997 (aged 23),20,5,CSKA Moscow
+14,FW,Ante Budimir,22 July 1991 (aged 29),7,1,Osasuna
+15,MF,Mario Pašalić,9 February 1995 (aged 26),23,3,Atalanta
+16,DF,Josip Juranović,16 August 1995 (aged 25),7,0,Legia Warsaw
+17,FW,Mislav Oršić,29 December 1992 (aged 28),8,0,Dinamo Zagreb
+18,FW,Ante Rebić,21 September 1993 (aged 27),36,3,Milan
+19,MF,Milan Badelj,25 February 1989 (aged 32),54,2,Genoa
+20,FW,Bruno Petković,16 September 1994 (aged 26),13,6,Dinamo Zagreb
+21,DF,Domagoj Vida,29 April 1989 (aged 32),86,4,Beşiktaş
+22,DF,Domagoj Bradarić,10 December 1999 (aged 21),4,0,Lille
+23,GK,Simon Sluga,17 March 1993 (aged 28),3,0,Luton Town
+24,DF,Joško Gvardiol,23 January 2002 (aged 19),0,0,Dinamo Zagreb
+25,MF,Luka Ivanušec,26 November 1998 (aged 22),2,1,Dinamo Zagreb
+26,DF,Mile Škorić,19 June 1991 (aged 29),4,0,Osijek
+
+#Czech Republic
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Tomáš Vaclík,29 March 1989 (aged 32),36,0,Sevilla
+2,DF,Pavel Kadeřábek,25 April 1992 (aged 29),47,3,1899 Hoffenheim
+3,DF,Ondřej Čelůstka,18 June 1989 (aged 31),24,2,Sparta Prague
+4,DF,David Zima,8 November 2000 (aged 20),1,0,Slavia Prague
+5,DF,Vladimír Coufal,22 August 1992 (aged 28),14,1,West Ham United
+6,DF,Tomáš Kalas,15 May 1993 (aged 28),22,2,Bristol City
+7,MF,Antonín Barák,3 December 1994 (aged 26),18,6,Hellas Verona
+8,MF,Vladimír Darida (captain),8 August 1990 (aged 30),70,8,Hertha BSC
+9,FW,Patrik Schick,24 January 1996 (aged 25),24,10,Bayer Leverkusen
+10,FW,Tomáš Pekhart,26 May 1989 (aged 32),21,2,Legia Warsaw
+11,FW,Michael Krmenčík,15 March 1993 (aged 28),28,9,PAOK
+12,MF,Lukáš Masopust,12 February 1993 (aged 28),20,1,Slavia Prague
+13,MF,Petr Ševčík,4 May 1994 (aged 27),6,0,Slavia Prague
+14,MF,Jakub Jankto,19 January 1996 (aged 25),33,4,Sampdoria
+15,MF,Tomáš Souček,27 February 1995 (aged 26),33,7,West Ham United
+16,GK,Aleš Mandous,21 April 1992 (aged 29),1,0,Sigma Olomouc
+17,DF,Aleš Matějů,3 June 1996 (aged 25),4,0,Brescia
+18,DF,Jan Bořil,11 January 1991 (aged 30),21,0,Slavia Prague
+19,DF,Tomáš Holeš,31 March 1993 (aged 28),7,1,Slavia Prague
+20,FW,Matěj Vydra,1 May 1992 (aged 29),35,6,Burnley
+21,MF,Alex Král,19 May 1998 (aged 23),16,2,Spartak Moscow
+22,FW,Adam Hložek,25 July 2002 (aged 18),2,0,Sparta Prague
+23,GK,Jiří Pavlenka,14 April 1992 (aged 29),13,0,Werder Bremen
+24,DF,Jakub Brabec,6 August 1992 (aged 28),20,1,Viktoria Plzeň
+25,FW,Jakub Pešek,24 June 1993 (aged 27),1,1,Slovan Liberec
+26,MF,Michal Sadílek,31 May 1999 (aged 22),0,0,Slovan Liberec
+
+#England
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Jordan Pickford,7 March 1994 (aged 27),30,0,Everton
+,GK,Dean Henderson,12 March 1997 (aged 24),1,0,Manchester United
+,GK,Sam Johnstone,25 March 1993 (aged 28),0,0,West Bromwich Albion
+,GK,Aaron Ramsdale,14 May 1998 (aged 23),0,0,Sheffield United
+,,,,,,
+,DF,Kyle Walker,28 May 1990 (aged 31),55,0,Manchester City
+,DF,John Stones,28 May 1994 (aged 27),42,2,Manchester City
+,DF,Harry Maguire,5 March 1993 (aged 28),32,3,Manchester United
+,DF,Kieran Trippier,19 September 1990 (aged 30),26,1,Atlético Madrid
+,DF,Ben Chilwell,21 December 1996 (aged 24),14,0,Chelsea
+,DF,Trent Alexander-Arnold,7 October 1998 (aged 22),12,1,Liverpool
+,DF,Luke Shaw,12 July 1995 (aged 25),9,0,Manchester United
+,DF,Tyrone Mings,13 March 1993 (aged 28),8,0,Aston Villa
+,DF,Reece James,8 December 1999 (aged 21),6,0,Chelsea
+,DF,Conor Coady,25 February 1993 (aged 28),4,1,Wolverhampton Wanderers
+,DF,Ben Godfrey,15 January 1998 (aged 23),0,0,Everton
+,DF,Ben White,8 October 1997 (aged 23),0,0,Brighton & Hove Albion
+,,,,,,
+,MF,Jordan Henderson,17 June 1990 (aged 30),58,0,Liverpool
+,MF,Jesse Lingard,15 December 1992 (aged 28),27,4,West Ham United
+,MF,Mason Mount,10 January 1999 (aged 22),16,4,Chelsea
+,MF,Declan Rice,14 January 1999 (aged 22),15,1,West Ham United
+,MF,Kalvin Phillips,2 December 1995 (aged 25),7,0,Leeds United
+,MF,Phil Foden,28 May 2000 (aged 21),6,2,Manchester City
+,MF,James Ward-Prowse,1 November 1994 (aged 26),6,1,Southampton
+,MF,Jack Grealish,10 September 1995 (aged 25),5,0,Aston Villa
+,MF,Bukayo Saka,5 September 2001 (aged 19),4,0,Arsenal
+,MF,Jude Bellingham,29 June 2003 (aged 17),2,0,Borussia Dortmund
+,,,,,,
+,FW,Raheem Sterling,8 December 1994 (aged 26),61,14,Manchester City
+,FW,Harry Kane (captain),28 July 1993 (aged 27),53,34,Tottenham Hotspur
+,FW,Marcus Rashford,31 October 1997 (aged 23),40,11,Manchester United
+,FW,Jadon Sancho,25 March 2000 (aged 21),18,3,Borussia Dortmund
+,FW,Dominic Calvert-Lewin,16 March 1997 (aged 24),7,4,Everton
+,FW,Mason Greenwood,1 October 2001 (aged 19),1,0,Manchester United
+,FW,Ollie Watkins,30 December 1995 (aged 25),1,1,Aston Villa
+
+#Scotland
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Craig Gordon,31 December 1982 (aged 38),56,0,Heart of Midlothian
+,GK,David Marshall,5 March 1985 (aged 36),43,0,Derby County
+,GK,Jon McLaughlin,9 September 1987 (aged 33),2,0,Rangers
+,,,,,,
+,DF,Andrew Robertson (captain),11 March 1994 (aged 27),43,3,Liverpool
+,DF,Grant Hanley,20 November 1991 (aged 29),32,2,Norwich City
+,DF,Scott McKenna,12 November 1996 (aged 24),19,0,Nottingham Forest
+,DF,Kieran Tierney,5 June 1997 (aged 24),19,0,Arsenal
+,DF,Stephen O'Donnell,11 May 1992 (aged 29),18,0,Motherwell
+,DF,Declan Gallagher,13 February 1991 (aged 30),7,0,Motherwell
+,DF,Liam Cooper,30 August 1991 (aged 29),5,0,Leeds United
+,DF,Jack Hendry,7 May 1995 (aged 26),5,0,Oostende
+,DF,Greg Taylor,5 November 1997 (aged 23),4,0,Celtic
+,DF,Nathan Patterson,16 October 2001 (aged 19),0,0,Rangers
+,,,,,,
+,MF,John McGinn,18 October 1994 (aged 26),32,10,Aston Villa
+,MF,Callum McGregor,14 June 1993 (aged 27),29,0,Celtic
+,MF,Stuart Armstrong,30 March 1992 (aged 29),24,2,Southampton
+,MF,Scott McTominay,8 December 1996 (aged 24),22,0,Manchester United
+,MF,Ryan Christie,22 February 1995 (aged 26),18,4,Celtic
+,MF,John Fleck,24 August 1991 (aged 29),5,0,Sheffield United
+,MF,Billy Gilmour,11 June 2001 (aged 20),0,0,Chelsea
+,MF,David Turnbull,10 July 1999 (aged 21),0,0,Celtic
+,,,,,,
+,FW,James Forrest,7 July 1991 (aged 29),35,5,Celtic
+,FW,Ryan Fraser,24 February 1994 (aged 27),16,4,Newcastle United
+,FW,Lyndon Dykes,7 October 1995 (aged 25),10,2,Queens Park Rangers
+,FW,Ché Adams,13 July 1996 (aged 24),3,1,Southampton
+,FW,Kevin Nisbet,8 March 1997 (aged 24),1,0,Hibernian
+
+#Poland
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Wojciech Szczęsny,18 April 1990 (aged 31),52,0,Juventus
+2,DF,Tomasz Kędziora,11 June 1994 (aged 27),21,0,Dynamo Kyiv
+3,DF,Tymoteusz Puchacz,23 January 1999 (aged 22),0,0,Lech Poznań
+4,DF,Paweł Dawidowicz,20 May 1995 (aged 26),2,0,Hellas Verona
+5,DF,Jan Bednarek,12 April 1996 (aged 25),29,1,Southampton
+6,DF,Kamil Piątkowski,21 June 2000 (aged 20),1,0,Raków Częstochowa
+7,FW,Arkadiusz Milik,28 February 1994 (aged 27),59,15,Marseille
+8,MF,Karol Linetty,2 February 1995 (aged 26),30,2,Torino
+9,FW,Robert Lewandowski (captain),21 August 1988 (aged 32),118,66,Bayern Munich
+10,MF,Grzegorz Krychowiak,29 January 1990 (aged 31),78,4,Lokomotiv Moscow
+11,FW,Karol Świderski,23 January 1997 (aged 24),2,1,PAOK
+12,GK,Łukasz Skorupski,5 May 1991 (aged 30),4,0,Bologna
+13,DF,Maciej Rybus,19 August 1989 (aged 31),61,2,Lokomotiv Moscow
+14,DF,Michał Helik,9 September 1995 (aged 25),2,0,Barnsley
+15,DF,Kamil Glik,3 February 1988 (aged 33),82,6,Benevento
+16,MF,Jakub Moder,7 April 1999 (aged 22),8,2,Brighton & Hove Albion
+17,FW,Przemysław Płacheta,23 March 1998 (aged 23),3,0,Norwich City
+18,DF,Bartosz Bereszyński,12 July 1992 (aged 28),31,0,Sampdoria
+19,MF,Kacper Kozłowski,16 October 2003 (aged 17),1,0,Pogoń Szczecin
+20,MF,Piotr Zieliński,20 May 1994 (aged 27),59,6,Napoli
+21,FW,Kamil Jóźwiak,22 April 1998 (aged 23),12,2,Derby County
+22,GK,Łukasz Fabiański,18 April 1985 (aged 36),55,0,West Ham United
+23,MF,Mateusz Klich,13 June 1990 (aged 30),30,2,Leeds United
+24,FW,Dawid Kownacki,14 March 1997 (aged 24),6,1,Fortuna Düsseldorf
+25,MF,Przemysław Frankowski,12 April 1995 (aged 26),10,1,Chicago Fire FC
+26,FW,Jakub Świerczok,28 December 1992 (aged 28),3,0,Piast Gliwice
+
+#Slovakia
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Martin Dúbravka,15 January 1989 (aged 32),24,0,Newcastle United
+,GK,Dušan Kuciak,21 May 1985 (aged 36),13,0,Lechia Gdańsk
+,GK,Marek Rodák,13 December 1996 (aged 24),5,0,Fulham
+,,,,,,
+,DF,Peter Pekarík,30 October 1986 (aged 34),99,2,Hertha BSC
+,DF,Tomáš Hubočan,17 September 1985 (aged 35),69,0,Omonia
+,DF,Milan Škriniar,11 February 1995 (aged 26),39,2,Internazionale
+,DF,Ľubomír Šatka,2 December 1995 (aged 25),12,0,Lech Poznań
+,DF,Denis Vavro,10 April 1996 (aged 25),9,0,Huesca
+,DF,Jakub Holúbek,12 January 1991 (aged 30),5,0,Piast Gliwice
+,,,,,,
+,MF,Marek Hamšík (captain),27 July 1987 (aged 33),126,26,IFK Göteborg
+,MF,Juraj Kucka,26 February 1987 (aged 34),82,10,Parma
+,MF,Vladimír Weiss,30 November 1989 (aged 31),67,7,Slovan Bratislava
+,MF,Róbert Mak,8 March 1991 (aged 30),65,14,Ferencváros
+,MF,Ondrej Duda,5 December 1994 (aged 26),44,5,1. FC Köln
+,MF,Patrik Hrošovský,22 April 1992 (aged 29),34,0,Genk
+,MF,Stanislav Lobotka,25 November 1994 (aged 26),27,3,Napoli
+,MF,Matúš Bero,6 September 1995 (aged 25),14,0,Vitesse
+,MF,Lukáš Haraslín,26 May 1996 (aged 25),13,1,Sassuolo
+,MF,László Bénes,9 September 1997 (aged 23),3,0,FC Augsburg
+,MF,Tomáš Suslov,7 June 2002 (aged 19),2,0,Groningen
+,MF,Erik Jirka,19 September 1997 (aged 23),0,0,Mirandés
+,,,,,,
+,FW,Michal Ďuriš,1 June 1988 (aged 33),54,7,Omonia
+,FW,Róbert Boženík,18 November 1999 (aged 21),15,4,Feyenoord
+,FW,David Strelec,4 April 2001 (aged 20),3,1,Slovan Bratislava
+
+#Spain
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,David de Gea,7 November 1990 (aged 30),45,0,Manchester United
+,GK,Unai Simón,11 June 1997 (aged 24),6,0,Athletic Bilbao
+,GK,Robert Sánchez,18 November 1997 (aged 23),0,0,Brighton & Hove Albion
+,,,,,,
+,DF,Jordi Alba,21 March 1989 (aged 32),72,8,Barcelona
+,DF,César Azpilicueta,28 August 1989 (aged 31),25,0,Chelsea
+,DF,José Gayà,25 May 1995 (aged 26),13,2,Valencia
+,DF,Eric García,9 January 2001 (aged 20),7,0,Manchester City
+,DF,Diego Llorente,16 August 1993 (aged 27),7,0,Leeds United
+,DF,Pau Torres,16 January 1997 (aged 24),7,1,Villarreal
+,DF,Aymeric Laporte,27 May 1994 (aged 27),0,0,Manchester City
+,,,,,,
+,MF,Sergio Busquets (captain),16 July 1988 (aged 32),122,2,Barcelona
+,MF,Koke,8 January 1992 (aged 29),49,0,Atlético Madrid
+,MF,Thiago,11 April 1991 (aged 30),41,2,Liverpool
+,MF,Rodri,22 June 1996 (aged 24),19,1,Manchester City
+,MF,Fabián Ruiz,3 April 1996 (aged 25),11,1,Napoli
+,MF,Marcos Llorente,30 January 1995 (aged 26),4,0,Atlético Madrid
+,MF,Pedri,25 November 2002 (aged 18),3,0,Barcelona
+,,,,,,
+,FW,Álvaro Morata,23 October 1992 (aged 28),39,19,Juventus
+,FW,Mikel Oyarzabal,21 April 1997 (aged 24),13,4,Real Sociedad
+,FW,Dani Olmo,7 May 1998 (aged 23),11,3,RB Leipzig
+,FW,Gerard Moreno,7 April 1992 (aged 29),10,5,Villarreal
+,FW,Ferran Torres,29 February 2000 (aged 21),10,6,Manchester City
+,FW,Adama Traoré,25 January 1996 (aged 25),5,0,Wolverhampton Wanderers
+,FW,Pablo Sarabia,11 May 1992 (aged 29),3,1,Paris Saint-Germain
+
+#Sweden
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Robin Olsen,8 January 1990 (aged 31),43,0,Everton
+2,DF,Mikael Lustig,13 December 1986 (aged 34),89,6,AIK
+3,DF,Victor Lindelöf,17 July 1994 (aged 26),40,3,Manchester United
+4,DF,Andreas Granqvist (captain),16 April 1985 (aged 36),88,9,Helsingborgs IF
+5,DF,Pierre Bengtsson,12 April 1988 (aged 33),37,0,Vejle BK
+6,DF,Ludwig Augustinsson,21 April 1994 (aged 27),32,2,Werder Bremen
+7,MF,Sebastian Larsson,6 June 1985 (aged 36),128,10,AIK
+8,MF,Albin Ekdal,28 July 1989 (aged 31),56,0,Sampdoria
+9,FW,Marcus Berg,17 August 1986 (aged 34),85,23,Krasnodar
+10,MF,Emil Forsberg,23 October 1991 (aged 29),57,8,RB Leipzig
+11,FW,Alexander Isak,21 September 1999 (aged 21),21,6,Real Sociedad
+12,GK,Karl-Johan Johnsson,28 January 1990 (aged 31),9,0,Copenhagen
+13,MF,Gustav Svensson,7 February 1987 (aged 34),31,0,Guangzhou City
+14,DF,Filip Helander,22 April 1993 (aged 28),15,0,Rangers
+15,MF,Ken Sema,30 September 1993 (aged 27),11,0,Watford
+16,DF,Emil Krafth,2 August 1994 (aged 26),27,0,Newcastle United
+17,MF,Viktor Claesson,2 January 1992 (aged 29),45,9,Krasnodar
+18,DF,Pontus Jansson,13 February 1991 (aged 30),27,0,Brentford
+19,MF,Mattias Svanberg,5 January 1999 (aged 22),8,1,Bologna
+20,MF,Kristoffer Olsson,30 June 1995 (aged 25),24,0,Krasnodar
+21,MF,Dejan Kulusevski,25 April 2000 (aged 21),12,1,Juventus
+22,FW,Robin Quaison,9 October 1993 (aged 27),25,9,Mainz 05
+23,GK,Kristoffer Nordfeldt,23 June 1989 (aged 31),14,0,Gençlerbirliği
+24,DF,Marcus Danielson,8 April 1989 (aged 32),8,2,Dalian Professional
+25,FW,Jordan Larsson,20 June 1997 (aged 23),6,1,Spartak Moscow
+26,MF,Jens Cajuste,10 August 1999 (aged 21),4,0,Midtjylland
+
+#France
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Hugo Lloris (captain),26 December 1986 (aged 34),123,0,Tottenham Hotspur
+2,DF,Benjamin Pavard,28 March 1996 (aged 25),33,2,Bayern Munich
+3,DF,Presnel Kimpembe,13 August 1995 (aged 25),15,0,Paris Saint-Germain
+4,DF,Raphaël Varane,25 April 1993 (aged 28),73,5,Real Madrid
+5,DF,Clément Lenglet,17 June 1995 (aged 25),12,1,Barcelona
+6,MF,Paul Pogba,15 March 1993 (aged 28),78,10,Manchester United
+7,FW,Antoine Griezmann,21 March 1991 (aged 30),89,35,Barcelona
+8,MF,Thomas Lemar,12 November 1995 (aged 25),24,4,Atlético Madrid
+9,FW,Olivier Giroud,30 September 1986 (aged 34),107,44,Chelsea
+10,FW,Kylian Mbappé,20 December 1998 (aged 22),42,16,Paris Saint-Germain
+11,FW,Ousmane Dembélé,15 May 1997 (aged 24),23,3,Barcelona
+12,MF,Corentin Tolisso,3 August 1994 (aged 26),23,2,Bayern Munich
+13,MF,N'Golo Kanté,29 March 1991 (aged 30),45,2,Chelsea
+14,MF,Adrien Rabiot,3 April 1995 (aged 26),14,0,Juventus
+15,DF,Kurt Zouma,27 October 1994 (aged 26),8,1,Chelsea
+16,GK,Steve Mandanda,28 March 1985 (aged 36),34,0,Marseille
+17,MF,Moussa Sissoko,16 August 1989 (aged 31),67,2,Tottenham Hotspur
+18,DF,Lucas Digne,20 July 1993 (aged 27),36,0,Everton
+19,FW,Karim Benzema,19 December 1987 (aged 33),81,27,Real Madrid
+20,FW,Kingsley Coman,13 June 1996 (aged 24),29,5,Bayern Munich
+21,DF,Lucas Hernandez,14 February 1996 (aged 25),24,0,Bayern Munich
+22,FW,Wissam Ben Yedder,12 August 1990 (aged 30),12,2,Monaco
+23,GK,Mike Maignan,3 July 1995 (aged 25),1,0,Lille
+24,DF,Léo Dubois,14 September 1994 (aged 26),7,0,Lyon
+25,DF,Jules Koundé,12 November 1998 (aged 22),0,0,Sevilla
+26,FW,Marcus Thuram,6 August 1997 (aged 23),3,0,Borussia Mönchengladbach
+
+#Germany
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+1,GK,Manuel Neuer (captain),27 March 1986 (aged 35),98,0,Bayern Munich
+2,DF,Antonio Rüdiger,3 March 1993 (aged 28),40,1,Chelsea
+3,DF,Marcel Halstenberg,27 September 1991 (aged 29),8,1,RB Leipzig
+4,DF,Matthias Ginter,19 January 1994 (aged 27),38,2,Borussia Mönchengladbach
+5,DF,Mats Hummels,16 December 1988 (aged 32),70,5,Borussia Dortmund
+6,MF,Joshua Kimmich,8 February 1995 (aged 26),53,3,Bayern Munich
+7,MF,Kai Havertz,11 June 1999 (aged 22),13,3,Chelsea
+8,MF,Toni Kroos,4 January 1990 (aged 31),101,17,Real Madrid
+9,FW,Kevin Volland,30 July 1992 (aged 28),10,1,Monaco
+10,FW,Serge Gnabry,14 July 1995 (aged 25),20,15,Bayern Munich
+11,FW,Timo Werner,6 March 1996 (aged 25),38,15,Chelsea
+12,GK,Bernd Leno,4 March 1992 (aged 29),8,0,Arsenal
+13,MF,Jonas Hofmann,14 July 1992 (aged 28),2,0,Borussia Mönchengladbach
+14,MF,Jamal Musiala,26 February 2003 (aged 18),2,0,Bayern Munich
+15,DF,Niklas Süle,3 September 1995 (aged 25),29,1,Bayern Munich
+16,DF,Lukas Klostermann,3 June 1996 (aged 25),12,0,RB Leipzig
+17,MF,Florian Neuhaus,16 March 1997 (aged 24),5,1,Borussia Mönchengladbach
+18,MF,Leon Goretzka,6 February 1995 (aged 26),32,13,Bayern Munich
+19,MF,Leroy Sané,11 January 1996 (aged 25),28,6,Bayern Munich
+20,DF,Robin Gosens,5 July 1994 (aged 26),5,0,Atalanta
+21,MF,İlkay Gündoğan,24 October 1990 (aged 30),45,10,Manchester City
+22,GK,Kevin Trapp,8 July 1990 (aged 30),5,0,Eintracht Frankfurt
+23,MF,Emre Can,12 January 1994 (aged 27),33,1,Borussia Dortmund
+24,DF,Robin Koch,17 July 1996 (aged 24),7,0,Leeds United
+25,MF,Thomas Müller,13 September 1989 (aged 31),100,38,Bayern Munich
+26,DF,Christian Günter,28 February 1993 (aged 28),1,0,SC Freiburg
+
+#Hungary
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Péter Gulácsi,6 May 1990 (aged 31),37,0,RB Leipzig
+,GK,Ádám Bogdán,27 September 1987 (aged 33),20,0,Ferencváros
+,GK,Dénes Dibusz,16 November 1990 (aged 30),14,0,Ferencváros
+,GK,Balázs Tóth,4 September 1997 (aged 23),0,0,Puskás Akadémia
+,,,,,,
+,DF,Gergő Lovrencsics,1 September 1988 (aged 32),39,1,Ferencváros
+,DF,Ádám Lang,17 January 1993 (aged 28),38,1,Omonia
+,DF,Attila Fiola,17 February 1990 (aged 31),34,1,Fehérvár
+,DF,Willi Orbán,3 November 1992 (aged 28),20,5,RB Leipzig
+,DF,Attila Szalai,20 January 1998 (aged 23),11,0,Fenerbahçe
+,DF,Endre Botka,25 August 1994 (aged 26),9,0,Ferencváros
+,DF,Ákos Kecskés,4 January 1996 (aged 25),1,0,Lugano
+,DF,Bendegúz Bolla,22 November 1999 (aged 21),0,0,Fehérvár
+,DF,Csaba Spandler,7 March 1996 (aged 25),0,0,Puskás Akadémia
+,,,,,,
+,MF,Ádám Nagy,17 June 1995 (aged 25),46,1,Bristol City
+,MF,László Kleinheisler,8 April 1994 (aged 27),32,3,Osijek
+,MF,Filip Holender,27 July 1994 (aged 26),14,1,Partizan
+,MF,Dávid Sigér,30 November 1990 (aged 30),12,1,Ferencváros
+,MF,Dominik Szoboszlai,25 October 2000 (aged 20),12,3,RB Leipzig
+,MF,Loïc Négo,15 January 1991 (aged 30),9,2,Fehérvár
+,MF,Dániel Gazdag,2 March 1996 (aged 25),6,1,Budapest Honvéd
+,MF,András Schäfer,13 April 1999 (aged 22),4,0,Dunajská Streda
+,MF,Tamás Cseri,15 January 1988 (aged 33),3,0,Mezőkövesd
+,,,,,,
+,FW,Ádám Szalai (captain),9 December 1987 (aged 33),70,23,Mainz 05
+,FW,Nemanja Nikolić,31 December 1987 (aged 33),37,8,Fehérvár
+,FW,Roland Sallai,22 May 1997 (aged 24),22,4,SC Freiburg
+,FW,Roland Varga,23 January 1990 (aged 31),21,3,MTK Budapest
+,FW,Kevin Varga,30 March 1996 (aged 25),6,1,Kasımpaşa
+,FW,János Hahn,15 March 1995 (aged 26),0,0,Paks
+,FW,Szabolcs Schön,27 September 2000 (aged 20),0,0,FC Dallas
+
+#Portugal
+No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
+,GK,Rui Patrício,15 February 1988 (aged 33),92,0,Wolverhampton Wanderers
+,GK,Anthony Lopes,1 October 1990 (aged 30),13,0,Lyon
+,GK,Rui Silva,7 February 1994 (aged 27),0,0,Granada
+,,,,,,
+,DF,Pepe,26 February 1983 (aged 38),113,7,Porto
+,DF,José Fonte,22 December 1983 (aged 37),45,0,Lille
+,DF,Raphaël Guerreiro,22 December 1993 (aged 27),45,2,Borussia Dortmund
+,DF,Rúben Dias,14 May 1997 (aged 24),27,2,Manchester City
+,DF,João Cancelo,27 May 1994 (aged 27),26,4,Manchester City
+,DF,Nélson Semedo,16 November 1993 (aged 27),17,0,Wolverhampton Wanderers
+,DF,Nuno Mendes,19 June 2002 (aged 18),3,0,Sporting CP
+,,,,,,
+,MF,João Moutinho,8 September 1986 (aged 34),130,7,Wolverhampton Wanderers
+,MF,William Carvalho,7 April 1992 (aged 29),64,4,Real Betis
+,MF,Danilo Pereira,9 September 1991 (aged 29),45,2,Paris Saint-Germain
+,MF,Bruno Fernandes,8 September 1994 (aged 26),27,2,Manchester United
+,MF,Renato Sanches,18 August 1997 (aged 23),24,2,Lille
+,MF,Rúben Neves,13 March 1997 (aged 24),20,0,Wolverhampton Wanderers
+,MF,Sérgio Oliveira,2 June 1992 (aged 29),10,0,Porto
+,MF,João Palhinha,9 July 1995 (aged 25),3,1,Sporting CP
+,,,,,,
+,FW,Cristiano Ronaldo (captain),5 February 1985 (aged 36),173,103,Juventus
+,FW,Bernardo Silva,10 August 1994 (aged 26),54,7,Manchester City
+,FW,André Silva,6 November 1995 (aged 25),38,16,Eintracht Frankfurt
+,FW,Gonçalo Guedes,29 November 1996 (aged 24),22,6,Valencia
+,FW,Rafa Silva,17 May 1993 (aged 28),20,0,Benfica
+,FW,João Félix,10 November 1999 (aged 21),16,3,Atlético Madrid
+,FW,Diogo Jota,4 December 1996 (aged 24),12,6,Liverpool
+,FW,Pedro Gonçalves,28 June 1998 (aged 22),0,0,Sporting CP
+

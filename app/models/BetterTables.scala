@@ -281,7 +281,9 @@ trait BetterTables {
     def seen = column[Option[OffsetDateTime]]("seen")
     def token = column[String]("token")
     def sendingUser = column[Long]("sendinguser")
-    
+    def created = column[OffsetDateTime]("created")
+    def attempts = column[Int]("attempts")
+    def lastAttempt = column[OffsetDateTime]("last_attempt")
     def user = foreignKey("MESSAGE_USER_FK", userId, users)(_.id)
     def message = foreignKey("MESSAGE_MESSAGE_FK", messageId, messages)(_.id)
     
