@@ -202,7 +202,6 @@ export class BetterdbService {
   }
 
   getSpecialBetStats(templateName: string): Observable<SpecialBetPredictions>{
-  //  return this.http.get<SpecialBetPredictions>(`https://ngs.vbcf.ac.at/fifa2018/api/statistics/specialBet/${templateName}`).pipe(
     return this.http.get<SpecialBetPredictions>(Environment.api(`statistics/specialBet/${templateName}`)).pipe(
           tap(_ => this.logger.debug(`fetching special bet stats ${templateName}`)),
           catchError(this.handleError<SpecialBetPredictions>(`getSpecialBetStats`))
@@ -314,7 +313,6 @@ export class BetterdbService {
 
   getGameStatistics(id: number, team1: string, team2: string): Observable<GameStats>{
     return this.http.get<Result[]>(Environment.api(`statistics/game/${id}`)).pipe(
-  //    return this.http.get<Result[]>(`https://ngs.vbcf.ac.at/fifa2018/api/statistics/game/${id}`).pipe(
        map( results => {
         const predictions = new Array<Prediction>()
         const heatmap = new Array<GoalCount>()

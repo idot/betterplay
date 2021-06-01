@@ -2,12 +2,12 @@
     <div *ngIf="gameresult.isSet" matBadge={{bet.points}} matBadgeOverlap="false"></div>   
     <div style="width:120px;" fxLayoutAlign="space-between">
       <mat-form-field class="betInput" style="width:50px;">
-        <mat-select  [(ngModel)]="result.team1" [disabled]="disabled()" ariaLabel="goals team1">
+        <mat-select  [(ngModel)]="result.team1" [disabled]="disabled()" (selectionChange)="resultChanged()" ariaLabel="goals team1">
           <mat-option *ngFor="let point of points" [value]="point">{{point}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="betInput" style="width:50px;">
-         <mat-select [(ngModel)]="result.team2" [disabled]="disabled()" ariaLabel="goals team2">
+         <mat-select [(ngModel)]="result.team2" [disabled]="disabled()" (selectionChange)="resultChanged()" ariaLabel="goals team2">
           <mat-option  *ngFor="let point of points" [value]="point">{{point}}</mat-option>
         </mat-select>
       </mat-form-field>

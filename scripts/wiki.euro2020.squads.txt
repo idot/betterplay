@@ -1,4 +1,4 @@
-#italy
+#Italy
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,GK,Salvatore Sirigu,12 January 1987 (aged 34),26,0,Torino
 ,GK,Gianluigi Donnarumma,25 February 1999 (aged 22),25,0,Milan
@@ -31,7 +31,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,FW,Domenico Berardi,1 August 1994 (aged 26),10,4,Sassuolo
 ,FW,Matteo Politano,3 August 1993 (aged 27),4,3,Napoli
 
-#switzerland
+#Switzerland
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,GK,Yann Sommer,17 December 1988 (aged 32),61,0,Borussia Mönchengladbach
 ,GK,Yvon Mvogo,6 June 1994 (aged 27),3,0,PSV Eindhoven
@@ -60,7 +60,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,FW,Ruben Vargas,5 August 1998 (aged 22),11,2,FC Augsburg
 ,FW,Christian Fassnacht,11 November 1993 (aged 27),7,1,Young Boys
 
-#turkey
+#Turkey
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,GK,Mert Günok,1 March 1989 (aged 32),22,0,İstanbul Başakşehir
 ,GK,Uğurcan Çakır,5 April 1996 (aged 25),7,0,Trabzonspor
@@ -94,7 +94,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,FW,Kenan Karaman,5 March 1994 (aged 27),21,5,Fortuna Düsseldorf
 ,FW,Halil Dervişoğlu,8 December 1999 (aged 21),2,1,Galatasaray
 
-#wales
+#Wales
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,GK,Wayne Hennessey,24 January 1987 (aged 34),95,0,Crystal Palace
 ,GK,Danny Ward,22 June 1993 (aged 27),12,0,Leicester City
@@ -125,7 +125,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,FW,Kieffer Moore,8 August 1992 (aged 28),15,5,Cardiff City
 ,FW,Tyler Roberts,12 January 1999 (aged 22),13,0,Leeds United
 
-#belgium
+#Belgium
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 1,GK,Thibaut Courtois,11 May 1992 (aged 29),83,0,Real Madrid
 2,DF,Toby Alderweireld,2 March 1989 (aged 32),107,5,Tottenham Hotspur
@@ -154,7 +154,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 25,DF,Dedryck Boyata,28 November 1990 (aged 30),22,0,Hertha BSC
 26,FW,Jérémy Doku,27 May 2002 (aged 19),6,2,Rennes
 
-#denmark
+#Denmark
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 1,GK,Kasper Schmeichel,5 November 1986 (aged 34),63,0,Leicester City
 2,DF,Joachim Andersen,31 May 1996 (aged 25),4,0,Fulham
@@ -183,7 +183,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 25,MF,Anders Christiansen,8 June 1990 (aged 31),3,0,Malmö FF
 26,DF,Mathias Jørgensen,23 April 1990 (aged 31),34,2,Copenhagen
 
-#finnland
+#Finland
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,GK,Lukáš Hrádecký,24 November 1989 (aged 31),64,0,Bayer Leverkusen
 ,GK,Jesse Joronen,21 March 1993 (aged 28),14,0,Brescia
@@ -217,7 +217,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,FW,Roope Riski,16 August 1991 (aged 29),6,1,HJK
 ,FW,Marcus Forss,18 June 1999 (aged 21),4,1,Brentford
 
-#russia
+#Russia
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,GK,Anton Shunin,27 January 1987 (aged 34),10,0,Dynamo Moscow
 ,GK,Andrey Lunyov,13 November 1991 (aged 29),7,0,Zenit Saint Petersburg
@@ -253,7 +253,7 @@ No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,FW,Anton Zabolotny,13 June 1991 (aged 29),12,1,Sochi
 ,FW,Aleksandr Sobolev,7 March 1997 (aged 24),5,2,Spartak Moscow
 
-#austria
+#Austria
 No.,Pos.,Player,Date of birth (age),Caps,Goals,Club
 ,GK,Pavao Pervan,13 November 1987 (aged 33),7,0,VfL Wolfsburg
 ,GK,Alexander Schlager,1 February 1996 (aged 25),6,0,LASK

@@ -4,9 +4,6 @@ TODO:
 play/backend:
 -------------
 
-important:
-* changing bet does not color sync sign!
-
 
 * remove minutesToView from BetterSettings; currently used for importer
 * remove scalaz and use cats
@@ -15,7 +12,6 @@ important:
 * view for unsent mails
 * validate Excel in DBSpec
 * multiple mail provider; when creating users or afterwards;
-* creation date for usersmessages; mail attempt history
 * throttle with akka stream to 1/30 seconds mailer
 * typed actors
 

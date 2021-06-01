@@ -43,7 +43,7 @@ import models.MailSettings
 
 import models.{AccessViolationException,ItemNotFoundException,ValidationException}
 import importer.InitialData
-import importer.{Euro2016Data,Fifa2018Data}
+import importer.{Euro2016Data,Fifa2018Data,Euro2020Data}
 import models.MaintenanceExecutionContext
 
 
@@ -240,6 +240,7 @@ class Application(env: Environment,
         case "test" => new InitialData(betterDb, env).insert(debug)
         case "euro2016" => new Euro2016Data(betterDb, env).insert(false)
         case "fifa2018" => new Fifa2018Data(betterDb, env).insert(false)
+        case "euro2020" => new Euro2020Data(betterDb, env).insert(debug)//TODO: change to false after load tests
         case _ => logger.info("not inserting any data!!!")//do nothing
       }
     }
@@ -262,7 +263,7 @@ class Application(env: Environment,
          }
       }
       system.scheduler.scheduleWithFixedDelay( 1.minutes, maintenenceInterval.minutes)(new Maintain())(maintenanceExecutor) 
-    }else{
+    } else {
       logger.info(s"not maintaining games")
     }
   }

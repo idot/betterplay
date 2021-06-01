@@ -31,6 +31,7 @@ export class BetViewComponent implements OnInit {
   @Input() gameresult: Result
 
   submitting = false
+  result_changed_state = false
 
   points = range(15)
 
@@ -105,10 +106,15 @@ export class BetViewComponent implements OnInit {
               this.result = this.result2view(betnew.result)
             }
             this.bet.result = result
-            this.snackBar.openFromComponent(ToastComponent, { data: { message: "saved bet", level: "ok"}})
+            this.result_changed_state = false
+            this.snackBar.openFromComponent(ToastComponent, { data: { message: `saved bet ${betnew.result.goalsTeam1}:${betnew.result.goalsTeam2}`, level: "ok"}})
          }
          this.submitting = false
     })
+  }
+
+  resultChanged(){
+      this.result_changed_state = true
   }
 
   saveStyleValue(): string {
@@ -120,7 +126,11 @@ export class BetViewComponent implements OnInit {
      } else {
          if(this.bet.viewable){
               if(this.result.isSet){
-                 return "changable"
+                 if(this.result_changed_state){
+                    return "imperfect"
+                 } else {
+                    return "changable"
+                 }
               } else {
                 const errors = this.checkSubmissionErrors().length
                 switch(errors){

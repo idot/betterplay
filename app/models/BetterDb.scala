@@ -208,16 +208,16 @@ class BetterDb @Inject() (val dbConfigProvider: DatabaseConfigProvider) (implici
 
      //TODO: TEST for exception when specialbet does not exist!
      def updateSPU(sp: SpecialBetByUser, submittingUser: User): Future[User] = {     
-         betterDBLogger.debug(s"updating special bet for user ${sp.prediction}") 
+         betterDBLogger.debug(s"updating special bet for user ${submittingUser.username} ${sp.prediction}") 
          val action = (specialbetsuser.filter(spdb => spdb.id === sp.id && spdb.userId === submittingUser.id && spdb.spId === sp.specialbetId).map( c => c.prediction ).update( sp.prediction ).flatMap{ rowCount =>
              rowCount match {
                case 0 => { 
-                      val err = s"could not find specialbet with ids ${sp.id} ${sp.userId} ${sp.specialbetId} - ${submittingUser.id}"; 
+                      val err = s"could not find specialbet with ids ${sp.id} ${sp.userId} ${sp.specialbetId} - ${submittingUser.id} ${submittingUser.username}"; 
                       betterDBLogger.error(err); 
                       DBIO.failed(new ItemNotFoundException(err)) 
                }
-               case 1 => DBIO.successful(s"updated special bet with prediction ${sp.prediction}")
-               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${sp.id}"))
+               case 1 => DBIO.successful(s"updated special bet with prediction ${submittingUser.username} ${sp.prediction}")
+               case _ => DBIO.failed(new ItemNotFoundException(s"found multiple special bets with id ${submittingUser.username} ${sp.prediction} ${sp.id}"))
              }
          }).transactionally
          
