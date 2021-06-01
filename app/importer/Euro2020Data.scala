@@ -131,18 +131,18 @@ class Euro2020Data(betterDb: BetterDb, environment: Environment) (implicit ec: E
     betterDb.dropCreate()
 
     logger.info("inserting data in db")
-    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 1.seconds)
+    Await.result(Future.sequence(sp.map(t => betterDb.insertSpecialBetInStore(t))), 3.seconds)
     logger.info("inserted special bets")
-    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 1.seconds)
+    Await.result(Future.sequence(us.map{ u => betterDb.insertUser(u, u.isAdmin, u.isRegistrant, None) } ), 5.seconds)
     logger.info("inserted users")
     val admin = Await.result(betterDb.allUsers(), 1.seconds).filter(_.isAdmin).sortBy(_.id).head
-    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 1.seconds)  
+    Await.result(Future.sequence(ls.map(l => betterDb.insertLevel(l, admin))), 3.seconds)  
     val level = Await.result(betterDb.allLevels(), 1.second)(0)
     val (teams, ttg) = teamsGames(level.id.get)
     Await.result(Future.sequence(teams.map(t => betterDb.insertTeam(t, admin))), 3.seconds)
     Await.result(Future.sequence(ttg.map{ case(t1,t2,g) => betterDb.insertGame(g, t1, t2, level.level, admin)}), 5.seconds)
-    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 5.seconds)
-    ps.map{ case(p,t) => Await.result(betterDb.insertPlayer(p, t, admin), 1.seconds) }
+    Await.result(betterDb.createBetsForGamesForAllUsers(admin), 10.seconds)
+    ps.map{ case(p,t) => Await.result(betterDb.insertPlayer(p, t, admin), 3.seconds) }
 
 	   
 	  
