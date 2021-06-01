@@ -8,6 +8,16 @@
 .material-icons.green { color: #008000; }
 .material-icons.red { color: #AA0114; }
 
+.user-points-badge {
+  background: #3f51b5;
+  color: white;
+  border-radius: 50%;
+  min-width: 1em;
+  padding: .3em;
+  display: inline-block;
+  text-align: center;
+  font-family: sans-serif;
+}
 
 .badge-points {
     background: #039BE5;

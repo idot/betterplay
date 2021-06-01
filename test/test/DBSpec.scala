@@ -296,7 +296,7 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
          upD2._5 === Nil
        	 tl( betterDb.betlogs,2, "Bet2" )
          val q = betterDb.betlogs.sortBy(_.id.desc).result.head
-			   Await.result(db.run(q), 1 seconds) === BetLog(Some(2L), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61), "regular update")
+         Await.result(db.run(q), 1 seconds) === BetLog(Some(2L), users(1).id.get, gb1(0)._1.game.id.get, gb1(0)._1.game.serverStart, b1.id.get, 0, 1, 0, 2, firstStart.minusMinutes(61), "regular update")
          upD2._2.result === GameResult(0,0,false)
          upD2._3.result === GameResult(1,2,true)
          //now check if the value in the database was really changed

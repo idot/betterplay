@@ -13,10 +13,16 @@
       <span matBadge={{user.pointsSpecialBet}} class="{{badgecolour()}}" matBadgeOverlap="false"></span>
     </div-->
 
-    <div>
-      <span matBadge={{user.totalPoints}} matBadgeOverlap="false"></span>
-      <span matBadge={{user.pointsGames}}  matBadgeOverlap="false"></span>
-      <span matBadge={{user.pointsSpecialBet}} matBadgeOverlap="false"></span>
+    <div fxLayout="row">
+      <div>
+        <span class="user-points-badge" matTooltip="total points" matTooltipPosition="above">{{user.totalPoints}}</span>
+      </div>
+      <div>
+        <span class="user-points-badge" matTooltip="games points" matTooltipPosition="above">{{user.pointsGames}}</span>
+      </div>
+      <div>
+        <span class="user-points-badge" matTooltip="special bet points" matTooltipPosition="above">{{user.pointsSpecialBet}}</span>
+      </div>
     </div>
 
     <!--div fxLayout="row">
