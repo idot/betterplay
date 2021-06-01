@@ -2,9 +2,9 @@ BetterPlay
 ==========
 
 Tournament style betting system.
-Current initial data provided for UEFA EURO 2016. 
+Current initial data provided for UEFA EURO 2016 and EURO 2020 (2021)
 
-uses: Play2.5, slick, scala 2.11, angular, angular-material, play-gulp
+uses: Play2.8, slick, scala 2.13, angular, angular-material, play-gulp
 
 for trying:
 1) checkout
