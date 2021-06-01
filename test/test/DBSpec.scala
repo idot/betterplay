@@ -138,12 +138,12 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
     
       def insertUsers(): Unit = {
           val admin = getAdmin()
-		      tl( betterDb.specialbetsuser, 12, "U1" )
+          tl( betterDb.specialbetsuser, 12, "U1" )
           tl( betterDb.bets,0 , "U2")
           val bwgAdmin = Await.result(db.run(betterDb.gamesWithoutBetsForUser(admin.id.get).result), 1 second)
           bwgAdmin.length === 3
           AR(db.run(betterDb.createBetsForGamesForUser(admin.id.get)))
-           tl( betterDb.bets,3, "U3a" )
+          tl( betterDb.bets,3, "U3a" )
           AR(betterDb.createBetsForGamesForAllUsers(admin))
           tl( betterDb.bets,3, "U3b" )
           admin.hadInstructions === true
@@ -152,12 +152,12 @@ class DBSpec(implicit ee: ExecutionEnv) extends Specification
                  val us = AR(betterDb.insertUser(u, false, false, Some(admin)))
                  us.registeredBy === admin.id && us.isAdmin === false && us.points === 0 && us.canBet === true
           }
-		      tl( betterDb.specialbetsuser, 4 * 12, "U4" ) 
+          tl( betterDb.specialbetsuser, 4 * 12, "U4" ) 
           tl( betterDb.bets, 3 * 4, "U5")
           AR(betterDb.createBetsForGamesForAllUsers(admin))
           tl( betterDb.bets, 3 * 4, "U6")
           AR(betterDb.allUsers()).flatMap{ user =>
-		           AR(betterDb.gamesWithBetForUser(user)).map{ case (g,b) => 
+          AR(betterDb.gamesWithBetForUser(user)).map{ case (g,b) => 
                g.level.level === 0
                b.points === 0
                Set(g.team1,g.team2) }
